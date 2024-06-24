@@ -86,21 +86,26 @@ public class GameScript1 : MonoBehaviour //전체적인 게임스트립트
         }             
     }
 
-    void Cheat()
+    public void Cheat()
     {
         
        // tipNum = 0;
         //Menu.instance.menu8Open = 1;
         // Star.instance.starCoroutine = Star.instance.StartCoroutine(Star.instance.StarAppear());
         // mainCount = 16;
-        //  Menu.instance.reputation += 300;
+         // Menu.instance.reputation += 300;
         // pNum = 0;
         //PlayerPrefs.DeleteKey("pNum");
        //    VisitorNote.instance.openPage = 14;
-        Dialogue1.instance.CharacterDC[0] = 2; //1도리
-        endStory = 1;
-       // VisitorNote.instance.friendshipGauge[12].GetComponent<Image>().fillAmount = 1f; //0 도리~~ 4도로시~~~
-       // VisitorNote.instance.FriendshipInfo[12] = 20;
+        Dialogue1.instance.CharacterDC[9] = 3; //1도리
+        Dialogue1.instance.CharacterDC[10] = 3; //1도리
+        Dialogue1.instance.CharacterDC[12] = 3; //1도리
+        //endStory = 1;
+        //VisitorNote.instance.friendshipGauge[8].GetComponent<Image>().fillAmount = 1f; //0 도리~~ 4도로시~~~
+        //VisitorNote.instance.FriendshipInfo[8] = 10;
+        //VisitorNote.instance.friendshipGauge[9].GetComponent<Image>().fillAmount = 1f; 
+        //VisitorNote.instance.FriendshipInfo[9] = 10;
+
     }
     public void Reset_P()
     {

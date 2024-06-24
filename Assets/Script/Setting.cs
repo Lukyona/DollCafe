@@ -138,4 +138,9 @@ public class Setting : MonoBehaviour
         resetButton.interactable = true;
         creditButton.interactable = true;       
     }
+
+    public void PrivacyLink()
+    {
+        Application.OpenURL("https://eocgames.blogspot.com/2022/05/blog-post.html");
+    }
 }
