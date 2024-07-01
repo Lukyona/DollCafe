@@ -68,6 +68,8 @@ public class HPCharge : MonoBehaviour
             m_RechargeTimerCoroutine = null;
         }
         HPAmount.text = string.Format("{0}", m_HPAmount.ToString());
+        GameScript1.instance.plusHP.interactable = true;
+
     }
 
     private void Awake() //씬 플레이할 때마다 호출

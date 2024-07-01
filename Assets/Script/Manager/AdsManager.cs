@@ -77,6 +77,7 @@ public void ShowRewardedAd()
         {
             // TODO: Reward the user.
             Debug.Log(String.Format(rewardMsg, reward.Type, reward.Amount));
+            HPCharge.instance.AddHP();
         });
     }
 }
@@ -113,7 +114,7 @@ public void ShowRewardedAd()
                 stopLoad = true;
                 Debug.Log(stopLoad);
                 GameScript1.instance.plusHP.interactable = true;
-               Debug.Log("광고 로드 완료");
+               //Debug.Log("광고 로드 완료");
             }
         } 
     }
@@ -127,8 +128,6 @@ public void ShowRewardedAd()
             adValue.Value,
             adValue.CurrencyCode));
 
-        HPCharge.instance.AddHP();
-        GameScript1.instance.plusHP.interactable = true;
 
 
     };
