@@ -1,13 +1,32 @@
 {
-    "m_SelectedDeviceId": "a7986be3",
+    "m_SelectedDeviceId": "emulator-5554",
     "m_SelectedProcess": {
-        "deviceId": "",
-        "name": "",
-        "processId": 0,
+        "deviceId": "emulator-5554",
+        "name": "com.eoc.cafecosmos",
+        "processId": 9977,
         "exited": false
     },
     "m_SelectedPriority": 2,
-    "m_KnownProcessesForSerialization": [],
+    "m_KnownProcessesForSerialization": [
+        {
+            "deviceId": "emulator-5554",
+            "name": "com.google.android.apps.nexuslauncher",
+            "processId": 1227,
+            "exited": false
+        },
+        {
+            "deviceId": "emulator-5554",
+            "name": "com.eoc.cafecosmos",
+            "processId": 8544,
+            "exited": false
+        },
+        {
+            "deviceId": "emulator-5554",
+            "name": "com.eoc.cafecosmos",
+            "processId": 9977,
+            "exited": false
+        }
+    ],
     "m_Tags": {
         "m_Entries": [
             {
