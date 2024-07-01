@@ -374,8 +374,6 @@ public class SmallFade : MonoBehaviour //작은 캐릭터 스크립트
         }     
     }
 
-    bool sFade2 = false;//페이드아웃 진행 상황을 구분하는 정수
-
     public void FadeOut() //작은 캐릭터 페이드아웃
     {
         EachObject.instance.FadeOutCharacter();
@@ -474,8 +472,6 @@ public class SmallFade : MonoBehaviour //작은 캐릭터 스크립트
     public int z;
     public IEnumerator FadeToZero()  // 알파값 1에서 0으로 전환
     {
-        sFade2 = true;
-
         if (!GameScript1.jejeOn) //제제가 아닐 경우
         {
             z = smallFOut.Peek();
@@ -560,6 +556,5 @@ public class SmallFade : MonoBehaviour //작은 캐릭터 스크립트
                 StartCoroutine(FadeToZero());//페이드아웃 시작
             }            
         }
-        sFade2 = false;
     }
 }

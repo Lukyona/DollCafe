@@ -38,7 +38,7 @@ public class TimeManager : MonoBehaviour
             {
                 yield return request.SendWebRequest();
 
-                if (request.isNetworkError)
+                if (request.result == UnityWebRequest.Result.ConnectionError)
                 {
                     Debug.Log(request.error);
                 }

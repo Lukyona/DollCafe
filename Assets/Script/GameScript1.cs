@@ -746,6 +746,8 @@ public class GameScript1 : MonoBehaviour //전체적인 게임스트립트
         SEManager.instance.UIButtonClick();
         plusHP.interactable = false;
         AdsMessage.SetActive(true);
+        Debug.Log("버튼 누름");
+
     }
 
     public void ClickNoAds()

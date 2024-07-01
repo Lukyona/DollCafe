@@ -27,16 +27,59 @@ public class AdsManager : MonoBehaviour
     {
         MobileAds.Initialize(initStatus => { });
 
-        this.rewardedAd = new RewardedAd(adUnitId);
-
-        AdRequest request = new AdRequest.Builder().Build();
-        this.rewardedAd.LoadAd(request);
-
-        this.rewardedAd.OnUserEarnedReward += RewardedAd_OnUserEarnedReward;
-        this.rewardedAd.OnAdClosed += RewardedAd_OnAdClosed;
+        LoadRewardedAd();
 
     }
 
+     public void LoadRewardedAd()
+  {
+      // Clean up the old ad before loading a new one.
+      if (rewardedAd != null)
+      {
+            rewardedAd.Destroy();
+            rewardedAd = null;
+      }
+
+      Debug.Log("Loading the rewarded ad.");
+
+      // create our request used to load the ad.
+      var adRequest = new AdRequest();
+
+      // send the request to load the ad.
+      RewardedAd.Load(adUnitId, adRequest,
+          (RewardedAd ad, LoadAdError error) =>
+          {
+              // if error is not null, the load request failed.
+              if (error != null || ad == null)
+              {
+                  Debug.LogError("Rewarded ad failed to load an ad " +
+                                 "with error : " + error);
+                  return;
+              }
+
+              Debug.Log("Rewarded ad loaded with response : "
+                        + ad.GetResponseInfo());
+
+              rewardedAd = ad;
+
+              RegisterEventHandlers(rewardedAd);
+          });
+  }
+
+public void ShowRewardedAd()
+{
+    const string rewardMsg =
+        "Rewarded ad rewarded the user. Type: {0}, amount: {1}.";
+
+    if (rewardedAd != null && rewardedAd.CanShowAd())
+    {
+        rewardedAd.Show((Reward reward) =>
+        {
+            // TODO: Reward the user.
+            Debug.Log(String.Format(rewardMsg, reward.Type, reward.Amount));
+        });
+    }
+}
     public void AdsYes()
     {
         addOn = true;
@@ -48,15 +91,15 @@ public class AdsManager : MonoBehaviour
     void WantAds()
     {
         //Debug.Log("광고 보여주기");
-        if(rewardedAd.IsLoaded())
+        if(rewardedAd.CanShowAd())
         {
             stopLoad = false;
-            rewardedAd.Show();
+            ShowRewardedAd();
         }
         else
         {
          //   Debug.Log("로드 안됨");
-            CreateAndLoadRewardedAd();
+            LoadRewardedAd();
             Invoke(nameof(WantAds), 0.3f);
         }
     }
@@ -65,57 +108,56 @@ public class AdsManager : MonoBehaviour
     {
         if(!stopLoad)
         {
-            if (rewardedAd.IsLoaded())
+            if (rewardedAd.CanShowAd())
             {
                 stopLoad = true;
                 Debug.Log(stopLoad);
                 GameScript1.instance.plusHP.interactable = true;
-            //    Debug.Log("광고 로드 완료");
+               Debug.Log("광고 로드 완료");
             }
         } 
     }
 
-    public void HandleRewardBasedVideoLoaded(object sender, EventArgs args)
+   private void RegisterEventHandlers(RewardedAd ad)
+{
+    // Raised when the ad is estimated to have earned money.
+    ad.OnAdPaid += (AdValue adValue) =>
     {
-        MonoBehaviour.print("HandleRewardBasedVideoLoaded event received");
-    }
+        Debug.Log(String.Format("Rewarded ad paid {0} {1}.",
+            adValue.Value,
+            adValue.CurrencyCode));
 
-    public void CreateAndLoadRewardedAd()
-    {        
-        this.rewardedAd = new RewardedAd(adUnitId);
-
-        this.rewardedAd.OnUserEarnedReward += RewardedAd_OnUserEarnedReward;
-        this.rewardedAd.OnAdClosed += RewardedAd_OnAdClosed;
-
-        AdRequest request = new AdRequest.Builder().Build();
-        // Load the rewarded ad with the request.
-        this.rewardedAd.LoadAd(request);
-       
-    }
-
-    private void RewardedAd_OnAdClosed(object sender, EventArgs e)
-    {
-        //유저에 의해 중간에 광고 닫힘
-        CreateAndLoadRewardedAd();
-    }
-
-    private void RewardedAd_OnUserEarnedReward(object sender, Reward e)
-    {
         HPCharge.instance.AddHP();
-    }
+        GameScript1.instance.plusHP.interactable = true;
 
-    public void HandleRewardedAdFailedToShow(object sender, AdErrorEventArgs args)
-    {
-        MonoBehaviour.print(
-            "HandleRewardedAdFailedToShow event received with message: "
-                             + args.Message);
-    }
-    public void HandleRewardedAdFailedToLoad(object sender, AdErrorEventArgs args)
-    {
-        MonoBehaviour.print(
-            "HandleRewardedAdFailedToLoad event received with message: "
-                             + args.Message);
-    }
 
+    };
+    // Raised when an impression is recorded for an ad.
+    ad.OnAdImpressionRecorded += () =>
+    {
+        Debug.Log("Rewarded ad recorded an impression.");
+    };
+    // Raised when a click is recorded for an ad.
+    ad.OnAdClicked += () =>
+    {
+        Debug.Log("Rewarded ad was clicked.");
+    };
+    // Raised when an ad opened full screen content.
+    ad.OnAdFullScreenContentOpened += () =>
+    {
+        Debug.Log("Rewarded ad full screen content opened.");
+    };
+    // Raised when the ad closed full screen content.
+    ad.OnAdFullScreenContentClosed += () =>
+    {
+        Debug.Log("Rewarded ad full screen content closed.");
+    };
+    // Raised when the ad failed to open full screen content.
+    ad.OnAdFullScreenContentFailed += (AdError error) =>
+    {
+        Debug.LogError("Rewarded ad failed to open full screen content " +
+                       "with error : " + error);
+    };
+}
 
 }
