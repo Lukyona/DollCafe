@@ -141,6 +141,6 @@ public class Setting : MonoBehaviour
 
     public void PrivacyLink()
     {
-        Application.OpenURL("https://eocgames.blogspot.com/2022/05/blog-post.html");
+        Application.OpenURL("https://sites.google.com/view/eocgames-privacy/%ED%99%88");
     }
 }

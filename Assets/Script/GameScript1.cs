@@ -562,7 +562,7 @@ public class GameScript1 : MonoBehaviour //전체적인 게임스트립트
                     //Debug.Log("스타 종료2");
                 }
             }
-            GoNextScene.instance.Invoke("GoEndingCreditScreen", 1f);//1초 후 엔딩크레딧 화면으로 이동
+            SceneChanger.sc.Invoke("GoEndingCreditScreen", 1f);//1초 후 엔딩크레딧 화면으로 이동
         }
         else
         {

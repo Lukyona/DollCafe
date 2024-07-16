@@ -1,9 +1,9 @@
 {
     "m_SelectedDeviceId": "emulator-5554",
     "m_SelectedProcess": {
-        "deviceId": "emulator-5554",
-        "name": "com.eoc.cafecosmos",
-        "processId": 9977,
+        "deviceId": "",
+        "name": "",
+        "processId": 0,
         "exited": false
     },
     "m_SelectedPriority": 2,
@@ -18,13 +18,19 @@
             "deviceId": "emulator-5554",
             "name": "com.eoc.cafecosmos",
             "processId": 8544,
-            "exited": false
+            "exited": true
         },
         {
             "deviceId": "emulator-5554",
             "name": "com.eoc.cafecosmos",
             "processId": 9977,
-            "exited": false
+            "exited": true
+        },
+        {
+            "deviceId": "emulator-5554",
+            "name": "com.eoc.cafecosmos",
+            "processId": 10789,
+            "exited": true
         }
     ],
     "m_Tags": {
