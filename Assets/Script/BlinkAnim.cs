@@ -16,24 +16,22 @@ public class BlinkAnim : MonoBehaviour //터치투 스타트 메세지를 깜빡
     // Update is called once per frame
     void Update()
     {
-
-        if (Input.GetMouseButtonDown(0)) //터치하면 다음 씬으로
+        if (Input.GetMouseButtonDown(0)) //터치되면
         {
-            SceneChanger.sc.FadeToScene(2);//잘자렴아가씬으로 이동
+            SceneChanger.sc.FadeToScene(2);//로딩씬으로 이동
             BgmManager.instance.BGMFadeOut();
-
         }
 
-        if (time < 0.5f)
+        if (time < 0.5f) // 0.5미만이면 서서히 투명해지기 
         {
             image.color = new Color(1, 1, 1, 1 - time);
         }
-        else
+        else 
         {
-            image.color = new Color(1, 1, 1, time) ;
+            image.color = new Color(1, 1, 1, time); // 서서히 선명해지기
             if(time > 1f)
             {
-                time = 0;
+                time = 0; // 초기화
             }
         }
 
@@ -41,12 +39,10 @@ public class BlinkAnim : MonoBehaviour //터치투 스타트 메세지를 깜빡
 
         if (Application.platform == RuntimePlatform.Android)
         {
-            if (Input.GetKey(KeyCode.Escape))//뒤로가기 버튼 두 번으로 앱 종료
+            if (Input.GetKey(KeyCode.Escape)) //뒤로가기 버튼 두 번으로 앱 종료
             {
                 Application.Quit();
             }
-
         }
     }
-
 }
