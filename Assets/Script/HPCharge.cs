@@ -138,7 +138,7 @@ public class HPCharge : MonoBehaviour
         
         if(Input.GetMouseButtonDown(0))//터치마다 효과음
         {
-            SEManager.instance.TouchSound();
+            SEManager.instance.PlayTouchSound();
         }
     }
 

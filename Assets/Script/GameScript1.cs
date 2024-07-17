@@ -77,7 +77,7 @@ public class GameScript1 : MonoBehaviour //전체적인 게임스트립트
 
     void Start()
     {
-        BgmManager.instance.CafeBgm(); //카페 브금 재생
+        BgmManager.instance.PlayCafeBgm(); //카페 브금 재생
 
         if (mainCount == 0)
         {
@@ -475,8 +475,8 @@ public class GameScript1 : MonoBehaviour //전체적인 게임스트립트
             BgmManager.instance.CancelInvoke("CafeBgm");//invoke 취소
             Debug.Log("카페브금 인보크 종료");
         }
-        BgmManager.instance.BgmStop();
-        BgmManager.instance.CharacterBGMPlay(n);//캐릭터 테마 재생      
+        BgmManager.instance.StopBgm();
+        BgmManager.instance.PlayCharacterBGM(n);//캐릭터 테마 재생      
         textnum = 0;
         Dialogue1.instance.CharacterNum = n;
         BigCharacter[n].SetActive(true);
@@ -495,8 +495,8 @@ public class GameScript1 : MonoBehaviour //전체적인 게임스트립트
         textnum = 0;
         BigCharacter[2].SetActive(true);
         CharacterMove.instance.SetCharacter(BigCharacter[2]);
-        BgmManager.instance.BgmStop();
-        BgmManager.instance.CharacterBGMPlay(2);//붕붕 테마 재생
+        BgmManager.instance.StopBgm();
+        BgmManager.instance.PlayCharacterBGM(2);//붕붕 테마 재생
         CharacterIn();
         MenuHint.instance.tuto = false;
     }
@@ -743,7 +743,7 @@ public class GameScript1 : MonoBehaviour //전체적인 게임스트립트
 
     public void ClickHPButton()
     {
-        SEManager.instance.UIButtonClick();
+        SEManager.instance.PlayUIClickSound();
         plusHP.interactable = false;
         AdsMessage.SetActive(true);
         Debug.Log("버튼 누름");
@@ -752,7 +752,7 @@ public class GameScript1 : MonoBehaviour //전체적인 게임스트립트
 
     public void ClickNoAds()
     {
-        SEManager.instance.ClickClose();
+        SEManager.instance.PlayUICloseSound();
         plusHP.interactable = true;
         AdsMessage.SetActive(false);
     }
@@ -838,7 +838,7 @@ public class GameScript1 : MonoBehaviour //전체적인 게임스트립트
 
     public void NoGameClose()
     {
-        SEManager.instance.ClickClose();
+        SEManager.instance.PlayUICloseSound();
         close = false;
         HPCharge.instance.allSave = false;
         if (UI_Assistant1.instance.stop == 2)
@@ -855,7 +855,7 @@ public class GameScript1 : MonoBehaviour //전체적인 게임스트립트
 
     public void ClickFishBread()//붕어빵 버튼 눌렀을 때
     {
-        SEManager.instance.UIButtonClick();
+        SEManager.instance.PlayUIClickSound();
         PurchasingWindow.SetActive(true);
     }
 
@@ -863,7 +863,7 @@ public class GameScript1 : MonoBehaviour //전체적인 게임스트립트
 
     public void HPMax20()
     {
-        SEManager.instance.UIClick3();
+        SEManager.instance.PlayUIClickSound3();
         pNum = 1;
         PlayerPrefs.SetInt("pNum", pNum); //인앱 결제 정보 저장
         PlayerPrefs.Save(); //세이브
@@ -905,7 +905,7 @@ public class GameScript1 : MonoBehaviour //전체적인 게임스트립트
 
     public void HPSpeedUp()
     {
-        SEManager.instance.UIClick3();
+        SEManager.instance.PlayUIClickSound3();
         pNum = 2;
         PlayerPrefs.SetInt("pNum", pNum); //인앱 결제 정보 저장
         PlayerPrefs.Save(); //세이브
@@ -938,14 +938,14 @@ public class GameScript1 : MonoBehaviour //전체적인 게임스트립트
 
     public void NoPurchasing()//구매 취소
     {
-        SEManager.instance.ClickClose();
+        SEManager.instance.PlayUICloseSound();
         PurchasingWindow.SetActive(false);
         plusHP.interactable = true;
     }
 
     public void CloseCompletePurchasing()//결제 완료 메세지창 닫기
     {
-        SEManager.instance.ClickClose();
+        SEManager.instance.PlayUICloseSound();
         CompletePurchasingWindow.SetActive(false);
     }
 
@@ -1047,7 +1047,7 @@ public class GameScript1 : MonoBehaviour //전체적인 게임스트립트
     public int tipNum = 0;
     public void ShowTip()//별 소모 팁 메세지에서 네 를 터치했을 때
     {
-        SEManager.instance.UIButtonClick(); //효과음           
+        SEManager.instance.PlayUIClickSound(); //효과음           
         TipMessage.gameObject.SetActive(false);
         if(Star.instance.starNum >= 3)//
         {
@@ -1072,14 +1072,14 @@ public class GameScript1 : MonoBehaviour //전체적인 게임스트립트
 
     public void NoTip()
     {
-        SEManager.instance.UIButtonClick(); //효과음           
+        SEManager.instance.PlayUIClickSound(); //효과음           
         TipMessage.gameObject.SetActive(false);
     }
 
     public void ClickTipNoteButton()//팁노트 버튼 눌렀을 때
     {
         TipNoteButton.interactable = false;
-        SEManager.instance.UIButtonClick(); //효과음  
+        SEManager.instance.PlayUIClickSound(); //효과음  
         TNBAnimator.SetTrigger("TipButton_Up");
         TipNoteAnimator.SetTrigger("TipNote_Up");
     }
@@ -1087,7 +1087,7 @@ public class GameScript1 : MonoBehaviour //전체적인 게임스트립트
     public void CloseTipNote()
     {
         TipNoteButton.interactable = true;
-        SEManager.instance.ClickClose(); //효과음
+        SEManager.instance.PlayUICloseSound(); //효과음
         TNBAnimator.SetTrigger("TipButton_Down");
         TipNoteAnimator.SetTrigger("TipNote_Down");
     }
@@ -1190,7 +1190,7 @@ public class GameScript1 : MonoBehaviour //전체적인 게임스트립트
     public bool changing = false; //별-하트 간 전환 상태
     public void Change_Yes()
     {
-        SEManager.instance.PopupSound();
+        SEManager.instance.PlayPopupSound();
         changing = true;
         changeMessage.SetActive(false);
         Star.instance.starNum -= 5;//스타 5감소
@@ -1206,7 +1206,7 @@ public class GameScript1 : MonoBehaviour //전체적인 게임스트립트
 
     public void Change_No() //충분한 별이 있는데 전환하지 않음
     {
-        SEManager.instance.ClickClose();
+        SEManager.instance.PlayUICloseSound();
         changeMessage.SetActive(false);
         change = 2;
     }

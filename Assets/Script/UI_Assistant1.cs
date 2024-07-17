@@ -2566,7 +2566,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             CharacterList.instance.CharacterFaceList[13].face[2].SetActive(true);
                             break;
                         case 1:
-                            BgmManager.instance.CharacterBGMPlay(14);//캐릭터 테마 재생
+                            BgmManager.instance.PlayCharacterBGM(14);//캐릭터 테마 재생
                             CharacterMove.instance.InCount(); //이 캐릭터만 특수하게 여기서 등장
                             GameScript1.instance.textnum = 0;
                             CName.text = "???";
@@ -2627,7 +2627,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                         case 19:
                             CharacterList.instance.CharacterFaceList[13].face[3].SetActive(false);
                             CharacterList.instance.CharacterFaceList[13].face[6].SetActive(true);
-                            SEManager.instance.BirdSound();
+                            SEManager.instance.PlayBirdSound();
                             GameScript1.instance.textnum = 1;
                             break;
                         case 20:
@@ -2654,8 +2654,8 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                     switch (count)
                     {
                         case 0:
-                            BgmManager.instance.BgmStop();
-                            BgmManager.instance.CharacterBGMPlay(14);//캐릭터 테마 재생
+                            BgmManager.instance.StopBgm();
+                            BgmManager.instance.PlayCharacterBGM(14);//캐릭터 테마 재생
                             GameScript1.instance.textnum = 0;
                             CName.text = "롤렝드";
                             break;

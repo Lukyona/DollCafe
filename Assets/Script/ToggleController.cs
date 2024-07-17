@@ -84,7 +84,7 @@ public class ToggleController : MonoBehaviour //설정의 브금 효과음 on of
 			handleTransform.localPosition = SmoothMove(handle, onPosX, offPosX);
 			if (gameObject.name == "ToggleBgm")
 			{
-				BgmManager.instance.BgmOff();
+				BgmManager.instance.OffBgm();
 			}
 			else
 			{
@@ -180,7 +180,7 @@ public class ToggleController : MonoBehaviour //설정의 브금 효과음 on of
 				else // 1 off
 				{
 					isOn = false;
-					BgmManager.instance.BgmOff();
+					BgmManager.instance.OffBgm();
 					toggleBgImage.color = offColorBg;
 					handleTransform.localPosition = new Vector3(offPosX, 0f, 0f);
 					onIcon.gameObject.SetActive(false);

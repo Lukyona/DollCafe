@@ -6,23 +6,23 @@ public class BgmManager : MonoBehaviour
 {
     public static BgmManager instance;
 
-    public AudioSource startBgm;
-    public AudioSource cafeBgm;
-    public AudioSource princessSound;
-    public AudioSource carSound;
-    public AudioSource breadSound;
-    public AudioSource familySeriesSound;
-    public AudioSource soldierSound;
-    public AudioSource heroDinosourSound;
-    public AudioSource penguinSound;
-    public AudioSource bearSound;
-    public AudioSource rabbitSound;
-    public AudioSource ddorongSound;
-    public AudioSource sunFlowerSound;
-    public AudioSource dogSound;
-    public AudioSource grandFatherSound;
-    public AudioSource noNameSound;
-    public AudioSource endingSound;
+    [SerializeField] AudioSource startBgm;
+    [SerializeField] AudioSource cafeBgm;
+    [SerializeField] AudioSource princessSound;
+    [SerializeField] AudioSource carSound;
+    [SerializeField] AudioSource breadSound;
+    [SerializeField] AudioSource familySeriesSound;
+    [SerializeField] AudioSource soldierSound;
+    [SerializeField] AudioSource heroDinosourSound;
+    [SerializeField] AudioSource penguinSound;
+    [SerializeField] AudioSource bearSound;
+    [SerializeField] AudioSource rabbitSound;
+    [SerializeField] AudioSource ddorongSound;
+    [SerializeField] AudioSource sunFlowerSound;
+    [SerializeField] AudioSource dogSound;
+    [SerializeField] AudioSource grandFatherSound;
+    [SerializeField] AudioSource noNameSound;
+    [SerializeField] AudioSource endingSound;
 
     private AudioSource myAudio;
 
@@ -35,19 +35,18 @@ public class BgmManager : MonoBehaviour
         myAudio = GetComponent<AudioSource>();
     }
 
-
-    public void MainBgm() //시작화면 브금
+    public void PlayMainBgm() //시작화면 브금
     {
         myAudio = startBgm;
         myAudio.Play();
         int s = PlayerPrefs.GetInt("BgmOnOff");
         if (s == 1)//브금 off 상태면
         {
-            BgmOff();
+            OffBgm();
         }
     }
 
-    public void CafeBgm() //카페 브금
+    public void PlayCafeBgm() //카페 브금
     {
         myAudio = cafeBgm;
         myAudio.volume = 1f;
@@ -55,11 +54,11 @@ public class BgmManager : MonoBehaviour
         int s = PlayerPrefs.GetInt("BgmOnOff");
         if (s == 1)//브금 off 상태면
         {
-            BgmOff();
+            OffBgm();
         }
     }
 
-    public void CharacterBGMPlay(int n)
+    public void PlayCharacterBGM(int n)
     {        
         switch (n)
         {
@@ -125,10 +124,11 @@ public class BgmManager : MonoBehaviour
                 break;
         }
         myAudio.Play();
+        
         int s = PlayerPrefs.GetInt("BgmOnOff");
         if (s == 1)//브금 off 상태면
         {
-            BgmOff();
+            OffBgm();
         }
     }
 
@@ -142,12 +142,12 @@ public class BgmManager : MonoBehaviour
         FadeAudioSource.instance.StartCoroutine(FadeAudioSource.instance.StartFade(myAudio, 2.5f, 0f));
     }
 
-    public void BgmStop()
+    public void StopBgm()
     {
         myAudio.Stop();
     }
 
-    public void BgmOff()
+    public void OffBgm()
     {
         myAudio.mute = true;
     }

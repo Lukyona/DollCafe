@@ -66,7 +66,7 @@ public class VisitorNote : MonoBehaviour
         if(!Menu.instance.UIOn)
         {
             Menu.instance.UIOn = true;
-            SEManager.instance.UIButtonClick(); //효과음
+            SEManager.instance.PlayUIClickSound(); //효과음
             VNButtonAnimator.SetTrigger("VNButtonOut"); //버튼 위로 올라감       
             noteAnimator.SetTrigger("NoteUp"); //노트 올라옴
         }
@@ -75,7 +75,7 @@ public class VisitorNote : MonoBehaviour
     public void ClickNoteCloseButton() //노트 닫기 버튼 눌렀을 때
     {
         Menu.instance.UIOn = false;
-        SEManager.instance.ClickClose(); //효과음
+        SEManager.instance.PlayUICloseSound(); //효과음
         noteAnimator.SetTrigger("NoteDown"); //노트 내려감
         VNButtonAnimator.SetTrigger("VNButtonIn"); //버튼 내려옴
         if(evRP == 0 && fmRP == 0)//다시보기 아닐 때만 
@@ -197,7 +197,7 @@ public class VisitorNote : MonoBehaviour
 
     void PageFunction1()
     {
-        SEManager.instance.NextPageSound(); //페이지 넘기는 효과음       
+        SEManager.instance.PlayNextPageSound(); //페이지 넘기는 효과음       
         characterInfo[pageNum - 1].SetActive(false); // 이전 페이지의 캐릭터 정보를 안 보이게 하고
         page[pageNum - 1].GetComponent<Button>().interactable = true; //이전 페이지의 버튼을 터치 가능하게 함        
         PageFunction2();

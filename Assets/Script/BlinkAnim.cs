@@ -7,7 +7,7 @@ public class BlinkAnim : MonoBehaviour //터치투 스타트 메세지를 깜빡
 {
     void Start()
     {
-        BgmManager.instance.MainBgm(); //시작화면 브금 재생
+        BgmManager.instance.PlayMainBgm(); //시작화면 브금 재생
     }
     public Image image;
 

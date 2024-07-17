@@ -7,14 +7,14 @@ public class SEManager : MonoBehaviour //효과음 매니저
 {
     public static SEManager instance;
 
-    public AudioClip click; 
-    public AudioClip close; 
-    public AudioClip popup;
-    public AudioClip nextPage; //손님 노트 넘기는 효과음
-    public AudioClip click2; //메뉴 힌트,자잘한 버튼들 터치 효과음
-    public AudioClip click3; //메뉴판에서 캐릭터가 원하는 메뉴 골랐을 때
-    public AudioClip bird; //참새 소리   
-    public AudioClip touch;//터치 시 나는 소리
+    [SerializeField] AudioClip click; 
+    [SerializeField] AudioClip close; 
+    [SerializeField] AudioClip popup;
+    [SerializeField] AudioClip nextPage; //손님 노트 넘기는 효과음
+    [SerializeField] AudioClip click2; //메뉴 힌트,자잘한 버튼들 터치 효과음
+    [SerializeField] AudioClip click3; //메뉴판에서 캐릭터가 원하는 메뉴 골랐을 때
+    [SerializeField] AudioClip bird; //참새 소리   
+    [SerializeField] AudioClip touch;//터치 시 나는 소리
 
     private AudioSource myAudio;
 
@@ -27,41 +27,41 @@ public class SEManager : MonoBehaviour //효과음 매니저
         myAudio = GetComponent<AudioSource>();
     }
 
-    public void TouchSound()//터치 시 효과음 재생
+    public void PlayTouchSound()//터치 시 효과음 재생
     {
        myAudio.PlayOneShot(touch);
     }
 
-    public void BirdSound()
+    public void PlayBirdSound()
     {
         myAudio.PlayOneShot(bird);
     }  
 
-    public void UIButtonClick()
+    public void PlayUIClickSound()
     {
         myAudio.PlayOneShot(click);
     } 
 
-    public void UIClick2()
+    public void PlayUIClickSound2()
     {
         myAudio.PlayOneShot(click2);
     }
-    public void UIClick3()
+    public void PlayUIClickSound3()
     {
         myAudio.PlayOneShot(click3);
     }
 
-    public void ClickClose()
+    public void PlayUICloseSound()
     {
         myAudio.PlayOneShot(close);
     }
 
-    public void PopupSound()
+    public void PlayPopupSound()
     {
         myAudio.PlayOneShot(popup);
     }
 
-    public void NextPageSound()
+    public void PlayNextPageSound()
     {
         myAudio.PlayOneShot(nextPage);
     }

@@ -89,7 +89,7 @@ public class Menu : MonoBehaviour
         {
             MenuHint.instance.CantClickMHB();//다른 메뉴힌트버블 터치 불가
             UIOn = true;
-            SEManager.instance.UIButtonClick(); //효과음
+            SEManager.instance.PlayUIClickSound(); //효과음
             menuButtonAnimator.SetTrigger("MenuButtonOut"); //메뉴 버튼 위로 올라가고
             menuBoardAnimator.SetTrigger("MenuBoardUp"); //메뉴판이 아래에서 올라옴
             for (int i = 0; i < OpenMenu.Count; i++) //메뉴 터치 불가, 서빙이 아닌 그냥 메뉴판 버튼 클릭 시에는 메뉴 클릭 못함
@@ -102,7 +102,7 @@ public class Menu : MonoBehaviour
     public void ClickMenuCloseButton() //메뉴 닫기 버튼 눌렀을 때
     {
         UIOn = false; //ui닫음
-        SEManager.instance.ClickClose(); //효과음
+        SEManager.instance.PlayUICloseSound(); //효과음
         menuBoardAnimator.SetTrigger("MenuBoardDown"); //메뉴판 아래로 내려가고
         menuButtonAnimator.SetTrigger("MenuButtonIn"); //메뉴버튼 위에서 내려옴
         MenuHint.instance.CanClickMHB();
@@ -114,7 +114,7 @@ public class Menu : MonoBehaviour
         {
             MenuHint.instance.CantClickMHB();//다른 메뉴힌트버블 터치 불가
             UIOn = true;
-            SEManager.instance.UIClick2(); //효과음
+            SEManager.instance.PlayUIClickSound2(); //효과음
             menuButtonAnimator.SetTrigger("MenuButtonOut"); //메뉴 버튼 위로 올라가고
             menuBoardAnimator.SetTrigger("MenuBoardUp"); //메뉴판 올라옴
             close.GetComponent<Button>().interactable = true; //닫기 버튼 가능
@@ -212,7 +212,7 @@ public class Menu : MonoBehaviour
                 MenuHint.instance.CantClickMHB();//뒤에 메뉴판이 떠있는 채로 이벤트 시작하는 걸 방지하기 위함
                 if (MenuHint.instance.RightMenu[num] == n) //캐릭터가 원하는 메뉴가 n이면, 원하는 메뉴와 플레이어가 고른 메뉴가 일치
                 {
-                    SEManager.instance.UIClick3();
+                    SEManager.instance.PlayUIClickSound3();
                     VisitorNote.instance.GuessMenuRight(cNum, n);
                     if (CharacterAppear.instance.eventOn == 10)//찰스의 경우 평판 증가
                     {
@@ -223,7 +223,7 @@ public class Menu : MonoBehaviour
                 }
                 else //n이 아니면
                 {
-                    SEManager.instance.UIClick2();
+                    SEManager.instance.PlayUIClickSound2();
                     if (CharacterAppear.instance.eventOn == 10)
                     {
                         reputation++;
@@ -243,7 +243,7 @@ public class Menu : MonoBehaviour
             {
                 if (MenuHint.instance.RightMenu[num] == n) //캐릭터가 원하는 메뉴가 n이면, 원하는 메뉴와 플레이어가 고른 메뉴가 일치
                 {
-                    SEManager.instance.UIClick3();
+                    SEManager.instance.PlayUIClickSound3();
                     if(CharacterAppear.instance.eventOn != 14)//히로디노 친밀도 이벤트가 아니면
                     {
                         CorrectMenuReaction(seatNum); //자리에 따라 맞는 메뉴 리액션 이미지 가져오기
@@ -253,7 +253,7 @@ public class Menu : MonoBehaviour
                 }
                 else //n이 아니면
                 {
-                    SEManager.instance.UIClick2();
+                    SEManager.instance.PlayUIClickSound2();
                     if (CharacterAppear.instance.eventOn != 14)
                     {
                         WrongMenuReaction(seatNum); //자리에 따라 틀린 메뉴 리액션 이미지 가져오기

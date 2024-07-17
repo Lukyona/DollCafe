@@ -37,7 +37,7 @@ public class Setting : MonoBehaviour
         if (!Menu.instance.UIOn)//UI가 올라오지 않았을 때
         {
             Menu.instance.UIOn = true;
-            SEManager.instance.UIButtonClick(); //효과음           
+            SEManager.instance.PlayUIClickSound(); //효과음           
 
             settingWindowAnimator.SetTrigger("SettingUp"); //설정창 올라옴
             settingButton.GetComponent<Button>().interactable = false; // 설정 버튼 클릭 안 되게
@@ -47,7 +47,7 @@ public class Setting : MonoBehaviour
 
     public void ClickSettingCloseButton() //설정창 닫기 버튼 눌렀을 때
     {        
-        SEManager.instance.ClickClose(); //효과음
+        SEManager.instance.PlayUICloseSound(); //효과음
         settingWindowAnimator.SetTrigger("SettingDown"); //설정창 내려감
         settingButton.GetComponent<Button>().interactable = true; //설정 버튼 터치 가능
 
@@ -64,7 +64,7 @@ public class Setting : MonoBehaviour
 
     public void ClickGameResetButton() //게임 초기화 버튼 눌렀을 때
     {
-        SEManager.instance.UIClick2();
+        SEManager.instance.PlayUIClickSound2();
         settingClose.interactable = false;//설정 닫기 버튼 안 되게 하고
         resetButton.interactable = false;
         creditButton.interactable = false;
@@ -73,7 +73,7 @@ public class Setting : MonoBehaviour
 
     public void GameReset()//정말로 게임 초기화
     {
-        SEManager.instance.UIClick2();
+        SEManager.instance.PlayUIClickSound2();
         yesResetButton.interactable = false;
         noResetButton.interactable = false;        
         GameScript1.instance.delete = true;
@@ -115,7 +115,7 @@ public class Setting : MonoBehaviour
 
     public void ClickCancelReset()//초기화 취소버튼 눌렀을 때
     {
-        SEManager.instance.UIClick2();
+        SEManager.instance.PlayUIClickSound2();
         resetCheck.SetActive(false);
         resetButton.interactable = true;
         settingClose.interactable = true;
@@ -124,7 +124,7 @@ public class Setting : MonoBehaviour
 
     public void ClickCreditButton()//크레딧버튼 눌렀을 때
     {
-        SEManager.instance.UIClick2();
+        SEManager.instance.PlayUIClickSound2();
         resetButton.interactable = false;
         creditButton.interactable = false;
         creditView.SetActive(true);
@@ -133,7 +133,7 @@ public class Setting : MonoBehaviour
 
     public void CloseCredit()
     {
-        SEManager.instance.UIClick2();
+        SEManager.instance.PlayUIClickSound2();
         creditView.SetActive(false);
         resetButton.interactable = true;
         creditButton.interactable = true;       

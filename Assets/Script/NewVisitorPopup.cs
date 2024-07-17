@@ -21,7 +21,7 @@ public class NewVisitorPopup : MonoBehaviour // 새로운 손님 팝업
     public void OpenPopup() //팝업 열림
     {
         Menu.instance.UIOn = true;
-        SEManager.instance.PopupSound(); //효과음
+        SEManager.instance.PlayPopupSound(); //효과음
         if (CharacterAppear.instance.eventOn != 0 || VisitorNote.instance.evRP != 0)
         {
             popup.SetActive(false);
@@ -40,7 +40,7 @@ public class NewVisitorPopup : MonoBehaviour // 새로운 손님 팝업
     public void ClosePopup() //팝업 닫기 버튼 눌렀을 때
     {
         Menu.instance.UIOn = false;
-        SEManager.instance.ClickClose(); //효과음
+        SEManager.instance.PlayUICloseSound(); //효과음
         popupAnimator.SetTrigger("PopupClose"); //닫히는 애니메이션 작동
         Invoke("PopupNotActive", 0.3f); //팝업 비활성화
 
