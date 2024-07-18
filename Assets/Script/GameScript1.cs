@@ -346,7 +346,7 @@ public class GameScript1 : MonoBehaviour //전체적인 게임스트립트
                 SmallFade.instance.Invoke("FadeIn", 1f);
                 CanClickUI();//메뉴판,노트, 체력 충전 버튼 터치 가능
                 BgmManager.instance.BGMFadeOut();
-                BgmManager.instance.Invoke("CafeBgm",3f);
+                BgmManager.instance.Invoke("PlayCafeBgm",3f);
                 NewVisitorPopup.instance.SetPopupCharacter(BigCharacter[2]); //변경되는 것
                 NewVisitorPopup.instance.OpenPopup();
                 CharacterAppear.instance.SetNextAppearNum(3); //다음 등장은 빵빵
@@ -391,7 +391,7 @@ public class GameScript1 : MonoBehaviour //전체적인 게임스트립트
     {       
         DownTextbox();
         BgmManager.instance.BGMFadeOut();
-        BgmManager.instance.Invoke("CafeBgm", 3f);
+        BgmManager.instance.Invoke("PlayCafeBgm", 3f);
         if (n != 9 && n != 15)
         {
             NewVisitorPopup.instance.SetPopupCharacter(BigCharacter[n - 1]); //새 손님 팝업           
@@ -470,9 +470,9 @@ public class GameScript1 : MonoBehaviour //전체적인 게임스트립트
     public void CharacterStart(int n) //제제 도리 붕붕 롤렝드 제외 모든 캐릭터 등장 함수
     {
         gameObject.GetComponent<CharacterAppear>().enabled = false;//캐릭터 등장 비활성화
-        if (BgmManager.instance.IsInvoking("CafeBgm"))//카페 배경음이 invoke중이면
+        if (BgmManager.instance.IsInvoking("PlayCafeBgm"))//카페 배경음이 invoke중이면
         {
-            BgmManager.instance.CancelInvoke("CafeBgm");//invoke 취소
+            BgmManager.instance.CancelInvoke("PlayCafeBgm");//invoke 취소
             Debug.Log("카페브금 인보크 종료");
         }
         BgmManager.instance.StopBgm();
@@ -503,9 +503,9 @@ public class GameScript1 : MonoBehaviour //전체적인 게임스트립트
     
     public void GrandfatherStart() //롤렝드 등장
     {
-        if (BgmManager.instance.IsInvoking("CafeBgm"))//카페 배경음이 invoke중이면
+        if (BgmManager.instance.IsInvoking("PlayCafeBgm"))//카페 배경음이 invoke중이면
         {
-            BgmManager.instance.CancelInvoke("CafeBgm");//invoke 취소
+            BgmManager.instance.CancelInvoke("PlayCafeBgm");//invoke 취소
             Debug.Log("카페브금 인보크 종료");
         }
         gameObject.GetComponent<CharacterMove>().enabled = true;
@@ -545,9 +545,9 @@ public class GameScript1 : MonoBehaviour //전체적인 게임스트립트
             endStory = 2;//엔딩이벤트를 봤음
             SaveDataInfo();//데이터 저장
             VisitorNote.instance.SaveVisitorNoteInfo();           
-            if (Star.instance.IsInvoking("StarSystem"))
+            if (Star.instance.IsInvoking("ActivateStarSystem"))
             {
-                Star.instance.CancelInvoke("StarSystem");//별 활성화 함수 중단
+                Star.instance.CancelInvoke("ActivateStarSystem");//별 활성화 함수 중단
                 if (Star.instance.starCoroutine != null)
                 {
                     Star.instance.StopCoroutine(Star.instance.starCoroutine);
@@ -589,7 +589,7 @@ public class GameScript1 : MonoBehaviour //전체적인 게임스트립트
                     }
                     MenuHint.instance.CanClickMHB();//메뉴힌트버블 터치 가능
                     BgmManager.instance.BGMFadeOut();
-                    BgmManager.instance.Invoke("CafeBgm", 3f);
+                    BgmManager.instance.Invoke("PlayCafeBgm", 3f);
                     Menu.instance.ReactionFadeIn();
                     Dialogue1.instance.CharacterDC[n] = 3; // 3이면 더 이상 시나리오 없음
                     VisitorNote.instance.RePlayButton[n - 1].gameObject.SetActive(true);//다시보기 버튼 활성화
@@ -616,7 +616,7 @@ public class GameScript1 : MonoBehaviour //전체적인 게임스트립트
                     {
                         MenuHint.instance.CanClickMHB();//메뉴힌트버블 터치 가능
                         BgmManager.instance.BGMFadeOut();
-                        BgmManager.instance.Invoke("CafeBgm", 3f);
+                        BgmManager.instance.Invoke("PlayCafeBgm", 3f);
                         Dialogue1.instance.CharacterDC[10]++;
                         SmallFade.instance.CanClickCharacter(6);//도로시 클릭 가능하게
                         Menu.instance.menuFOut.Enqueue(Menu.instance.tmpNum); //메뉴 페이드아웃 큐에 추가
@@ -628,7 +628,7 @@ public class GameScript1 : MonoBehaviour //전체적인 게임스트립트
                     {
                         MenuHint.instance.CanClickMHB();//메뉴힌트버블 터치 가능
                         BgmManager.instance.BGMFadeOut();
-                        BgmManager.instance.Invoke("CafeBgm", 3f);
+                        BgmManager.instance.Invoke("PlayCafeBgm", 3f);
                         Dialogue1.instance.CharacterDC[10] = 3;
                         UI_Assistant1.instance.getMenu = 0;
                         SmallFade.instance.CanClickCharacter(6);//도로시 클릭 가능하게
@@ -655,7 +655,7 @@ public class GameScript1 : MonoBehaviour //전체적인 게임스트립트
                     }
                     MenuHint.instance.CanClickMHB();//메뉴힌트버블 터치 가능
                     BgmManager.instance.BGMFadeOut();
-                    BgmManager.instance.Invoke("CafeBgm", 3f);
+                    BgmManager.instance.Invoke("PlayCafeBgm", 3f);
                     Menu.instance.ReactionFadeIn();
                     c = n;
                     Invoke("InActiveBigCharacter", 1f);
@@ -763,7 +763,7 @@ public class GameScript1 : MonoBehaviour //전체적인 게임스트립트
         VisitorNote.instance.ClickVNButton(); //노트 올라오기
         DownTextbox();//대화상자 내리고 캐릭터 아웃
         BgmManager.instance.BGMFadeOut();
-        BgmManager.instance.Invoke("CafeBgm", 3f);
+        BgmManager.instance.Invoke("PlayCafeBgm", 3f);
         if (VisitorNote.instance.fmRP != 0)//첫 만남 다시보기 이후면
         {            
             Dialogue1.instance.CharacterDC[VisitorNote.instance.fmRP] = 3;// 원래 값으로 돌려놓기

@@ -9,7 +9,7 @@ public class Star : MonoBehaviour
 
     public int starNum = 0; //별 갯수
 
-    GameObject[] Stars;//별 이미지 배열
+    [SerializeField] GameObject[] Stars;//별 이미지 배열
 
     public Coroutine starCoroutine;
 
@@ -95,7 +95,7 @@ public class Star : MonoBehaviour
     {
         if (StarList.Count == 0)//리스트 크기가 0이면
         {
-            Invoke("StarSystem", 25f);//25초 뒤에 별 생성
+            Invoke("ActivateStarSystem", 25f);//25초 뒤에 별 생성
             //Debug.Log("스타 시스템 25초 뒤 시작");
         }
 

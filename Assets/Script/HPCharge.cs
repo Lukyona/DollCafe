@@ -87,7 +87,7 @@ public class HPCharge : MonoBehaviour
         GameScript1.instance.LoadDataInfo();//데이터 정보 불러옴
         if (GameScript1.instance.mainCount > 3)//붕붕이 등장 이후면
         {
-            Star.instance.Invoke("StarSystem", 25f);//25초 뒤 별 함수 시작
+            Star.instance.Invoke("ActivateStarSystem", 25f);//25초 뒤 별 함수 시작
            // Debug.Log("스타시스템 25초 뒤 시작");
             if (!CharacterVisit.instance.IsInvoking("RandomVisit"))
             {
@@ -156,7 +156,7 @@ public class HPCharge : MonoBehaviour
                     
                    TimeManager.instance.TimeSaveStart();
                     GameScript1.instance.LoadDataInfo();//데이터 정보 불러옴
-                    Star.instance.Invoke("StarSystem", 25f);//25초 뒤 별 함수 시작
+                    Star.instance.Invoke("ActivateStarSystem", 25f);//25초 뒤 별 함수 시작
                     Debug.Log("스타시스템 25초 뒤 시작");
                 }
                 else if(AdsManager.instance.addOn)//광고 보고 온 후
@@ -189,9 +189,9 @@ public class HPCharge : MonoBehaviour
                     Dialogue1.instance.SaveCharacterDCInfo();
                     Menu.instance.SaveOpenMenuInfo();
                     VisitorNote.instance.SaveVisitorNoteInfo();
-                    if (Star.instance.IsInvoking("StarSystem"))
+                    if (Star.instance.IsInvoking("ActivateStarSystem"))
                     {
-                        Star.instance.CancelInvoke("StarSystem");//별 활성화 함수 중단
+                        Star.instance.CancelInvoke("ActivateStarSystem");//별 활성화 함수 중단
                        // Debug.Log("스타 인보크 중 종료1");
                     }
                     else

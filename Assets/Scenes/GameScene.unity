@@ -30108,6 +30108,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   starNum: 0
+  Stars:
+  - {fileID: 2107361095}
+  - {fileID: 1606831168}
+  - {fileID: 1318038576}
+  - {fileID: 849451043}
+  - {fileID: 1112925743}
+  - {fileID: 1155229355}
+  - {fileID: 413690095}
   StarNumText: {fileID: 351724910}
 --- !u!1 &1126024388
 GameObject:
