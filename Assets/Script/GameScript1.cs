@@ -121,7 +121,7 @@ public class GameScript1 : MonoBehaviour //전체적인 게임스트립트
         try
         {
             PlayerPrefs.SetInt("MainCount", mainCount); //현재 메인카운트 저장
-            PlayerPrefs.SetInt("NextAppear", CharacterAppear.instance.nextAppear); //다음 캐릭터 등장 번호 저장
+            PlayerPrefs.SetInt("NextAppear", CharacterAppear.instance.GetNextAppearNum()); //다음 캐릭터 등장 번호 저장
             PlayerPrefs.SetInt("Reputation", Menu.instance.reputation); //평판 저장
             PlayerPrefs.SetInt("StarNum", Star.instance.starNum); //별 개수 저장
             PlayerPrefs.SetInt("end", endStory);//엔딩 상황 저장
@@ -146,7 +146,7 @@ public class GameScript1 : MonoBehaviour //전체적인 게임스트립트
             if (PlayerPrefs.HasKey("MainCount"))
             {
                 mainCount = PlayerPrefs.GetInt("MainCount");                
-                CharacterAppear.instance.nextAppear = PlayerPrefs.GetInt("NextAppear");
+                CharacterAppear.instance.SetNextAppearNum(PlayerPrefs.GetInt("NextAppear"));
                 Menu.instance.reputation = PlayerPrefs.GetInt("Reputation");
                 Star.instance.starNum = PlayerPrefs.GetInt("StarNum");
                 endStory = PlayerPrefs.GetInt("end");       
@@ -197,14 +197,14 @@ public class GameScript1 : MonoBehaviour //전체적인 게임스트립트
                     SmallFade.instance.SmallCharacter[0].GetComponent<Button>().interactable = true;
                 }
 
-                Debug.Log("다음 등장 :" + CharacterAppear.instance.nextAppear);
-                Debug.Log("이벤트 넘버 : " + CharacterAppear.instance.eventOn);
-                Debug.Log("메인카운트 " + mainCount);
+                //Debug.Log("다음 등장 :" + CharacterAppear.instance.GetNextAppearNum());
+                //Debug.Log("이벤트 넘버 : " + CharacterAppear.instance.eventOn);
+                //Debug.Log("메인카운트 " + mainCount);
             }
             else
             {
                 mainCount = 0;
-                CharacterAppear.instance.nextAppear = 0;
+                CharacterAppear.instance.SetNextAppearNum(0);
                 Menu.instance.reputation = 0;
                 Star.instance.starNum = 0;
                 if(PlayerPrefs.HasKey("pNum"))
@@ -349,7 +349,7 @@ public class GameScript1 : MonoBehaviour //전체적인 게임스트립트
                 BgmManager.instance.Invoke("CafeBgm",3f);
                 NewVisitorPopup.instance.SetPopupCharacter(BigCharacter[2]); //변경되는 것
                 NewVisitorPopup.instance.OpenPopup();
-                CharacterAppear.instance.nextAppear = 3; //다음 등장은 빵빵
+                CharacterAppear.instance.SetNextAppearNum(3); //다음 등장은 빵빵
                 Dialogue1.instance.CharacterDC[2]++; //변경되는 것
                 VisitorNote.instance.page[1].SetActive(true); //변경되는 것
                 VisitorNote.instance.openPage++;
@@ -358,7 +358,7 @@ public class GameScript1 : MonoBehaviour //전체적인 게임스트립트
                 c = 2;
                 Invoke("InActiveBigCharacter", 1f);
                 mainCount++;
-                Star.instance.StarSystem();//바로 별 활성화 함수 시작
+                Star.instance.ActivateStarSystem();//바로 별 활성화 함수 시작
                 break;
             case 6: //또롱 등장 후 
                 AfterTalking(mainCount);
@@ -381,7 +381,7 @@ public class GameScript1 : MonoBehaviour //전체적인 게임스트립트
                 break;
         }
         PlayerPrefs.SetInt("MainCount", mainCount); //현재 메인카운트 저장
-        PlayerPrefs.SetInt("NextAppear", CharacterAppear.instance.nextAppear); //다음 캐릭터 등장 번호 저장
+        PlayerPrefs.SetInt("NextAppear", CharacterAppear.instance.GetNextAppearNum()); //다음 캐릭터 등장 번호 저장
         PlayerPrefs.Save(); //세이브
         Dialogue1.instance.SaveCharacterDCInfo();
         VisitorNote.instance.SaveVisitorNoteInfo();
@@ -405,7 +405,7 @@ public class GameScript1 : MonoBehaviour //전체적인 게임스트립트
             NewVisitorPopup.instance.SetPopupCharacter(BigCharacter[16]);//롤렝드 이미지2
         }
         NewVisitorPopup.instance.OpenPopup();
-        CharacterAppear.instance.nextAppear = n; //다음 등장 캐릭터 설정 
+        CharacterAppear.instance.SetNextAppearNum(n); //다음 등장 캐릭터 설정 
         SmallFade.instance.Invoke("FadeIn", 1f);
 
         if (!CharacterVisit.instance.IsInvoking("RandomVisit"))
@@ -841,13 +841,9 @@ public class GameScript1 : MonoBehaviour //전체적인 게임스트립트
         SEManager.instance.PlayUICloseSound();
         close = false;
         HPCharge.instance.allSave = false;
-        if (UI_Assistant1.instance.stop == 2)
+        if (UserInputManager.instance.CanTouch() == false)
         {
-            UI_Assistant1.instance.stop = 1;
-        }
-        else if (UI_Assistant1.instance.stop == 1)
-        {
-            UI_Assistant1.instance.stop = 0;
+            UserInputManager.instance.SetCanTouch(true);
         }
         HPCharge.instance.OnApplicationFocus(true);//스타 시스템 다시
         GameClose.SetActive(false);

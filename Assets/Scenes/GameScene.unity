@@ -1291,7 +1291,7 @@ GameObject:
   - component: {fileID: 54237568}
   - component: {fileID: 54237567}
   m_Layer: 5
-  m_Name: HelperDoll
+  m_Name: Jeje (HelperDoll)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3789,7 +3789,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 162512523}
   - {fileID: 1748650408}
   - {fileID: 39264123}
   - {fileID: 2091946340}
@@ -5541,134 +5540,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 161527170}
   m_CullTransparentMesh: 0
---- !u!1 &162512522
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 162512523}
-  - component: {fileID: 162512524}
-  m_Layer: 0
-  m_Name: StartBgm
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &162512523
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 162512522}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 112780904}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!82 &162512524
-AudioSource:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 162512522}
-  m_Enabled: 1
-  serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: d3ee2502c718534459828b34ea3b9042, type: 3}
-  m_PlayOnAwake: 0
-  m_Volume: 1
-  m_Pitch: 1
-  Loop: 1
-  Mute: 0
-  Spatialize: 0
-  SpatializePostEffects: 0
-  Priority: 128
-  DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 500
-  Pan2D: 0
-  rolloffMode: 0
-  BypassEffects: 0
-  BypassListenerEffects: 0
-  BypassReverbZones: 0
-  rolloffCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  panLevelCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  spreadCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  reverbZoneMixCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
 --- !u!1 &162673416
 GameObject:
   m_ObjectHideFlags: 0
@@ -30237,14 +30108,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   starNum: 0
-  Stars:
-  - {fileID: 2107361095}
-  - {fileID: 1606831168}
-  - {fileID: 1318038576}
-  - {fileID: 849451043}
-  - {fileID: 1112925743}
-  - {fileID: 1155229355}
-  - {fileID: 413690095}
   StarNumText: {fileID: 351724910}
 --- !u!1 &1126024388
 GameObject:
@@ -44018,7 +43881,6 @@ GameObject:
   - component: {fileID: 1538706515}
   - component: {fileID: 1538706516}
   - component: {fileID: 1538706517}
-  - component: {fileID: 1538706518}
   - component: {fileID: 1538706519}
   - component: {fileID: 1538706520}
   - component: {fileID: 1538706521}
@@ -44030,6 +43892,7 @@ GameObject:
   - component: {fileID: 1538706530}
   - component: {fileID: 1538706529}
   - component: {fileID: 1538706531}
+  - component: {fileID: 1538706532}
   m_Layer: 0
   m_Name: GameScript
   m_TagString: Untagged
@@ -44215,18 +44078,6 @@ MonoBehaviour:
   messegeArray: []
   CharacterDC: 000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
   babyName: 
---- !u!114 &1538706518
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1538706512}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9a9e30809817f014f8b9c686968d5ee8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1538706519
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -44406,7 +44257,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5fe5f04ab5c4b444b610e7e336e5816, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nextAppear: 0
   eventOn: 0
 --- !u!114 &1538706526
 MonoBehaviour:
@@ -44485,7 +44335,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7689dfd6fa1b32d41b457c4050cc34e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startBgm: {fileID: 162512524}
+  startBgm: {fileID: 0}
   cafeBgm: {fileID: 1748650409}
   princessSound: {fileID: 1320128331}
   carSound: {fileID: 2091946341}
@@ -44598,6 +44448,18 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &1538706532
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1538706512}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ecfd5560e4ffc45e9b0498bed9574c34, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1544820110
 GameObject:
   m_ObjectHideFlags: 0
@@ -48994,7 +48856,7 @@ GameObject:
   - component: {fileID: 1674617188}
   - component: {fileID: 1674617187}
   m_Layer: 5
-  m_Name: Panel
+  m_Name: Tutorial Panels
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

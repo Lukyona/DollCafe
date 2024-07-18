@@ -108,13 +108,9 @@ public class HPCharge : MonoBehaviour
             {
                 if (GameScript1.instance.GameClose.activeSelf == false)
                 {
-                    if (UI_Assistant1.instance.stop == 1)//원래 stop이 1이면
+                    if (UserInputManager.instance.CanTouch())
                     {
-                        UI_Assistant1.instance.stop = 2;
-                    }
-                    else if (UI_Assistant1.instance.stop == 0)
-                    {
-                        UI_Assistant1.instance.stop = 1;
+                        UserInputManager.instance.SetCanTouch(false);
                     }
                     OnApplicationFocus(false);
                     if(GameScript1.instance.mainCount <= 3)
@@ -131,7 +127,6 @@ public class HPCharge : MonoBehaviour
             
             if(GameScript1.instance.close && allSave)
             {
-                Debug.Log("게임 클로즈");
                 Application.Quit();
             }
         }

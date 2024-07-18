@@ -26,13 +26,13 @@ public class NewVisitorPopup : MonoBehaviour // 새로운 손님 팝업
         {
             popup.SetActive(false);
             specialMenuPopup.SetActive(true);
-            Debug.Log("팝업 이벤트 중");  
+            //Debug.Log("팝업 이벤트 중");  
         }
         else
         {
             specialMenuPopup.SetActive(false);
             popup.SetActive(true); //팝업 보이게
-            Debug.Log("팝업 이벤트 중 아님");
+            //Debug.Log("팝업 이벤트 중 아님");
         }       
         popupAnimator.SetTrigger("PopupOpen"); //팝업 오픈 애니메이션 작동
     }
@@ -55,7 +55,8 @@ public class NewVisitorPopup : MonoBehaviour // 새로운 손님 팝업
         if (CharacterAppear.instance.eventOn != 0 || VisitorNote.instance.evRP != 0)//친밀도 이벤트 도중이거나 다시보기 도중이면
         {
             specialMenuPopup.SetActive(false);
-            UI_Assistant1.instance.TouchEnable();
+            //UI_Assistant1.instance.TouchEnable();
+            UserInputManager.instance.SetCanTouch(true);
         }
         else
         {

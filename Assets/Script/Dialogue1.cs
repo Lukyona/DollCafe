@@ -19,6 +19,14 @@ public class Dialogue1 : MonoBehaviour //캐릭터들 대사
         }
     }
 
+    void Update() //화면의 아무 곳이나 터치하면 다음 대사 나타남
+    {
+        if (UI_Assistant1.instance.talking && UserInputManager.instance.CanTouch() && Input.GetMouseButtonDown(0))
+        {
+            UI_Assistant1.instance.OpenDialogue2();
+        }
+    }
+
     public bool SaveCharacterDCInfo()//캐릭터 대화 진행 정보 저장
     {
         bool result = false;

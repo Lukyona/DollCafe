@@ -9,7 +9,7 @@ public class Star : MonoBehaviour
 
     public int starNum = 0; //별 갯수
 
-    public GameObject[] Stars;//별 이미지 배열
+    GameObject[] Stars;//별 이미지 배열
 
     public Coroutine starCoroutine;
 
@@ -30,21 +30,21 @@ public class Star : MonoBehaviour
         }
     }
 
-    public void StarSystem()
+    public void ActivateStarSystem()
     {
         starCoroutine = StartCoroutine(StarAppear());
     }
 
     public IEnumerator StarAppear()//플레이 타임 30초마다 1개씩 랜덤으로 별이 나타남
     {
-        Debug.Log("스타 나타나기");
+        //Debug.Log("스타 나타나기");
        while(StarList.Count != 0)
        {
             int x = Random.Range(0, StarList.Count - 1);//0~6까지
             int n = StarList[x];//랜덤 숫자 인덱스의 값을 n에 대입
             StarList.Remove(n); //그 값을 삭제
-            Debug.Log("스타 삭제된 번호 " + n);
-            Debug.Log("스타 리스트 크기 " + StarList.Count);
+            //Debug.Log("스타 삭제된 번호 " + n);
+            //Debug.Log("스타 리스트 크기 " + StarList.Count);
             Stars[n - 1].SetActive(true); //해당 별 활성화
             Stars[n -1].GetComponent<Button>().interactable = true;//한번만 클릭 가능
             while (Stars[n - 1].GetComponent<Image>().color.a < 1.0f)//별 페이드인
@@ -79,7 +79,7 @@ public class Star : MonoBehaviour
             Stars[z].SetActive(false); //클릭된 별 비활성화
             starFadeOut.Dequeue();
             starRe.Enqueue(z); //다시 나타날 별 큐에 추가
-            Debug.Log("스타 눌러진 번호 " + (z+1));           
+            //Debug.Log("스타 눌러진 번호 " + (z+1));           
             Invoke("ReAppearStar", 40f);//40초 뒤 다시 나타나기 가능
             PlayerPrefs.SetInt("StarNum", Star.instance.starNum); //별 개수 저장
             PlayerPrefs.Save();
@@ -96,14 +96,14 @@ public class Star : MonoBehaviour
         if (StarList.Count == 0)//리스트 크기가 0이면
         {
             Invoke("StarSystem", 25f);//25초 뒤에 별 생성
-            Debug.Log("스타 시스템 25초 뒤 시작");
+            //Debug.Log("스타 시스템 25초 뒤 시작");
         }
 
         int r = starRe.Peek();
         r++;
         StarList.Add(r);
-        Debug.Log("스타 추가된 번호 " + r);
-        Debug.Log("스타 리스트 크기 " + StarList.Count);
+        //Debug.Log("스타 추가된 번호 " + r);
+        //Debug.Log("스타 리스트 크기 " + StarList.Count);
         starRe.Dequeue();          
     }
 

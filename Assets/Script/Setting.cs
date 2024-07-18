@@ -28,8 +28,8 @@ public class Setting : MonoBehaviour
 
     private void Start()
     {
-        resetButton.GetComponent<Image>().alphaHitTestMinimumThreshold = 1f;
-        creditButton.GetComponent<Image>().alphaHitTestMinimumThreshold = 1f;
+        resetButton.GetComponent<Image>().alphaHitTestMinimumThreshold = 1f; // 불투명한 Sprite만 터치가 가능하도록 1로 설정
+        creditButton.GetComponent<Image>().alphaHitTestMinimumThreshold = 1f; // 기본값이 0 -> 투명한 부분까지도 터치 가능
     }
 
     public void ClickSettingButton() //설정 버튼 터치했을 때
@@ -40,8 +40,9 @@ public class Setting : MonoBehaviour
             SEManager.instance.PlayUIClickSound(); //효과음           
 
             settingWindowAnimator.SetTrigger("SettingUp"); //설정창 올라옴
-            settingButton.GetComponent<Button>().interactable = false; // 설정 버튼 클릭 안 되게
-            GameScript1.instance.gameObject.GetComponent<Dialogue2>().enabled = false;//대사 못 넘김
+            settingButton.GetComponent<Button>().interactable = false; // 설정 버튼 중복 터치 방지
+            //UI_Assistant1.instance.TouchEnable();
+            UserInputManager.instance.SetCanTouch(false); // 터치 불가, 대사 못 넘김
         }
     }
 
@@ -51,12 +52,13 @@ public class Setting : MonoBehaviour
         settingWindowAnimator.SetTrigger("SettingDown"); //설정창 내려감
         settingButton.GetComponent<Button>().interactable = true; //설정 버튼 터치 가능
 
-        GameScript1.instance.gameObject.GetComponent<Dialogue2>().enabled = true;//대사 넘기기 가능
+            UserInputManager.instance.SetCanTouch(true);// 터치 불가, 대사 넘기기 가능
+            //UI_Assistant1.instance.TouchEnable();
 
-        if (UI_Assistant1.instance.talking && UI_Assistant1.instance.stop == 0)//대화 중이고, 특정한 터치를 해야하는 경우가 아닐 때
+        if (UI_Assistant1.instance.talking && UserInputManager.instance.CanTouch())//대화 중이고, 특정한 터치를 해야하는 경우가 아닐 때
         {
-            UI_Assistant1.instance.stop = 1;
-            UI_Assistant1.instance.Invoke("TouchEnable", 1f);
+            UserInputManager.instance.SetCanTouch(false);
+            UserInputManager.instance.Invoke("SetCanTouchTrue", 1f);
         }
 
         Menu.instance.UIOn = false;
