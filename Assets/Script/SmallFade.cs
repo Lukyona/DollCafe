@@ -7,7 +7,7 @@ public class SmallFade : MonoBehaviour //작은 캐릭터 스크립트
 {
     public static SmallFade instance;
     public GameObject[] SmallCharacter; //작은 캐릭터 이미지 배열
-    public GameObject[] SittingCharacter = new GameObject[6];//좌석별 현재 앉아있는 캐릭터, 012345자리
+    public GameObject[] SittingCharacter = new GameObject[6];//좌석별 현재 앉아있는 캐릭터, 
 
     public GameObject tutorialBear; //서빙 튜토리얼용 캐릭터
   
@@ -76,39 +76,42 @@ public class SmallFade : MonoBehaviour //작은 캐릭터 스크립트
     {
         if (GameScript1.instance.mainCount == 2)//튜토리얼일 경우
         {
-            sn = 3; //2번째 자리, 첫번째 짝수자리
+            sn = 1; //2번째 자리, 첫번째 짝수자리, 첫번째 테이블 오른쪽 자리
         }
         else//튜토리얼 아닐 시 자리 배정
         {
             if(cNum == 13)//캐릭터가 디노면, 히로 자리에 따라서 옆에 배정
             {
-                switch (CharacterSeat[11])
-                {
-                    case 0:
-                        sn = 3;
-                        break;
-                    case 1:
-                        sn = 4;
-                        break;
-                    case 2:
-                        sn = 5;
-                        break;
-                }
+                // switch (CharacterSeat[11])
+                // {
+                //     case 0:
+                //         sn = 3;
+                //         break;
+                //     case 1:
+                //         sn = 4;
+                //         break;
+                //     case 2:
+                //         sn = 5;
+                //         break;
+                // }
+                sn = CharacterSeat[11] + 1;
             }
             else if((cNum == 10 && (Dialogue1.instance.CharacterDC[10] == 3) || (CharacterAppear.instance.eventOn == 11 && UI_Assistant1.instance.getMenu == 1)))//찰스2이벤트 중 찰스 중간 페이드인
             {//도로시와 같이 오는 찰스
-                switch (CharacterSeat[5])//도로시와 같은 테이블 마주보는 자리로 자리 설정
-                {
-                    case 0:
-                        sn = 3;
-                        break;
-                    case 1:
-                        sn = 4;
-                        break;
-                    case 2:
-                        sn = 5;
-                        break;
-                }
+                // switch (CharacterSeat[5])//도로시와 같은 테이블 마주보는 자리로 자리 설정
+                // {
+                //     case 0:
+                //         sn = 3;
+                //         break;
+                //     case 1:
+                //         sn = 4;
+                //         break;
+                //     case 2:
+                //         sn = 5;
+                //         break;
+                // }
+                sn = CharacterSeat[5] + 1;
+
                 SmallCharacter[10].GetComponent<Image>().sprite = soldier2.sprite;//이미지 변경
             }          
             else
@@ -117,145 +120,129 @@ public class SmallFade : MonoBehaviour //작은 캐릭터 스크립트
                 {
                     SmallCharacter[11].GetComponent<Image>().sprite = noName2.sprite;//이미지 변경
                 }
-                if (SmallFade.instance.TableEmpty[0] == 0 && SmallFade.instance.TableEmpty[1] == 0 && SmallFade.instance.TableEmpty[2] == 0) //모든 테이블이 빈 상태면
-                {
-                 //   Debug.Log("테이블이 모두 비었음");
-                    if (cNum % 2 == 1) //홀수 번호 캐릭터면 짝수자리에 앉음
-                    {
-                        sn = Random.Range(3, 5);
-                    }
 
-                    else if (cNum % 2 == 0) //짝수 번호 캐릭터는 홀수자리에 앉음
+                if (TableEmpty[0] == 0 && TableEmpty[1] == 0 && TableEmpty[2] == 0) //모든 테이블이 빈 상태면
+                {
+                    //Debug.Log("테이블이 모두 비었음");
+                    sn = Random.Range(0, 5); // 0~5번 자리 모두 착석 가능
+                    if (cNum % 2 == 1) //홀수 번호 캐릭터면 오른쪽(1,3,5)에 앉음
                     {
-                        sn = Random.Range(0, 2);
+                        if(sn % 2 == 0) sn += 1; // 짝수가 나오면 1 더해서 홀수 만들기
+                    }
+                    else if (cNum % 2 == 0) //짝수 번호 캐릭터는 왼쪽(0,2,4)에 앉음
+                    {
+                        if(sn % 2 == 1) sn -= 1; // 홀수가 나오면 1 빼서 홀수 만들기
                     }
                 }
-                else if (SmallFade.instance.TableEmpty[0] == 0 && SmallFade.instance.TableEmpty[1] == 0) //1,2번 테이블만 빈 상태면
+                else if (TableEmpty[0] == 0 && TableEmpty[1] == 0) //1,2번 테이블만 빈 상태면
                 {
-                  //  Debug.Log("1,2테이블이 비었음");
-                    if (cNum % 2 == 1) //홀수 번호 캐릭터면 짝수자리에 앉음
+                    //Debug.Log("1,2테이블이 비었음");
+                    sn = Random.Range(0, 3); //0~3번 자리 착석 가능
+                    if (cNum % 2 == 1) 
                     {
-                        sn = Random.Range(3, 4);
+                        if(sn % 2 == 0) sn += 1;
                     }
-
-                    else if (cNum % 2 == 0) //짝수 번호 캐릭터는 홀수자리에 앉음
+                    if (cNum % 2 == 0) 
                     {
-                        sn = Random.Range(0, 1);
+                        if(sn % 2 == 1) sn -= 1;
                     }
                 }
-                else if (SmallFade.instance.TableEmpty[0] == 0 && SmallFade.instance.TableEmpty[2] == 0)//1,3번 테이블만 빈 상태면
+                else if (TableEmpty[0] == 0 && TableEmpty[2] == 0)//1,3번 테이블만 빈 상태면
                 {
-                   // Debug.Log("1,3테이블이 비었음");
-                    if (cNum % 2 == 1) //홀수 번호 캐릭터면 짝수자리에 앉음
+                    //Debug.Log("1,3테이블이 비었음");
+                    sn = Random.Range(0, 5); // 2,3번은 착석 불가
+                    if (cNum % 2 == 1) 
                     {
-                        sn = Random.Range(3, 4);
-                        if (sn == 4)
-                        {
-                            sn = 5;
-                        }
+                        if(sn == 2) sn -= 1;
+                        else if(sn == 3) sn += 2;
+                        else if(sn % 2 == 0) sn += 1;
                     }
-
-                    else if (cNum % 2 == 0) //짝수 번호 캐릭터는 홀수자리에 앉음
+                    if (cNum % 2 == 0) 
                     {
-                        sn = Random.Range(0, 1);
-                        if (sn == 1)
-                        {
-                            sn = 2;
-                        }
+                        if(sn == 2) sn -= 2;
+                        else if(sn == 3) sn += 1;
+                        else if(sn % 2 == 1) sn -= 1;
                     }
                 }
-                else if (SmallFade.instance.TableEmpty[1] == 0 && SmallFade.instance.TableEmpty[2] == 0) //2,3번 테이블만 빈 상태면
+                else if (TableEmpty[1] == 0 && TableEmpty[2] == 0) //2,3번 테이블만 빈 상태면
                 {
                   //  Debug.Log("2,3테이블이 비었음");
-                    if (cNum % 2 == 1) //홀수 번호 캐릭터면 짝수자리에 앉음
+                    sn = Random.Range(2, 5);
+
+                    if (cNum % 2 == 1) 
                     {
-                        sn = Random.Range(4, 5);
+                        if(sn % 2 == 0) sn += 1;
                     }
 
-                    else if (cNum % 2 == 0) //짝수 번호 캐릭터는 홀수자리에 앉음
+                    if (cNum % 2 == 0) 
                     {
-                        sn = Random.Range(1, 2);
+                        if(sn % 2 == 1) sn -= 1;
                     }
                 }
-                else if (SmallFade.instance.TableEmpty[0] == 0) //1번 테이블만 빈 상태
+                else if (TableEmpty[0] == 0) //1번 테이블만 빈 상태
                 {
                   //  Debug.Log("1테이블만 비었음");
-                    if (cNum % 2 == 1) //홀수 번호 캐릭터면 짝수자리에 앉음
+                    if (cNum % 2 == 1) 
                     {
-                        sn = 3;
+                        sn = 1;
                     }
 
-                    else if (cNum % 2 == 0) //짝수 번호 캐릭터는 홀수자리에 앉음
+                    if (cNum % 2 == 0) 
                     {
                         sn = 0;
                     }
                 }
-                else if (SmallFade.instance.TableEmpty[1] == 0) //2번 테이블만 빈 상태
+                else if (TableEmpty[1] == 0) //2번 테이블만 빈 상태
                 {
-                  //  Debug.Log("2테이블만 비었음");
-                    if (cNum % 2 == 1) //홀수 번호 캐릭터면 짝수자리에 앉음
+                   // Debug.Log("2테이블만 비었음");
+                    if (cNum % 2 == 1) 
                     {
-                        sn = 4;
+                        sn = 3;
                     }
 
-                    else if (cNum % 2 == 0) //짝수 번호 캐릭터는 홀수자리에 앉음
+                    if (cNum % 2 == 0) 
                     {
-                        sn = 1;
+                        sn = 2;
                     }
                 }
-                else if (SmallFade.instance.TableEmpty[2] == 0) //3번 테이블만 비었을 때
+                else if (TableEmpty[2] == 0) //3번 테이블만 비었을 때
                 {
-                  //  Debug.Log("3테이블만 비었음");
-                    if (cNum % 2 == 1) //홀수 번호 캐릭터면 짝수자리에 앉음
+                    //Debug.Log("3테이블만 비었음");
+                    if (cNum % 2 == 1) 
                     {
                         sn = 5;
                     }
 
-                    else if (cNum % 2 == 0) //짝수 번호 캐릭터는 홀수자리에 앉음
+                    if (cNum % 2 == 0) 
                     {
-                        sn = 2;
+                        sn = 4;
                     }
                 }
             }              
         }
         
-        CharacterSeat[cNum - 1] = sn; //캐릭터 자리 정보 저장, 031425
-       // Debug.Log("캐릭넘버 " + cNum + " 자리: " + sn);
+        CharacterSeat[cNum - 1] = sn; //캐릭터 자리 정보 저장, 
+        //Debug.Log("캐릭넘버 " + cNum + " 자리: " + sn);
 
-        switch (sn) //num은 자리 숫자
+        // 앉을 자리로 옮기기
+        SmallCharacter[cNum].transform.position = GameScript1.instance.Seat[sn].transform.position;
+        SittingCharacter[sn] = SmallCharacter[cNum];
+        switch (sn) // 테이블 착석 여부 갱신, 1은 착석, 0은 비었음
         {
-            case 0: //1일 경우 자리1로 캐릭터 옮김
-                SmallCharacter[cNum].transform.position = GameScript1.instance.Seat[0].transform.position;
-                SittingCharacter[0] = SmallCharacter[cNum];
-                TableEmpty[0] = 1;
-                break;
-            case 3:
-                SmallCharacter[cNum].transform.position = GameScript1.instance.Seat[1].transform.position;
-                TableEmpty[0] = 1;
-                SittingCharacter[1] = SmallCharacter[cNum];
-                break;
+            case 0: 
             case 1:
-                SmallCharacter[cNum].transform.position = GameScript1.instance.Seat[2].transform.position;
-                TableEmpty[1] = 1;
-                SittingCharacter[2] = SmallCharacter[cNum];
-                break;
-            case 4:
-                SmallCharacter[cNum].transform.position = GameScript1.instance.Seat[3].transform.position;
-                TableEmpty[1] = 1;
-                SittingCharacter[3] = SmallCharacter[cNum];
+                TableEmpty[0] = 1;
                 break;
             case 2:
-                SmallCharacter[cNum].transform.position = GameScript1.instance.Seat[4].transform.position;
-                TableEmpty[2] = 1;
-                SittingCharacter[4] = SmallCharacter[cNum];
+            case 3:
+                TableEmpty[1] = 1;
                 break;
+            case 4:
             case 5:
-                SmallCharacter[cNum].transform.position = GameScript1.instance.Seat[5].transform.position;
                 TableEmpty[2] = 1;
-                SittingCharacter[5] = SmallCharacter[cNum];
                 break;
-
         }
+        
         int n;
         if(cNum > 12)//디노부터~
         {
@@ -284,14 +271,11 @@ public class SmallFade : MonoBehaviour //작은 캐릭터 스크립트
         }
         if (CharacterAppear.instance.eventOn != 0 && CharacterAppear.instance.eventOn != 14 && UI_Assistant1.instance.getMenu != 1)//히로디노이벤트가 아니면 주인공 아기 캐릭터 자리 설정, 두번째 조건은 찰스2 이벤트 때문
         {
-            if (CharacterAppear.instance.eventOn == 10 && cNum != 6)//찰스1이벤트이고 찰스일 때는
-            {
+            //if (CharacterAppear.instance.eventOn == 10 && cNum != 6)//찰스1이벤트이고 찰스일 때는
+            
                 SetBabySeat(sn);
-            }
-            else
-            {
-                SetBabySeat(sn);
-            }
+            
+
             
         }
         //Debug.Log("함수 SetSeatPosition");
@@ -299,32 +283,15 @@ public class SmallFade : MonoBehaviour //작은 캐릭터 스크립트
 
     public void SetBabySeat(int s)
     {
-        switch (s)
+        if(s % 2 == 0) // 캐릭터 자리가 왼쪽(짝수)면
         {
-            case 0://캐릭터 자리가 0이면
-                SmallCharacter[16].transform.position = GameScript1.instance.Seat[1].transform.position;//주인공 아기를 1자리로 옮기고
-                SittingCharacter[1] = SmallCharacter[16];
-                break;
-            case 3:
-                SmallCharacter[17].transform.position = GameScript1.instance.Seat[0].transform.position;
-                SittingCharacter[0] = SmallCharacter[17];
-                break;
-            case 1:
-                SmallCharacter[16].transform.position = GameScript1.instance.Seat[3].transform.position;
-                SittingCharacter[3] = SmallCharacter[16];
-                break;
-            case 4:
-                SmallCharacter[17].transform.position = GameScript1.instance.Seat[2].transform.position;
-                SittingCharacter[2] = SmallCharacter[17];
-                break;
-            case 2:
-                SmallCharacter[16].transform.position = GameScript1.instance.Seat[5].transform.position;
-                SittingCharacter[5] = SmallCharacter[16];
-                break;
-            case 5:
-                SmallCharacter[17].transform.position = GameScript1.instance.Seat[4].transform.position;
-                SittingCharacter[4] = SmallCharacter[17];
-                break;
+            SmallCharacter[16].transform.position = GameScript1.instance.Seat[s+1].transform.position; //주인공 아기를 오른쪽 자리로 옮김
+            SittingCharacter[s+1] = SmallCharacter[16];
+        }
+        else
+        {
+            SmallCharacter[17].transform.position = GameScript1.instance.Seat[s-1].transform.position;
+            SittingCharacter[s-1] = SmallCharacter[17];
         }
     }
 

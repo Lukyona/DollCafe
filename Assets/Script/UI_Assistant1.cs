@@ -1719,8 +1719,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             {
                                 UserInputManager.instance.SetCanTouch(false);;
                                 UserInputManager.instance.Invoke("SetCanTouchTrue", 1f);
-                                int d = Menu.instance.ChangeSeatNum(SmallFade.instance.CharacterSeat[9]);
-                                Menu.instance.seatInfo.Enqueue(d);
+                                Menu.instance.seatInfo.Enqueue(SmallFade.instance.CharacterSeat[9]);
                                 SmallFade.instance.FadeOut();//찰스 작은 캐릭터 페이드아웃
                             }
                             break;

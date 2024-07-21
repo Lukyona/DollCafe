@@ -61013,7 +61013,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 1538706528}
         m_TargetAssemblyTypeName: AdsManager, Assembly-CSharp
         m_MethodName: AdsYes
         m_Mode: 1

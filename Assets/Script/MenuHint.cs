@@ -90,48 +90,22 @@ public class MenuHint : MonoBehaviour
         }
     }
 
-    public void SetMHB(int num) //어떤 메뉴힌트 말풍선 이미지를 쓸 것인지 설정, 자리에 따라 말풍선이 조금 다름
+    public void SetMHB(int num) //어떤 메뉴힌트 말풍선 이미지를 쓸 것인지 설정, 자리에 따라 이미지가 조금 다름
     {       
-        switch(num) //num은 자리 넘버
+        if(num == 11) // 튜토리얼 중
         {
-            case 0: //자리1이면 
-                HintBubble[0] = MH[0]; //말풍선1로 설정
-                HintText[0] = MHText[0]; //말풍선1의 메세지로 설정
-                seatNum = 0;
-                break;
-            case 3:
-                HintBubble[1] = MH[1];
-                HintText[1] = MHText[1];
-                seatNum = 1;
-                break;
-            case 1:
-                HintBubble[2] = MH[2];
-                HintText[2] = MHText[2];
-                seatNum = 2;
-                break;
-            case 4:
-                HintBubble[3] = MH[3];
-                HintText[3] = MHText[3];
-                seatNum = 3;
-                break;
-            case 2:
-                HintBubble[4] = MH[4];
-                HintText[4] = MHText[4];
-                seatNum = 4;
-                break;
-            case 5:
-                HintBubble[5] = MH[5];
-                HintText[5] = MHText[5];
-                seatNum = 5;
-                break;
-            case 11: //서빙 튜토리얼
-                HintBubble[1] = tutorialBubble;
-                HintText[1] = tutorialText;
-                tuto = true; //튜토리얼 상태
-                seatNum = 1;
-                break;
-
+            HintBubble[1] = tutorialBubble;
+            HintText[1] = tutorialText;
+            tuto = true; //튜토리얼 상태
+            seatNum = 1;
         }
+        else
+        {
+            HintBubble[num] = MH[num]; //말풍선1로 설정
+            HintText[num] = MHText[num]; //말풍선1의 메세지로 설정
+            seatNum = num;  
+        }
+        
         mhFade.Enqueue(seatNum);
        // Debug.Log("메뉴힌트 큐 추가 " + seatNum);
        // Debug.Log("함수 SetMHB");

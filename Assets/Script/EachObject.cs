@@ -17,7 +17,8 @@ public class EachObject : MonoBehaviour //클릭된 오브젝트(캐릭터나 �
 
     int num; //자리넘버
     int cNum; //캐릭터 넘버
-    public void CharacterSeatInfo() //저장된 캐릭터 자리 구분
+    
+    public void CharacterSeatInfo() //저장된 캐릭터 자리 구분, 작은 캐릭터 이미지 터치 시 실행
     {
         switch (gameObject.name)
         {
@@ -82,9 +83,9 @@ public class EachObject : MonoBehaviour //클릭된 오브젝트(캐릭터나 �
                 cNum = 15;
                 break;
         }
-        SmallFade.instance.CantClickCharacter(cNum); //캐릭터 터치 불가
- //  Debug.Log("함수 CharacterSeatInfo");
-        if (GameScript1.instance.mainCount == 2)
+        SmallFade.instance.CantClickCharacter(cNum); //캐릭터 터치 불가, 중복 터치 방지
+
+        if (GameScript1.instance.mainCount == 2) //튜토리얼
         {
             num = 11;
             MenuHint.instance.SetMHB(num);
@@ -94,30 +95,15 @@ public class EachObject : MonoBehaviour //클릭된 오브젝트(캐릭터나 �
         else
         {
             MenuHint.instance.SetMHB(num);
-            switch (num) //012345자리로 숫자 변환
-            {
-                case 3:
-                    num = 1;
-                    break;
-                case 1:
-                    num = 2;
-                    break;
-                case 4:
-                    num = 3;
-                    break;
-                case 2:
-                    num = 4;
-                    break;
-            }
             MenuHint.instance.SetMHText(cNum, num);
         }
     }
 
     public void NowHintBubble()//현재 클릭된 메뉴힌트버블이
     {
-        if (gameObject.name.Contains("1"))//첫번째 자리 버블이면
+        if (gameObject.name.Contains("1"))//첫번째 테이블 왼쪽자리 버블이면
         {
-            Menu.instance.seatNum = 0; //031425
+            Menu.instance.seatNum = 0; 
             switch(SmallFade.instance.SittingCharacter[0].name)
             {
                 case "sCar":
@@ -144,9 +130,9 @@ public class EachObject : MonoBehaviour //클릭된 오브젝트(캐릭터나 �
             }            
         }
 
-        if (gameObject.name.Contains("3"))//두번째 자리
+        if (gameObject.name.Contains("3")) // 두번째 테이블 왼쪽
         {
-            Menu.instance.seatNum = 1; //031425
+            Menu.instance.seatNum = 2; 
             switch (SmallFade.instance.SittingCharacter[2].name)
             {
                 case "sCar":
@@ -173,9 +159,9 @@ public class EachObject : MonoBehaviour //클릭된 오브젝트(캐릭터나 �
             }
         }
 
-        if (gameObject.name.Contains("5"))
+        if (gameObject.name.Contains("5")) //세번재 테이블 왼쪽
         {
-            Menu.instance.seatNum = 2; //031425
+            Menu.instance.seatNum = 4; 
             switch (SmallFade.instance.SittingCharacter[4].name)
             {
                 case "sCar":
@@ -202,9 +188,9 @@ public class EachObject : MonoBehaviour //클릭된 오브젝트(캐릭터나 �
             }
         }
 
-        if (gameObject.name.Contains("2"))
+        if (gameObject.name.Contains("2")) //첫번째 테이블 오른쪽
         {
-            Menu.instance.seatNum = 3;
+            Menu.instance.seatNum = 1;
             switch (SmallFade.instance.SittingCharacter[1].name)
             {
                 case "sBear":
@@ -239,7 +225,7 @@ public class EachObject : MonoBehaviour //클릭된 오브젝트(캐릭터나 �
 
         if (gameObject.name.Contains("4"))
         {
-            Menu.instance.seatNum = 4;
+            Menu.instance.seatNum = 3;
             switch (SmallFade.instance.SittingCharacter[3].name)
             {
                 case "sBear":

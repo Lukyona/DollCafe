@@ -52,13 +52,11 @@ public class AdsManager : MonoBehaviour
               // if error is not null, the load request failed.
               if (error != null || ad == null)
               {
-                  Debug.LogError("Rewarded ad failed to load an ad " +
-                                 "with error : " + error);
+                  Debug.LogError("Rewarded ad failed to load an ad " + "with error : " + error);
                   return;
               }
 
-              Debug.Log("Rewarded ad loaded with response : "
-                        + ad.GetResponseInfo());
+              //Debug.Log("Rewarded ad loaded with response : " + ad.GetResponseInfo());
 
               rewardedAd = ad;
 

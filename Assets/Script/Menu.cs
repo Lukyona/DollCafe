@@ -156,31 +156,6 @@ public class Menu : MonoBehaviour
         NoHPMessegeAnimator.SetTrigger("NoHPFadeOut");
     }
 
-    public int ChangeSeatNum(int x)//031425자리넘버를 012345로 변환
-    {
-        int z = 0;
-        switch (x) //012345자리로 숫자 변환
-        {
-            case 0:
-            case 5:
-                z = x;
-                break;
-            case 3:
-                z = 1;
-                break;
-            case 1:
-                z = 2;
-                break;
-            case 4:
-                z = 3;
-                break;
-            case 2:
-                z = 4;
-                break;
-        }
-        return z;
-    }
-
     public void MenuServingFunction(int n)//서빙 함수
     {
         if (HPCharge.instance.m_HPAmount <= 0) //체력이 0보다 작거나 같으면
@@ -198,7 +173,6 @@ public class Menu : MonoBehaviour
             menuBoardAnimator.SetTrigger("MenuBoardDown"); //메뉴판 아래로 내려가고
             menuButtonAnimator.SetTrigger("MenuButtonIn"); //메뉴버튼 위에서 내려옴
             MenuHint.instance.CanClickMHB();//다른 메뉴힌트버블 터치 가능
-            int num = ChangeSeatNum(seatNum);//seatNum을 012345로 바꿔서 나온 값을 num에 대입
 
             HPCharge.instance.UseHP(); //체력 소모
 
@@ -207,7 +181,7 @@ public class Menu : MonoBehaviour
                 goEvent = 1;
                 GameScript1.instance.CantClickUI();
                 MenuHint.instance.CantClickMHB();//뒤에 메뉴판이 떠있는 채로 이벤트 시작하는 걸 방지하기 위함
-                if (MenuHint.instance.RightMenu[num] == n) //캐릭터가 원하는 메뉴가 n이면, 원하는 메뉴와 플레이어가 고른 메뉴가 일치
+                if (MenuHint.instance.RightMenu[seatNum] == n) //캐릭터가 원하는 메뉴가 n이면, 원하는 메뉴와 플레이어가 고른 메뉴가 일치
                 {
                     SEManager.instance.PlayUIClickSound3();
                     VisitorNote.instance.GuessMenuRight(cNum, n);
@@ -228,17 +202,17 @@ public class Menu : MonoBehaviour
                         VisitorNote.instance.IncreaseFrinedshipGauge(cNum); //서빙받은 캐릭터의 친밀도 증가
                     }
                 }
-                TableMenu[num].SetActive(true);
+                TableMenu[seatNum].SetActive(true);
                 SetMenuPosition();//테이블에 올려질 메뉴 위치 설정               
-                MenuHint.instance.HintFadeOut(num); //메뉴힌트 페이드아웃
-                SetTableMenu(n, num); //테이블에 올려질 메뉴는 n
-                menuFIn.Enqueue(num);//메뉴 페이드인 큐에 자리 정보 추가
-                tmpNum = num;//대화 중 메뉴 페이드아웃 큐에 자리 정보 추가하기 위함
+                MenuHint.instance.HintFadeOut(seatNum); //메뉴힌트 페이드아웃
+                SetTableMenu(n, seatNum); //테이블에 올려질 메뉴는 n
+                menuFIn.Enqueue(seatNum);//메뉴 페이드인 큐에 자리 정보 추가
+                tmpNum = seatNum;//대화 중 메뉴 페이드아웃 큐에 자리 정보 추가하기 위함
                 MenuFadeIn();                
             }
             else
             {
-                if (MenuHint.instance.RightMenu[num] == n) //캐릭터가 원하는 메뉴가 n이면, 원하는 메뉴와 플레이어가 고른 메뉴가 일치
+                if (MenuHint.instance.RightMenu[seatNum] == n) //캐릭터가 원하는 메뉴가 n이면, 원하는 메뉴와 플레이어가 고른 메뉴가 일치
                 {
                     SEManager.instance.PlayUIClickSound3();
                     if(CharacterAppear.instance.eventOn != 14)//히로디노 친밀도 이벤트가 아니면
@@ -257,17 +231,17 @@ public class Menu : MonoBehaviour
                         reputation++; //원하는 메뉴가 아닌 다른 메뉴 서빙 시 평판 1 증가
                     }                  
                 }
-                TableMenu[num].SetActive(true);
-                Reaction[num].SetActive(true);
+                TableMenu[seatNum].SetActive(true);
+                Reaction[seatNum].SetActive(true);
                 SetMenuPosition();//테이블에 올려질 메뉴 위치 설정
 
-                MenuHint.instance.HintFadeOut(num); //메뉴힌트 페이드아웃
-                SetTableMenu(n, num); //테이블에 올려질 메뉴는 n                
-                menuFIn.Enqueue(num);//메뉴 페이드인 큐에 자리 정보 추가
+                MenuHint.instance.HintFadeOut(seatNum); //메뉴힌트 페이드아웃
+                SetTableMenu(n, seatNum); //테이블에 올려질 메뉴는 n                
+                menuFIn.Enqueue(seatNum);//메뉴 페이드인 큐에 자리 정보 추가
                 MenuFadeIn();
                 if (MenuHint.instance.tuto) //서빙 튜토리얼일 경우
                 {
-                    reactionFIn.Enqueue(num); //리액션 페이드인 큐에 자리 정보 추가
+                    reactionFIn.Enqueue(seatNum); //리액션 페이드인 큐에 자리 정보 추가
                     SmallFade.instance.Invoke("VisibleCharacter",0.3f); //캐릭터 다시 보이게 하고
                                                                         // GameScript1.instance.TutorialUpBox();
                     UI_Assistant1.instance.Invoke("OpenDialogue2",0.5f);
@@ -280,20 +254,20 @@ public class Menu : MonoBehaviour
                     {
                         GameScript1.instance.CantClickUI();
                         MenuHint.instance.CantClickMHB();//뒤에 메뉴판이 떠있는 채로 이벤트 시작하는 걸 방지하기 위함
-                        reactionFIn.Enqueue(num); //리액션 페이드인 큐에 자리 정보 추가
+                        reactionFIn.Enqueue(seatNum); //리액션 페이드인 큐에 자리 정보 추가
                         goEvent = 1;
                     }
                     else if((cNum == 12 || cNum == 13) && CharacterAppear.instance.eventOn == 14)//히로디노 이벤트인데 캐릭터가 히로나 디노일 때
                     {
                         if(cNum == 12)
                         {
-                            tmpNum = num;//대화 중 메뉴 페이드아웃 큐에 자리 정보 추가하기 위함
+                            tmpNum = seatNum;//대화 중 메뉴 페이드아웃 큐에 자리 정보 추가하기 위함
                         }                    
                     }
                     else // 그 외의 경우
                     {                      
-                        reactionFIn.Enqueue(num); //리액션 페이드인 큐에 자리 정보 추가
-                        Debug.Log("리액션 페이드인큐에 들어간 자리 012345 => " + num);
+                        reactionFIn.Enqueue(seatNum); //리액션 페이드인 큐에 자리 정보 추가
+                        //Debug.Log("리액션 페이드인큐에 들어간 자리 012345 => " + seatNum);
                         if (CharacterAppear.instance.eventOn != 5)
                         {
                             Invoke("ReactionFadeIn", 1f);
@@ -314,7 +288,7 @@ public class Menu : MonoBehaviour
 
                         if (CharacterAppear.instance.eventOn != 14)//이벤트 아닐 때만
                         {
-                            together1.Enqueue(num);//히노디노큐에 자리 저장
+                            together1.Enqueue(seatNum);//히노디노큐에 자리 저장
                         }
 
                         if (CharacterAppear.instance.eventOn != 14)//히로디노 친밀도 이벤트가 아니면 친밀도 증가
@@ -330,7 +304,7 @@ public class Menu : MonoBehaviour
                     }
                     else if(Dialogue1.instance.CharacterDC[10] == 3 && (cNum == 6 || cNum == 10))//찰스2이벤트가 끝난 후 찰스나 도로시일 경우
                     {
-                        together2.Enqueue(num);//찰스도로시큐에 자리 저장
+                        together2.Enqueue(seatNum);//찰스도로시큐에 자리 저장
                     }
                     else//디노히로, 찰스도로시가 아니면
                     {
@@ -343,33 +317,8 @@ public class Menu : MonoBehaviour
 
     public void SetMenuPosition() //테이블 메뉴가 나타날 자리 설정
     {
-        switch (seatNum) //031425
-        {
-            case 0:
-                TableMenu[0].transform.position = MenuPosition[0].transform.position;
-                Reaction[0].transform.position = ReactionPosition[0].transform.position;
-                break;
-            case 3:
-                TableMenu[1].transform.position = MenuPosition[1].transform.position;
-                Reaction[1].transform.position = ReactionPosition[1].transform.position;
-                break;
-            case 1:
-                TableMenu[2].transform.position = MenuPosition[2].transform.position;
-                Reaction[2].transform.position = ReactionPosition[2].transform.position;
-                break;
-            case 4:
-                TableMenu[3].transform.position = MenuPosition[3].transform.position;
-                Reaction[3].transform.position = ReactionPosition[3].transform.position;
-                break;
-            case 2:
-                TableMenu[4].transform.position = MenuPosition[4].transform.position;
-                Reaction[4].transform.position = ReactionPosition[4].transform.position;
-                break;
-            case 5:
-                TableMenu[5].transform.position = MenuPosition[5].transform.position;
-                Reaction[5].transform.position = ReactionPosition[5].transform.position;
-                break;
-        }
+        TableMenu[seatNum].transform.position = MenuPosition[seatNum].transform.position;
+        Reaction[seatNum].transform.position = ReactionPosition[seatNum].transform.position;
         //Debug.Log("함수 SetMenuPosition");
     }
 
@@ -530,38 +479,36 @@ public class Menu : MonoBehaviour
         {
             reputation += 5;
         }
-        int num = ChangeSeatNum(seatNum);//seatNum을 012345로 바꿔서 나온 값을 num에 대입
-        TableMenu[num].SetActive(true);
-        Reaction[num].SetActive(true);
+        TableMenu[seatNum].SetActive(true);
+        Reaction[seatNum].SetActive(true);
         if(n == 11 && UI_Assistant1.instance.getMenu == 2)
         {
-            SetTableMenu(31, num); //스페셜 메뉴 이미지 설정
+            SetTableMenu(31, seatNum); //스페셜 메뉴 이미지 설정
         }
         else
         {
-            SetTableMenu(n + 10, num); //스페셜 메뉴 이미지 설정
+            SetTableMenu(n + 10, seatNum); //스페셜 메뉴 이미지 설정
         }
 
         if(n != 12 && n != 13)
         {
-            reactionFIn.Enqueue(num); //리액션 페이드인 큐에 자리 정보 추가
+            reactionFIn.Enqueue(seatNum); //리액션 페이드인 큐에 자리 정보 추가
         }
         if(n == 11 && CharacterAppear.instance.eventOn == 13 && UI_Assistant1.instance.getMenu == 1)//무명이2 이벤트
         {
-            tmpNum = num;
+            tmpNum = seatNum;
         }
-        menuFIn.Enqueue(num);//메뉴 페이드인 큐에 자리 정보 추가
+        menuFIn.Enqueue(seatNum);//메뉴 페이드인 큐에 자리 정보 추가
     }
 
     public void SoldierEvent(int s)//찰스2 이벤트, 도로시에게 서빙
     {
         seatNum = s;
         SetMenuPosition();
-        int num = ChangeSeatNum(seatNum);//seatNum을 012345로 바꿔서 나온 값을 num에 대입
-        TableMenu[num].SetActive(true);
-        SetTableMenu(5, num);//메뉴는 딸기스무디
-        menuFIn.Enqueue(num);//메뉴 페이드인 큐에 자리 정보 추가
-        menuFOut.Enqueue(num);//미리 추가
+        TableMenu[seatNum].SetActive(true);
+        SetTableMenu(5, seatNum);//메뉴는 딸기스무디
+        menuFIn.Enqueue(seatNum);//메뉴 페이드인 큐에 자리 정보 추가
+        menuFOut.Enqueue(seatNum);//미리 추가
     }
 
     public void CorrectMenuReaction(int n) //힌트와 맞는 메뉴일 경우 리액션
