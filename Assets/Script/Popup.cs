@@ -78,13 +78,13 @@ public class Popup : MonoBehaviour // 새로운 손님 팝업
     public void SetPopupMenu(GameObject menu, String name, float anchorY)
     {
         //팝업창에 나타날 이미지 설정
-        specialMenuPopup.GetComponentInChildren<Image>().sprite = menu.GetComponent<Image>().sprite;
+        specialMenuPopup.transform.GetChild(0).GetComponentInChildren<Image>().sprite = menu.GetComponent<Image>().sprite;
         // 이미지 사이즈 조정
         Vector2 size = new Vector2(menu.GetComponent<RectTransform>().rect.width, menu.GetComponent<RectTransform>().rect.height); 
-        specialMenuPopup.GetComponentInChildren<Image>().GetComponent<RectTransform>().sizeDelta = size;
-        specialMenuPopup.GetComponentInChildren<Image>().GetComponent<RectTransform>().anchoredPosition = new Vector2(0, anchorY); //이미지에 따라 앵커 Y 위치 조정
+        specialMenuPopup.transform.GetChild(0).GetComponentInChildren<Image>().GetComponent<RectTransform>().sizeDelta = size;
+        specialMenuPopup.transform.GetChild(0).GetComponentInChildren<Image>().GetComponent<RectTransform>().anchoredPosition = new Vector2(0, anchorY); //이미지에 따라 앵커 Y 위치 조정
         // 나타날 텍스트 설정
-        specialMenuPopup.GetComponentInChildren<Text>().text = name; 
-        specialMenuPopup.GetComponentInChildren<Text>().text += "를 위한 특별메뉴!";
+        specialMenuPopup.transform.GetChild(1).GetComponentInChildren<Text>().text = name; 
+        specialMenuPopup.transform.GetChild(1).GetComponentInChildren<Text>().text += "를 위한 특별메뉴!";
     }
 }

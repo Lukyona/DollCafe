@@ -5200,7 +5200,7 @@ GameObject:
   - component: {fileID: 151491263}
   - component: {fileID: 151491262}
   m_Layer: 0
-  m_Name: NewVisitorPopup
+  m_Name: Popup
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8494,7 +8494,7 @@ GameObject:
   - component: {fileID: 229986649}
   - component: {fileID: 229986648}
   m_Layer: 0
-  m_Name: Popup
+  m_Name: PopupWindow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -24914,8 +24914,6 @@ MonoBehaviour:
   - {fileID: 1773758312}
   - {fileID: 170741926}
   cNum: 0
-  specialMenu: {fileID: 1580735717}
-  menuPopupText: {fileID: 1149745764}
   tmpNum: 0
   NonameDessert: {fileID: 2071074933}
 --- !u!1 &931162481
@@ -44099,7 +44097,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   popupAnimator: {fileID: 151491262}
-  popup: {fileID: 229986646}
+  newVisitorPopup: {fileID: 229986646}
   character: {fileID: 638063663}
   specialMenuPopup: {fileID: 1236618289}
 --- !u!114 &1538706520
