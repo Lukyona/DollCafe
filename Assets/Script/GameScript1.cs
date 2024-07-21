@@ -322,8 +322,8 @@ public class GameScript1 : MonoBehaviour //전체적인 게임스트립트
                 break;
             case 1:
                 DownTextbox(); //도리 카페 첫 방문 후
-                NewVisitorPopup.instance.SetPopupCharacter(BigCharacter[1]); //새 캐릭터 도리 팝업 세팅
-                NewVisitorPopup.instance.OpenPopup(); //팝업 등장
+                Popup.instance.SetPopupCharacter(BigCharacter[1]); //새 캐릭터 도리 팝업 세팅
+                Popup.instance.OpenPopup(); //팝업 등장
                 Dialogue1.instance.CharacterNum = 0; //다음 캐릭터 제제(튜토리얼)
                 Dialogue1.instance.CharacterDC[1]++; //도리 다이얼로그 카운트 증가
                 mainCount++; //메인 카운트 증가
@@ -347,8 +347,8 @@ public class GameScript1 : MonoBehaviour //전체적인 게임스트립트
                 CanClickUI();//메뉴판,노트, 체력 충전 버튼 터치 가능
                 BgmManager.instance.BGMFadeOut();
                 BgmManager.instance.Invoke("PlayCafeBgm",3f);
-                NewVisitorPopup.instance.SetPopupCharacter(BigCharacter[2]); //변경되는 것
-                NewVisitorPopup.instance.OpenPopup();
+                Popup.instance.SetPopupCharacter(BigCharacter[2]); //변경되는 것
+                Popup.instance.OpenPopup();
                 CharacterAppear.instance.SetNextAppearNum(3); //다음 등장은 빵빵
                 Dialogue1.instance.CharacterDC[2]++; //변경되는 것
                 VisitorNote.instance.page[1].SetActive(true); //변경되는 것
@@ -394,17 +394,17 @@ public class GameScript1 : MonoBehaviour //전체적인 게임스트립트
         BgmManager.instance.Invoke("PlayCafeBgm", 3f);
         if (n != 9 && n != 15)
         {
-            NewVisitorPopup.instance.SetPopupCharacter(BigCharacter[n - 1]); //새 손님 팝업           
+            Popup.instance.SetPopupCharacter(BigCharacter[n - 1]); //새 손님 팝업           
         }
         else if (n == 9)
         {
-            NewVisitorPopup.instance.SetPopupCharacter(BigCharacter[15]);//샌디 이미지2
+            Popup.instance.SetPopupCharacter(BigCharacter[15]);//샌디 이미지2
         }
         else if(n == 15)
         {
-            NewVisitorPopup.instance.SetPopupCharacter(BigCharacter[16]);//롤렝드 이미지2
+            Popup.instance.SetPopupCharacter(BigCharacter[16]);//롤렝드 이미지2
         }
-        NewVisitorPopup.instance.OpenPopup();
+        Popup.instance.OpenPopup();
         CharacterAppear.instance.SetNextAppearNum(n); //다음 등장 캐릭터 설정 
         SmallFade.instance.Invoke("FadeIn", 1f);
 

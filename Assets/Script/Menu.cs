@@ -61,9 +61,6 @@ public class Menu : MonoBehaviour
 
     public int cNum;
 
-    public Image specialMenu;//메뉴 팝업에 들어갈 이미지
-    public Text menuPopupText;//메뉴 팝업창에 들어갈 텍스트
-
     int goEvent = 0; //메뉴 서빙 후 이벤트가 나오는 캐릭터의 경우, 이벤트 캐릭터가 서빙을 받으면 1
 
     public int tmpNum = 0;//메뉴 서빙 후 이벤트 나오는 캐릭터들 메뉴 위치 임시로 저장
@@ -418,10 +415,7 @@ public class Menu : MonoBehaviour
                     TableMenu[num].GetComponent<RectTransform>().sizeDelta = new Vector2(SpecialMenu[0].GetComponent<RectTransform>().rect.width, SpecialMenu[0].GetComponent<RectTransform>().rect.height); //사이즈 조정
                     TableMenu[num].GetComponent<Image>().sprite = SpecialMenu[0].GetComponent<Image>().sprite;
                 }  
-                specialMenu.GetComponent<RectTransform>().sizeDelta = new Vector2(SpecialMenu[0].GetComponent<RectTransform>().rect.width, SpecialMenu[0].GetComponent<RectTransform>().rect.height); //사이즈 조정
-                specialMenu.sprite = SpecialMenu[0].GetComponent<Image>().sprite;//메뉴 팝업창의 이미지 설정
-                specialMenu.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 110); //이미지에 따라 위치 조정
-                menuPopupText.text = "도리를 위한 특별 메뉴!";
+                Popup.instance.SetPopupMenu(SpecialMenu[0], "도리", 110f);
                 break;
             case 12:
                 if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
@@ -429,10 +423,7 @@ public class Menu : MonoBehaviour
                     TableMenu[num].GetComponent<RectTransform>().sizeDelta = new Vector2(SpecialMenu[1].GetComponent<RectTransform>().rect.width, SpecialMenu[1].GetComponent<RectTransform>().rect.height); //사이즈 조정
                     TableMenu[num].GetComponent<Image>().sprite = SpecialMenu[1].GetComponent<Image>().sprite;
                 }
-                specialMenu.GetComponent<RectTransform>().sizeDelta = new Vector2(SpecialMenu[1].GetComponent<RectTransform>().rect.width, SpecialMenu[1].GetComponent<RectTransform>().rect.height); //사이즈 조정
-                specialMenu.sprite = SpecialMenu[1].GetComponent<Image>().sprite;//메뉴 팝업창의 이미지 설정
-                specialMenu.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 50); //이미지에 따라 위치 조정
-                menuPopupText.text = "붕붕을 위한 특별 메뉴!";
+                Popup.instance.SetPopupMenu(SpecialMenu[1], "붕붕이", 50f);
                 break;
             case 13:
                 if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
@@ -440,10 +431,7 @@ public class Menu : MonoBehaviour
                     TableMenu[num].GetComponent<RectTransform>().sizeDelta = new Vector2(SpecialMenu[2].GetComponent<RectTransform>().rect.width, SpecialMenu[2].GetComponent<RectTransform>().rect.height); //사이즈 조정
                     TableMenu[num].GetComponent<Image>().sprite = SpecialMenu[2].GetComponent<Image>().sprite;
                 }
-                specialMenu.GetComponent<RectTransform>().sizeDelta = new Vector2(SpecialMenu[2].GetComponent<RectTransform>().rect.width, SpecialMenu[2].GetComponent<RectTransform>().rect.height); //사이즈 조정
-                specialMenu.sprite = SpecialMenu[2].GetComponent<Image>().sprite;//메뉴 팝업창의 이미지 설정
-                specialMenu.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 80); //이미지에 따라 위치 조정
-                menuPopupText.text = "빵빵을 위한 특별 메뉴!";
+                Popup.instance.SetPopupMenu(SpecialMenu[2], "빵빵이", 80f);
                 break;
             case 14:
                 if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
@@ -451,10 +439,7 @@ public class Menu : MonoBehaviour
                     TableMenu[num].GetComponent<RectTransform>().sizeDelta = new Vector2(SpecialMenu[3].GetComponent<RectTransform>().rect.width, SpecialMenu[3].GetComponent<RectTransform>().rect.height); //사이즈 조정
                     TableMenu[num].GetComponent<Image>().sprite = SpecialMenu[3].GetComponent<Image>().sprite;
                 }
-                specialMenu.GetComponent<RectTransform>().sizeDelta = new Vector2(SpecialMenu[3].GetComponent<RectTransform>().rect.width, SpecialMenu[3].GetComponent<RectTransform>().rect.height); //사이즈 조정
-                specialMenu.sprite = SpecialMenu[3].GetComponent<Image>().sprite;//메뉴 팝업창의 이미지 설정
-                specialMenu.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 90); //이미지에 따라 위치 조정
-                menuPopupText.text = "개나리를 위한 특별 메뉴!";
+                Popup.instance.SetPopupMenu(SpecialMenu[3], "개나리", 90f);
                 break;
             case 16:
                 if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
@@ -462,10 +447,7 @@ public class Menu : MonoBehaviour
                     TableMenu[num].GetComponent<RectTransform>().sizeDelta = new Vector2(SpecialMenu[4].GetComponent<RectTransform>().rect.width, SpecialMenu[4].GetComponent<RectTransform>().rect.height); //사이즈 조정
                     TableMenu[num].GetComponent<Image>().sprite = SpecialMenu[4].GetComponent<Image>().sprite;
                 }
-                specialMenu.GetComponent<RectTransform>().sizeDelta = new Vector2(SpecialMenu[4].GetComponent<RectTransform>().rect.width, SpecialMenu[4].GetComponent<RectTransform>().rect.height); //사이즈 조정
-                specialMenu.sprite = SpecialMenu[4].GetComponent<Image>().sprite;//메뉴 팝업창의 이미지 설정
-                specialMenu.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 70); //이미지에 따라 위치 조정
-                menuPopupText.text = "도로시를 위한 특별 메뉴!";
+                Popup.instance.SetPopupMenu(SpecialMenu[4], "도로시", 70f);
                 break;
             case 17:
                 if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
@@ -473,10 +455,7 @@ public class Menu : MonoBehaviour
                     TableMenu[num].GetComponent<RectTransform>().sizeDelta = new Vector2(SpecialMenu[5].GetComponent<RectTransform>().rect.width, SpecialMenu[5].GetComponent<RectTransform>().rect.height); //사이즈 조정
                     TableMenu[num].GetComponent<Image>().sprite = SpecialMenu[5].GetComponent<Image>().sprite;
                 }
-                specialMenu.GetComponent<RectTransform>().sizeDelta = new Vector2(SpecialMenu[5].GetComponent<RectTransform>().rect.width, SpecialMenu[5].GetComponent<RectTransform>().rect.height); //사이즈 조정
-                specialMenu.sprite = SpecialMenu[5].GetComponent<Image>().sprite;//메뉴 팝업창의 이미지 설정
-                specialMenu.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 90); //이미지에 따라 위치 조정
-                menuPopupText.text = "루루를 위한 특별 메뉴!";
+                Popup.instance.SetPopupMenu(SpecialMenu[5], "루루", 90f);
                 break;
             case 18:
                 if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
@@ -484,10 +463,7 @@ public class Menu : MonoBehaviour
                     TableMenu[num].GetComponent<RectTransform>().sizeDelta = new Vector2(SpecialMenu[6].GetComponent<RectTransform>().rect.width, SpecialMenu[6].GetComponent<RectTransform>().rect.height); //사이즈 조정
                     TableMenu[num].GetComponent<Image>().sprite = SpecialMenu[6].GetComponent<Image>().sprite;
                 }
-                specialMenu.GetComponent<RectTransform>().sizeDelta = new Vector2(SpecialMenu[6].GetComponent<RectTransform>().rect.width, SpecialMenu[6].GetComponent<RectTransform>().rect.height); //사이즈 조정
-                specialMenu.sprite = SpecialMenu[6].GetComponent<Image>().sprite;//메뉴 팝업창의 이미지 설정
-                specialMenu.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 70); //이미지에 따라 위치 조정
-                menuPopupText.text = "샌디를 위한 특별 메뉴!";
+                Popup.instance.SetPopupMenu(SpecialMenu[6], "샌디", 70f);
                 break;
             case 19:
                 if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
@@ -495,10 +471,7 @@ public class Menu : MonoBehaviour
                     TableMenu[num].GetComponent<RectTransform>().sizeDelta = new Vector2(SpecialMenu[7].GetComponent<RectTransform>().rect.width, SpecialMenu[7].GetComponent<RectTransform>().rect.height); //사이즈 조정
                     TableMenu[num].GetComponent<Image>().sprite = SpecialMenu[7].GetComponent<Image>().sprite;
                 }
-                specialMenu.GetComponent<RectTransform>().sizeDelta = new Vector2(SpecialMenu[7].GetComponent<RectTransform>().rect.width, SpecialMenu[7].GetComponent<RectTransform>().rect.height); //사이즈 조정
-                specialMenu.sprite = SpecialMenu[7].GetComponent<Image>().sprite;//메뉴 팝업창의 이미지 설정
-                specialMenu.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 80); //이미지에 따라 위치 조정
-                menuPopupText.text = "친구를 위한 특별 메뉴!";
+                Popup.instance.SetPopupMenu(SpecialMenu[7], "친구", 80f);
                 break;
             case 21:
             case 31:
@@ -511,10 +484,7 @@ public class Menu : MonoBehaviour
                     TableMenu[num].GetComponent<RectTransform>().sizeDelta = new Vector2(SpecialMenu[8].GetComponent<RectTransform>().rect.width, SpecialMenu[8].GetComponent<RectTransform>().rect.height); //사이즈 조정
                     TableMenu[num].GetComponent<Image>().sprite = SpecialMenu[8].GetComponent<Image>().sprite;
                 }
-                specialMenu.GetComponent<RectTransform>().sizeDelta = new Vector2(SpecialMenu[8].GetComponent<RectTransform>().rect.width, SpecialMenu[8].GetComponent<RectTransform>().rect.height); //사이즈 조정
-                specialMenu.sprite = SpecialMenu[8].GetComponent<Image>().sprite;//메뉴 팝업창의 이미지 설정
-                specialMenu.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 80); //이미지에 따라 위치 조정
-                menuPopupText.text = UI_Assistant1.instance.namedName + "을(를) 위한 특별 메뉴!";
+                Popup.instance.SetPopupMenu(SpecialMenu[8], UI_Assistant1.instance.namedName , 80f);
                 break;
             case 22://히로디노는 똑같은 메뉴
                 if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
@@ -522,10 +492,7 @@ public class Menu : MonoBehaviour
                     TableMenu[num].GetComponent<RectTransform>().sizeDelta = new Vector2(SpecialMenu[12].GetComponent<RectTransform>().rect.width, SpecialMenu[12].GetComponent<RectTransform>().rect.height); //사이즈 조정
                     TableMenu[num].GetComponent<Image>().sprite = SpecialMenu[12].GetComponent<Image>().sprite;
                 }
-                specialMenu.GetComponent<RectTransform>().sizeDelta = new Vector2(SpecialMenu[9].GetComponent<RectTransform>().rect.width, SpecialMenu[9].GetComponent<RectTransform>().rect.height); //사이즈 조정
-                specialMenu.sprite = SpecialMenu[9].GetComponent<Image>().sprite;//메뉴 팝업창의 이미지 설정
-                specialMenu.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 50); //이미지에 따라 위치 조정
-                menuPopupText.text = "히로와 디노를 위한 특별 메뉴!";
+                Popup.instance.SetPopupMenu(SpecialMenu[9], "히로와 디노", 50f);
                 break;
             case 23:
                 if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
@@ -540,10 +507,7 @@ public class Menu : MonoBehaviour
                     TableMenu[num].GetComponent<RectTransform>().sizeDelta = new Vector2(SpecialMenu[10].GetComponent<RectTransform>().rect.width, SpecialMenu[10].GetComponent<RectTransform>().rect.height); //사이즈 조정
                     TableMenu[num].GetComponent<Image>().sprite = SpecialMenu[10].GetComponent<Image>().sprite;
                 }
-                specialMenu.GetComponent<RectTransform>().sizeDelta = new Vector2(SpecialMenu[10].GetComponent<RectTransform>().rect.width, SpecialMenu[10].GetComponent<RectTransform>().rect.height); //사이즈 조정
-                specialMenu.sprite = SpecialMenu[10].GetComponent<Image>().sprite;//메뉴 팝업창의 이미지 설정
-                specialMenu.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 50); //이미지에 따라 위치 조정
-                menuPopupText.text = "닥터 펭을 위한 특별 메뉴!";
+                Popup.instance.SetPopupMenu(SpecialMenu[10], "닥터 펭(을)", 50f);
                 break;
             case 25:
                 if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
@@ -551,10 +515,7 @@ public class Menu : MonoBehaviour
                     TableMenu[num].GetComponent<RectTransform>().sizeDelta = new Vector2(SpecialMenu[11].GetComponent<RectTransform>().rect.width, SpecialMenu[11].GetComponent<RectTransform>().rect.height); //사이즈 조정
                     TableMenu[num].GetComponent<Image>().sprite = SpecialMenu[11].GetComponent<Image>().sprite;
                 }
-                specialMenu.GetComponent<RectTransform>().sizeDelta = new Vector2(SpecialMenu[11].GetComponent<RectTransform>().rect.width, SpecialMenu[11].GetComponent<RectTransform>().rect.height); //사이즈 조정
-                specialMenu.sprite = SpecialMenu[11].GetComponent<Image>().sprite;//메뉴 팝업창의 이미지 설정
-                specialMenu.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 90); //이미지에 따라 위치 조정
-                menuPopupText.text = "롤렝드를 위한 특별 메뉴!";
+                Popup.instance.SetPopupMenu(SpecialMenu[11], "롤렝드", 90f);
                 break;
         }
         //Debug.Log("함수 SetTableMenu");

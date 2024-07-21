@@ -1,12 +1,13 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.UI;
 
-public class NewVisitorPopup : MonoBehaviour // 새로운 손님 팝업
+public class Popup : MonoBehaviour // 새로운 손님 팝업
 {
-    public static NewVisitorPopup instance;
+    public static Popup instance;
 
     public Animator popupAnimator;
-    public GameObject popup; //팝업창
+    public GameObject newVisitorPopup; //팝업창
     public GameObject character; //팝업 알림에 보여질 캐릭터 이미지
     public GameObject specialMenuPopup;
 
@@ -22,18 +23,20 @@ public class NewVisitorPopup : MonoBehaviour // 새로운 손님 팝업
     {
         Menu.instance.UIOn = true;
         SEManager.instance.PlayPopupSound(); //효과음
-        if (CharacterAppear.instance.eventOn != 0 || VisitorNote.instance.evRP != 0)
+
+        if (CharacterAppear.instance.eventOn != 0 || VisitorNote.instance.evRP != 0) // 스페셜 메뉴 팝업인 경우
         {
-            popup.SetActive(false);
+            newVisitorPopup.SetActive(false);
             specialMenuPopup.SetActive(true);
             //Debug.Log("팝업 이벤트 중");  
         }
-        else
+        else // 새로운 손님 팝업
         {
             specialMenuPopup.SetActive(false);
-            popup.SetActive(true); //팝업 보이게
+            newVisitorPopup.SetActive(true); //팝업 보이게
             //Debug.Log("팝업 이벤트 중 아님");
         }       
+
         popupAnimator.SetTrigger("PopupOpen"); //팝업 오픈 애니메이션 작동
     }
 
@@ -52,25 +55,36 @@ public class NewVisitorPopup : MonoBehaviour // 새로운 손님 팝업
 
     void PopupNotActive()
     {
+        newVisitorPopup.SetActive(false);
+
         if (CharacterAppear.instance.eventOn != 0 || VisitorNote.instance.evRP != 0)//친밀도 이벤트 도중이거나 다시보기 도중이면
         {
             specialMenuPopup.SetActive(false);
-            //UI_Assistant1.instance.TouchEnable();
             UserInputManager.instance.SetCanTouch(true);
         }
-        else
-        {
-            popup.SetActive(false);
-        }     
+
     }
 
     public void SetPopupCharacter(GameObject ch) //팝업창에 나올 캐릭터 설정
     {
         character.GetComponent<RectTransform>().sizeDelta = new Vector2(ch.GetComponent<RectTransform>().rect.width, ch.GetComponent<RectTransform>().rect.height); //사이즈 조정
         character.GetComponent<Image>().sprite = ch.GetComponent<Image>().sprite;
-        if (GameScript1.instance.mainCount == 13) //히로 디노의 경우 이미지 위치 조정
+        if (GameScript1.instance.mainCount == 13) //히로/디노의 경우 이미지 위치 조정
         {
             character.GetComponent<RectTransform >().anchoredPosition = new Vector2(25, 80);
         }
+    }
+
+    public void SetPopupMenu(GameObject menu, String name, float anchorY)
+    {
+        //팝업창에 나타날 이미지 설정
+        specialMenuPopup.GetComponentInChildren<Image>().sprite = menu.GetComponent<Image>().sprite;
+        // 이미지 사이즈 조정
+        Vector2 size = new Vector2(menu.GetComponent<RectTransform>().rect.width, menu.GetComponent<RectTransform>().rect.height); 
+        specialMenuPopup.GetComponentInChildren<Image>().GetComponent<RectTransform>().sizeDelta = size;
+        specialMenuPopup.GetComponentInChildren<Image>().GetComponent<RectTransform>().anchoredPosition = new Vector2(0, anchorY); //이미지에 따라 앵커 Y 위치 조정
+        // 나타날 텍스트 설정
+        specialMenuPopup.GetComponentInChildren<Text>().text = name; 
+        specialMenuPopup.GetComponentInChildren<Text>().text += "를 위한 특별메뉴!";
     }
 }

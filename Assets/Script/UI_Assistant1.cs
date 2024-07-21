@@ -397,7 +397,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                                 SmallFade.instance.FadeIn(); //주인공 아기 페이드인 실행
                                 Menu.instance.MenuFadeIn();//스페셜 메뉴 페이드인
                             }                                
-                            NewVisitorPopup.instance.OpenPopup();//메뉴 팝업, 팝업 닫으면 다음 대사 넘기기 가능
+                            Popup.instance.OpenPopup();//메뉴 팝업, 팝업 닫으면 다음 대사 넘기기 가능
                             break;
                         case 30:
                             CharacterList.instance.CharacterFaceList[1].face[0].SetActive(false);
@@ -595,7 +595,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                                 Menu.instance.MenuFadeIn();//스페셜 메뉴 페이드인
                                 getMenu = 2;
                             }
-                            NewVisitorPopup.instance.OpenPopup();//메뉴 팝업, 팝업 닫으면 다음 대사 넘기기 가능
+                            Popup.instance.OpenPopup();//메뉴 팝업, 팝업 닫으면 다음 대사 넘기기 가능
                             break;
                         case 31:
                             GameScript1.instance.textnum = 0;
@@ -751,7 +751,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                                 Menu.instance.MenuFadeIn();
                                 getMenu = 2;
                             }
-                            NewVisitorPopup.instance.OpenPopup();//메뉴 팝업, 팝업 닫으면 다음 대사 넘기기 가능
+                            Popup.instance.OpenPopup();//메뉴 팝업, 팝업 닫으면 다음 대사 넘기기 가능
                             break;
                         case 37:
                             CharacterList.instance.CharacterFaceList[3].face[2].SetActive(true);
@@ -858,7 +858,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                                 Menu.instance.MenuFadeIn();
                                 getMenu = 2;
                             }
-                            NewVisitorPopup.instance.OpenPopup();//메뉴 팝업, 팝업 닫으면 다음 대사 넘기기 가능
+                            Popup.instance.OpenPopup();//메뉴 팝업, 팝업 닫으면 다음 대사 넘기기 가능
                             break;
                         case 13:
                             GameScript1.instance.textnum = 0;                        
@@ -1071,7 +1071,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                                 Menu.instance.MenuFadeIn();
                                 getMenu = 2;
                             }
-                            NewVisitorPopup.instance.OpenPopup();//메뉴 팝업, 팝업 닫으면 다음 대사 넘기기 가능
+                            Popup.instance.OpenPopup();//메뉴 팝업, 팝업 닫으면 다음 대사 넘기기 가능
                             break;
                         case 11:
                             GameScript1.instance.textnum = 0;
@@ -1261,7 +1261,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                                 SmallFade.instance.FadeIn();
                                 Menu.instance.MenuFadeIn();
                             }
-                            NewVisitorPopup.instance.OpenPopup();//메뉴 팝업, 팝업 닫으면 다음 대사 넘기기 가능
+                            Popup.instance.OpenPopup();//메뉴 팝업, 팝업 닫으면 다음 대사 넘기기 가능
                             break;
                         case 60:
                             CharacterList.instance.CharacterFaceList[13].face[2].SetActive(false);
@@ -1390,7 +1390,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                                 Menu.instance.MenuFadeIn();
                                 getMenu = 2;
                             }
-                            NewVisitorPopup.instance.OpenPopup();//메뉴 팝업, 팝업 닫으면 다음 대사 넘기기 가능
+                            Popup.instance.OpenPopup();//메뉴 팝업, 팝업 닫으면 다음 대사 넘기기 가능
                             break;
                         case 50:
                             GameScript1.instance.textnum = 0;
@@ -1521,7 +1521,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                                 SmallFade.instance.FadeIn();
                                 Menu.instance.MenuFadeIn();
                             }
-                            NewVisitorPopup.instance.OpenPopup();//메뉴 팝업, 팝업 닫으면 다음 대사 넘기기 가능
+                            Popup.instance.OpenPopup();//메뉴 팝업, 팝업 닫으면 다음 대사 넘기기 가능
                             break;
                         case 21:
                             GameScript1.instance.textnum = 0;
@@ -2071,7 +2071,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                                 SmallFade.instance.FadeIn();
                                 Menu.instance.MenuFadeIn();
                             }
-                            NewVisitorPopup.instance.OpenPopup();//메뉴 팝업, 팝업 닫으면 다음 대사 넘기기 가능
+                            Popup.instance.OpenPopup();//메뉴 팝업, 팝업 닫으면 다음 대사 넘기기 가능
                             break;
                         case 38:
                             GameScript1.instance.textnum = 0;
@@ -2108,7 +2108,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             {
                                 Menu.instance.MenuFadeIn();
                             }
-                            NewVisitorPopup.instance.OpenPopup();//메뉴 팝업, 팝업 닫으면 다음 대사 넘기기 가능
+                            Popup.instance.OpenPopup();//메뉴 팝업, 팝업 닫으면 다음 대사 넘기기 가능
                             CharacterList.instance.CharacterFaceList[13].face[0].SetActive(false);
                             CharacterList.instance.CharacterFaceList[13].face[6].SetActive(true);
                             break;
@@ -2298,7 +2298,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                                 Menu.instance.MenuFadeIn();
                                 Menu.instance.Invoke("MenuFadeIn", 0.8f);
                             }
-                            NewVisitorPopup.instance.OpenPopup();//메뉴 팝업, 팝업 닫으면 다음 대사 넘기기 가능
+                            Popup.instance.OpenPopup();//메뉴 팝업, 팝업 닫으면 다음 대사 넘기기 가능
                             break;
                         case 26:
                             CharacterList.instance.CharacterFaceList[10].face[3].SetActive(false);
@@ -2527,7 +2527,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                                 Menu.instance.MenuFadeIn();
                                 getMenu = 2;
                             }
-                            NewVisitorPopup.instance.OpenPopup();//메뉴 팝업, 팝업 닫으면 다음 대사 넘기기 가능
+                            Popup.instance.OpenPopup();//메뉴 팝업, 팝업 닫으면 다음 대사 넘기기 가능
                             break;
                         case 38:
                             GameScript1.instance.textnum = 0;
@@ -2773,7 +2773,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                                 SmallFade.instance.FadeIn();
                                 Menu.instance.MenuFadeIn();
                             }
-                            NewVisitorPopup.instance.OpenPopup();//메뉴 팝업, 팝업 닫으면 다음 대사 넘기기 가능
+                            Popup.instance.OpenPopup();//메뉴 팝업, 팝업 닫으면 다음 대사 넘기기 가능
                             break;
                         case 52:
                             GameScript1.instance.textnum = 0;
