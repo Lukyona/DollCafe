@@ -97,7 +97,7 @@ public class Setting : MonoBehaviour
             PlayerPrefs.DeleteKey("RemainMinTimer");
             PlayerPrefs.DeleteKey("RemainSecTimer");
             PlayerPrefs.DeleteKey("CharacterDC");
-            PlayerPrefs.DeleteKey("OpenMenu");
+            PlayerPrefs.DeleteKey("UnlockedMenuItems");
             PlayerPrefs.DeleteKey("OpenPage");
             PlayerPrefs.DeleteKey("LikeMenu1Open");
             PlayerPrefs.DeleteKey("LikeMenu2Open");

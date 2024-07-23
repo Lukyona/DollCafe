@@ -159,7 +159,7 @@ public class GameScript1 : MonoBehaviour //전체적인 게임스트립트
                     SmallFade.instance.Invoke("FadeIn", 1f); //제제 작은 캐릭터 페이드인                   
                     Dialogue1.instance.LoadCharacterDCInfo();
                     VisitorNote.instance.LoadVisitorNoteInfo();
-                    Menu.instance.LoadOpenMenuInfo();                 
+                    Menu.instance.LoadUnlockedMenuItemInfo();                 
                     Dialogue1.instance.babyName = PlayerPrefs.GetString("BabyName");
                     Invoke("CheckTip", 1.5f);//팁 확인
                     if (endStory != 3)//엔딩이벤트를 본 게 아니라면
@@ -541,7 +541,7 @@ public class GameScript1 : MonoBehaviour //전체적인 게임스트립트
             HPCharge.instance.SaveHPInfo();
             HPCharge.instance.SaveAppQuitTime();
             Dialogue1.instance.SaveCharacterDCInfo();
-            Menu.instance.SaveOpenMenuInfo();
+            Menu.instance.SaveUnlockedMenuItemInfo();
             endStory = 2;//엔딩이벤트를 봤음
             SaveDataInfo();//데이터 저장
             VisitorNote.instance.SaveVisitorNoteInfo();           
@@ -590,7 +590,7 @@ public class GameScript1 : MonoBehaviour //전체적인 게임스트립트
                     MenuHint.instance.CanClickMHB();//메뉴힌트버블 터치 가능
                     BgmManager.instance.BGMFadeOut();
                     BgmManager.instance.Invoke("PlayCafeBgm", 3f);
-                    Menu.instance.ReactionFadeIn();
+                    //Menu.instance.ReactionFadeIn();
                     Dialogue1.instance.CharacterDC[n] = 3; // 3이면 더 이상 시나리오 없음
                     VisitorNote.instance.RePlayButton[n - 1].gameObject.SetActive(true);//다시보기 버튼 활성화
                     c = n;

@@ -187,7 +187,7 @@ public class HPCharge : MonoBehaviour
                    // Debug.Log("데이터 세이브");
                     SaveHPInfo(); //체력, 타이머 정보 저장                
                     Dialogue1.instance.SaveCharacterDCInfo();
-                    Menu.instance.SaveOpenMenuInfo();
+                    Menu.instance.SaveUnlockedMenuItemInfo();
                     VisitorNote.instance.SaveVisitorNoteInfo();
                     if (Star.instance.IsInvoking("ActivateStarSystem"))
                     {

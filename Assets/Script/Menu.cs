@@ -11,12 +11,12 @@ public class Menu : MonoBehaviour
     public Animator menuBoardAnimator;
     public Animator NoHPMessegeAnimator;
 
-    public List<GameObject> OpenMenu = new List<GameObject>();//열린 메뉴 리스트
+    List<GameObject> UnlockedMenuItems = new List<GameObject>(); // 현재 잠금 해제된 메뉴 리스트
+    public GameObject[] LockedMenuItems; // 잠금 상태인 메뉴 배열, 실루엣 이미지
 
     public GameObject[] MenuObject; //메뉴 배열
-    public GameObject[] NotOpenMenu; //안 열린 메뉴 배열
-    public GameObject[] MenuPosition; //메뉴 위치 배열
-    public GameObject[] ReactionPosition; //리액션 위치 배열
+    Vector3[] MenuPosition = new Vector3[6]; //메뉴 위치 배열
+    Vector3[] ReactionPosition = new Vector3[6]; //리액션 위치 배열
 
     public GameObject[] TableMenu; //테이블 위에 보여질 작은 메뉴 이미지
    
@@ -74,9 +74,37 @@ public class Menu : MonoBehaviour
         if (instance == null)
         {
             instance = this;
-            OpenMenu.Add(MenuObject[0]);
-            OpenMenu.Add(MenuObject[1]);
-            OpenMenu.Add(MenuObject[2]);         
+            UnlockedMenuItems.Add(MenuObject[0]); // 기본 메뉴 3개는 잠금X
+            UnlockedMenuItems.Add(MenuObject[1]);
+            UnlockedMenuItems.Add(MenuObject[2]);         
+        }
+    }
+
+    void Start()
+    {
+        for (int i = 0; i < MenuObject.Length; i++)
+        {
+            MenuObject[i].GetComponent<Image>().alphaHitTestMinimumThreshold = 1f;
+        }
+
+        // 자리별 테이블 위에 놓일 메뉴의 위치
+        {
+            MenuPosition[0] = new Vector3(-530,-190,0);
+            MenuPosition[1] = new Vector3(-335,-190,0);
+            MenuPosition[2] = new Vector3(-70,-350,0);
+            MenuPosition[3] = new Vector3(160,-350,0);
+            MenuPosition[4] = new Vector3(400,-190,0);
+            MenuPosition[5] = new Vector3(600,-190,0);
+        }
+
+        // 자리별 리액션 말풍선이 나타날 위치
+        {
+            ReactionPosition[0] = new Vector3(-840,-40,0);
+            ReactionPosition[1] = new Vector3(-20,-50,0);
+            ReactionPosition[2] = new Vector3(-450,-225,0);
+            ReactionPosition[3] = new Vector3(530,200,0);
+            ReactionPosition[4] = new Vector3(85,-50,0);
+            ReactionPosition[5] = new Vector3(860,-15,0);
         }
     }
 
@@ -89,9 +117,9 @@ public class Menu : MonoBehaviour
             SEManager.instance.PlayUIClickSound(); //효과음
             menuButtonAnimator.SetTrigger("MenuButtonOut"); //메뉴 버튼 위로 올라가고
             menuBoardAnimator.SetTrigger("MenuBoardUp"); //메뉴판이 아래에서 올라옴
-            for (int i = 0; i < OpenMenu.Count; i++) //메뉴 터치 불가, 서빙이 아닌 그냥 메뉴판 버튼 클릭 시에는 메뉴 클릭 못함
+            for (int i = 0; i < UnlockedMenuItems.Count; i++) //메뉴 터치 불가, 서빙이 아닌 그냥 메뉴판 버튼 클릭 시에는 메뉴 클릭 못함
             {
-                OpenMenu[i].GetComponent<Button>().interactable = false;
+                UnlockedMenuItems[i].GetComponent<Button>().interactable = false;
             }
         }
     }
@@ -137,17 +165,17 @@ public class Menu : MonoBehaviour
     public void CanClickMenu()
     {
         NoHPMessege.SetActive(false);
-        for (int i = 0; i < OpenMenu.Count; i++) //메뉴 터치 가능
+        for (int i = 0; i < UnlockedMenuItems.Count; i++) //메뉴 터치 가능
         {
-            OpenMenu[i].GetComponent<Button>().interactable = true;
+            UnlockedMenuItems[i].GetComponent<Button>().interactable = true;
         }
     }
 
     public void CantClickMenu()
     {  
-        for (int i = 0; i < OpenMenu.Count; i++) //메뉴 터치 가능
+        for (int i = 0; i < UnlockedMenuItems.Count; i++) //메뉴 터치 가능
         {
-            OpenMenu[i].GetComponent<Button>().interactable = false;
+            UnlockedMenuItems[i].GetComponent<Button>().interactable = false;
         }
     }
 
@@ -317,8 +345,8 @@ public class Menu : MonoBehaviour
 
     public void SetMenuPosition() //테이블 메뉴가 나타날 자리 설정
     {
-        TableMenu[seatNum].transform.position = MenuPosition[seatNum].transform.position;
-        Reaction[seatNum].transform.position = ReactionPosition[seatNum].transform.position;
+        TableMenu[seatNum].transform.position = MenuPosition[seatNum];
+        Reaction[seatNum].transform.position = ReactionPosition[seatNum];
         //Debug.Log("함수 SetMenuPosition");
     }
 
@@ -327,36 +355,36 @@ public class Menu : MonoBehaviour
         switch(n)
         {
             case 1: //1일 경우 오렌지 주스 , 사이즈 조정과 이미지 삽입
-                TableMenu[num].GetComponent<RectTransform>().sizeDelta = new Vector2(OpenMenu[0].GetComponent<RectTransform>().rect.width, OpenMenu[0].GetComponent<RectTransform>().rect.height); //사이즈 조정
-                TableMenu[num].GetComponent<Image>().sprite = OpenMenu[0].GetComponent<Image>().sprite;
+                TableMenu[num].GetComponent<RectTransform>().sizeDelta = new Vector2(UnlockedMenuItems[0].GetComponent<RectTransform>().rect.width, UnlockedMenuItems[0].GetComponent<RectTransform>().rect.height); //사이즈 조정
+                TableMenu[num].GetComponent<Image>().sprite = UnlockedMenuItems[0].GetComponent<Image>().sprite;
                 break;
             case 2: //2일 경우 핫초코 , 사이즈 조정과 이미지 삽입
-                TableMenu[num].GetComponent<RectTransform>().sizeDelta = new Vector2(OpenMenu[1].GetComponent<RectTransform>().rect.width, OpenMenu[1].GetComponent<RectTransform>().rect.height); //사이즈 조정
-                TableMenu[num].GetComponent<Image>().sprite = OpenMenu[1].GetComponent<Image>().sprite;
+                TableMenu[num].GetComponent<RectTransform>().sizeDelta = new Vector2(UnlockedMenuItems[1].GetComponent<RectTransform>().rect.width, UnlockedMenuItems[1].GetComponent<RectTransform>().rect.height); //사이즈 조정
+                TableMenu[num].GetComponent<Image>().sprite = UnlockedMenuItems[1].GetComponent<Image>().sprite;
                 break;
             case 3: 
-                TableMenu[num].GetComponent<RectTransform>().sizeDelta = new Vector2(OpenMenu[2].GetComponent<RectTransform>().rect.width, OpenMenu[2].GetComponent<RectTransform>().rect.height); //사이즈 조정
-                TableMenu[num].GetComponent<Image>().sprite = OpenMenu[2].GetComponent<Image>().sprite;
+                TableMenu[num].GetComponent<RectTransform>().sizeDelta = new Vector2(UnlockedMenuItems[2].GetComponent<RectTransform>().rect.width, UnlockedMenuItems[2].GetComponent<RectTransform>().rect.height); //사이즈 조정
+                TableMenu[num].GetComponent<Image>().sprite = UnlockedMenuItems[2].GetComponent<Image>().sprite;
                 break;
             case 4:
-                TableMenu[num].GetComponent<RectTransform>().sizeDelta = new Vector2(OpenMenu[3].GetComponent<RectTransform>().rect.width, OpenMenu[3].GetComponent<RectTransform>().rect.height); //사이즈 조정
-                TableMenu[num].GetComponent<Image>().sprite = OpenMenu[3].GetComponent<Image>().sprite;
+                TableMenu[num].GetComponent<RectTransform>().sizeDelta = new Vector2(UnlockedMenuItems[3].GetComponent<RectTransform>().rect.width, UnlockedMenuItems[3].GetComponent<RectTransform>().rect.height); //사이즈 조정
+                TableMenu[num].GetComponent<Image>().sprite = UnlockedMenuItems[3].GetComponent<Image>().sprite;
                 break;
             case 5:
-                TableMenu[num].GetComponent<RectTransform>().sizeDelta = new Vector2(OpenMenu[4].GetComponent<RectTransform>().rect.width, OpenMenu[4].GetComponent<RectTransform>().rect.height); //사이즈 조정
-                TableMenu[num].GetComponent<Image>().sprite = OpenMenu[4].GetComponent<Image>().sprite;
+                TableMenu[num].GetComponent<RectTransform>().sizeDelta = new Vector2(UnlockedMenuItems[4].GetComponent<RectTransform>().rect.width, UnlockedMenuItems[4].GetComponent<RectTransform>().rect.height); //사이즈 조정
+                TableMenu[num].GetComponent<Image>().sprite = UnlockedMenuItems[4].GetComponent<Image>().sprite;
                 break;
             case 6:
-                TableMenu[num].GetComponent<RectTransform>().sizeDelta = new Vector2(OpenMenu[5].GetComponent<RectTransform>().rect.width, OpenMenu[5].GetComponent<RectTransform>().rect.height); //사이즈 조정
-                TableMenu[num].GetComponent<Image>().sprite = OpenMenu[5].GetComponent<Image>().sprite;
+                TableMenu[num].GetComponent<RectTransform>().sizeDelta = new Vector2(UnlockedMenuItems[5].GetComponent<RectTransform>().rect.width, UnlockedMenuItems[5].GetComponent<RectTransform>().rect.height); //사이즈 조정
+                TableMenu[num].GetComponent<Image>().sprite = UnlockedMenuItems[5].GetComponent<Image>().sprite;
                 break;
             case 7:
-                TableMenu[num].GetComponent<RectTransform>().sizeDelta = new Vector2(OpenMenu[6].GetComponent<RectTransform>().rect.width, OpenMenu[6].GetComponent<RectTransform>().rect.height); //사이즈 조정
-                TableMenu[num].GetComponent<Image>().sprite = OpenMenu[6].GetComponent<Image>().sprite;
+                TableMenu[num].GetComponent<RectTransform>().sizeDelta = new Vector2(UnlockedMenuItems[6].GetComponent<RectTransform>().rect.width, UnlockedMenuItems[6].GetComponent<RectTransform>().rect.height); //사이즈 조정
+                TableMenu[num].GetComponent<Image>().sprite = UnlockedMenuItems[6].GetComponent<Image>().sprite;
                 break;
             case 8:
-                TableMenu[num].GetComponent<RectTransform>().sizeDelta = new Vector2(OpenMenu[7].GetComponent<RectTransform>().rect.width, OpenMenu[7].GetComponent<RectTransform>().rect.height); //사이즈 조정
-                TableMenu[num].GetComponent<Image>().sprite = OpenMenu[7].GetComponent<Image>().sprite;
+                TableMenu[num].GetComponent<RectTransform>().sizeDelta = new Vector2(UnlockedMenuItems[7].GetComponent<RectTransform>().rect.width, UnlockedMenuItems[7].GetComponent<RectTransform>().rect.height); //사이즈 조정
+                TableMenu[num].GetComponent<Image>().sprite = UnlockedMenuItems[7].GetComponent<Image>().sprite;
                 break;
             case 11://여기서부터는 친밀도 이벤트의 메뉴들, 11은 도리 스페셜 메뉴
                 if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
@@ -775,7 +803,7 @@ public class Menu : MonoBehaviour
         }
     }
 
-    public void OpenMenu4() // 메뉴4 해제
+    public void UnlockMenuItems4() // 메뉴4 해제
     {
         //만약 스타가 부족하면 열리지 않음
         if(Star.instance.starNum >= 5)
@@ -783,99 +811,99 @@ public class Menu : MonoBehaviour
             MenuObject[3].SetActive(true);
             Star.instance.starNum -= 5;
             Star.instance.StarNumText.text = string.Format("{0}", Star.instance.starNum.ToString());
-            NotOpenMenu[0].SetActive(false); //실루엣 이미지 없애고
-            OpenMenu.Add(MenuObject[3]); //OpenMenu리스트에 메뉴4 추가
+            LockedMenuItems[0].SetActive(false); //실루엣 이미지 없애고
+            UnlockedMenuItems.Add(MenuObject[3]); //UnlockedMenuItems리스트에 메뉴4 추가
             menu4Open = true; //1은 메뉴가 해제됐다는 의미
             LockedMenu[0].gameObject.SetActive(true);//메뉴 5 해제 버튼 활성화
-            SaveOpenMenuInfo();
+            SaveUnlockedMenuItemInfo();
         }
     }
 
-    public void OpenMenu5()
+    public void UnlockMenuItems5()
     {
         if (Star.instance.starNum >= 10)
         {
             MenuObject[4].SetActive(true);
             Star.instance.starNum -= 10;
             Star.instance.StarNumText.text = string.Format("{0}", Star.instance.starNum.ToString());
-            NotOpenMenu[1].SetActive(false);
-            OpenMenu.Add(MenuObject[4]);          
+            LockedMenuItems[1].SetActive(false);
+            UnlockedMenuItems.Add(MenuObject[4]);          
             menu5Open = true;
             LockedMenu[1].gameObject.SetActive(true);
-            SaveOpenMenuInfo();
+            SaveUnlockedMenuItemInfo();
         }
     }
 
-    public void OpenMenu6()
+    public void UnlockMenuItems6()
     {
         if (Star.instance.starNum >= 15)
         {
             MenuObject[5].SetActive(true);
             Star.instance.starNum -= 15;
             Star.instance.StarNumText.text = string.Format("{0}", Star.instance.starNum.ToString());
-            NotOpenMenu[2].SetActive(false);
-            OpenMenu.Add(MenuObject[5]);
+            LockedMenuItems[2].SetActive(false);
+            UnlockedMenuItems.Add(MenuObject[5]);
             menu6Open = true;
             LockedMenu[2].gameObject.SetActive(true);
             GameScript1.instance.TipBubbleOn();
-            SaveOpenMenuInfo();
+            SaveUnlockedMenuItemInfo();
         }
     }
 
-    public void OpenMenu7()
+    public void UnlockMenuItems7()
     {
         if (Star.instance.starNum >= 20)
         {
             MenuObject[6].SetActive(true);
             Star.instance.starNum -= 20;
             Star.instance.StarNumText.text = string.Format("{0}", Star.instance.starNum.ToString());
-            NotOpenMenu[3].SetActive(false);
-            OpenMenu.Add(MenuObject[6]);
+            LockedMenuItems[3].SetActive(false);
+            UnlockedMenuItems.Add(MenuObject[6]);
             menu7Open = true;
             LockedMenu[3].gameObject.SetActive(true);
-            SaveOpenMenuInfo();
+            SaveUnlockedMenuItemInfo();
         }
     }
 
-    public void OpenMenu8()
+    public void UnlockMenuItems8()
     {
         if (Star.instance.starNum >= 25)
         {
             MenuObject[7].SetActive(true);
             Star.instance.starNum -= 25;
             Star.instance.StarNumText.text = string.Format("{0}", Star.instance.starNum.ToString());
-            NotOpenMenu[4].SetActive(false);
-            OpenMenu.Add(MenuObject[7]);
+            LockedMenuItems[4].SetActive(false);
+            UnlockedMenuItems.Add(MenuObject[7]);
             menu8Open = true;
             GameScript1.instance.AllScenarioEnd();
-            SaveOpenMenuInfo();
+            SaveUnlockedMenuItemInfo();
         }
     }
 
-    public bool SaveOpenMenuInfo()
+    public bool SaveUnlockedMenuItemInfo()
     {
         bool result = false;
         try
         {
-            PlayerPrefs.SetInt("OpenMenu", OpenMenu.Count); //현재 오픈된 메뉴 크기 저장, 3은 기본 메뉴 3개 오픈된 것
+            PlayerPrefs.SetInt("UnlockedMenuItems", UnlockedMenuItems.Count); //현재 오픈된 메뉴 크기 저장, 3은 기본 메뉴 3개 오픈된 것
             PlayerPrefs.Save(); //세이브
             result = true;
         }
         catch (System.Exception e)
         {
-            Debug.LogError("SaveOpenMenuInfo Failed (" + e.Message + ")");
+            Debug.LogError("SaveUnlockedMenuItemInfo Failed (" + e.Message + ")");
         }
         return result;        
     }
 
-    public bool LoadOpenMenuInfo() 
+    public bool LoadUnlockedMenuItemInfo() 
     {
         bool result = false;
         try
         {
-            if (PlayerPrefs.HasKey("OpenMenu"))
+            if (PlayerPrefs.HasKey("UnlockedMenuItems"))
             {
-                int n = PlayerPrefs.GetInt("OpenMenu");
+                int n = PlayerPrefs.GetInt("UnlockedMenuItems");
                 if(n != 3)
                 {
                     for(int i = 4; i <= n; i++)
@@ -896,8 +924,8 @@ public class Menu : MonoBehaviour
     void LoadMenu(int x)//오픈 메뉴 리스트 크기에 따라 메뉴 로드
     {
         MenuObject[x-1].SetActive(true);
-        NotOpenMenu[x-4].SetActive(false); //실루엣 이미지 없애고
-        OpenMenu.Add(MenuObject[x-1]); //OpenMenu리스트에 메뉴 추가
+        LockedMenuItems[x-4].SetActive(false); //실루엣 이미지 없애고
+        UnlockedMenuItems.Add(MenuObject[x-1]); //UnlockedMenuItems리스트에 메뉴 추가
         switch(x)
         {
             case 4:

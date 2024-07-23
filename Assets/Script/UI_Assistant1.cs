@@ -784,23 +784,23 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                         case 3:
                             GameScript1.instance.textnum = 0;
                             break;
-                        case 6:
+                        case 7:
                             CharacterList.instance.CharacterFaceList[13].face[6].SetActive(false);
                             CharacterList.instance.CharacterFaceList[13].face[4].SetActive(true);
                             GameScript1.instance.textnum = 1;
                             break;
-                        case 7:
+                        case 8:
                             CharacterList.instance.CharacterFaceList[13].face[4].SetActive(false);
                             CharacterList.instance.CharacterFaceList[13].face[1].SetActive(true);
                             break;
-                        case 8:
+                        case 9:
                             GameScript1.instance.textnum = 0;
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
                                 SmallFade.instance.SetCharacter(4);
                             }                          
                             break;
-                        case 11:
+                        case 12:
                             CharacterList.instance.CharacterFaceList[13].face[1].SetActive(false);
                             CharacterList.instance.CharacterFaceList[13].face[0].SetActive(true);
                             GameScript1.instance.textnum = 1;

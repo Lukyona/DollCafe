@@ -7,12 +7,18 @@ public class MenuHint : MonoBehaviour
 {
     public static MenuHint instance;
 
+    [System.Serializable] // 클래스나 구조체를 에디터 인스펙터에 노출
+    class TextList
+    {
+        public string[] MHtext;
+    }   
+    [SerializeField] TextList[] MHTextList; //문자열 배열을 가지고 있는 배열
+
     public GameObject[] MH; //메뉴힌트 말풍선
 
-    public Text[] MHText; //메뉴 힌트 메세지
-
-    private GameObject[] HintBubble = new GameObject[6]; //스크립트 내에서 작동하는 메뉴힌트 말풍선
-    private Text[] HintText = new Text[6]; //스크립트 내에서 작동하는 메뉴 힌트 메세지
+    private GameObject[] HintBubble = new GameObject[6]; // 메뉴 힌트 말풍선
+    private Text[] HintText = new Text[6]; // 메뉴 힌트 말풍선 메세지
+    
 
     public GameObject tutorialBubble; //서빙 튜토리얼
     public Text tutorialText;
@@ -36,10 +42,6 @@ public class MenuHint : MonoBehaviour
         for(int i = 0; i < MH.Length; i++)
         {
             MH[i].GetComponent<Image>().alphaHitTestMinimumThreshold = 1f;
-        }
-        for (int i = 0; i < Menu.instance.MenuObject.Length; i++)
-        {
-            Menu.instance.MenuObject[i].GetComponent<Image>().alphaHitTestMinimumThreshold = 1f;
         }
     }
 
@@ -102,7 +104,7 @@ public class MenuHint : MonoBehaviour
         else
         {
             HintBubble[num] = MH[num]; //말풍선1로 설정
-            HintText[num] = MHText[num]; //말풍선1의 메세지로 설정
+            HintText[num] = MH[num].GetComponentInChildren<Text>(); //말풍선1의 메세지로 설정
             seatNum = num;  
         }
         
@@ -125,23 +127,23 @@ public class MenuHint : MonoBehaviour
                     if( r >= 5) //두번째 메세지일 경우
                     {
                         RightMenu[num] = 4; //원하는 메뉴는 자몽이므로 4
-                        HintText[seatNum].text = CharacterList.instance.MHTextList[0].MHtext[1]; //메뉴 힌트 메세지에 넣기
+                        HintText[seatNum].text = MHTextList[0].MHtext[1]; //메뉴 힌트 메세지에 넣기
                     }
                     else if (r <= 4)
                     {
                         RightMenu[num] = 1;
-                        HintText[seatNum].text = CharacterList.instance.MHTextList[0].MHtext[0]; //메뉴 힌트 메세지에 넣기
+                        HintText[seatNum].text = MHTextList[0].MHtext[0]; //메뉴 힌트 메세지에 넣기
                     }
                 }
                 else //메뉴4가 열리지 않았으면
                 {
-                    HintText[seatNum].text = CharacterList.instance.MHTextList[0].MHtext[0]; //첫번째 메세지로 설정
+                    HintText[seatNum].text = MHTextList[0].MHtext[0]; //첫번째 메세지로 설정
                     RightMenu[num] = 1;
                 }
                 break;
 
             case 2: //2는 붕붕
-                HintText[seatNum].text = CharacterList.instance.MHTextList[1].MHtext[0]; //첫번째 메세지로 설정
+                HintText[seatNum].text = MHTextList[1].MHtext[0]; //첫번째 메세지로 설정
                 RightMenu[num] = 2; //원하는 메뉴는 핫초코
                 break;
 
@@ -153,17 +155,17 @@ public class MenuHint : MonoBehaviour
                     if (r >= 5) //두번째 메세지일 경우
                     {
                         RightMenu[num] = 6; //원하는 메뉴는 6
-                        HintText[seatNum].text = CharacterList.instance.MHTextList[2].MHtext[1];
+                        HintText[seatNum].text = MHTextList[2].MHtext[1];
                     }
                     else if (r <= 4)
                     {
                         RightMenu[num] = 2;
-                        HintText[seatNum].text = CharacterList.instance.MHTextList[2].MHtext[0];
+                        HintText[seatNum].text = MHTextList[2].MHtext[0];
                     }
                 }
                 else //메뉴6이 열리지 않았으면
                 {
-                    HintText[seatNum].text = CharacterList.instance.MHTextList[2].MHtext[0]; //첫번째 메세지로 설정
+                    HintText[seatNum].text = MHTextList[2].MHtext[0]; //첫번째 메세지로 설정
                     RightMenu[num] = 2;
                 }
                 break;
@@ -175,17 +177,17 @@ public class MenuHint : MonoBehaviour
                     if (r >= 5) //두번째 메세지일 경우
                     {
                         RightMenu[num] = 4;
-                        HintText[seatNum].text = CharacterList.instance.MHTextList[3].MHtext[1];
+                        HintText[seatNum].text = MHTextList[3].MHtext[1];
                     }
                     else if (r <= 4)
                     {
                         RightMenu[num] = 3;
-                        HintText[seatNum].text = CharacterList.instance.MHTextList[3].MHtext[0];
+                        HintText[seatNum].text = MHTextList[3].MHtext[0];
                     }
                 }
                 else 
                 {
-                    HintText[seatNum].text = CharacterList.instance.MHTextList[3].MHtext[0]; //첫번째 메세지로 설정
+                    HintText[seatNum].text = MHTextList[3].MHtext[0]; //첫번째 메세지로 설정
                     RightMenu[num] = 3;
                 }
                 break;
@@ -198,17 +200,17 @@ public class MenuHint : MonoBehaviour
                     if (r >= 4) //두번째 메세지일 경우, 70%
                     {
                         RightMenu[num] = 6;
-                        HintText[seatNum].text = CharacterList.instance.MHTextList[4].MHtext[1];
+                        HintText[seatNum].text = MHTextList[4].MHtext[1];
                     }
                     else if (r <= 3)
                     {
                         RightMenu[num] = 1;
-                        HintText[seatNum].text = CharacterList.instance.MHTextList[4].MHtext[0];
+                        HintText[seatNum].text = MHTextList[4].MHtext[0];
                     }
                 }
                 else
                 {
-                    HintText[seatNum].text = CharacterList.instance.MHTextList[4].MHtext[0]; //첫번째 메세지로 설정
+                    HintText[seatNum].text = MHTextList[4].MHtext[0]; //첫번째 메세지로 설정
                     RightMenu[num] = 1;
                 }
                 break;
@@ -221,17 +223,17 @@ public class MenuHint : MonoBehaviour
                     if (r >= 5) //두번째 메세지일 경우
                     {
                         RightMenu[num] = 8;
-                        HintText[seatNum].text = CharacterList.instance.MHTextList[5].MHtext[1];
+                        HintText[seatNum].text = MHTextList[5].MHtext[1];
                     }
                     else if (r <= 4)
                     {
                         RightMenu[num] = 3;
-                        HintText[seatNum].text = CharacterList.instance.MHTextList[5].MHtext[0];
+                        HintText[seatNum].text = MHTextList[5].MHtext[0];
                     }
                 }
                 else
                 {
-                    HintText[seatNum].text = CharacterList.instance.MHTextList[5].MHtext[0]; //첫번째 메세지로 설정
+                    HintText[seatNum].text = MHTextList[5].MHtext[0]; //첫번째 메세지로 설정
                     RightMenu[num] = 3;
                 }
                 break;
@@ -244,17 +246,17 @@ public class MenuHint : MonoBehaviour
                     if (r >= 6) //두번째 메세지일 경우
                     {
                         RightMenu[num] = 7;
-                        HintText[seatNum].text = CharacterList.instance.MHTextList[6].MHtext[1];
+                        HintText[seatNum].text = MHTextList[6].MHtext[1];
                     }
                     else if (r <= 5)
                     {
                         RightMenu[num] = 3;
-                        HintText[seatNum].text = CharacterList.instance.MHTextList[6].MHtext[0];
+                        HintText[seatNum].text = MHTextList[6].MHtext[0];
                     }
                 }
                 else
                 {
-                    HintText[seatNum].text = CharacterList.instance.MHTextList[6].MHtext[0]; //첫번째 메세지로 설정
+                    HintText[seatNum].text = MHTextList[6].MHtext[0]; //첫번째 메세지로 설정
                     RightMenu[num] = 3;
                 }
                 break;
@@ -267,17 +269,17 @@ public class MenuHint : MonoBehaviour
                     if (r >= 6) //두번째 메세지일 경우
                     {
                         RightMenu[num] = 7;
-                        HintText[seatNum].text = CharacterList.instance.MHTextList[7].MHtext[1];
+                        HintText[seatNum].text = MHTextList[7].MHtext[1];
                     }
                     else if (r <= 5)
                     {
                         RightMenu[num] = 4;
-                        HintText[seatNum].text = CharacterList.instance.MHTextList[7].MHtext[0];
+                        HintText[seatNum].text = MHTextList[7].MHtext[0];
                     }
                 }
                 else
                 {
-                    HintText[seatNum].text = CharacterList.instance.MHTextList[7].MHtext[0]; //첫번째 메세지로 설정
+                    HintText[seatNum].text = MHTextList[7].MHtext[0]; //첫번째 메세지로 설정
                     RightMenu[num] = 4;
                 }
                 break;
@@ -290,18 +292,18 @@ public class MenuHint : MonoBehaviour
                     if (r >= 5) //두번째 메세지일 경우
                     {
                         RightMenu[num] = 8;
-                        HintText[seatNum].text = CharacterList.instance.MHTextList[8].MHtext[1];
+                        HintText[seatNum].text = MHTextList[8].MHtext[1];
                     }
                     else if (r <= 4)
                     {
                         RightMenu[num] = 2;
-                        HintText[seatNum].text = CharacterList.instance.MHTextList[8].MHtext[0];
+                        HintText[seatNum].text = MHTextList[8].MHtext[0];
                         
                     }
                 }
                 else
                 {
-                    HintText[seatNum].text = CharacterList.instance.MHTextList[8].MHtext[0]; //첫번째 메세지로 설정
+                    HintText[seatNum].text = MHTextList[8].MHtext[0]; //첫번째 메세지로 설정
                     RightMenu[num] = 2;
                 }
                 break;
@@ -314,17 +316,17 @@ public class MenuHint : MonoBehaviour
                     if (r >= 6) //두번째 메세지일 경우
                     {
                         RightMenu[num] = 6;
-                        HintText[seatNum].text = CharacterList.instance.MHTextList[9].MHtext[1];
+                        HintText[seatNum].text = MHTextList[9].MHtext[1];
                     }
                     else if (r <= 5)
                     {
                         RightMenu[num] = 5;
-                        HintText[seatNum].text = CharacterList.instance.MHTextList[9].MHtext[0];
+                        HintText[seatNum].text = MHTextList[9].MHtext[0];
                     }
                 }
                 else
                 {
-                    HintText[seatNum].text = CharacterList.instance.MHTextList[9].MHtext[0]; //첫번째 메세지로 설정
+                    HintText[seatNum].text = MHTextList[9].MHtext[0]; //첫번째 메세지로 설정
                     RightMenu[num] = 5;
                 }
                 break;
@@ -335,22 +337,22 @@ public class MenuHint : MonoBehaviour
                 if (r >= 6) //두번째 메세지일 경우
                 {
                     RightMenu[num] = 5;
-                    HintText[seatNum].text = CharacterList.instance.MHTextList[10].MHtext[1];
+                    HintText[seatNum].text = MHTextList[10].MHtext[1];
                 }
                 else if (r <= 5)
                 {
                     RightMenu[num] = 1;
-                    HintText[seatNum].text = CharacterList.instance.MHTextList[10].MHtext[0];
+                    HintText[seatNum].text = MHTextList[10].MHtext[0];
                 }
                 break;
 
             case 12: //히로
-                HintText[seatNum].text = CharacterList.instance.MHTextList[11].MHtext[0]; //첫번째 메세지로 설정
+                HintText[seatNum].text = MHTextList[11].MHtext[0]; //첫번째 메세지로 설정
                 RightMenu[num] = 5;
                 break;
 
             case 13: //디노
-                HintText[seatNum].text = CharacterList.instance.MHTextList[12].MHtext[0]; //첫번째 메세지로 설정
+                HintText[seatNum].text = MHTextList[12].MHtext[0]; //첫번째 메세지로 설정
                 RightMenu[num] = 6;
                 break;
 
@@ -362,17 +364,17 @@ public class MenuHint : MonoBehaviour
                     if (r >= 6) //두번째 메세지일 경우
                     {
                         RightMenu[num] = 8;
-                        HintText[seatNum].text = CharacterList.instance.MHTextList[13].MHtext[1];
+                        HintText[seatNum].text = MHTextList[13].MHtext[1];
                     }
                     else if(r <= 5)
                     {
                         RightMenu[num] = 5;
-                        HintText[seatNum].text = CharacterList.instance.MHTextList[13].MHtext[0];
+                        HintText[seatNum].text = MHTextList[13].MHtext[0];
                     }
                 }
                 else
                 {
-                    HintText[seatNum].text = CharacterList.instance.MHTextList[13].MHtext[0]; //첫번째 메세지로 설정
+                    HintText[seatNum].text = MHTextList[13].MHtext[0]; //첫번째 메세지로 설정
                     RightMenu[num] = 5;
                 }
                 break;
@@ -383,12 +385,12 @@ public class MenuHint : MonoBehaviour
                 if (r >= 6) //두번째 메세지일 경우
                 {
                     RightMenu[num] = 4;
-                    HintText[seatNum].text = CharacterList.instance.MHTextList[14].MHtext[1];
+                    HintText[seatNum].text = MHTextList[14].MHtext[1];
                 }
                 else if(r <= 5)
                 {
                     RightMenu[num] = 3;
-                    HintText[seatNum].text = CharacterList.instance.MHTextList[14].MHtext[0];
+                    HintText[seatNum].text = MHTextList[14].MHtext[0];
                 } 
                 break;
         }
