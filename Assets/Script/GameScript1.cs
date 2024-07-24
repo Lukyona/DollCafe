@@ -28,7 +28,6 @@ public class GameScript1 : MonoBehaviour //전체적인 게임스트립트
     public bool delete = false;
 
     public GameObject AdsMessage;
-    public GameObject GameClose;
 
     public GameObject PurchasingWindow;//붕어빵 버튼 눌렀을 때 나오는 창
     public Text PurchasingText; //창 메세지
@@ -46,8 +45,6 @@ public class GameScript1 : MonoBehaviour //전체적인 게임스트립트
 
     public Button FishBreadButton;//붕어빵 버튼
     public Image FishBread2;//두 번 결제 후 붕어빵 버튼 이미지
-
-    public Text GameCloseWarning;
 
     public Image JejeBubble;
     public Text JejeText;
@@ -79,11 +76,7 @@ public class GameScript1 : MonoBehaviour //전체적인 게임스트립트
     {
         BgmManager.instance.PlayCafeBgm(); //카페 브금 재생
 
-        if (mainCount == 0)
-        {
-            servingTutorial.SetActive(true);
-            FirstTutorial(); //게임의 첫 튜토리얼 실행
-        }             
+                  
     }
 
     public void Cheat()
@@ -223,7 +216,7 @@ public class GameScript1 : MonoBehaviour //전체적인 게임스트립트
         return result;
     }
 
-    void FirstTutorial()
+    public void FirstTutorial()
     {
         gameObject.GetComponent<CharacterMove>().enabled = true;
         BigCharacter[0].SetActive(true);

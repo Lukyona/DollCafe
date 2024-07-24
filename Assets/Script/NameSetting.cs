@@ -70,7 +70,8 @@ public class NameSetting : MonoBehaviour //무명이, 주인공 아기 이름 �
         }
         nameCheckWindow.SetActive(false);//이름 확인창 비활성화
         PlayerPrefs.Save();
-        UI_Assistant1.instance.Invoke("TouchEnable", 1f);
+        UserInputManager.instance.Invoke("SetCanTouchTrue", 1f);
+
     }
 
     public void NameSetNotYet() //다시 이름 고민

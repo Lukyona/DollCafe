@@ -6,6 +6,8 @@ public class SystemManager : MonoBehaviour
 {
    public static SystemManager instance;
 
+    public GameObject GameClosingWindow;
+
    bool completeSave = false;
 
   void Awake()
@@ -19,6 +21,12 @@ public class SystemManager : MonoBehaviour
     void Start()
     {
         GameScript1.instance.LoadDataInfo();//데이터 정보 불러옴
+
+        if (GameScript1.instance.mainCount == 0)
+        {
+            GameScript1.instance.servingTutorial.SetActive(true);
+            GameScript1.instance.FirstTutorial(); //게임의 첫 튜토리얼 실행
+        }   
         if (GameScript1.instance.mainCount > 3)//붕붕이 등장 이후면
         {
             Star.instance.Invoke("ActivateStarSystem", 25f);//25초 뒤 별 함수 시작
@@ -37,7 +45,7 @@ public class SystemManager : MonoBehaviour
         {
             if (Input.GetKey(KeyCode.Escape))//뒤로가기 버튼 누르면 종료 메세지창
             {
-                if (GameScript1.instance.GameClose.activeSelf == false)
+                if (GameClosingWindow.activeSelf == false)
                 {
                     if (UserInputManager.instance.CanTouch())
                     {
@@ -46,13 +54,14 @@ public class SystemManager : MonoBehaviour
                     OnApplicationFocus(false);
                     if(GameScript1.instance.mainCount <= 3)
                     {
-                        GameScript1.instance.GameCloseWarning.gameObject.SetActive(true);//경고문구 활성
+                        GameClosingWindow.transform.Find("WarningText").gameObject.SetActive(true); // 경고문구 활성
                     }
                     else
                     {
-                        GameScript1.instance.GameCloseWarning.gameObject.SetActive(false);
+                        if(GameClosingWindow.transform.Find("WarningText").gameObject.activeSelf == true) // 경고문구 켜져있으면 끄기
+                            GameClosingWindow.transform.Find("WarningText").gameObject.SetActive(false);
                     }
-                    GameScript1.instance.GameClose.SetActive(true);
+                    GameClosingWindow.SetActive(true);
                 }
             } 
         }
@@ -62,7 +71,8 @@ public class SystemManager : MonoBehaviour
             SEManager.instance.PlayTouchSound();
         }
     }
-public void OnApplicationFocus(bool value)
+
+    public void OnApplicationFocus(bool value)
     {
         //Debug.Log("OnApplicationFocus() : " + value);
         
@@ -73,26 +83,13 @@ public void OnApplicationFocus(bool value)
                 if(!AdsManager.instance.IsWatchingAds())//광고보고 온 경우가 아닐 때
                 {
                     TimeManager.instance.SetLoadingState(true);
-                    if (TimeManager.instance.TimeCoroutine != null)
+                    if (TimeManager.instance.IsTimerNotNull())
                     {
-                        TimeManager.instance.StopCoroutine(TimeManager.instance.TimeCoroutine);
+                        TimeManager.instance.StopTimer();
                     }
-                    
-                   TimeManager.instance.TimerStart();
-                    GameScript1.instance.LoadDataInfo();//데이터 정보 불러옴
+                    TimeManager.instance.StartTimer();
                     Star.instance.Invoke("ActivateStarSystem", 25f);//25초 뒤 별 함수 시작
                     Debug.Log("스타시스템 25초 뒤 시작");
-                }
-                else if(AdsManager.instance.IsWatchingAds())//광고 보고 온 후
-                {
-                    TimeManager.instance.SetLoadingState(true);
-
-                    if (TimeManager.instance.TimeCoroutine != null)
-                    {
-                        TimeManager.instance.StopCoroutine(TimeManager.instance.TimeCoroutine);
-                    }
-                    TimeManager.instance.TimerStart();
-                    Debug.Log("광고 종료");
                 }
                 if (!CharacterVisit.instance.IsInvoking("RandomVisit") && GameScript1.instance.endStory != 1 && !UI_Assistant1.instance.talking)
                 {//엔딩이벤트를 보기 전이거나 보고 종료하고 다시 들어왔을 경우,대화 중이 아니어야함
@@ -101,11 +98,11 @@ public void OnApplicationFocus(bool value)
                 }
             }
         }
-        else //게임 이탈, 광고 볼 때도 포함
+        else //게임 이탈
         {
             if(!GameScript1.instance.delete)
-            {                
-                if (GameScript1.instance.mainCount > 3 && !AdsManager.instance.IsWatchingAds())//붕붕이 등장 이후, 광고를 보는 게 아닐 때만
+            {          
+                if (GameScript1.instance.mainCount > 3)//붕붕이 등장 이후
                 {
                     TimeManager.instance.SaveAppQuitTime(); //게임 나간 시간 저장     
                     GameScript1.instance.SaveDataInfo();//데이터 저장
@@ -130,14 +127,20 @@ public void OnApplicationFocus(bool value)
                     completeSave = true;
                    // Debug.Log("모든 세이브 완료");
                 }  
-                else if(AdsManager.instance.IsWatchingAds())
-                {
-                    HPManager.instance.SaveHPInfo(); //체력 정보 저장  
-                    TimeManager.instance.SaveAppQuitTime(); //게임 나간 시간 저장  
-                }
             }
         }
     }  
+
+
+    public void AfterWatchingAds()
+    {
+        TimeManager.instance.SetLoadingState(true);
+        if (TimeManager.instance.IsTimerNotNull())
+        {
+            TimeManager.instance.StopTimer();
+        }
+        TimeManager.instance.StartTimer();
+    }
 
     public void YesGameClose()
     {
@@ -156,7 +159,8 @@ public void OnApplicationFocus(bool value)
             UserInputManager.instance.SetCanTouch(true);
         }
         OnApplicationFocus(true);//스타 시스템 다시
-        //GameClose.SetActive(false);
+        if(GameClosingWindow.transform.Find("WarningText").gameObject.activeSelf == true) // 경고문구 켜져있으면 끄기
+            GameClosingWindow.transform.Find("WarningText").gameObject.SetActive(false);
+        GameClosingWindow.SetActive(false);
     }
-    
 }

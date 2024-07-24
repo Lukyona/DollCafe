@@ -14575,7 +14575,7 @@ GameObject:
   - component: {fileID: 517708583}
   - component: {fileID: 517708582}
   m_Layer: 0
-  m_Name: GameCloseMessage
+  m_Name: GameClosingWindow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -32059,8 +32059,6 @@ MonoBehaviour:
   HPRechargeIntervalMin: 10
   m_RechargeRemainMin: 0
   m_RechargeRemainSec: 0
-  off: 0
-  allSave: 0
 --- !u!114 &1194812725
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -34330,7 +34328,7 @@ GameObject:
   - component: {fileID: 1266914419}
   - component: {fileID: 1266914418}
   m_Layer: 0
-  m_Name: Text
+  m_Name: WarningText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -43409,6 +43407,7 @@ GameObject:
   - component: {fileID: 1538706532}
   - component: {fileID: 1538706533}
   - component: {fileID: 1538706534}
+  - component: {fileID: 1538706535}
   m_Layer: 0
   m_Name: GameScript
   m_TagString: Untagged
@@ -43468,7 +43467,6 @@ MonoBehaviour:
   endStory: 0
   delete: 0
   AdsMessage: {fileID: 691662787}
-  GameClose: {fileID: 517708581}
   PurchasingWindow: {fileID: 1195668364}
   PurchasingText: {fileID: 1126024390}
   FishBreadText: {fileID: 1739857071}
@@ -43480,7 +43478,6 @@ MonoBehaviour:
   littleFishBreadText: {fileID: 641081301}
   FishBreadButton: {fileID: 2053028304}
   FishBread2: {fileID: 1691167823}
-  GameCloseWarning: {fileID: 1266914418}
   JejeBubble: {fileID: 108787060}
   JejeText: {fileID: 403727727}
   jejeBubbleAnimator: {fileID: 108787062}
@@ -43494,7 +43491,6 @@ MonoBehaviour:
   TipNoteAnimator: {fileID: 395229138}
   Tip2: {fileID: 201226726}
   Tip3: {fileID: 925840050}
-  close: 0
   tipNum: 0
   changeMessage: {fileID: 1336604589}
   changing: 0
@@ -43811,7 +43807,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2cd031928533df469b3a20b92d92ee1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  addOn: 0
 --- !u!114 &1538706529
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -44088,6 +44083,19 @@ MonoBehaviour:
   - {fileID: 1155229355}
   - {fileID: 413690095}
   StarNumText: {fileID: 351724910}
+--- !u!114 &1538706535
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1538706512}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 032f0129a2c494000823eb6c2e1eb6db, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GameClosingWindow: {fileID: 517708581}
 --- !u!1 &1544820110
 GameObject:
   m_ObjectHideFlags: 0

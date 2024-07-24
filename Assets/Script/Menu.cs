@@ -273,7 +273,7 @@ public class Menu : MonoBehaviour
                     SmallFade.instance.Invoke("VisibleCharacter",0.3f); //캐릭터 다시 보이게 하고
                                                                         // GameScript1.instance.TutorialUpBox();
                     UI_Assistant1.instance.Invoke("OpenDialogue2",0.5f);
-                    UI_Assistant1.instance.Invoke("TouchEnable", 1.5f);
+                    UserInputManager.instance.Invoke("SetCanTouchTrue", 1.5f);
                     VisitorNote.instance.IncreaseFrinedshipGauge(1);
                 }
                 else

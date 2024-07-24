@@ -41,7 +41,6 @@ public class Setting : MonoBehaviour
 
             settingWindowAnimator.SetTrigger("SettingUp"); //설정창 올라옴
             settingButton.GetComponent<Button>().interactable = false; // 설정 버튼 중복 터치 방지
-            //UI_Assistant1.instance.TouchEnable();
             UserInputManager.instance.SetCanTouch(false); // 터치 불가, 대사 못 넘김
         }
     }
@@ -53,7 +52,6 @@ public class Setting : MonoBehaviour
         settingButton.GetComponent<Button>().interactable = true; //설정 버튼 터치 가능
 
             UserInputManager.instance.SetCanTouch(true);// 터치 불가, 대사 넘기기 가능
-            //UI_Assistant1.instance.TouchEnable();
 
         if (UI_Assistant1.instance.talking && UserInputManager.instance.CanTouch())//대화 중이고, 특정한 터치를 해야하는 경우가 아닐 때
         {

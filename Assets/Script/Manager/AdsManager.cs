@@ -66,6 +66,9 @@ public void ShowRewardedAd()
     //const string rewardMsg = "Rewarded ad rewarded the user. Type: {0}, amount: {1}.";
     if (rewardedAd != null && rewardedAd.CanShowAd())
     {
+        TimeManager.instance.SaveAppQuitTime(); //게임 나간 시간 저장     
+        HPManager.instance.SaveHPInfo(); //체력, 타이머 정보 저장                
+
         rewardedAd.Show((Reward reward) => // 광고 끝나고 닫으면 실행됨
         {
             // TODO: Reward the user.

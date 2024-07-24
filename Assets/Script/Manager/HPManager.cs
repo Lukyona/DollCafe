@@ -62,6 +62,8 @@ public class HPManager : MonoBehaviour
             m_RechargeTimerCoroutine = null;
         }
         HPAmount.text = string.Format("{0}", m_HPAmount.ToString());
+
+        SystemManager.instance.AfterWatchingAds();
         GameScript1.instance.plusHP.interactable = true;
     }
 

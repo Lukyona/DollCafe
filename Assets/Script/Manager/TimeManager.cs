@@ -8,7 +8,7 @@ public class TimeManager : MonoBehaviour
 { 
    public static TimeManager instance;
 
-    public Coroutine TimeCoroutine;
+    Coroutine TimeCoroutine;
 
     bool loading = false; //true면 타이머 및 체력 정보 로드 중
 
@@ -20,15 +20,25 @@ public class TimeManager : MonoBehaviour
         }
 
         SetLoadingState(true); // 로딩 시작
-        TimerStart();
+        StartTimer();
     }
 
     string url = "https://www.google.co.kr/";
     DateTime dateTime;
 
-    public void TimerStart()
+    public void StartTimer()
     {
         TimeCoroutine = StartCoroutine(WebChk());
+    }
+
+    public void StopTimer()
+    {
+        StopCoroutine(TimeCoroutine);
+    }
+
+    public bool IsTimerNotNull()
+    {
+        return TimeCoroutine != null? true : false;
     }
 
      public IEnumerator WebChk()
@@ -55,23 +65,16 @@ public class TimeManager : MonoBehaviour
 
             if (IsLoading())//로드할 때
             {
-                Debug.Log("타이머 정보 로드");
+                //Debug.Log("타이머 정보 로드");
                 if (!AdsManager.instance.IsWatchingAds())
                 {
                     Debug.Log("체력 정보 로드");
-                    
                     HPManager.instance.LoadHPInfo(); //체력 정보 불러옴
                 }
                 HPManager.instance.LoadAppQuitTime(); //게임 종료 시간 불러옴
                 HPManager.instance.SetRechargeScheduler(); 
                 SetLoadingState(false);
-
-                if(AdsManager.instance.IsWatchingAds())
-                {
-                Debug.Log("광고 상태 해제");
-
-                    AdsManager.instance.SetWatchingAds(false);
-                }
+                AdsManager.instance.SetWatchingAds(false);
             } 
             yield return new WaitForSeconds(2f);
         }
@@ -83,7 +86,7 @@ public class TimeManager : MonoBehaviour
         bool result = false;
         try
         {
-            var appQuitTime = TimeManager.instance.GetDateTime().ToBinary().ToString();
+            var appQuitTime = GetDateTime().ToBinary().ToString();
             PlayerPrefs.SetString("AppQuitTime", appQuitTime);
             PlayerPrefs.Save();
             Debug.Log("저장된 시간" + DateTime.FromBinary(Convert.ToInt64(appQuitTime)).ToString());
