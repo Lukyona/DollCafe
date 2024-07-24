@@ -186,7 +186,7 @@ public class Menu : MonoBehaviour
 
     public void MenuServingFunction(int n)//서빙 함수
     {
-        if (HPCharge.instance.m_HPAmount <= 0) //체력이 0보다 작거나 같으면
+        if (HPManager.instance.m_HPAmount <= 0) //체력이 0보다 작거나 같으면
         {
             CantClickMenu();
             NoHPMessege.SetActive(true); //체력 없음 메세지 보이게 함
@@ -202,7 +202,7 @@ public class Menu : MonoBehaviour
             menuButtonAnimator.SetTrigger("MenuButtonIn"); //메뉴버튼 위에서 내려옴
             MenuHint.instance.CanClickMHB();//다른 메뉴힌트버블 터치 가능
 
-            HPCharge.instance.UseHP(); //체력 소모
+            HPManager.instance.UseHP(); //체력 소모
 
             if((cNum == 9 && CharacterAppear.instance.eventOn == 9) || (cNum == 10 && CharacterAppear.instance.eventOn == 10) || (cNum == 15 && CharacterAppear.instance.eventOn == 16))//친구,찰스1,롤렝드 친밀도 이벤트일 경우
             {//클릭된 캐릭터와 이벤트 캐릭터가 동일하면

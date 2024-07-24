@@ -7,7 +7,7 @@ public class CharacterAppear : MonoBehaviour
 {
     public static CharacterAppear instance;
 
-    int nextAppear = 0;
+    public int nextAppear = 0;
 
     void Awake()
     {

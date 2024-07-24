@@ -9,11 +9,10 @@ public class AdsManager : MonoBehaviour
     public static AdsManager instance;
 
     private RewardedAd rewardedAd;
-    public bool addOn = false; //광고 보는 중 true, 다 보면 false
-
+    bool watchingAds = false; //광고 보는 중 true, 다 보면 false
     string adUnitId = "ca-app-pub-9549514417727735/8806879959"; //광고 아이디
 
-    bool stopLoad = false;//광고로드가 되었으면 true
+    bool isLoaded = false; //광고 로드가 되었으면 true
 
     void Awake()
     {
@@ -58,31 +57,26 @@ public class AdsManager : MonoBehaviour
               //Debug.Log("Rewarded ad loaded with response : " + ad.GetResponseInfo());
 
               rewardedAd = ad;
-
               RegisterEventHandlers(rewardedAd);
           });
   }
 
 public void ShowRewardedAd() 
 {
-            Debug.Log("doing???");
-
     //const string rewardMsg = "Rewarded ad rewarded the user. Type: {0}, amount: {1}.";
     if (rewardedAd != null && rewardedAd.CanShowAd())
     {
-            Debug.Log("what???");
-
-        rewardedAd.Show((Reward reward) =>
+        rewardedAd.Show((Reward reward) => // 광고 끝나고 닫으면 실행됨
         {
             // TODO: Reward the user.
             //Debug.Log(String.Format(rewardMsg, reward.Type, reward.Amount));
-            HPCharge.instance.AddHP(); // 체력 추가
+            HPManager.instance.AddHP(); // 체력 추가
         });
     }
 }
-    public void AdsYes()
+    public void AgreeToWatchAds() // 광고 보는 것에 동의하는 버튼을 눌렀을 때
     {
-        addOn = true;
+        SetWatchingAds(true);
         GameScript1.instance.plusHP.interactable = false;
         GameScript1.instance.AdsMessage.SetActive(false);
         Invoke(nameof(WantAds), 0.3f);
@@ -93,7 +87,7 @@ public void ShowRewardedAd()
         //Debug.Log("광고 보여주기");
         if(rewardedAd.CanShowAd())
         {
-            stopLoad = false;
+            isLoaded = false;
             ShowRewardedAd();
         }
         else
@@ -106,56 +100,59 @@ public void ShowRewardedAd()
 
     private void Update()
     {
-        if(!stopLoad)
+        if(!isLoaded)
         {
-            if (rewardedAd.CanShowAd())
+            if (rewardedAd.CanShowAd()) 
             {
-                stopLoad = true;
-                Debug.Log(stopLoad);
-                GameScript1.instance.plusHP.interactable = true;
+                isLoaded = true;
+                //Debug.Log(stopLoad);
+                GameScript1.instance.plusHP.interactable = true; // 다시 광고 버튼 터치 가능
                //Debug.Log("광고 로드 완료");
             }
         } 
     }
 
+    public void SetWatchingAds(bool value)
+    {
+        watchingAds = value;
+    }
+
+    public bool IsWatchingAds()
+    {
+        return watchingAds;
+    }
+
    private void RegisterEventHandlers(RewardedAd ad)
-{
-    // Raised when the ad is estimated to have earned money.
-    ad.OnAdPaid += (AdValue adValue) =>
     {
-        Debug.Log(String.Format("Rewarded ad paid {0} {1}.",
-            adValue.Value,
-            adValue.CurrencyCode));
-
-
-
-    };
-    // Raised when an impression is recorded for an ad.
-    ad.OnAdImpressionRecorded += () =>
-    {
-        Debug.Log("Rewarded ad recorded an impression.");
-    };
-    // Raised when a click is recorded for an ad.
-    ad.OnAdClicked += () =>
-    {
-        Debug.Log("Rewarded ad was clicked.");
-    };
-    // Raised when an ad opened full screen content.
-    ad.OnAdFullScreenContentOpened += () =>
-    {
-        Debug.Log("Rewarded ad full screen content opened.");
-    };
-    // Raised when the ad closed full screen content.
-    ad.OnAdFullScreenContentClosed += () =>
-    {
-        Debug.Log("Rewarded ad full screen content closed.");
-    };
-    // Raised when the ad failed to open full screen content.
-    ad.OnAdFullScreenContentFailed += (AdError error) =>
-    {
-        Debug.LogError("Rewarded ad failed to open full screen content " +
-                       "with error : " + error);
-    };
-}
-
+        // Raised when the ad is estimated to have earned money.
+        ad.OnAdPaid += (AdValue adValue) =>
+        {
+            Debug.Log(String.Format("Rewarded ad paid {0} {1}.", adValue.Value, adValue.CurrencyCode));
+        };
+        // Raised when an impression is recorded for an ad.
+        ad.OnAdImpressionRecorded += () =>
+        {
+            //Debug.Log("Rewarded ad recorded an impression.");
+        };
+        // Raised when a click is recorded for an ad.
+        ad.OnAdClicked += () =>
+        {
+            Debug.Log("Rewarded ad was clicked.");
+        };
+        // Raised when an ad opened full screen content.
+        ad.OnAdFullScreenContentOpened += () =>
+        {
+            //Debug.Log("Rewarded ad full screen content opened.");
+        };
+        // Raised when the ad closed full screen content.
+        ad.OnAdFullScreenContentClosed += () =>
+        {
+            //Debug.Log("Rewarded ad full screen content closed.");
+        };
+        // Raised when the ad failed to open full screen content.
+        ad.OnAdFullScreenContentFailed += (AdError error) =>
+        {
+            Debug.LogError("Rewarded ad failed to open full screen content " + "with error : " + error);
+        };
+    }
 }

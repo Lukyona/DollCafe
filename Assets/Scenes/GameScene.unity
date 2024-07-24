@@ -32061,7 +32061,6 @@ MonoBehaviour:
   m_RechargeRemainSec: 0
   off: 0
   allSave: 0
-  load: 0
 --- !u!114 &1194812725
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -43767,6 +43766,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5fe5f04ab5c4b444b610e7e336e5816, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  nextAppear: 0
   eventOn: 0
 --- !u!114 &1538706526
 MonoBehaviour:
@@ -43780,7 +43780,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: afbaeddb32b9e77429484c522182d564, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  url: https://www.google.co.kr/
 --- !u!114 &1538706527
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -60545,7 +60544,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1538706528}
         m_TargetAssemblyTypeName: AdsManager, Assembly-CSharp
-        m_MethodName: AdsYes
+        m_MethodName: AgreeToWatchAds
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

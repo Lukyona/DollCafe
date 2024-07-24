@@ -106,13 +106,12 @@ public class Setting : MonoBehaviour
             PlayerPrefs.DeleteKey("RePlayOn");
             PlayerPrefs.DeleteKey("FMRP");
             PlayerPrefs.DeleteKey("EVRP");
-            PlayerPrefs.DeleteKey("GameOff");
             PlayerPrefs.DeleteKey("BabyName");
             PlayerPrefs.DeleteKey("NamedName");
             PlayerPrefs.DeleteKey("BgmOnOff");
             PlayerPrefs.DeleteKey("SEOnOff");
         }
-        SceneChanger.sc.FadeToScene(1);
+        SceneChanger.instance.FadeToScene(1);
     }
 
     public void ClickCancelReset()//초기화 취소버튼 눌렀을 때

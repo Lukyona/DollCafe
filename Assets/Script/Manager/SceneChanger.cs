@@ -5,20 +5,21 @@ using System.Collections;
 
 public class SceneChanger : MonoBehaviour //화면 페이드 인아웃
 {
-    public static SceneChanger sc;
+    public static SceneChanger instance;
     public Animator animator;
-    private int sceneToLoad;
-
-    public Text creditText;//엔딩 크레딧 텍스트
 
     [SerializeField] //private 직렬화
     Image lodingBar;
 
+    public Text creditText;//엔딩 크레딧 텍스트
+
+    private int sceneToLoad;
+
     void Awake()
     {
-        if(sc == null)
+        if(instance == null)
         {
-            sc = this;
+            instance = this;
         }
     }
 
@@ -28,8 +29,6 @@ public class SceneChanger : MonoBehaviour //화면 페이드 인아웃
         {
             case "LogoScene": //로고 씬이라면
                 // PlayerPrefs를 이용하면 로컬에 데이터를 저장할 수 있음. (문자열 키값, 데이터)
-                PlayerPrefs.SetInt("GameOff", 1); //중간 이탈이 아니라 게임을 끄고 들어온 것
-
                 if (PlayerPrefs.GetInt("end") == 2) //엔딩을 보고난 후에 게임을 킨 거면
                 {               
                     PlayerPrefs.SetInt("end", 3);
@@ -63,12 +62,11 @@ public class SceneChanger : MonoBehaviour //화면 페이드 인아웃
         }
     }
 
-
     private void Update()
     {
         if (SceneManager.GetActiveScene().name != "GameScene" && Application.platform == RuntimePlatform.Android)
         {
-            if (Input.GetKey(KeyCode.Escape))//뒤로가기 버튼 두 번으로 앱 종료(인게임씬은 제외)
+            if (Input.GetKey(KeyCode.Escape))//뒤로가기 버튼 두 번이면 바로 앱 종료(인게임씬은 제외)
             {
                 Application.Quit();
             }
@@ -84,7 +82,7 @@ public class SceneChanger : MonoBehaviour //화면 페이드 인아웃
 
     public void OnFadeComplete()
     {
-        SceneManager.LoadScene(sceneToLoad); //로딩씬 로드
+        SceneManager.LoadScene(sceneToLoad); //씬 로드
     }
 
      public void GoStartScreen()//스타트 씬으로 이동
@@ -113,30 +111,26 @@ public class SceneChanger : MonoBehaviour //화면 페이드 인아웃
 
     IEnumerator LoadAsyncScene(string sceneName)
     {
-        yield return null;
-        AsyncOperation asyncScene = SceneManager.LoadSceneAsync("GameScene");
+        yield return null; // 다음 프레임에 실행, ->업데이트 함수가 실행되었다가 돌아옴
+        AsyncOperation asyncScene = SceneManager.LoadSceneAsync("GameScene"); // LoadSceneAsync : 비동기 방식, 일시 중지가 발생하지 않음, 진행 정도를 반환
 
-        asyncScene.allowSceneActivation = false;
-        float timeC = 0;
+        asyncScene.allowSceneActivation = false; //장면이 준비된 즉시 활성화되는 것을 비허용, true는 허용
+        float time = 0;
         while(!asyncScene.isDone)
         {
-            yield return null;
-            timeC += Time.deltaTime;
-            if(asyncScene.progress >= 0.9f)
+            yield return null; 
+            time += Time.deltaTime;
+            if(asyncScene.progress >= 0.9f) // 로딩이 거의 다 끝났으면
             {
-                lodingBar.fillAmount = Mathf.Lerp(lodingBar.fillAmount, 1, timeC);
-                if(lodingBar.fillAmount == 1.0f)
+                lodingBar.fillAmount = Mathf.Lerp(lodingBar.fillAmount, 1, time); // Lerp(시작값, 끝값, 보간값)
+                if(lodingBar.fillAmount == 1.0f) // 로딩바가 다 채워지면   
                 {
                     asyncScene.allowSceneActivation = true;
                 }
             }
             else
             {
-                lodingBar.fillAmount = Mathf.Lerp(lodingBar.fillAmount, asyncScene.progress, timeC);
-                if(lodingBar.fillAmount >= asyncScene.progress)
-                {
-                    timeC = 0;
-                }
+                lodingBar.fillAmount = Mathf.Lerp(lodingBar.fillAmount, asyncScene.progress, time); //진행된 정도까지만 보간
             }
         }
     }

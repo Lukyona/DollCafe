@@ -152,7 +152,7 @@ public class GameScript1 : MonoBehaviour //전체적인 게임스트립트
                 endStory = PlayerPrefs.GetInt("end");       
                 pNum = PlayerPrefs.GetInt("pNum");
                 tipNum = PlayerPrefs.GetInt("tipNum");
-                if (mainCount > 3 && HPCharge.instance.off == 1)//붕붕이 등장 이후이고, 중간이탈이 아닌 게임을 종료하고 다시 들어온 것일 때
+                if (mainCount > 3)//붕붕이 등장 이후면
                 {
                    // Debug.Log("중요 데이터 로드");
                     SmallFade.instance.SetCharacter(0);
@@ -164,7 +164,7 @@ public class GameScript1 : MonoBehaviour //전체적인 게임스트립트
                     Invoke("CheckTip", 1.5f);//팁 확인
                     if (endStory != 3)//엔딩이벤트를 본 게 아니라면
                     {
-                        AllScenarioEnd();//한번 확인해주기
+                        AllScenarioEnd();//엔딩 이벤트 충족 조건 확인해주기
                     } 
                     for (int i = 1; i <= mainCount - 2; i++)//재방문 캐릭터 설정
                     {
@@ -535,8 +535,8 @@ public class GameScript1 : MonoBehaviour //전체적인 게임스트립트
             BgmManager.instance.BGMFadeOut();
             DownTextbox();
             Dialogue1.instance.CharacterDC[n] = 3;
-            HPCharge.instance.SaveHPInfo();
-            HPCharge.instance.SaveAppQuitTime();
+            HPManager.instance.SaveHPInfo();
+            TimeManager.instance.SaveAppQuitTime();
             Dialogue1.instance.SaveCharacterDCInfo();
             Menu.instance.SaveUnlockedMenuItemInfo();
             endStory = 2;//엔딩이벤트를 봤음
@@ -559,7 +559,7 @@ public class GameScript1 : MonoBehaviour //전체적인 게임스트립트
                     //Debug.Log("스타 종료2");
                 }
             }
-            SceneChanger.sc.Invoke("GoEndingCreditScreen", 1f);//1초 후 엔딩크레딧 화면으로 이동
+            SceneChanger.instance.Invoke("GoEndingCreditScreen", 1f);//1초 후 엔딩크레딧 화면으로 이동
         }
         else
         {
@@ -587,7 +587,7 @@ public class GameScript1 : MonoBehaviour //전체적인 게임스트립트
                     MenuHint.instance.CanClickMHB();//메뉴힌트버블 터치 가능
                     BgmManager.instance.BGMFadeOut();
                     BgmManager.instance.Invoke("PlayCafeBgm", 3f);
-                    //Menu.instance.ReactionFadeIn();
+                    Menu.instance.ReactionFadeIn();
                     Dialogue1.instance.CharacterDC[n] = 3; // 3이면 더 이상 시나리오 없음
                     VisitorNote.instance.RePlayButton[n - 1].gameObject.SetActive(true);//다시보기 버튼 활성화
                     c = n;
@@ -823,28 +823,7 @@ public class GameScript1 : MonoBehaviour //전체적인 게임스트립트
         VisitorNote.instance.replayOn = 0;
     }
 
-    public bool close = false;//게임 종료시 true
-    public void YesGameClose()
-    {
-        close = true;
-        if(mainCount <= 3)
-        {
-            Application.Quit();
-        }
-    }
-
-    public void NoGameClose()
-    {
-        SEManager.instance.PlayUICloseSound();
-        close = false;
-        HPCharge.instance.allSave = false;
-        if (UserInputManager.instance.CanTouch() == false)
-        {
-            UserInputManager.instance.SetCanTouch(true);
-        }
-        HPCharge.instance.OnApplicationFocus(true);//스타 시스템 다시
-        GameClose.SetActive(false);
-    }
+   
 
     public void ClickFishBread()//붕어빵 버튼 눌렀을 때
     {
@@ -860,10 +839,10 @@ public class GameScript1 : MonoBehaviour //전체적인 게임스트립트
         pNum = 1;
         PlayerPrefs.SetInt("pNum", pNum); //인앱 결제 정보 저장
         PlayerPrefs.Save(); //세이브
-        HPCharge.instance.MAX_HP = 20;
-        if(HPCharge.instance.m_HPAmount == 10)//구매 전 최대체력이었을 
+        HPManager.instance.MAX_HP = 20;
+        if(HPManager.instance.m_HPAmount == 10)//구매 전 최대체력이었을 
         {
-            HPCharge.instance.P_Max();
+            HPManager.instance.P_Max();
 
         }
         print("최대 체력20으로 증가");
@@ -902,13 +881,13 @@ public class GameScript1 : MonoBehaviour //전체적인 게임스트립트
         pNum = 2;
         PlayerPrefs.SetInt("pNum", pNum); //인앱 결제 정보 저장
         PlayerPrefs.Save(); //세이브
-        HPCharge.instance.HPRechargeIntervalMin = 5; //5분에 1체력 회복
-        if(HPCharge.instance.m_RechargeRemainMin >= 5)//현재 남은 타이머가 5분 이상이면 5분으로 만들기
+        HPManager.instance.HPRechargeIntervalMin = 5; //5분에 1체력 회복
+        if(HPManager.instance.m_RechargeRemainMin >= 5)//현재 남은 타이머가 5분 이상이면 5분으로 만들기
         {
-            HPCharge.instance.m_RechargeRemainMin = 4;
-            HPCharge.instance.m_RechargeRemainSec = 59;
-            HPCharge.instance.HPRechargeMinTimer.text = string.Format("{0}", HPCharge.instance.m_RechargeRemainMin); //타이머 표시
-            HPCharge.instance.HPRechargeSecTimer.text = string.Format("{0}", HPCharge.instance.m_RechargeRemainSec);
+            HPManager.instance.m_RechargeRemainMin = 4;
+            HPManager.instance.m_RechargeRemainSec = 59;
+            HPManager.instance.HPRechargeMinTimer.text = string.Format("{0}", HPManager.instance.m_RechargeRemainMin); //타이머 표시
+            HPManager.instance.HPRechargeSecTimer.text = string.Format("{0}", HPManager.instance.m_RechargeRemainSec);
         }
         print("체력 회복 속도 2배 증가");
         Invoke("PurchasingSuccess", 0.1f);
@@ -1188,7 +1167,7 @@ public class GameScript1 : MonoBehaviour //전체적인 게임스트립트
         changeMessage.SetActive(false);
         Star.instance.starNum -= 5;//스타 5감소
         Star.instance.StarNumText.text = string.Format("{0}", Star.instance.starNum.ToString());
-        HPCharge.instance.AddHP(); //체력 증가함수
+        HPManager.instance.AddHP(); //체력 증가함수
         Invoke(nameof(ChangeAgain), 3f);//별이 5개 이상 남았다면 3초 뒤 다시 팁말풍선 뜰 것        
     } //별하트 전환하기
 
@@ -1211,7 +1190,7 @@ public class GameScript1 : MonoBehaviour //전체적인 게임스트립트
         {
             if (change == 0 && tipNum == 3 && Menu.instance.menu8Open) //마지막 팁의 경우
             {
-                if (Star.instance.starNum >= 5 && HPCharge.instance.m_HPAmount != HPCharge.instance.MAX_HP)
+                if (Star.instance.starNum >= 5 && HPManager.instance.m_HPAmount != HPManager.instance.MAX_HP)
                 {
                     change = 3;
                     Invoke(nameof(TipBubbleOn), 2f);//별이 다시 5개 이상이 되었을 때 팁말풍선 등장
@@ -1226,7 +1205,7 @@ public class GameScript1 : MonoBehaviour //전체적인 게임스트립트
         }  
         else if(Tip.gameObject.activeSelf && tipNum == 3 && Menu.instance.menu8Open)//팁풍선 올라와있고 팁넘버 3일 때
         {
-            if(HPCharge.instance.m_HPAmount == HPCharge.instance.MAX_HP)//현재 체력이 최대치면 팁풍선 없애기
+            if(HPManager.instance.m_HPAmount == HPManager.instance.MAX_HP)//현재 체력이 최대치면 팁풍선 없애기
             {
                 Tip.gameObject.SetActive(false);
             }

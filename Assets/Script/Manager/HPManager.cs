@@ -6,9 +6,9 @@ using UnityEngine.UI;
 using UnityEngine.U2D;
 using System.Runtime.ExceptionServices;
 
-public class HPCharge : MonoBehaviour
+public class HPManager : MonoBehaviour
 {
-    public static HPCharge instance;
+    public static HPManager instance;
     #region HP
 
     public Text appQuitTime = null;
@@ -33,12 +33,6 @@ public class HPCharge : MonoBehaviour
     private int calculateRemainSec = 0; //다음 충전까지 남은 초
     private int remainMinTime = 0;
     private int remainSecTime = 0;
-
-    public int off = 0;
-
-    public bool allSave = false;//모든 정보 저장 끝나면 true
-
-    public bool load = false;//true면 로드상태
 
     #endregion
 
@@ -69,7 +63,6 @@ public class HPCharge : MonoBehaviour
         }
         HPAmount.text = string.Format("{0}", m_HPAmount.ToString());
         GameScript1.instance.plusHP.interactable = true;
-
     }
 
     private void Awake() //씬 플레이할 때마다 호출
@@ -81,139 +74,9 @@ public class HPCharge : MonoBehaviour
         }
     }
 
-    private void Start()//씬 열릴 때
-    {
-        off = PlayerPrefs.GetInt("GameOff");//게임 오프 정보를 불러오는 것이므로 필수
-        GameScript1.instance.LoadDataInfo();//데이터 정보 불러옴
-        if (GameScript1.instance.mainCount > 3)//붕붕이 등장 이후면
-        {
-            Star.instance.Invoke("ActivateStarSystem", 25f);//25초 뒤 별 함수 시작
-           // Debug.Log("스타시스템 25초 뒤 시작");
-            if (!CharacterVisit.instance.IsInvoking("RandomVisit"))
-            {
-                CharacterVisit.instance.Invoke("RandomVisit", 5f); //캐릭터 랜덤 방문
-             //  Debug.Log("랜덤방문 수동시작 5초 뒤");
-            }
-        }
-        PlayerPrefs.SetInt("GameOff", 0); //다시 게임을 켰으므로 off는 0    
-        PlayerPrefs.Save();
-        off = PlayerPrefs.GetInt("GameOff");//게임이 중간이탈인지 아예 종료하고 킨 것인지 확인
-    }
-
-    private void Update()
-    {
-        if (Application.platform == RuntimePlatform.Android)
-        {
-            if (Input.GetKey(KeyCode.Escape))//뒤로가기 버튼 누르면 종료 메세지창
-            {
-                if (GameScript1.instance.GameClose.activeSelf == false)
-                {
-                    if (UserInputManager.instance.CanTouch())
-                    {
-                        UserInputManager.instance.SetCanTouch(false);
-                    }
-                    OnApplicationFocus(false);
-                    if(GameScript1.instance.mainCount <= 3)
-                    {
-                        GameScript1.instance.GameCloseWarning.gameObject.SetActive(true);//경고문구 활성
-                    }
-                    else
-                    {
-                        GameScript1.instance.GameCloseWarning.gameObject.SetActive(false);
-                    }
-                    GameScript1.instance.GameClose.SetActive(true);
-                }
-            } 
-            
-            if(GameScript1.instance.close && allSave)
-            {
-                Application.Quit();
-            }
-        }
-        
-        if(Input.GetMouseButtonDown(0))//터치마다 효과음
-        {
-            SEManager.instance.PlayTouchSound();
-        }
-    }
 
     //게임 초기화, 중간 이탈, 중간 복귀 시 실행되는 함수
-    public void OnApplicationFocus(bool value)
-    {
-        //Debug.Log("OnApplicationFocus() : " + value);
-        
-        if (value) //게임 복귀
-        {            
-            if (GameScript1.instance.mainCount > 3)//붕붕이 등장 이후면
-            {
-                if(!AdsManager.instance.addOn)//광고보고 온 경우가 아닐 때
-                {
-                    load = true;
-                    if (TimeManager.instance.TimeCoroutine != null)
-                    {
-                        TimeManager.instance.StopCoroutine(TimeManager.instance.TimeCoroutine);
-                    }
-                    
-                   TimeManager.instance.TimeSaveStart();
-                    GameScript1.instance.LoadDataInfo();//데이터 정보 불러옴
-                    Star.instance.Invoke("ActivateStarSystem", 25f);//25초 뒤 별 함수 시작
-                    Debug.Log("스타시스템 25초 뒤 시작");
-                }
-                else if(AdsManager.instance.addOn)//광고 보고 온 후
-                {
-                    load = true;
-                    if (TimeManager.instance.TimeCoroutine != null)
-                    {
-                        TimeManager.instance.StopCoroutine(TimeManager.instance.TimeCoroutine);
-                    }
-                    TimeManager.instance.TimeSaveStart();
-                    Debug.Log("광고 종료");
-                }
-                if (!CharacterVisit.instance.IsInvoking("RandomVisit") && GameScript1.instance.endStory != 1 && !UI_Assistant1.instance.talking)
-                {//엔딩이벤트를 보기 전이거나 보고 종료하고 다시 들어왔을 경우,대화 중이 아니어야함
-                    CharacterVisit.instance.Invoke("RandomVisit", 5f); //캐릭터 랜덤 방문
-                  //  Debug.Log("랜덤방문 수동시작 5초 뒤");
-                }
-            }
-        }
-        else //게임 이탈, 광고 볼 때도 포함
-        {
-            if(!GameScript1.instance.delete)
-            {                
-                if (GameScript1.instance.mainCount > 3 && !AdsManager.instance.addOn)//붕붕이 등장 이후, 광고를 보는 게 아닐 때만
-                {
-                    SaveAppQuitTime(); //게임 나간 시간 저장     
-                    GameScript1.instance.SaveDataInfo();//데이터 저장
-                   // Debug.Log("데이터 세이브");
-                    SaveHPInfo(); //체력, 타이머 정보 저장                
-                    Dialogue1.instance.SaveCharacterDCInfo();
-                    Menu.instance.SaveUnlockedMenuItemInfo();
-                    VisitorNote.instance.SaveVisitorNoteInfo();
-                    if (Star.instance.IsInvoking("ActivateStarSystem"))
-                    {
-                        Star.instance.CancelInvoke("ActivateStarSystem");//별 활성화 함수 중단
-                       // Debug.Log("스타 인보크 중 종료1");
-                    }
-                    else
-                    {
-                        if (Star.instance.starCoroutine != null)
-                        {
-                            Star.instance.StopCoroutine(Star.instance.starCoroutine);
-                          //  Debug.Log("스타 종료2");
-                        }
-                    }
-                    allSave = true;
-                   // Debug.Log("모든 세이브 완료");
-                }  
-                else if(AdsManager.instance.addOn)
-                {
-                    SaveHPInfo(); //체력 정보 저장  
-                    SaveAppQuitTime(); //게임 나간 시간 저장  
-                }
-            }
-        }
-    }  
-
+    
     public void Init() 
     {
         m_HPAmount = MAX_HP; //체력 양 최대
@@ -221,8 +84,8 @@ public class HPCharge : MonoBehaviour
         m_RechargeRemainSec = 0;
         m_AppQuitTime = new DateTime(1970, 1, 1).ToLocalTime();
         fullText.SetActive(true); //최대 체력이므로 풀 텍스트 나타남
-
     }
+
     public bool LoadHPInfo() //체력 정보 불러옴
     {
         //Debug.Log("LoadHPInfo");
@@ -336,33 +199,15 @@ public class HPCharge : MonoBehaviour
         return result;
     }
 
-    public bool SaveAppQuitTime() //종료 시간 저장
-    {
-          Debug.Log("SaveAppQuitTime");
-        bool result = false;
-        try
-        {
-            var appQuitTime = TimeManager.instance.dateTime.ToBinary().ToString();
-            PlayerPrefs.SetString("AppQuitTime", appQuitTime);
-            PlayerPrefs.Save();
-            Debug.Log("저장된 시간" + DateTime.FromBinary(Convert.ToInt64(appQuitTime)).ToString());
-            result = true;
-        }
-        catch (System.Exception e)
-        {
-            Debug.LogError("SaveAppQuitTime Failed (" + e.Message + ")");
-        }
-        return result;
-    }
-    public void SetRechargeScheduler(Action onFinish = null) //체력 충전 계산
+        public void SetRechargeScheduler(Action onFinish = null) //체력 충전 계산
     {
         if (m_RechargeTimerCoroutine != null)
         {
             StopCoroutine(m_RechargeTimerCoroutine);
         }
-        var timeDifferenceInMin = (int)((TimeManager.instance.dateTime - m_AppQuitTime).TotalMinutes);
+        var timeDifferenceInMin = (int)((TimeManager.instance.GetDateTime() - m_AppQuitTime).TotalMinutes);
      //   Debug.Log("TimeDifference In Min :" + timeDifferenceInMin + "m");        //게임 하고 현재까지 ~분 지남
-        var timeDifferenceInSec = (int)(((TimeManager.instance.dateTime - m_AppQuitTime).TotalSeconds) % 60);
+        var timeDifferenceInSec = (int)(((TimeManager.instance.GetDateTime() - m_AppQuitTime).TotalSeconds) % 60);
         //  Debug.Log("지난 초 " + timeDifferenceInSec);
         //  Debug.Log("TimeDifference In Sec :" + timeDifferenceInSec + "s"); //게임 종료 후 현재까지 ~초 지남
         //  Debug.Log("RemainTimer : " + remainMinTimer + "m " + remainSecTimer + "s"); //종료 전 남아있던 타이머
