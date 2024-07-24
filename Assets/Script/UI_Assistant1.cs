@@ -784,23 +784,23 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                         case 3:
                             GameScript1.instance.textnum = 0;
                             break;
-                        case 7:
+                        case 6:
                             CharacterList.instance.CharacterFaceList[13].face[6].SetActive(false);
                             CharacterList.instance.CharacterFaceList[13].face[4].SetActive(true);
                             GameScript1.instance.textnum = 1;
                             break;
-                        case 8:
+                        case 7:
                             CharacterList.instance.CharacterFaceList[13].face[4].SetActive(false);
                             CharacterList.instance.CharacterFaceList[13].face[1].SetActive(true);
                             break;
-                        case 9:
+                        case 8:
                             GameScript1.instance.textnum = 0;
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
                                 SmallFade.instance.SetCharacter(4);
                             }                          
                             break;
-                        case 12:
+                        case 11:
                             CharacterList.instance.CharacterFaceList[13].face[1].SetActive(false);
                             CharacterList.instance.CharacterFaceList[13].face[0].SetActive(true);
                             GameScript1.instance.textnum = 1;
@@ -811,13 +811,13 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                 {
                     switch (count)
                     {
-                        case 6:
+                        case 7:
                             GameScript1.instance.textnum = 1;
                             break;
-                        case 7:
+                        case 8:
                             GameScript1.instance.textnum = 0;
                             break;
-                        case 9:
+                        case 10:
                             CharacterList.instance.CharacterFaceList[13].face[0].SetActive(false);
                             CharacterList.instance.CharacterFaceList[13].face[6].SetActive(true);
                             GameScript1.instance.textnum = 1;
@@ -826,7 +826,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                                 SmallFade.instance.smallFOut.Enqueue(16);
                             }              
                             break;
-                        case 10:
+                        case 11:
                             CharacterList.instance.CharacterFaceList[13].face[6].SetActive(false);
                             CharacterList.instance.CharacterFaceList[13].face[0].SetActive(true);
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
@@ -835,7 +835,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                                 SmallFade.instance.StartCoroutine(SmallFade.instance.FadeToZero());
                             }
                             break;
-                        case 11:
+                        case 12:
                             GameScript1.instance.textnum = 0;
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
@@ -849,7 +849,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                                 Menu.instance.SetTableMenu(14, 0);
                             }
                             break;
-                        case 12:
+                        case 13:
                             UserInputManager.instance.SetCanTouch(false);;
                             GameScript1.instance.textnum = 1;                           
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
@@ -860,7 +860,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             }
                             Popup.instance.OpenPopup();//메뉴 팝업, 팝업 닫으면 다음 대사 넘기기 가능
                             break;
-                        case 13:
+                        case 14:
                             GameScript1.instance.textnum = 0;                        
                             break;
                     }

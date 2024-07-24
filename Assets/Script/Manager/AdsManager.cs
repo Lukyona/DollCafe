@@ -28,7 +28,6 @@ public class AdsManager : MonoBehaviour
         MobileAds.Initialize(initStatus => { });
 
         LoadRewardedAd();
-
     }
 
      public void LoadRewardedAd()
@@ -40,14 +39,14 @@ public class AdsManager : MonoBehaviour
             rewardedAd = null;
       }
 
-      Debug.Log("Loading the rewarded ad.");
+      //Debug.Log("Loading the rewarded ad.");
 
       // create our request used to load the ad.
       var adRequest = new AdRequest();
 
       // send the request to load the ad.
       RewardedAd.Load(adUnitId, adRequest,
-          (RewardedAd ad, LoadAdError error) =>
+          (RewardedAd ad, LoadAdError error) => // 람다식
           {
               // if error is not null, the load request failed.
               if (error != null || ad == null)
@@ -64,18 +63,20 @@ public class AdsManager : MonoBehaviour
           });
   }
 
-public void ShowRewardedAd()
+public void ShowRewardedAd() 
 {
-    const string rewardMsg =
-        "Rewarded ad rewarded the user. Type: {0}, amount: {1}.";
+            Debug.Log("doing???");
 
+    //const string rewardMsg = "Rewarded ad rewarded the user. Type: {0}, amount: {1}.";
     if (rewardedAd != null && rewardedAd.CanShowAd())
     {
+            Debug.Log("what???");
+
         rewardedAd.Show((Reward reward) =>
         {
             // TODO: Reward the user.
-            Debug.Log(String.Format(rewardMsg, reward.Type, reward.Amount));
-            HPCharge.instance.AddHP();
+            //Debug.Log(String.Format(rewardMsg, reward.Type, reward.Amount));
+            HPCharge.instance.AddHP(); // 체력 추가
         });
     }
 }

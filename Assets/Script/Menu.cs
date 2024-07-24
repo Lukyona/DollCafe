@@ -102,7 +102,7 @@ public class Menu : MonoBehaviour
             ReactionPosition[0] = new Vector3(-840,-40,0);
             ReactionPosition[1] = new Vector3(-20,-50,0);
             ReactionPosition[2] = new Vector3(-450,-225,0);
-            ReactionPosition[3] = new Vector3(530,200,0);
+            ReactionPosition[3] = new Vector3(530,-200,0);
             ReactionPosition[4] = new Vector3(85,-50,0);
             ReactionPosition[5] = new Vector3(860,-15,0);
         }
@@ -541,53 +541,12 @@ public class Menu : MonoBehaviour
 
     public void CorrectMenuReaction(int n) //힌트와 맞는 메뉴일 경우 리액션
     {
-        switch(n) //n은 자리 숫자
-        {
-            case 0:
-                Reaction[0].GetComponent<Image>().sprite = HeartReaction[0].GetComponent<Image>().sprite; //맞는 메뉴는 하트
-                break;
-            case 3:
-                Reaction[1].GetComponent<Image>().sprite = HeartReaction[1].GetComponent<Image>().sprite;
-                break;
-            case 1:
-                Reaction[2].GetComponent<Image>().sprite = HeartReaction[2].GetComponent<Image>().sprite;
-                break;
-            case 4:
-                Reaction[3].GetComponent<Image>().sprite = HeartReaction[3].GetComponent<Image>().sprite;
-                break;
-            case 2:
-                Reaction[4].GetComponent<Image>().sprite = HeartReaction[4].GetComponent<Image>().sprite;
-                break;
-            case 5:
-                Reaction[5].GetComponent<Image>().sprite = HeartReaction[5].GetComponent<Image>().sprite;
-                break;
-        }
-
+        Reaction[n].GetComponent<Image>().sprite = HeartReaction[n].GetComponent<Image>().sprite;
     }
 
     public void WrongMenuReaction(int n) //힌트와 맞지 않는 메뉴일 경우 리액션
     {
-        switch (n) //n은 자리 숫자
-        {
-            case 0:
-                Reaction[0].GetComponent<Image>().sprite = SmileReaction[0].GetComponent<Image>().sprite; //안 맞는 메뉴는 스마일
-                break;
-            case 3:
-                Reaction[1].GetComponent<Image>().sprite = SmileReaction[1].GetComponent<Image>().sprite;
-                break;
-            case 1:
-                Reaction[2].GetComponent<Image>().sprite = SmileReaction[2].GetComponent<Image>().sprite;
-                break;
-            case 4:
-                Reaction[3].GetComponent<Image>().sprite = SmileReaction[3].GetComponent<Image>().sprite;
-                break;
-            case 2:
-                Reaction[4].GetComponent<Image>().sprite = SmileReaction[4].GetComponent<Image>().sprite;
-                break;
-            case 5:
-                Reaction[5].GetComponent<Image>().sprite = SmileReaction[5].GetComponent<Image>().sprite;
-                break;
-        }
+       Reaction[n].GetComponent<Image>().sprite = SmileReaction[n].GetComponent<Image>().sprite;
     }
 
     int rFade = 0;//리액션 페이드인에 쓰이는 정수 0이면 페이드인 중이 아님, 1이면 페이드인 중인 상태

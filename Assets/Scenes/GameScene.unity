@@ -48485,7 +48485,7 @@ GameObject:
   - component: {fileID: 1674617188}
   - component: {fileID: 1674617187}
   m_Layer: 5
-  m_Name: Tutorial Panels
+  m_Name: Panels
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

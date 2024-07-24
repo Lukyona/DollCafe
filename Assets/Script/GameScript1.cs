@@ -196,7 +196,6 @@ public class GameScript1 : MonoBehaviour //전체적인 게임스트립트
                 {
                     SmallFade.instance.SmallCharacter[0].GetComponent<Button>().interactable = true;
                 }
-
                 //Debug.Log("다음 등장 :" + CharacterAppear.instance.GetNextAppearNum());
                 //Debug.Log("이벤트 넘버 : " + CharacterAppear.instance.eventOn);
                 //Debug.Log("메인카운트 " + mainCount);
@@ -258,7 +257,6 @@ public class GameScript1 : MonoBehaviour //전체적인 게임스트립트
 
         TBAnimator.SetTrigger("TextBoxUp");
         UI_Assistant1.instance.OpenDialogue(); //대화 시작, 대사 띄움
-
     }
 
     void DownTextbox() //대화창 내려감
@@ -467,13 +465,12 @@ public class GameScript1 : MonoBehaviour //전체적인 게임스트립트
         CharacterIn();
     }
 
-    public void CharacterStart(int n) //제제 도리 붕붕 롤렝드 제외 모든 캐릭터 등장 함수
+    public void CharacterStart(int n) //제제/도리/붕붕/롤렝드 제외 모든 캐릭터 등장 함수
     {
         gameObject.GetComponent<CharacterAppear>().enabled = false;//캐릭터 등장 비활성화
         if (BgmManager.instance.IsInvoking("PlayCafeBgm"))//카페 배경음이 invoke중이면
         {
             BgmManager.instance.CancelInvoke("PlayCafeBgm");//invoke 취소
-            Debug.Log("카페브금 인보크 종료");
         }
         BgmManager.instance.StopBgm();
         BgmManager.instance.PlayCharacterBGM(n);//캐릭터 테마 재생      

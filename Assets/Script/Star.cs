@@ -111,5 +111,7 @@ public class Star : MonoBehaviour
     {
         starNum += 15;//별 개수 증가
         StarNumText.text = string.Format("{0}", starNum.ToString());
+
+        Dialogue1.instance.CharacterDC[12] = 0;
     }
 }
