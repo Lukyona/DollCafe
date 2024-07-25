@@ -174,6 +174,8 @@ public class HPManager : MonoBehaviour
         {
             StopCoroutine(m_RechargeTimerCoroutine);
         }
+        savedMinTimer = PlayerPrefs.GetInt("SavedMinTimer");
+        savedSecTimer = PlayerPrefs.GetInt("SavedSecTimer");
 
         int elapsedMin = (int)(TimeManager.instance.GetDateTime() - m_AppQuitTime).TotalMinutes; // 게임 종료 후 경과된 시간(분)
         int elapsedSec = (int)((TimeManager.instance.GetDateTime() - m_AppQuitTime).TotalSeconds % 60); // 게임 종료 후 경과된 시간(초)
@@ -300,7 +302,7 @@ public class HPManager : MonoBehaviour
             m_RechargeRemainMin -= 1; //남은 초가 0이하일 때 1분 감소
             HPRechargeMinTimer.text = string.Format("{0}", m_RechargeRemainMin);          
 
-            m_RechargeRemainSec = HPRechargeIntervalSec - 1; //초는 59로 변경
+            m_RechargeRemainSec = HPRechargeIntervalSec; //초는 60으로 변경, 어차피 바로 59가 되기 때문에
         }
 
         m_HPAmount++; //남은 분이 0보다 작아졌을 때 체력 1 증가
@@ -315,7 +317,7 @@ public class HPManager : MonoBehaviour
         }
         else
         {
-            m_RechargeTimerCoroutine = StartCoroutine(DoRechargeTimer(HPRechargeIntervalMin - 1, HPRechargeIntervalSec - 1));
+            m_RechargeTimerCoroutine = StartCoroutine(DoRechargeTimer(HPRechargeIntervalMin - 1, HPRechargeIntervalSec));
         }
     }
 

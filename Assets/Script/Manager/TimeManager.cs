@@ -68,7 +68,7 @@ public class TimeManager : MonoBehaviour
                 //Debug.Log("타이머 정보 로드");
                 if (!AdsManager.instance.IsWatchingAds())
                 {
-                    Debug.Log("체력 정보 로드");
+                    //Debug.Log("체력 정보 로드");
                     HPManager.instance.LoadHPInfo(); //체력 정보 불러옴
                 }
                 LoadAppQuitTime(); //게임 종료 시간 불러옴
