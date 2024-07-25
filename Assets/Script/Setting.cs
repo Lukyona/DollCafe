@@ -77,7 +77,7 @@ public class Setting : MonoBehaviour
         yesResetButton.interactable = false;
         noResetButton.interactable = false;        
         GameScript1.instance.delete = true;
-        if(GameScript1.instance.pNum == 0)//결제한 것이 없으면 데이터 모두 삭제
+        if(PlayerPrefs.GetInt("PurchaseCount") == 0)//결제한 것이 없으면 데이터 모두 삭제
         {
             PlayerPrefs.DeleteAll();
             Debug.Log("결제 정보 없음");

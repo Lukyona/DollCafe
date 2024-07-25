@@ -6184,7 +6184,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1194812724}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: HPCharge, Assembly-CSharp
         m_MethodName: AddHP
         m_Mode: 1
@@ -32003,7 +32003,6 @@ GameObject:
   - component: {fileID: 1194812723}
   - component: {fileID: 1194812726}
   - component: {fileID: 1194812725}
-  - component: {fileID: 1194812724}
   m_Layer: 0
   m_Name: HP
   m_TagString: Untagged
@@ -32036,29 +32035,6 @@ RectTransform:
   m_AnchoredPosition: {x: -750, y: 470}
   m_SizeDelta: {x: 300, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1194812724
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1194812722}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c9701e7e2e75b69488b3d11498ebb159, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  appQuitTime: {fileID: 0}
-  HPRechargeMinTimer: {fileID: 1563689943}
-  HPRechargeSecTimer: {fileID: 628643549}
-  HPAmount: {fileID: 1247398201}
-  mid: {fileID: 399409168}
-  fullText: {fileID: 756701357}
-  m_HPAmount: 0
-  MAX_HP: 10
-  HPRechargeIntervalMin: 10
-  m_RechargeRemainMin: 0
-  m_RechargeRemainSec: 0
 --- !u!114 &1194812725
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -43408,6 +43384,7 @@ GameObject:
   - component: {fileID: 1538706533}
   - component: {fileID: 1538706534}
   - component: {fileID: 1538706535}
+  - component: {fileID: 1538706536}
   m_Layer: 0
   m_Name: GameScript
   m_TagString: Untagged
@@ -43466,11 +43443,9 @@ MonoBehaviour:
   bear: {fileID: 124675994}
   endStory: 0
   delete: 0
-  AdsMessage: {fileID: 691662787}
   PurchasingWindow: {fileID: 1195668364}
   PurchasingText: {fileID: 1126024390}
   FishBreadText: {fileID: 1739857071}
-  pNum: 0
   CompletePurchasingWindow: {fileID: 1099271356}
   CompletePurchasingText: {fileID: 829689449}
   pButton1: {fileID: 575918833}
@@ -43492,8 +43467,7 @@ MonoBehaviour:
   Tip2: {fileID: 201226726}
   Tip3: {fileID: 925840050}
   tipNum: 0
-  changeMessage: {fileID: 1336604589}
-  changing: 0
+  exchangeMessageWindow: {fileID: 0}
   change: 0
 --- !u!4 &1538706514
 Transform:
@@ -43807,6 +43781,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2cd031928533df469b3a20b92d92ee1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  AdsMessageWindow: {fileID: 691662787}
 --- !u!114 &1538706529
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -44096,6 +44071,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   GameClosingWindow: {fileID: 517708581}
+--- !u!114 &1538706536
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1538706512}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c9701e7e2e75b69488b3d11498ebb159, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  HPRechargeMinTimer: {fileID: 1563689943}
+  HPRechargeSecTimer: {fileID: 628643549}
+  mid: {fileID: 399409168}
+  fullText: {fileID: 756701357}
+  HPAmount: {fileID: 1247398201}
+  m_RechargeRemainMin: 0
+  m_RechargeRemainSec: 0
 --- !u!1 &1544820110
 GameObject:
   m_ObjectHideFlags: 0

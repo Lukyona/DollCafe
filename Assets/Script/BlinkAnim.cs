@@ -18,8 +18,8 @@ public class BlinkAnim : MonoBehaviour //터치투 스타트 메세지를 깜빡
     {
         if (Input.GetMouseButtonDown(0)) //터치되면
         {
-            SceneChanger.instance.FadeToScene(2);//로딩씬으로 이동
             BgmManager.instance.BGMFadeOut();
+            SceneChanger.instance.FadeToScene(2);//로딩씬으로 이동
         }
 
         if (time < 0.5f) // 0.5미만이면 서서히 투명해지기 

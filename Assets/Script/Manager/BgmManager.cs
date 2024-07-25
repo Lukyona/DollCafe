@@ -7,6 +7,7 @@ public class BgmManager : MonoBehaviour
 {
     public static BgmManager instance;
 
+    #region BGMList 
     [SerializeField] AudioSource startBgm;
     [SerializeField] AudioSource cafeBgm;
     [SerializeField] AudioSource princessSound;
@@ -24,6 +25,7 @@ public class BgmManager : MonoBehaviour
     [SerializeField] AudioSource grandFatherSound;
     [SerializeField] AudioSource noNameSound;
     [SerializeField] AudioSource endingSound;
+    #endregion
 
     private AudioSource myAudio;
 
@@ -140,7 +142,7 @@ public class BgmManager : MonoBehaviour
         {
             return;
         }
-        StartCoroutine(StartFade(myAudio, 2.5f, 0f));
+        StartCoroutine(StartFade(myAudio, 2.5f));
     }
 
     public void StopBgm()
@@ -153,16 +155,17 @@ public class BgmManager : MonoBehaviour
         myAudio.mute = true;
     }
 
-    public void BgmOn()
+    public void OnBGM()
     {
         myAudio.mute = false;
     }
 
-    public IEnumerator StartFade(AudioSource audioSource, float duration, float targetVolume)//오디오소스 볼륨 페이드아웃
+    public IEnumerator StartFade(AudioSource audioSource, float duration)//오디오소스 볼륨 페이드아웃
     {
-        float currentTime = 0;
+        float currentTime = 0f;
+        float targetVolume = 0f;
         float start = audioSource.volume;        
-        while (currentTime < duration)
+        while (currentTime < duration) // 2.5초동안 페이드아웃
         {
             if(SceneManager.GetActiveScene().name == "GameScene" && VisitorNote.instance.replayOn == 1)//다시보기 시작되면 페이드아웃 바로 종료
             {
@@ -170,10 +173,10 @@ public class BgmManager : MonoBehaviour
                 break;
             }
             currentTime += Time.deltaTime;
-            audioSource.volume = Mathf.Lerp(start, targetVolume, currentTime / duration);
+            audioSource.volume = Mathf.Lerp(start, targetVolume, currentTime / duration); // 오디오소스의 볼륨을 0으로 서서히 낮추기
             yield return null;
         }
-        audioSource.Stop();
-        yield break;        
+        audioSource.Stop(); 
+        yield break; // 코루틴 종료
     }
 }

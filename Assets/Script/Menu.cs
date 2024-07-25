@@ -186,7 +186,7 @@ public class Menu : MonoBehaviour
 
     public void MenuServingFunction(int n)//서빙 함수
     {
-        if (HPManager.instance.m_HPAmount <= 0) //체력이 0보다 작거나 같으면
+        if (HPManager.instance.GetCurrentHP() <= 0) //체력이 0보다 작거나 같으면
         {
             CantClickMenu();
             NoHPMessege.SetActive(true); //체력 없음 메세지 보이게 함

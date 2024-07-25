@@ -27,13 +27,10 @@ public class GameScript1 : MonoBehaviour //전체적인 게임스트립트
 
     public bool delete = false;
 
-    public GameObject AdsMessage;
 
     public GameObject PurchasingWindow;//붕어빵 버튼 눌렀을 때 나오는 창
     public Text PurchasingText; //창 메세지
     public Text FishBreadText; //붕어빵 버튼 텍스트
-
-    public int pNum = 0; //purchasingNumber, 한번 결제 1, 두번 결제 2
 
     public GameObject CompletePurchasingWindow;//결제 후 메세지 창
     public Text CompletePurchasingText;//메세지 내용
@@ -88,7 +85,7 @@ public class GameScript1 : MonoBehaviour //전체적인 게임스트립트
         // mainCount = 16;
          // Menu.instance.reputation += 300;
         // pNum = 0;
-        //PlayerPrefs.DeleteKey("pNum");
+        //PlayerPrefs.DeleteKey("PurchaseCount");
        //    VisitorNote.instance.openPage = 14;
         Dialogue1.instance.CharacterDC[9] = 3; //1도리
         Dialogue1.instance.CharacterDC[10] = 3; //1도리
@@ -102,8 +99,7 @@ public class GameScript1 : MonoBehaviour //전체적인 게임스트립트
     }
     public void Reset_P()
     {
-        pNum = 0;
-        PlayerPrefs.SetInt("pNum", pNum); //인앱 결제 정보 저장
+        PlayerPrefs.SetInt("PurchaseCount", 0); //인앱 결제 정보 저장
         PlayerPrefs.Save(); //세이브
     }
 
@@ -118,7 +114,6 @@ public class GameScript1 : MonoBehaviour //전체적인 게임스트립트
             PlayerPrefs.SetInt("Reputation", Menu.instance.reputation); //평판 저장
             PlayerPrefs.SetInt("StarNum", Star.instance.starNum); //별 개수 저장
             PlayerPrefs.SetInt("end", endStory);//엔딩 상황 저장
-            PlayerPrefs.SetInt("pNum", pNum); //인앱 결제 정보 저장
             PlayerPrefs.SetInt("tipNum", tipNum);//팁 넘버 
             PlayerPrefs.Save(); //세이브
             result = true;
@@ -143,7 +138,6 @@ public class GameScript1 : MonoBehaviour //전체적인 게임스트립트
                 Menu.instance.reputation = PlayerPrefs.GetInt("Reputation");
                 Star.instance.starNum = PlayerPrefs.GetInt("StarNum");
                 endStory = PlayerPrefs.GetInt("end");       
-                pNum = PlayerPrefs.GetInt("pNum");
                 tipNum = PlayerPrefs.GetInt("tipNum");
                 if (mainCount > 3)//붕붕이 등장 이후면
                 {
@@ -199,10 +193,6 @@ public class GameScript1 : MonoBehaviour //전체적인 게임스트립트
                 CharacterAppear.instance.SetNextAppearNum(0);
                 Menu.instance.reputation = 0;
                 Star.instance.starNum = 0;
-                if(PlayerPrefs.HasKey("pNum"))
-                {
-                    pNum = PlayerPrefs.GetInt("pNum");
-                }
             }
             Menu.instance.reputationText.text = string.Format("{0}", Menu.instance.reputation);
             Star.instance.StarNumText.text = string.Format("{0}", Star.instance.starNum.ToString());
@@ -333,10 +323,10 @@ public class GameScript1 : MonoBehaviour //전체적인 게임스트립트
                 Invoke("CarStart", 7f);
                 break;
             case 3: //붕붕이 등장 후
+                BgmManager.instance.BGMFadeOut();
                 DownTextbox();
                 SmallFade.instance.Invoke("FadeIn", 1f);
                 CanClickUI();//메뉴판,노트, 체력 충전 버튼 터치 가능
-                BgmManager.instance.BGMFadeOut();
                 BgmManager.instance.Invoke("PlayCafeBgm",3f);
                 Popup.instance.SetPopupCharacter(BigCharacter[2]); //변경되는 것
                 Popup.instance.OpenPopup();
@@ -380,8 +370,8 @@ public class GameScript1 : MonoBehaviour //전체적인 게임스트립트
 
     void AfterTalking(int n)
     {       
-        DownTextbox();
         BgmManager.instance.BGMFadeOut();
+        DownTextbox();
         BgmManager.instance.Invoke("PlayCafeBgm", 3f);
         if (n != 9 && n != 15)
         {
@@ -735,7 +725,7 @@ public class GameScript1 : MonoBehaviour //전체적인 게임스트립트
     {
         SEManager.instance.PlayUIClickSound();
         plusHP.interactable = false;
-        AdsMessage.SetActive(true);
+        AdsManager.instance.AdsMessageWindow.SetActive(true);
         Debug.Log("버튼 누름");
 
     }
@@ -744,15 +734,15 @@ public class GameScript1 : MonoBehaviour //전체적인 게임스트립트
     {
         SEManager.instance.PlayUICloseSound();
         plusHP.interactable = true;
-        AdsMessage.SetActive(false);
+        AdsManager.instance.AdsMessageWindow.SetActive(false);
     }
 
     public void AfterRePlaySenario()//시나리오 다시보기를 마친 후 실행
     {
         VisitorNote.instance.replayOn = 2;
+        BgmManager.instance.BGMFadeOut();
         VisitorNote.instance.ClickVNButton(); //노트 올라오기
         DownTextbox();//대화상자 내리고 캐릭터 아웃
-        BgmManager.instance.BGMFadeOut();
         BgmManager.instance.Invoke("PlayCafeBgm", 3f);
         if (VisitorNote.instance.fmRP != 0)//첫 만남 다시보기 이후면
         {            
@@ -826,33 +816,20 @@ public class GameScript1 : MonoBehaviour //전체적인 게임스트립트
 
     int price = 1000;
 
-    public void HPMax20()
-    {
-        SEManager.instance.PlayUIClickSound3();
-        pNum = 1;
-        PlayerPrefs.SetInt("pNum", pNum); //인앱 결제 정보 저장
-        PlayerPrefs.Save(); //세이브
-        HPManager.instance.MAX_HP = 20;
-        if(HPManager.instance.m_HPAmount == 10)//구매 전 최대체력이었을 
-        {
-            HPManager.instance.P_Max();
 
-        }
-        print("최대 체력20으로 증가");
-        Invoke("PurchasingSuccess", 0.1f);
-    }
 
     void PurchasingSuccess()
     {
         PurchasingWindow.SetActive(false);
-        AdsMessage.SetActive(false);
+        AdsManager.instance.AdsMessageWindow.SetActive(false);
         CompletePurchasingWindow.SetActive(true);
         plusHP.interactable = true;
-        if (pNum == 1)
+        int pCount = PlayerPrefs.GetInt("PurchaseCount");
+        if (pCount == 1)
         {
             PurchasingOneTime();
         }
-        else if(pNum == 2)
+        else if(pCount == 2)
         {
             PurchasingTwoTime();
         }
@@ -868,28 +845,12 @@ public class GameScript1 : MonoBehaviour //전체적인 게임스트립트
         PurchasingText.text = "체력 회복 속도를\n2배로 증가시킵니다.\n[5분에 1체력 회복]\n" + price.ToString("c", numberFormat) + "(유료)";        
     }
 
-    public void HPSpeedUp()
-    {
-        SEManager.instance.PlayUIClickSound3();
-        pNum = 2;
-        PlayerPrefs.SetInt("pNum", pNum); //인앱 결제 정보 저장
-        PlayerPrefs.Save(); //세이브
-        HPManager.instance.HPRechargeIntervalMin = 5; //5분에 1체력 회복
-        if(HPManager.instance.m_RechargeRemainMin >= 5)//현재 남은 타이머가 5분 이상이면 5분으로 만들기
-        {
-            HPManager.instance.m_RechargeRemainMin = 4;
-            HPManager.instance.m_RechargeRemainSec = 59;
-            HPManager.instance.HPRechargeMinTimer.text = string.Format("{0}", HPManager.instance.m_RechargeRemainMin); //타이머 표시
-            HPManager.instance.HPRechargeSecTimer.text = string.Format("{0}", HPManager.instance.m_RechargeRemainSec);
-        }
-        print("체력 회복 속도 2배 증가");
-        Invoke("PurchasingSuccess", 0.1f);
-        littleFishBreadText.text = "배고픈 개발자들이 붕어빵을\n또 먹을 수 있게 되었습니다!";
-        CompletePurchasingText.text = "체력의 회복 속도가\n2배 증가하였습니다!";
-    }
+   
 
     public void PurchasingTwoTime()//두 번째 결제 후
     {
+        littleFishBreadText.text = "배고픈 개발자들이 붕어빵을\n또 먹을 수 있게 되었습니다!";
+        CompletePurchasingText.text = "체력의 회복 속도가\n2배 증가하였습니다!";
         FishBreadButton.interactable = false;
         FishBreadButton.image.sprite = FishBread2.sprite;
         FishBreadText.gameObject.SetActive(false);
@@ -1143,26 +1104,32 @@ public class GameScript1 : MonoBehaviour //전체적인 게임스트립트
         }
     }
 
-    public GameObject changeMessage;
+    public GameObject exchangeMessageWindow;
 
     public void ClickLastTip()//마지막 팁, 제제 말풍선 터치 시
     {
         JejeBubble.GetComponent<Button>().interactable = false;
-        changeMessage.SetActive(true);
+        exchangeMessageWindow.SetActive(true);
         Invoke("JejeBubbleFadeOut", 0.5f);
     }
 
-    public bool changing = false; //별-하트 간 전환 상태
-    public void Change_Yes()
+    bool exchanging = false; //별->하트 간 전환 상태
+    public void Change_Yes() //별 하트 전환하기
     {
         SEManager.instance.PlayPopupSound();
-        changing = true;
-        changeMessage.SetActive(false);
+        exchanging = true;
+        exchangeMessageWindow.SetActive(false);
         Star.instance.starNum -= 5;//스타 5감소
         Star.instance.StarNumText.text = string.Format("{0}", Star.instance.starNum.ToString());
         HPManager.instance.AddHP(); //체력 증가함수
+        exchanging = false;
         Invoke(nameof(ChangeAgain), 3f);//별이 5개 이상 남았다면 3초 뒤 다시 팁말풍선 뜰 것        
-    } //별하트 전환하기
+    } 
+    
+    public bool IsExchanging()
+    {
+        return exchanging;    
+    }
 
     void ChangeAgain()
     {
@@ -1172,7 +1139,7 @@ public class GameScript1 : MonoBehaviour //전체적인 게임스트립트
     public void Change_No() //충분한 별이 있는데 전환하지 않음
     {
         SEManager.instance.PlayUICloseSound();
-        changeMessage.SetActive(false);
+        exchangeMessageWindow.SetActive(false);
         change = 2;
     }
 
@@ -1183,7 +1150,7 @@ public class GameScript1 : MonoBehaviour //전체적인 게임스트립트
         {
             if (change == 0 && tipNum == 3 && Menu.instance.menu8Open) //마지막 팁의 경우
             {
-                if (Star.instance.starNum >= 5 && HPManager.instance.m_HPAmount != HPManager.instance.MAX_HP)
+                if (Star.instance.starNum >= 5 && HPManager.instance.GetCurrentHP() != HPManager.instance.GetMaxHP())
                 {
                     change = 3;
                     Invoke(nameof(TipBubbleOn), 2f);//별이 다시 5개 이상이 되었을 때 팁말풍선 등장
@@ -1198,7 +1165,7 @@ public class GameScript1 : MonoBehaviour //전체적인 게임스트립트
         }  
         else if(Tip.gameObject.activeSelf && tipNum == 3 && Menu.instance.menu8Open)//팁풍선 올라와있고 팁넘버 3일 때
         {
-            if(HPManager.instance.m_HPAmount == HPManager.instance.MAX_HP)//현재 체력이 최대치면 팁풍선 없애기
+            if(HPManager.instance.GetCurrentHP() == HPManager.instance.GetMaxHP())//현재 체력이 최대치면 팁풍선 없애기
             {
                 Tip.gameObject.SetActive(false);
             }
