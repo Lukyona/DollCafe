@@ -89,7 +89,7 @@ public class SystemManager : MonoBehaviour
                     }
                     TimeManager.instance.StartTimer();
                     Star.instance.Invoke("ActivateStarSystem", 25f);//25초 뒤 별 함수 시작
-                    Debug.Log("스타시스템 25초 뒤 시작");
+                    //Debug.Log("스타시스템 25초 뒤 시작");
                 }
                 if (!CharacterVisit.instance.IsInvoking("RandomVisit") && GameScript1.instance.endStory != 1 && !UI_Assistant1.instance.talking)
                 {//엔딩이벤트를 보기 전이거나 보고 종료하고 다시 들어왔을 경우,대화 중이 아니어야함

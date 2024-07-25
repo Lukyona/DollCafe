@@ -15933,8 +15933,8 @@ MonoBehaviour:
   onPurchaseComplete:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1538706513}
-        m_TargetAssemblyTypeName: GameScript1, Assembly-CSharp
+      - m_Target: {fileID: 1538706536}
+        m_TargetAssemblyTypeName: HPManager, Assembly-CSharp
         m_MethodName: HPMax20
         m_Mode: 1
         m_Arguments:
@@ -25398,8 +25398,8 @@ MonoBehaviour:
   onPurchaseComplete:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1538706513}
-        m_TargetAssemblyTypeName: GameScript1, Assembly-CSharp
+      - m_Target: {fileID: 1538706536}
+        m_TargetAssemblyTypeName: HPManager, Assembly-CSharp
         m_MethodName: HPSpeedUp
         m_Mode: 1
         m_Arguments:
@@ -44088,8 +44088,6 @@ MonoBehaviour:
   mid: {fileID: 399409168}
   fullText: {fileID: 756701357}
   HPAmount: {fileID: 1247398201}
-  m_RechargeRemainMin: 0
-  m_RechargeRemainSec: 0
 --- !u!1 &1544820110
 GameObject:
   m_ObjectHideFlags: 0
@@ -60412,8 +60410,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1538706513}
-        m_TargetAssemblyTypeName: GameScript1, Assembly-CSharp
+      - m_Target: {fileID: 1538706535}
+        m_TargetAssemblyTypeName: SystemManager, Assembly-CSharp
         m_MethodName: YesGameClose
         m_Mode: 1
         m_Arguments:

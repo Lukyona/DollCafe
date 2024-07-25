@@ -72,7 +72,7 @@ public class TimeManager : MonoBehaviour
                     HPManager.instance.LoadHPInfo(); //체력 정보 불러옴
                 }
                 LoadAppQuitTime(); //게임 종료 시간 불러옴
-                HPManager.instance.SetRechargeScheduler(); 
+                HPManager.instance.CalculateTime(); 
                 SetLoadingState(false);
                 AdsManager.instance.SetWatchingAds(false);
             } 
@@ -89,7 +89,7 @@ public class TimeManager : MonoBehaviour
             var appQuitTime = GetDateTime().ToBinary().ToString();
             PlayerPrefs.SetString("AppQuitTime", appQuitTime);
             PlayerPrefs.Save();
-            Debug.Log("저장된 시간" + DateTime.FromBinary(Convert.ToInt64(appQuitTime)).ToString());
+            //Debug.Log("저장된 시간" + DateTime.FromBinary(Convert.ToInt64(appQuitTime)).ToString());
             result = true;
         }
         catch (System.Exception e)
@@ -110,7 +110,7 @@ public class TimeManager : MonoBehaviour
                 appQuitTime = PlayerPrefs.GetString("AppQuitTime");
                 DateTime time = DateTime.FromBinary(Convert.ToInt64(appQuitTime));
                 HPManager.instance.SetAppQuitTime(time);
-                Debug.Log(string.Format("Loaded AppQuitTime : {0}", time.ToString()));
+                //Debug.Log(string.Format("Loaded AppQuitTime : {0}", time.ToString()));
             }
         }
         catch (System.Exception e)
