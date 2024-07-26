@@ -43,7 +43,7 @@ public class SceneChanger : MonoBehaviour //화면 페이드 인아웃
             case "EndingCreditScene": //엔딩 크레딧 씬이라면
                 string nName = PlayerPrefs.GetString("NamedName"); //플레이어가 설정한 이름들 가져오기
                 string bName = PlayerPrefs.GetString("BabyName");
-                {
+                { // 엔딩 크레딧 내용
                     creditText.text = "\n<Art - Background>\n\n김지수\n\nMomo\n\n< Art - Character >\n\nMomo\n\nNuba\n\nVint"
                     + "\n\n<Art - Menu>\n\n김지수\n\nMomo\n\nNuba\n\nVint\n\n< Art - UI >\n\nMomo\n\nLukyona\n\n< Character Scenario >\n\nMomo\n\nNuba\n\nLukyona"
                     + "\n\n<Programming>\n\nLukyona\n\n\n\n<Friends>\n\n도리\n\n\n붕붕\n\n\n빵빵\n\n\n개나리\n\n\n또롱\n\n\n도로시\n\n\n루루\n\n\n샌디\n\n\n친구\n\n\n찰스\n\n\n"

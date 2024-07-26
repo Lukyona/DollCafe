@@ -36,13 +36,5 @@ public class BlinkAnim : MonoBehaviour //터치투 스타트 메세지를 깜빡
         }
 
         time += Time.deltaTime;
-
-        if (Application.platform == RuntimePlatform.Android)
-        {
-            if (Input.GetKey(KeyCode.Escape)) //뒤로가기 버튼 두 번으로 앱 종료
-            {
-                Application.Quit();
-            }
-        }
     }
 }

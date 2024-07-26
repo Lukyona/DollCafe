@@ -308,7 +308,7 @@ GameObject:
   - component: {fileID: 1258454847}
   - component: {fileID: 1258454846}
   m_Layer: 5
-  m_Name: CafePrepare
+  m_Name: Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -384,7 +384,7 @@ GameObject:
   - component: {fileID: 1956334814}
   - component: {fileID: 1956334813}
   m_Layer: 5
-  m_Name: Canvas
+  m_Name: Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

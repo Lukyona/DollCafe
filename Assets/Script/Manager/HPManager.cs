@@ -272,7 +272,7 @@ public class HPManager : MonoBehaviour
 
         if (m_RechargeTimerCoroutine == null) // 코루틴이 동작하지 않고 있었다 = 이전까지 최대 체력이었다
         {
-            m_RechargeTimerCoroutine = StartCoroutine(DoRechargeTimer(HPRechargeIntervalMin - 1, HPRechargeIntervalSec - 1));
+            m_RechargeTimerCoroutine = StartCoroutine(DoRechargeTimer(HPRechargeIntervalMin - 1, HPRechargeIntervalSec));
             fullText.SetActive(false); //체력 소모했으므로 절대 최대치가 아님, 따라서 풀 텍스트 안 보이게 하고 타이머 보이게
             HPRechargeMinTimer.gameObject.SetActive(true);
             HPRechargeSecTimer.gameObject.SetActive(true);

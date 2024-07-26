@@ -150,7 +150,7 @@ public class SystemManager : MonoBehaviour
         }
     }
 
-    public void NoGameClose()
+    public void CancelGameClose()
     {
         SEManager.instance.PlayUICloseSound();
         completeSave = false;
@@ -159,8 +159,10 @@ public class SystemManager : MonoBehaviour
             UserInputManager.instance.SetCanTouch(true);
         }
         OnApplicationFocus(true);//스타 시스템 다시
+        
         if(GameClosingWindow.transform.Find("WarningText").gameObject.activeSelf == true) // 경고문구 켜져있으면 끄기
             GameClosingWindow.transform.Find("WarningText").gameObject.SetActive(false);
+
         GameClosingWindow.SetActive(false);
     }
 }

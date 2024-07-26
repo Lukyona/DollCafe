@@ -7,6 +7,7 @@ public class SEManager : MonoBehaviour //효과음 매니저
 {
     public static SEManager instance;
 
+    #region 효과음 소스들
     [SerializeField] AudioClip click; 
     [SerializeField] AudioClip close; 
     [SerializeField] AudioClip popup;
@@ -15,6 +16,7 @@ public class SEManager : MonoBehaviour //효과음 매니저
     [SerializeField] AudioClip click3; //메뉴판에서 캐릭터가 원하는 메뉴 골랐을 때
     [SerializeField] AudioClip bird; //참새 소리   
     [SerializeField] AudioClip touch;//터치 시 나는 소리
+    #endregion
 
     private AudioSource myAudio;
 
@@ -66,14 +68,13 @@ public class SEManager : MonoBehaviour //효과음 매니저
         myAudio.PlayOneShot(nextPage);
     }
 
-    public void SEOff() //효과음 끄기
+    public void OffSE() //효과음 끄기
     {
         myAudio.mute = true;
     }
 
-    public void SEOn() //효과음 켜기
+    public void OnSE() //효과음 켜기
     {
         myAudio.mute = false;
     }
-
 }
