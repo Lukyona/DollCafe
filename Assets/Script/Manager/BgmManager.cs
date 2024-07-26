@@ -40,25 +40,25 @@ public class BgmManager : MonoBehaviour
 
     public void PlayMainBgm() //시작화면 브금
     {
-        myAudio = startBgm;
-        myAudio.Play();
         int s = PlayerPrefs.GetInt("BgmOnOff");
         if (s == 1)//브금 off 상태면
-        {
-            OffBgm();
-        }
+            return;
+
+        myAudio = startBgm;
+        myAudio.Play();
     }
 
     public void PlayCafeBgm() //카페 브금
     {
         myAudio = cafeBgm;
-        myAudio.volume = 1f;
-        myAudio.Play();
         int s = PlayerPrefs.GetInt("BgmOnOff");
         if (s == 1)//브금 off 상태면
         {
             OffBgm();
         }
+
+        myAudio.volume = 1f;
+        myAudio.Play();
     }
 
     public void PlayCharacterBGM(int n)
