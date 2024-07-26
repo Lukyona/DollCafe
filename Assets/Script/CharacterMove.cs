@@ -38,12 +38,12 @@ public class CharacterMove : MonoBehaviour //대화할 때 큰 캐릭터 이미�
                 if (character.transform.position == outPos.position) //캐릭터가 완전히 나갔을 때 대사 넘기기 가능
                 {
                     //UI_Assistant1.instance.stop = 0;
-                    UserInputManager.instance.SetCanTouch(true);
+                    SystemManager.instance.SetCanTouch(true);
                 }
                 else //완전히 나가지 않았으면 대사 못 넘김
                 {
                     //UI_Assistant1.instance.stop = 1; 
-                    UserInputManager.instance.SetCanTouch(false); // 터치로 대사 못 넘기게 함
+                    SystemManager.instance.SetCanTouch(false); // 터치로 대사 못 넘기게 함
                 }
 
             }

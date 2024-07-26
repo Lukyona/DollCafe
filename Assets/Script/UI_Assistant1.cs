@@ -50,9 +50,9 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
     {
         talking = true;
         count = 0;
-        UserInputManager.instance.SetCanTouch(false);
+        SystemManager.instance.SetCanTouch(false);
         Dialogue1.instance.SelectedFirstDialogue(); //첫 문장 나타남
-        UserInputManager.instance.Invoke("SetCanTouchTrue", 1.5f); 
+        SystemManager.instance.Invoke("SetCanTouchTrue", 1.5f); 
     }  
 
     public void OpenDialogue2() //첫 대사 제외 나머지 대사
@@ -129,7 +129,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             GameScript1.instance.textnum = 0;
                             break;
                         case 4:
-                            UserInputManager.instance.SetCanTouch(false);
+                            SystemManager.instance.SetCanTouch(false);
                             Invoke("BabyNameSet", 1.3f);//아기 이름 설정
                             break;
                         case 5:
@@ -210,14 +210,14 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             SmallFade.instance.FadeIn();
                             panel.SetActive(false);
                             panel5.SetActive(true);
-                            UserInputManager.instance.SetCanTouch(false);;
+                            SystemManager.instance.SetCanTouch(false);;
                             GameScript1.instance.Invoke("TutorialDownBox", 1.3f);
                             break;
                         case 3:
-                            UserInputManager.instance.Invoke("SetCanTouchTrue", 1f);
+                            SystemManager.instance.Invoke("SetCanTouchTrue", 1f);
                             break;
                         case 5:
-                            UserInputManager.instance.SetCanTouch(false);;
+                            SystemManager.instance.SetCanTouch(false);;
                             MenuHint.instance.Invoke("ActiveMH", 1f);
                             break;
                         case 7:
@@ -377,8 +377,8 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             GameScript1.instance.textnum = 0;
                             if(VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
-                                UserInputManager.instance.SetCanTouch(false);;
-                                UserInputManager.instance.Invoke("SetCanTouchTrue", 1f);
+                                SystemManager.instance.SetCanTouch(false);;
+                                SystemManager.instance.Invoke("SetCanTouchTrue", 1f);
                                 SmallFade.instance.smallFIn.Enqueue(17);//주인공 아기 페이드인 준비
                                 Menu.instance.FEventMenu(1);//스페셜 메뉴 준비
                             }
@@ -390,7 +390,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                         case 29:
                             CharacterList.instance.CharacterFaceList[13].face[3].SetActive(false);
                             CharacterList.instance.CharacterFaceList[13].face[0].SetActive(true);
-                            UserInputManager.instance.SetCanTouch(false);;
+                            SystemManager.instance.SetCanTouch(false);;
                             GameScript1.instance.textnum = 1;
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
@@ -574,8 +574,8 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                         case 29:
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
-                                UserInputManager.instance.SetCanTouch(false);;
-                                UserInputManager.instance.Invoke("SetCanTouchTrue", 1f);
+                                SystemManager.instance.SetCanTouch(false);;
+                                SystemManager.instance.Invoke("SetCanTouchTrue", 1f);
                                 SmallFade.instance.smallFIn.Enqueue(16);//주인공 아기 페이드인 준비
                                 Menu.instance.FEventMenu(2);//스페셜 메뉴 준비
                             }
@@ -587,7 +587,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                         case 30:
                             CharacterList.instance.CharacterFaceList[13].face[6].SetActive(false);
                             CharacterList.instance.CharacterFaceList[13].face[0].SetActive(true);
-                            UserInputManager.instance.SetCanTouch(false);;
+                            SystemManager.instance.SetCanTouch(false);;
                             GameScript1.instance.textnum = 1;
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
@@ -732,8 +732,8 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                         case 35:
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
-                                UserInputManager.instance.SetCanTouch(false);;
-                                UserInputManager.instance.Invoke("SetCanTouchTrue", 1f);
+                                SystemManager.instance.SetCanTouch(false);;
+                                SystemManager.instance.Invoke("SetCanTouchTrue", 1f);
                                 SmallFade.instance.smallFIn.Enqueue(17);
                                 Menu.instance.FEventMenu(3);
                             }
@@ -743,7 +743,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             }
                             break;
                         case 36:
-                            UserInputManager.instance.SetCanTouch(false);;
+                            SystemManager.instance.SetCanTouch(false);;
                             GameScript1.instance.textnum = 1;
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
@@ -839,8 +839,8 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             GameScript1.instance.textnum = 0;
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
-                                UserInputManager.instance.SetCanTouch(false);;
-                                UserInputManager.instance.Invoke("SetCanTouchTrue", 1f);
+                                SystemManager.instance.SetCanTouch(false);;
+                                SystemManager.instance.Invoke("SetCanTouchTrue", 1f);
                                 SmallFade.instance.smallFIn.Enqueue(16);
                                 Menu.instance.FEventMenu(4);
                             }
@@ -850,7 +850,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             }
                             break;
                         case 13:
-                            UserInputManager.instance.SetCanTouch(false);;
+                            SystemManager.instance.SetCanTouch(false);;
                             GameScript1.instance.textnum = 1;                           
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
@@ -1050,8 +1050,8 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                         case 9:
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
-                                UserInputManager.instance.SetCanTouch(false);;
-                                UserInputManager.instance.Invoke("SetCanTouchTrue", 1f);
+                                SystemManager.instance.SetCanTouch(false);;
+                                SystemManager.instance.Invoke("SetCanTouchTrue", 1f);
                                 SmallFade.instance.smallFIn.Enqueue(16);
                                 Menu.instance.FEventMenu(6);
                             }
@@ -1063,7 +1063,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                         case 10:
                             CharacterList.instance.CharacterFaceList[13].face[4].SetActive(false);
                             CharacterList.instance.CharacterFaceList[13].face[0].SetActive(true);
-                            UserInputManager.instance.SetCanTouch(false);;
+                            SystemManager.instance.SetCanTouch(false);;
                             GameScript1.instance.textnum = 1;
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
@@ -1241,8 +1241,8 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                         case 58:
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
-                                UserInputManager.instance.SetCanTouch(false);;
-                                UserInputManager.instance.Invoke("SetCanTouchTrue", 1f);
+                                SystemManager.instance.SetCanTouch(false);;
+                                SystemManager.instance.Invoke("SetCanTouchTrue", 1f);
                                 SmallFade.instance.smallFIn.Enqueue(17);
                                 Menu.instance.FEventMenu(7);
                             }
@@ -1254,7 +1254,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                         case 59:
                             CharacterList.instance.CharacterFaceList[13].face[0].SetActive(false);
                             CharacterList.instance.CharacterFaceList[13].face[2].SetActive(true);
-                            UserInputManager.instance.SetCanTouch(false);;
+                            SystemManager.instance.SetCanTouch(false);;
                             GameScript1.instance.textnum = 1;
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
@@ -1371,8 +1371,8 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                         case 48:
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
-                                UserInputManager.instance.SetCanTouch(false);;
-                                UserInputManager.instance.Invoke("SetCanTouchTrue", 1f);
+                                SystemManager.instance.SetCanTouch(false);;
+                                SystemManager.instance.Invoke("SetCanTouchTrue", 1f);
                                 SmallFade.instance.smallFIn.Enqueue(16);
                                 Menu.instance.FEventMenu(8);
                             }
@@ -1382,7 +1382,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             }
                             break;
                         case 49:
-                            UserInputManager.instance.SetCanTouch(false);;
+                            SystemManager.instance.SetCanTouch(false);;
                             GameScript1.instance.textnum = 1;
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
@@ -1485,8 +1485,8 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                         case 16:
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
-                                UserInputManager.instance.SetCanTouch(false);;
-                                UserInputManager.instance.Invoke("SetCanTouchTrue", 1f);
+                                SystemManager.instance.SetCanTouch(false);;
+                                SystemManager.instance.Invoke("SetCanTouchTrue", 1f);
                                 SmallFade.instance.smallFOut.Enqueue(17);
                                 Menu.instance.menuFOut.Enqueue(Menu.instance.tmpNum); //메뉴 페이드아웃 큐에 추가
                                 Menu.instance.MenuFadeOut();//원래 있던 메뉴 페이드아웃
@@ -1503,8 +1503,8 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                         case 19:
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
-                                UserInputManager.instance.SetCanTouch(false);;
-                                UserInputManager.instance.Invoke("SetCanTouchTrue", 1f);
+                                SystemManager.instance.SetCanTouch(false);;
+                                SystemManager.instance.Invoke("SetCanTouchTrue", 1f);
                                 SmallFade.instance.smallFIn.Enqueue(17);
                                 Menu.instance.FEventMenu(9);
                             }
@@ -1514,7 +1514,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             }
                             break;
                         case 20:
-                            UserInputManager.instance.SetCanTouch(false);;
+                            SystemManager.instance.SetCanTouch(false);;
                             GameScript1.instance.textnum = 1;
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
@@ -1689,8 +1689,8 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             GameScript1.instance.textnum = 1;
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
-                                UserInputManager.instance.SetCanTouch(false);;
-                                UserInputManager.instance.Invoke("SetCanTouchTrue", 1.3f);
+                                SystemManager.instance.SetCanTouch(false);;
+                                SystemManager.instance.Invoke("SetCanTouchTrue", 1.3f);
                                 Menu.instance.SoldierEvent(SmallFade.instance.CharacterSeat[5]);//도로시 자리정보를 매개변수로 넣기
                             }
                             break;
@@ -1717,8 +1717,8 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             GameScript1.instance.textnum = 0;
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
-                                UserInputManager.instance.SetCanTouch(false);;
-                                UserInputManager.instance.Invoke("SetCanTouchTrue", 1f);
+                                SystemManager.instance.SetCanTouch(false);;
+                                SystemManager.instance.Invoke("SetCanTouchTrue", 1f);
                                 Menu.instance.seatInfo.Enqueue(SmallFade.instance.CharacterSeat[9]);
                                 SmallFade.instance.FadeOut();//찰스 작은 캐릭터 페이드아웃
                             }
@@ -1726,13 +1726,13 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                         case 25:
                             CharacterList.instance.CharacterFaceList[13].face[1].SetActive(false);
                             CharacterList.instance.CharacterFaceList[13].face[2].SetActive(true);
-                            UserInputManager.instance.SetCanTouch(false);;
-                            UserInputManager.instance.Invoke("SetCanTouchTrue", 1f);
+                            SystemManager.instance.SetCanTouch(false);;
+                            SystemManager.instance.Invoke("SetCanTouchTrue", 1f);
                             GameScript1.instance.textnum = 1;
                             break;
                         case 26:
-                            UserInputManager.instance.SetCanTouch(false);;
-                            UserInputManager.instance.Invoke("SetCanTouchTrue", 1.5f);
+                            SystemManager.instance.SetCanTouch(false);;
+                            SystemManager.instance.Invoke("SetCanTouchTrue", 1.5f);
                             CharacterList.instance.CharacterFaceList[8].face[2].SetActive(true);
                             CharacterMove.instance.PrincessMove();//찰스등장을 위해 도로시가 옆으로 이동, 바로 찰스 등장
                             GameScript1.instance.textnum = 0;
@@ -1937,7 +1937,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             GameScript1.instance.textnum = 1;
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
-                                UserInputManager.instance.SetCanTouch(false);;
+                                SystemManager.instance.SetCanTouch(false);;
                                 NameSetting.SetActive(true);
                             }
                             break;
@@ -1946,7 +1946,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             CharacterList.instance.CharacterFaceList[13].face[0].SetActive(true);
                             break;
                         case 22:
-                            UserInputManager.instance.SetCanTouch(true);
+                            SystemManager.instance.SetCanTouch(true);
                             GameScript1.instance.textnum = 0;
                             CName.text = namedName;
                             break;
@@ -2050,8 +2050,8 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                         case 36:
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
-                                UserInputManager.instance.SetCanTouch(false);;
-                                UserInputManager.instance.Invoke("SetCanTouchTrue", 1f);
+                                SystemManager.instance.SetCanTouch(false);;
+                                SystemManager.instance.Invoke("SetCanTouchTrue", 1f);
                                 SmallFade.instance.smallFIn.Enqueue(17);
                                 Menu.instance.FEventMenu(11);
                             }
@@ -2063,7 +2063,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                         case 37:
                             CharacterList.instance.CharacterFaceList[13].face[2].SetActive(false);
                             CharacterList.instance.CharacterFaceList[13].face[0].SetActive(true);
-                            UserInputManager.instance.SetCanTouch(false);;
+                            SystemManager.instance.SetCanTouch(false);;
                             GameScript1.instance.textnum = 1;
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
@@ -2081,8 +2081,8 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                         case 41:
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
-                                UserInputManager.instance.SetCanTouch(false);;
-                                UserInputManager.instance.Invoke("SetCanTouchTrue", 1f);
+                                SystemManager.instance.SetCanTouch(false);;
+                                SystemManager.instance.Invoke("SetCanTouchTrue", 1f);
                                 Menu.instance.menuFOut.Enqueue(Menu.instance.tmpNum); //메뉴 페이드아웃 큐에 추가
                                 Menu.instance.MenuFadeOut();//원래 있던 메뉴 페이드아웃
                             }
@@ -2091,8 +2091,8 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
                                 getMenu = 2;
-                                UserInputManager.instance.SetCanTouch(false);;
-                                UserInputManager.instance.Invoke("SetCanTouchTrue", 0.8f);
+                                SystemManager.instance.SetCanTouch(false);;
+                                SystemManager.instance.Invoke("SetCanTouchTrue", 0.8f);
                                 Menu.instance.FEventMenu(11);
                             }
                             else //다시보기일 때, 특별 메뉴 팝업 설정
@@ -2101,7 +2101,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             }
                             break;
                         case 43:
-                            UserInputManager.instance.SetCanTouch(false);;
+                            SystemManager.instance.SetCanTouch(false);;
                             GameScript1.instance.textnum = 1;
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
@@ -2265,8 +2265,8 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             GameScript1.instance.textnum = 1;
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
-                                UserInputManager.instance.SetCanTouch(false);;
-                                UserInputManager.instance.Invoke("SetCanTouchTrue", 2.3f);
+                                SystemManager.instance.SetCanTouch(false);;
+                                SystemManager.instance.Invoke("SetCanTouchTrue", 2.3f);
                                 getMenu = 1;
                                 Menu.instance.reactionFIn.Enqueue(Menu.instance.tmpNum); //리액션페이드인 큐에 추가
                                 Menu.instance.menuFOut.Enqueue(Menu.instance.tmpNum);//메뉴 페이드아웃큐에 자리 추가
@@ -2280,8 +2280,8 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                         case 24:
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
-                                UserInputManager.instance.SetCanTouch(false);;
-                                UserInputManager.instance.Invoke("SetCanTouchTrue", 0.6f);
+                                SystemManager.instance.SetCanTouch(false);;
+                                SystemManager.instance.Invoke("SetCanTouchTrue", 0.6f);
                                 Menu.instance.FEventMenu(12);
                                 Menu.instance.FEventMenu(13);
                             }
@@ -2291,7 +2291,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             }
                             break;
                         case 25:
-                            UserInputManager.instance.SetCanTouch(false);;
+                            SystemManager.instance.SetCanTouch(false);;
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
                                 Menu.instance.MenuFadeIn();
@@ -2507,8 +2507,8 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                         case 36:
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
-                                UserInputManager.instance.SetCanTouch(false);;
-                                UserInputManager.instance.Invoke("SetCanTouchTrue", 1f);
+                                SystemManager.instance.SetCanTouch(false);;
+                                SystemManager.instance.Invoke("SetCanTouchTrue", 1f);
                                 SmallFade.instance.smallFIn.Enqueue(16);
                                 Menu.instance.FEventMenu(14);
                             }
@@ -2518,7 +2518,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             }
                             break;
                         case 37:
-                            UserInputManager.instance.SetCanTouch(false);;
+                            SystemManager.instance.SetCanTouch(false);;
                             GameScript1.instance.textnum = 1;
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
@@ -2734,8 +2734,8 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             GameScript1.instance.textnum = 1;
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
-                                UserInputManager.instance.SetCanTouch(false);;
-                                UserInputManager.instance.Invoke("SetCanTouchTrue", 1f);
+                                SystemManager.instance.SetCanTouch(false);;
+                                SystemManager.instance.Invoke("SetCanTouchTrue", 1f);
                                 SmallFade.instance.smallFOut.Enqueue(17);
                                 Menu.instance.menuFOut.Enqueue(Menu.instance.tmpNum); //메뉴 페이드아웃 큐에 추가
                                 Menu.instance.MenuFadeOut();//원래 있던 메뉴 페이드아웃
@@ -2752,8 +2752,8 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                         case 50:
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
-                                UserInputManager.instance.SetCanTouch(false);;
-                                UserInputManager.instance.Invoke("SetCanTouchTrue", 1f);
+                                SystemManager.instance.SetCanTouch(false);;
+                                SystemManager.instance.Invoke("SetCanTouchTrue", 1f);
                                 SmallFade.instance.smallFIn.Enqueue(17);
                                 Menu.instance.FEventMenu(15);
                             }
@@ -2765,7 +2765,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                         case 51:
                             CharacterList.instance.CharacterFaceList[13].face[3].SetActive(false);
                             CharacterList.instance.CharacterFaceList[13].face[0].SetActive(true);
-                            UserInputManager.instance.SetCanTouch(false);;
+                            SystemManager.instance.SetCanTouch(false);;
                             GameScript1.instance.textnum = 1;
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {

@@ -60,7 +60,7 @@ public class Popup : MonoBehaviour // 새로운 손님 팝업
         if (CharacterAppear.instance.eventOn != 0 || VisitorNote.instance.evRP != 0)//친밀도 이벤트 도중이거나 다시보기 도중이면
         {
             specialMenuPopup.SetActive(false);
-            UserInputManager.instance.SetCanTouch(true);
+            SystemManager.instance.SetCanTouch(true);
         }
 
     }

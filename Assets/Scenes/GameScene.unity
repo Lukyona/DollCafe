@@ -1083,9 +1083,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1538706527}
-        m_TargetAssemblyTypeName: NameSetting, Assembly-CSharp
-        m_MethodName: CheckingName
+      - m_Target: {fileID: 1538706535}
+        m_TargetAssemblyTypeName: SystemManager, Assembly-CSharp
+        m_MethodName: CheckName
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -6467,7 +6467,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 182493319}
-  - component: {fileID: 182493320}
   m_Layer: 0
   m_Name: Setting
   m_TagString: Untagged
@@ -6496,28 +6495,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &182493320
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 182493318}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cd0962e47d6ea7d46af3f3d49ce59209, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  settingWindowAnimator: {fileID: 318965592}
-  settingButton: {fileID: 995445015}
-  resetCheck: {fileID: 1146838868}
-  settingClose: {fileID: 543335721}
-  resetButton: {fileID: 1637917752}
-  creditButton: {fileID: 182954915}
-  yesResetButton: {fileID: 1759833109}
-  noResetButton: {fileID: 1978913559}
-  creditView: {fileID: 1951395129}
-  bar: {fileID: 608015914}
 --- !u!1 &182954913
 GameObject:
   m_ObjectHideFlags: 0
@@ -6600,9 +6577,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 182493320}
+      - m_Target: {fileID: 1538706537}
         m_TargetAssemblyTypeName: Setting, Assembly-CSharp
-        m_MethodName: ClickCreditButton
+        m_MethodName: ShowCredit
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -15111,9 +15088,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 182493320}
+      - m_Target: {fileID: 1538706537}
         m_TargetAssemblyTypeName: Setting, Assembly-CSharp
-        m_MethodName: ClickSettingCloseButton
+        m_MethodName: CloseSetting
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -16667,7 +16644,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 728100319}
   m_Direction: 2
   m_Value: 1
-  m_Size: 0.102564104
+  m_Size: 0.13333334
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -18451,9 +18428,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 182493320}
+      - m_Target: {fileID: 1538706537}
         m_TargetAssemblyTypeName: Setting, Assembly-CSharp
-        m_MethodName: PrivacyLink
+        m_MethodName: OpenPrivacyLink
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -19559,7 +19536,7 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1755009840}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0.8974359}
+  m_AnchorMin: {x: 0, y: 0.8666667}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: -5, y: 0}
   m_SizeDelta: {x: 30, y: 0}
@@ -25231,8 +25208,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 315, y: -3900}
-  m_SizeDelta: {x: 630, y: 7800}
+  m_AnchoredPosition: {x: 315, y: -3000}
+  m_SizeDelta: {x: 630, y: 6000}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &968200888
 MonoBehaviour:
@@ -25267,9 +25244,9 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "<Art - Background>\r\n\r\n\uAE40\uC9C0\uC218\r\n\r\nMomo\r\n\n\r\n<Art
-    - Character>\r\n\r\nMomo\r\n\r\nNuba\r\n\r\nVint\r\n\n\r\n<Art - Menu>\r\n\r\n\uAE40\uC9C0\uC218\n\nMomo\r\n\nNuba\r\n\r\nVint\r\n\r\n\n<Art
-    - UI>\r\n\r\nMomo\r\n\nLukyona\r\n\n\n<Character Scenario>\r\n\r\nMomo\r\n\r\nNuba\r\n\r\nLukyona\r\n\n\r\n<Programming>\r\n\r\nLukyona\r\n\r\n\r\n\r\n<License>\r\n\r\n[Font]\r\n\r\n\uCE74\uD39824\uC758
+  m_Text: "\n<Art - Background>\r\n\r\n\uAE40\uC9C0\uC218\r\n\r\nMomo\r\n\r\n<Art
+    - Character>\r\n\r\nMomo\r\n\r\nNuba\r\n\r\nVint\r\n\r\n<Art - Menu>\r\n\r\n\uAE40\uC9C0\uC218\n\nMomo\r\n\nNuba\r\n\r\nVint\r\n\n<Art
+    - UI>\r\n\r\nMomo\r\n\nLukyona\r\n\n<Character Scenario>\r\n\r\nMomo\r\n\r\nNuba\r\n\r\nLukyona\r\n\n<Programming>\r\n\r\nLukyona\r\n\r\n\n<License>\r\n\r\n[Font]\r\n\r\n\uCE74\uD39824\uC758
     Decobox \uD3F0\uD2B8\r\n\r\n\uCE74\uD39824\uC758 \uC211\uC211 \uD3F0\uD2B8\r\n\r\n\uCE74\uD39824\uC758
     \uC368\uB77C\uC6B4 \uD3F0\uD2B8\r\n\r\n\uC0C1\uC0C1\uD1A0\uB07C(\uD3F0\uD2C0\uB9AC\uC5D0)\uC758
     \uC2E0\uBE44\uB294 \uC77C\uACF1\uC0B4 \uD3F0\uD2B8\r\n\r\nKCC\uB3C4\uB2F4\uB3C4\uB2F4\uCCB4
@@ -25293,12 +25270,7 @@ MonoBehaviour:
     ARE YOU by \uAE40\uC7AC\uC601, \uACF5\uC720\uB9C8\uB2F9, \uAE30\uC99D\uC800\uC791\uBB3C\r\n\r\nDRUNK
     by \uAE40\uC7AC\uC601, \uACF5\uC720\uB9C8\uB2F9, \uAE30\uC99D\uC800\uC791\uBB3C\r\n\r\nWaltz
     For A Child by \uAE40\uC7AC\uC601, \uACF5\uC720\uB9C8\uB2F9, CC BY\r\n\r\nMake
-    It Happen by \uAE40\uC131\uC6D0, \uACF5\uC720\uB9C8\uB2F9, \uAE30\uC99D\uC800\uC791\uBB3C\r\n\r\n[Script]\n\nBlinkAnim.cs
-    by \uC548\uB155? Wolfy \uC18C\uC2E0, https://wolfy.tistory.com/11#bl\n\nToggleController.cs
-    by Max Shakurov Kalxoznik\nhttps://github.com/Kalxoznik/Unity-Toggle-controller\n\nFadeAudioSource.cs
-    by John,\nhttps://gamedevbeginner.com/how-to-fade-audio-in-unity-i-tested-every-method-this-ones-the-best/\n\nHPCharge.cs(HeartRechargeManager)
-    by \uBD88\uD0C0\uB294\uD64D\uB2F9\uBB34(\uAD00\uB9AC\uC790) tenlie10, https://tenlie10.tistory.com/177\n\nUI_Assistant.cs,
-    TextWriter.cs by Code Monkey,\nhttps://www.youtube.com/watch?v=ZVh4nH8Mayg\r,\nhttps://unitycodemonkey.com/about.php\r\n\n\n"
+    It Happen by \uAE40\uC131\uC6D0, \uACF5\uC720\uB9C8\uB2F9, \uAE30\uC99D\uC800\uC791\uBB3C\r\n\r\n\n\n\n"
 --- !u!222 &968200889
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -25900,9 +25872,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 182493320}
+      - m_Target: {fileID: 1538706537}
         m_TargetAssemblyTypeName: Setting, Assembly-CSharp
-        m_MethodName: ClickSettingButton
+        m_MethodName: ShowSetting
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -26156,7 +26128,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -3750}
+  m_AnchoredPosition: {x: 0, y: -2910}
   m_SizeDelta: {x: 300, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &999605953
@@ -26203,7 +26175,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 182493320}
+      - m_Target: {fileID: 1538706537}
         m_TargetAssemblyTypeName: Setting, Assembly-CSharp
         m_MethodName: CloseCredit
         m_Mode: 1
@@ -27947,7 +27919,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
   m_AnchoredPosition: {x: -300, y: 800}
-  m_SizeDelta: {x: 630, y: 7800}
+  m_SizeDelta: {x: 630, y: 6000}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1060228194
 MonoBehaviour:
@@ -37638,7 +37610,7 @@ GameObject:
   - component: {fileID: 1337058732}
   - component: {fileID: 1337058731}
   m_Layer: 0
-  m_Name: Text
+  m_Name: Name
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -41258,7 +41230,7 @@ GameObject:
   - component: {fileID: 1474337012}
   - component: {fileID: 1474337011}
   m_Layer: 0
-  m_Name: Text
+  m_Name: Input(Baby)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -43073,7 +43045,7 @@ GameObject:
   - component: {fileID: 1531530888}
   - component: {fileID: 1531530887}
   m_Layer: 0
-  m_Name: Ok
+  m_Name: Yes
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -43142,9 +43114,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1538706527}
-        m_TargetAssemblyTypeName: NameSetting, Assembly-CSharp
-        m_MethodName: NameSetComplete
+      - m_Target: {fileID: 1538706535}
+        m_TargetAssemblyTypeName: SystemManager, Assembly-CSharp
+        m_MethodName: ConfirmName
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -43374,7 +43346,6 @@ GameObject:
   - component: {fileID: 1538706521}
   - component: {fileID: 1538706522}
   - component: {fileID: 1538706523}
-  - component: {fileID: 1538706527}
   - component: {fileID: 1538706526}
   - component: {fileID: 1538706528}
   - component: {fileID: 1538706530}
@@ -43385,6 +43356,7 @@ GameObject:
   - component: {fileID: 1538706534}
   - component: {fileID: 1538706535}
   - component: {fileID: 1538706536}
+  - component: {fileID: 1538706537}
   m_Layer: 0
   m_Name: GameScript
   m_TagString: Untagged
@@ -43750,25 +43722,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: afbaeddb32b9e77429484c522182d564, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1538706527
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1538706512}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fce0237d9d94bb44ea4e6299d0f9dc42, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  theName: 
-  inputField: {fileID: 1746894583}
-  babyInputField: {fileID: 1474337010}
-  nameCheckWindow: {fileID: 2067570898}
-  noNameCheckButton: {fileID: 43218069}
-  babyNameCheckButton: {fileID: 1993375246}
-  CheckName: {fileID: 1337058731}
 --- !u!114 &1538706528
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -44071,6 +44024,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   GameClosingWindow: {fileID: 517708581}
+  inputName: 
+  inputField: {fileID: 1746894583}
+  babyInputField: {fileID: 1474337010}
+  nameCheckingWindow: {fileID: 2067570898}
+  charNameCheckButton: {fileID: 43218069}
+  babyNameCheckButton: {fileID: 1993375246}
 --- !u!114 &1538706536
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -44088,6 +44047,28 @@ MonoBehaviour:
   mid: {fileID: 399409168}
   fullText: {fileID: 756701357}
   HPAmount: {fileID: 1247398201}
+--- !u!114 &1538706537
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1538706512}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd0962e47d6ea7d46af3f3d49ce59209, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  settingWindowAnimator: {fileID: 318965592}
+  settingButton: {fileID: 995445015}
+  resetCheck: {fileID: 1146838868}
+  settingClose: {fileID: 543335721}
+  resetButton: {fileID: 1637917752}
+  creditButton: {fileID: 182954915}
+  yesResetButton: {fileID: 1759833109}
+  noResetButton: {fileID: 1978913559}
+  creditView: {fileID: 1951395129}
+  bar: {fileID: 608015914}
 --- !u!1 &1544820110
 GameObject:
   m_ObjectHideFlags: 0
@@ -47118,9 +47099,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 182493320}
+      - m_Target: {fileID: 1538706537}
         m_TargetAssemblyTypeName: Setting, Assembly-CSharp
-        m_MethodName: ClickGameResetButton
+        m_MethodName: CheckResetGame
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -47565,7 +47546,7 @@ MonoBehaviour:
     m_SelectedTrigger: Highlighted
     m_DisabledTrigger: Disabled
   m_Interactable: 1
-  m_TargetGraphic: {fileID: 0}
+  m_TargetGraphic: {fileID: 1655732790}
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
@@ -50516,7 +50497,7 @@ GameObject:
   - component: {fileID: 1746894585}
   - component: {fileID: 1746894584}
   m_Layer: 0
-  m_Name: Text
+  m_Name: Input(Char)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -51049,9 +51030,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 182493320}
+      - m_Target: {fileID: 1538706537}
         m_TargetAssemblyTypeName: Setting, Assembly-CSharp
-        m_MethodName: GameReset
+        m_MethodName: ResetGame
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -56183,9 +56164,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 182493320}
+      - m_Target: {fileID: 1538706537}
         m_TargetAssemblyTypeName: Setting, Assembly-CSharp
-        m_MethodName: ClickCancelReset
+        m_MethodName: CancelReset
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -56788,9 +56769,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1538706527}
-        m_TargetAssemblyTypeName: NameSetting, Assembly-CSharp
-        m_MethodName: CheckingName
+      - m_Target: {fileID: 1538706535}
+        m_TargetAssemblyTypeName: SystemManager, Assembly-CSharp
+        m_MethodName: CheckName
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -58599,7 +58580,7 @@ GameObject:
   - component: {fileID: 2067570901}
   - component: {fileID: 2067570900}
   m_Layer: 0
-  m_Name: NameCheckWindow
+  m_Name: NameCheckingWindow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -59927,9 +59908,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1538706527}
-        m_TargetAssemblyTypeName: NameSetting, Assembly-CSharp
-        m_MethodName: NameSetNotYet
+      - m_Target: {fileID: 1538706535}
+        m_TargetAssemblyTypeName: SystemManager, Assembly-CSharp
+        m_MethodName: UnconfirmName
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

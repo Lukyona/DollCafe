@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class SystemManager : MonoBehaviour
 {
@@ -8,9 +9,22 @@ public class SystemManager : MonoBehaviour
 
     public GameObject GameClosingWindow;
 
-   bool completeSave = false;
+    bool completeSave = false;
 
-  void Awake()
+    bool canTouch = true;
+
+
+    #region 이름 설정 관련 오브젝트 변수
+    public string inputName; //입력한 이름
+    public GameObject inputField; // 입력창 (무명)
+    public GameObject babyInputField; // 입력창 (주인공)
+    public GameObject nameCheckingWindow; //이름 확인창
+    public Button charNameCheckButton;  //확인버튼
+    public Button babyNameCheckButton;
+    #endregion
+
+
+   void Awake()
     {
         if(instance == null)
         {
@@ -47,9 +61,9 @@ public class SystemManager : MonoBehaviour
             {
                 if (GameClosingWindow.activeSelf == false)
                 {
-                    if (UserInputManager.instance.CanTouch())
+                    if (CanTouch())
                     {
-                        UserInputManager.instance.SetCanTouch(false);
+                        SetCanTouch(false);
                     }
                     OnApplicationFocus(false);
                     if(GameScript1.instance.mainCount <= 3)
@@ -74,8 +88,6 @@ public class SystemManager : MonoBehaviour
 
     public void OnApplicationFocus(bool value)
     {
-        //Debug.Log("OnApplicationFocus() : " + value);
-        
         if (value) //게임 복귀
         {            
             if (GameScript1.instance.mainCount > 3)//붕붕이 등장 이후면
@@ -131,6 +143,85 @@ public class SystemManager : MonoBehaviour
         }
     }  
 
+    #region 이름 설정 관련 함수(주인공, 무명 캐릭터)
+    public void CheckName() //이름 확인
+    {
+        if (GameScript1.instance.mainCount == 0)//아기 이름 설정일 경우
+        {
+            inputName = babyInputField.GetComponent<Text>().text; //입력받은 값 넣음
+        }
+        else
+        {
+            inputName = inputField.GetComponent<Text>().text; //입력받은 값 넣음
+        }
+        if (string.IsNullOrWhiteSpace(inputName) == false) //입력받은 게 없거나 완전 공백이 아니면
+        {
+            nameCheckingWindow.transform.GetChild(0).GetComponent<Text>().text = inputName + "?"; //이름 텍스트에 입력한 이름 넣고
+            nameCheckingWindow.SetActive(true);//마지막 확인 창 활성화
+
+            if (GameScript1.instance.mainCount == 0)//아기 이름 설정일 경우
+            {
+                babyNameCheckButton.interactable = false; // 이전 창의 확인 버튼 못 누르게
+            }
+            else //무명이일 경우
+            {
+                charNameCheckButton.interactable = false;
+            }
+        }     
+    }
+
+    public void ConfirmName()// 이름 확정
+    {
+        if(GameScript1.instance.mainCount == 0)
+        {
+            Dialogue1.instance.babyName = inputName;//입력한 이름을 아기 이름에 대입
+                PlayerPrefs.SetString("BabyName", inputName); //아기 이름 저장                             
+                UI_Assistant1.instance.BabyNameSetting.SetActive(false);//아기 이름 설정창 비활성화          
+        }
+        else
+        {
+                UI_Assistant1.instance.namedName = inputName;//입력한 이름 캐릭터 이름에 대입
+                PlayerPrefs.SetString("NamedName", inputName);//무명이 이름 저장
+                VisitorNote.instance.NameInfoOpen(inputName);//손님노트에 이름 정보 활성화
+                UI_Assistant1.instance.NameSetting.SetActive(false);//무명이 이름 설정창 비활성화
+        }              
+
+        nameCheckingWindow.SetActive(false);//이름 확인창 비활성화
+        PlayerPrefs.Save();
+
+        SystemManager.instance.Invoke("SetCanTouchTrue", 1f);
+    }
+
+    public void UnconfirmName() // 이름 미확정
+    {
+        nameCheckingWindow.SetActive(false);//이름 확인창 비활성화
+        if(GameScript1.instance.mainCount == 0)
+        {
+            babyNameCheckButton.interactable = true; //다시 확인 버튼 활성화
+        }
+        else
+        {
+            charNameCheckButton.interactable = true;
+        }
+    }
+    #endregion
+    
+    #region 터치 관련 함수
+    public void SetCanTouch(bool value)
+    {
+        canTouch = value;
+    }
+
+    public bool CanTouch()
+    {
+        return canTouch;
+    }
+
+    public void SetCanTouchTrue() // Invoke용
+    {
+        canTouch = true;
+    }
+    #endregion
 
     public void AfterWatchingAds()
     {
@@ -142,6 +233,7 @@ public class SystemManager : MonoBehaviour
         TimeManager.instance.StartTimer();
     }
 
+    #region 게임 종료 관련 함수
     public void YesGameClose()
     {
         if(PlayerPrefs.GetInt("MainCount") <= 3 && completeSave)
@@ -154,9 +246,9 @@ public class SystemManager : MonoBehaviour
     {
         SEManager.instance.PlayUICloseSound();
         completeSave = false;
-        if (UserInputManager.instance.CanTouch() == false)
+        if (CanTouch() == false)
         {
-            UserInputManager.instance.SetCanTouch(true);
+            SetCanTouch(true);
         }
         OnApplicationFocus(true);//스타 시스템 다시
         
@@ -165,4 +257,5 @@ public class SystemManager : MonoBehaviour
 
         GameClosingWindow.SetActive(false);
     }
+    #endregion
 }

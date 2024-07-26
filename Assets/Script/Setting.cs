@@ -32,7 +32,7 @@ public class Setting : MonoBehaviour
         creditButton.GetComponent<Image>().alphaHitTestMinimumThreshold = 1f; // 기본값이 0 -> 투명한 부분까지도 터치 가능
     }
 
-    public void ClickSettingButton() //설정 버튼 터치했을 때
+    public void ShowSetting() //설정 버튼 터치했을 때
     {
         if (!Menu.instance.UIOn)//UI가 올라오지 않았을 때
         {
@@ -41,28 +41,28 @@ public class Setting : MonoBehaviour
 
             settingWindowAnimator.SetTrigger("SettingUp"); //설정창 올라옴
             settingButton.GetComponent<Button>().interactable = false; // 설정 버튼 중복 터치 방지
-            UserInputManager.instance.SetCanTouch(false); // 터치 불가, 대사 못 넘김
+            SystemManager.instance.SetCanTouch(false); // 터치 불가, 대사 못 넘김
         }
     }
 
-    public void ClickSettingCloseButton() //설정창 닫기 버튼 눌렀을 때
+    public void CloseSetting() //설정창 닫기 버튼 눌렀을 때
     {        
         SEManager.instance.PlayUICloseSound(); //효과음
         settingWindowAnimator.SetTrigger("SettingDown"); //설정창 내려감
         settingButton.GetComponent<Button>().interactable = true; //설정 버튼 터치 가능
 
-            UserInputManager.instance.SetCanTouch(true);// 터치 불가, 대사 넘기기 가능
+            SystemManager.instance.SetCanTouch(true);// 터치 불가, 대사 넘기기 가능
 
-        if (UI_Assistant1.instance.talking && UserInputManager.instance.CanTouch())//대화 중이고, 특정한 터치를 해야하는 경우가 아닐 때
+        if (UI_Assistant1.instance.talking && SystemManager.instance.CanTouch())//대화 중이고, 특정한 터치를 해야하는 경우가 아닐 때
         {
-            UserInputManager.instance.SetCanTouch(false);
-            UserInputManager.instance.Invoke("SetCanTouchTrue", 1f);
+            SystemManager.instance.SetCanTouch(false);
+            SystemManager.instance.Invoke("SetCanTouchTrue", 1f);
         }
 
         Menu.instance.UIOn = false;
     }
 
-    public void ClickGameResetButton() //게임 초기화 버튼 눌렀을 때
+    public void CheckResetGame() //게임 초기화 버튼 눌렀을 때
     {
         SEManager.instance.PlayUIClickSound2();
         settingClose.interactable = false;//설정 닫기 버튼 안 되게 하고
@@ -71,12 +71,13 @@ public class Setting : MonoBehaviour
         resetCheck.SetActive(true);//경고 메세지 표시
     }
 
-    public void GameReset()//정말로 게임 초기화
+    public void ResetGame() //정말로 게임 초기화
     {
         SEManager.instance.PlayUIClickSound2();
         yesResetButton.interactable = false;
         noResetButton.interactable = false;        
         GameScript1.instance.delete = true;
+
         if(PlayerPrefs.GetInt("PurchaseCount") == 0)//결제한 것이 없으면 데이터 모두 삭제
         {
             PlayerPrefs.DeleteAll();
@@ -109,10 +110,10 @@ public class Setting : MonoBehaviour
             PlayerPrefs.DeleteKey("BgmOnOff");
             PlayerPrefs.DeleteKey("SEOnOff");
         }
-        SceneChanger.instance.FadeToScene(1);
+        SceneChanger.instance.FadeToScene(1); // 시작씬으로 이동
     }
 
-    public void ClickCancelReset()//초기화 취소버튼 눌렀을 때
+    public void CancelReset() //초기화 취소버튼 눌렀을 때
     {
         SEManager.instance.PlayUIClickSound2();
         resetCheck.SetActive(false);
@@ -121,13 +122,13 @@ public class Setting : MonoBehaviour
         creditButton.interactable = true;
     }
 
-    public void ClickCreditButton()//크레딧버튼 눌렀을 때
+    public void ShowCredit()//크레딧버튼 눌렀을 때
     {
         SEManager.instance.PlayUIClickSound2();
         resetButton.interactable = false;
         creditButton.interactable = false;
         creditView.SetActive(true);
-        bar.value = 1;
+        bar.value = 1; //스크롤바 핸들러 위치 가장 위로 설정, 위쪽 내용부터 보이도록
     }
 
     public void CloseCredit()
@@ -138,7 +139,7 @@ public class Setting : MonoBehaviour
         creditButton.interactable = true;       
     }
 
-    public void PrivacyLink()
+    public void OpenPrivacyLink()
     {
         Application.OpenURL("https://sites.google.com/view/eocgames-privacy/%ED%99%88");
     }
