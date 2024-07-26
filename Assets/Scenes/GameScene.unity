@@ -44001,7 +44001,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3c72429c2686674085d4f9a14524d89, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  starNum: 0
+  StarNumText: {fileID: 351724910}
   Stars:
   - {fileID: 2107361095}
   - {fileID: 1606831168}
@@ -44010,7 +44010,6 @@ MonoBehaviour:
   - {fileID: 1112925743}
   - {fileID: 1155229355}
   - {fileID: 413690095}
-  StarNumText: {fileID: 351724910}
 --- !u!114 &1538706535
 MonoBehaviour:
   m_ObjectHideFlags: 0

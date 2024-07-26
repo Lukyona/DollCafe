@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -510,42 +511,11 @@ public class EachObject : MonoBehaviour //클릭된 오브젝트(캐릭터나 �
 
     public void WhatStar()//클릭된 별이 어떤 별인지 구분하여 별 페이드아웃 큐에 추가
     {
-        if (gameObject.name.Contains("(1)"))
+        if (gameObject.name.Contains("Star"))
         {
-            Star.instance.starFadeOut.Enqueue(0);
+            int star = int.Parse(gameObject.name.Substring(6,6)); // 숫자만 추출
+            Star.instance.ClickStar(star);
         }
-
-        if (gameObject.name.Contains("(2)"))
-        {
-            Star.instance.starFadeOut.Enqueue(1);
-        }
-
-        if (gameObject.name.Contains("(3)"))
-        {
-            Star.instance.starFadeOut.Enqueue(2);
-        }
-
-        if (gameObject.name.Contains("(4)"))
-        {
-            Star.instance.starFadeOut.Enqueue(3);
-        }
-
-        if (gameObject.name.Contains("(5)"))
-        {
-            Star.instance.starFadeOut.Enqueue(4);
-        }
-
-        if (gameObject.name.Contains("(6)"))
-        {
-            Star.instance.starFadeOut.Enqueue(5);
-        }
-
-        if (gameObject.name.Contains("(7)"))
-        {
-            Star.instance.starFadeOut.Enqueue(6);
-        }
-
-        Star.instance.StartCoroutine(Star.instance.PlusStar());
     }
 
     public void ClickPage()//손님노트의 페이지 클릭했을 때

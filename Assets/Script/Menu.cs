@@ -765,11 +765,10 @@ public class Menu : MonoBehaviour
     public void UnlockMenuItems4() // 메뉴4 해제
     {
         //만약 스타가 부족하면 열리지 않음
-        if(Star.instance.starNum >= 5)
+        if(Star.instance.GetCurrentStarNum() >= 5)
         {
             MenuObject[3].SetActive(true);
-            Star.instance.starNum -= 5;
-            Star.instance.StarNumText.text = string.Format("{0}", Star.instance.starNum.ToString());
+            Star.instance.UseStar(5);
             LockedMenuItems[0].SetActive(false); //실루엣 이미지 없애고
             UnlockedMenuItems.Add(MenuObject[3]); //UnlockedMenuItems리스트에 메뉴4 추가
             menu4Open = true; //1은 메뉴가 해제됐다는 의미
@@ -780,11 +779,10 @@ public class Menu : MonoBehaviour
 
     public void UnlockMenuItems5()
     {
-        if (Star.instance.starNum >= 10)
+        if (Star.instance.GetCurrentStarNum() >= 10)
         {
             MenuObject[4].SetActive(true);
-            Star.instance.starNum -= 10;
-            Star.instance.StarNumText.text = string.Format("{0}", Star.instance.starNum.ToString());
+            Star.instance.UseStar(10);
             LockedMenuItems[1].SetActive(false);
             UnlockedMenuItems.Add(MenuObject[4]);          
             menu5Open = true;
@@ -795,11 +793,10 @@ public class Menu : MonoBehaviour
 
     public void UnlockMenuItems6()
     {
-        if (Star.instance.starNum >= 15)
+        if (Star.instance.GetCurrentStarNum() >= 15)
         {
             MenuObject[5].SetActive(true);
-            Star.instance.starNum -= 15;
-            Star.instance.StarNumText.text = string.Format("{0}", Star.instance.starNum.ToString());
+            Star.instance.UseStar(15);
             LockedMenuItems[2].SetActive(false);
             UnlockedMenuItems.Add(MenuObject[5]);
             menu6Open = true;
@@ -811,11 +808,10 @@ public class Menu : MonoBehaviour
 
     public void UnlockMenuItems7()
     {
-        if (Star.instance.starNum >= 20)
+        if (Star.instance.GetCurrentStarNum() >= 20)
         {
             MenuObject[6].SetActive(true);
-            Star.instance.starNum -= 20;
-            Star.instance.StarNumText.text = string.Format("{0}", Star.instance.starNum.ToString());
+            Star.instance.UseStar(20);
             LockedMenuItems[3].SetActive(false);
             UnlockedMenuItems.Add(MenuObject[6]);
             menu7Open = true;
@@ -826,11 +822,10 @@ public class Menu : MonoBehaviour
 
     public void UnlockMenuItems8()
     {
-        if (Star.instance.starNum >= 25)
+        if (Star.instance.GetCurrentStarNum() >= 25)
         {
             MenuObject[7].SetActive(true);
-            Star.instance.starNum -= 25;
-            Star.instance.StarNumText.text = string.Format("{0}", Star.instance.starNum.ToString());
+            Star.instance.UseStar(25);
             LockedMenuItems[4].SetActive(false);
             UnlockedMenuItems.Add(MenuObject[7]);
             menu8Open = true;

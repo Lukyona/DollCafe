@@ -112,7 +112,7 @@ public class GameScript1 : MonoBehaviour //전체적인 게임스트립트
             PlayerPrefs.SetInt("MainCount", mainCount); //현재 메인카운트 저장
             PlayerPrefs.SetInt("NextAppear", CharacterAppear.instance.GetNextAppearNum()); //다음 캐릭터 등장 번호 저장
             PlayerPrefs.SetInt("Reputation", Menu.instance.reputation); //평판 저장
-            PlayerPrefs.SetInt("StarNum", Star.instance.starNum); //별 개수 저장
+            PlayerPrefs.SetInt("StarNum", Star.instance.GetCurrentStarNum()); //별 개수 저장
             PlayerPrefs.SetInt("end", endStory);//엔딩 상황 저장
             PlayerPrefs.SetInt("tipNum", tipNum);//팁 넘버 
             PlayerPrefs.Save(); //세이브
@@ -136,7 +136,7 @@ public class GameScript1 : MonoBehaviour //전체적인 게임스트립트
                 mainCount = PlayerPrefs.GetInt("MainCount");                
                 CharacterAppear.instance.SetNextAppearNum(PlayerPrefs.GetInt("NextAppear"));
                 Menu.instance.reputation = PlayerPrefs.GetInt("Reputation");
-                Star.instance.starNum = PlayerPrefs.GetInt("StarNum");
+                Star.instance.SetStarNum(PlayerPrefs.GetInt("StarNum"));
                 endStory = PlayerPrefs.GetInt("end");       
                 tipNum = PlayerPrefs.GetInt("tipNum");
                 if (mainCount > 3)//붕붕이 등장 이후면
@@ -192,10 +192,9 @@ public class GameScript1 : MonoBehaviour //전체적인 게임스트립트
                 mainCount = 0;
                 CharacterAppear.instance.SetNextAppearNum(0);
                 Menu.instance.reputation = 0;
-                Star.instance.starNum = 0;
+                Star.instance.SetStarNum(0);
             }
             Menu.instance.reputationText.text = string.Format("{0}", Menu.instance.reputation);
-            Star.instance.StarNumText.text = string.Format("{0}", Star.instance.starNum.ToString());
             result = true;
         }
         catch (System.Exception e)
@@ -924,7 +923,8 @@ public class GameScript1 : MonoBehaviour //전체적인 게임스트립트
 
     void CheckTip()//팁을 볼 수 있었는데 보지 않은 경우 다시팁 말풍선 나타나게 해줌
     {
-        if((mainCount > 6 && tipNum == 0) || (Dialogue1.instance.CharacterDC[1] == 3 && tipNum == 1) || (Menu.instance.menu8Open == true && tipNum == 3 && Star.instance.starNum >= 5))
+        if((mainCount > 6 && tipNum == 0) || (Dialogue1.instance.CharacterDC[1] == 3 && tipNum == 1) 
+            || (Menu.instance.menu8Open == true && tipNum == 3 && Star.instance.GetCurrentStarNum() >= 5))
         {//또롱이 등장 이후&&팁 넘버 0일 때, 도리 친밀도 이벤트 후&&팁 넘버 1일 때, 메뉴8오픈&&팁넘버3&&별이 5개 이상일 때
             TipBubbleOn();
         }
@@ -975,11 +975,10 @@ public class GameScript1 : MonoBehaviour //전체적인 게임스트립트
     {
         SEManager.instance.PlayUIClickSound(); //효과음           
         TipMessage.gameObject.SetActive(false);
-        if(Star.instance.starNum >= 3)//
+        if(Star.instance.GetCurrentStarNum() >= 3)//
         {
             Tip.gameObject.SetActive(false);
-            Star.instance.starNum -= 3;
-            Star.instance.StarNumText.text = string.Format("{0}", Star.instance.starNum.ToString());
+            Star.instance.UseStar(3);
             JejeMessage(tipNum + 20);
         }
         else//스타가 부족하면
@@ -1119,8 +1118,7 @@ public class GameScript1 : MonoBehaviour //전체적인 게임스트립트
         SEManager.instance.PlayPopupSound();
         exchanging = true;
         exchangeMessageWindow.SetActive(false);
-        Star.instance.starNum -= 5;//스타 5감소
-        Star.instance.StarNumText.text = string.Format("{0}", Star.instance.starNum.ToString());
+        Star.instance.UseStar(5);//스타 5감소
         HPManager.instance.AddHP(); //체력 증가함수
         exchanging = false;
         Invoke(nameof(ChangeAgain), 3f);//별이 5개 이상 남았다면 3초 뒤 다시 팁말풍선 뜰 것        
@@ -1150,7 +1148,7 @@ public class GameScript1 : MonoBehaviour //전체적인 게임스트립트
         {
             if (change == 0 && tipNum == 3 && Menu.instance.menu8Open) //마지막 팁의 경우
             {
-                if (Star.instance.starNum >= 5 && HPManager.instance.GetCurrentHP() != HPManager.instance.GetMaxHP())
+                if (Star.instance.GetCurrentStarNum() >= 5 && HPManager.instance.GetCurrentHP() != HPManager.instance.GetMaxHP())
                 {
                     change = 3;
                     Invoke(nameof(TipBubbleOn), 2f);//별이 다시 5개 이상이 되었을 때 팁말풍선 등장
