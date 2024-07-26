@@ -44,7 +44,7 @@ public class SystemManager : MonoBehaviour
         if (GameScript1.instance.mainCount > 3)//붕붕이 등장 이후면
         {
             Star.instance.Invoke("ActivateStarSystem", 25f);//25초 뒤 별 함수 시작
-           // Debug.Log("스타시스템 25초 뒤 시작");
+            Debug.Log("스타시스템 25초 뒤 시작");
             if (!CharacterVisit.instance.IsInvoking("RandomVisit"))
             {
                 CharacterVisit.instance.Invoke("RandomVisit", 5f); //캐릭터 랜덤 방문
@@ -101,7 +101,7 @@ public class SystemManager : MonoBehaviour
                     }
                     TimeManager.instance.StartTimer();
                     Star.instance.Invoke("ActivateStarSystem", 25f);//25초 뒤 별 함수 시작
-                    //Debug.Log("스타시스템 25초 뒤 시작");
+                    Debug.Log("스타시스템 25초 뒤 시작");
                 }
                 if (!CharacterVisit.instance.IsInvoking("RandomVisit") && GameScript1.instance.endStory != 1 && !UI_Assistant1.instance.talking)
                 {//엔딩이벤트를 보기 전이거나 보고 종료하고 다시 들어왔을 경우,대화 중이 아니어야함
@@ -126,14 +126,14 @@ public class SystemManager : MonoBehaviour
                     if (Star.instance.IsInvoking("ActivateStarSystem"))
                     {
                         Star.instance.CancelInvoke("ActivateStarSystem");//별 활성화 함수 중단
-                       // Debug.Log("스타 인보크 중 종료1");
+                        //Debug.Log("스타 인보크 중 종료1");
                     }
                     else
                     {
-                        if (Star.instance.starCoroutine != null)
+                        if (Star.instance.IsStarSystemRunning())
                         {
-                            Star.instance.StopCoroutine(Star.instance.starCoroutine);
-                          //  Debug.Log("스타 종료2");
+                            Star.instance.DeactivateStarSystem();
+                            //Debug.Log("스타 종료2");
                         }
                     }
                     completeSave = true;

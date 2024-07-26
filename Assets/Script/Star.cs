@@ -20,7 +20,7 @@ public class Star : MonoBehaviour
 
     bool isFadingOut = false; //페이드아웃 중일 때 true
 
-    public Coroutine starCoroutine;
+    Coroutine starCoroutine;
 
 
     void Awake()
@@ -36,9 +36,22 @@ public class Star : MonoBehaviour
         starCoroutine = StartCoroutine(ShowStar());
     }
 
+    public void DeactivateStarSystem()
+    {
+        if(starCoroutine == null) return;
+
+        StopCoroutine(starCoroutine);
+        starCoroutine = null;
+    }
+
     public void ActivateStarFadeOut() //별 추가 및 페이드아웃 함수
     {
         StartCoroutine(GetStar());
+    }
+
+    public bool IsStarSystemRunning()
+    {
+        return starCoroutine == null? false : true;
     }
 
     public IEnumerator ShowStar() //플레이 타임 25~30초마다 1개씩 랜덤으로 별이 나타남
@@ -48,7 +61,7 @@ public class Star : MonoBehaviour
             int idx = Random.Range(0, StarList.Count); //0~6까지
             StarList.Remove(StarList[idx]); //그 값을 삭제
             //Debug.Log("스타 삭제된 번호 " + n);
-            //Debug.Log("스타 리스트 크기 " + StarList.Count);
+            Debug.Log("스타 리스트 크기 " + StarList.Count);
             Stars[idx].SetActive(true); //해당 별 활성화
             Stars[idx].GetComponent<Button>().interactable = true; //한번만 클릭 가능
 

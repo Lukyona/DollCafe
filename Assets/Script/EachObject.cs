@@ -513,7 +513,7 @@ public class EachObject : MonoBehaviour //클릭된 오브젝트(캐릭터나 �
     {
         if (gameObject.name.Contains("Star"))
         {
-            int star = int.Parse(gameObject.name.Substring(6,6)); // 숫자만 추출
+            int star = int.Parse(gameObject.name.Substring(6,1)); // 숫자만 추출
             Star.instance.ClickStar(star);
         }
     }

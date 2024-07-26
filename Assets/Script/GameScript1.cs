@@ -527,17 +527,17 @@ public class GameScript1 : MonoBehaviour //전체적인 게임스트립트
             if (Star.instance.IsInvoking("ActivateStarSystem"))
             {
                 Star.instance.CancelInvoke("ActivateStarSystem");//별 활성화 함수 중단
-                if (Star.instance.starCoroutine != null)
+                if (Star.instance.IsStarSystemRunning())
                 {
-                    Star.instance.StopCoroutine(Star.instance.starCoroutine);
+                    Star.instance.DeactivateStarSystem();
                 }
                 //Debug.Log("스타 인보크 중 종료1");
             }
             else
             {
-                if (Star.instance.starCoroutine != null)
+                if (Star.instance.IsStarSystemRunning())
                 {
-                    Star.instance.StopCoroutine(Star.instance.starCoroutine);
+                    Star.instance.DeactivateStarSystem();
                     //Debug.Log("스타 종료2");
                 }
             }
