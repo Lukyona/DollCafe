@@ -32,7 +32,7 @@ public class SmallFade : MonoBehaviour //작은 캐릭터 스크립트
         }        
     }
 
-    public void CantClickCharacter(int n) //캐릭터 클릭 못하게
+    public void CantTouchCharacter(int n) //캐릭터 클릭 못하게
     {
         SmallCharacter[n].GetComponent<Button>().interactable = false;
     }
@@ -343,7 +343,7 @@ public class SmallFade : MonoBehaviour //작은 캐릭터 스크립트
 
     public void FadeOut() //작은 캐릭터 페이드아웃
     {
-        EachObject.instance.FadeOutCharacter();
+        TouchableObject.instance.FadeOutCharacter();
         StartCoroutine(FadeToZero());//페이드아웃 시작         
         //Debug.Log("함수 SmallFadeOut");
     }

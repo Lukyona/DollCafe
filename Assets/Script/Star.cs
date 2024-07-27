@@ -124,7 +124,7 @@ public class Star : MonoBehaviour
         waitingLine.Dequeue();          
     }
 
-    public void ClickStar(int starValue)
+    public void TouchStar(int starValue)
     {
         readyToFadeOut.Enqueue(starValue);
         ActivateStarFadeOut();
