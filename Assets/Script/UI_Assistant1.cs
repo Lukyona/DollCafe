@@ -58,7 +58,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
     public void OpenDialogue2() //첫 대사 제외 나머지 대사
     {
         talking = true;
-        if (textWriterSingle != null && textWriterSingle.IsActive())
+        if (textWriterSingle != null && textWriterSingle.IsActive()) // 대사 출력 도중 터치했을 경우 출력 스킵, 바로 대사 전부 출력
         {
            textWriterSingle.WriteAllAndDestroy();
         }
@@ -74,13 +74,13 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                 {
                      babyText.text = "";
                      GameScript1.instance.ChageToCharacter(); //캐릭터 대사창으로 변경
-                     textWriterSingle = TextWriter.AddWriter_Static(characterText, messege, .03f, true, true);
+                     textWriterSingle = TextWriter.AddWriter_Static(characterText, messege);
                 }
                 else //아기 대사일 경우
                 {
                      characterText.text = "";
                      GameScript1.instance.ChageToBaby();
-                     textWriterSingle = TextWriter.AddWriter_Static(babyText, messege, .03f, true, true);
+                     textWriterSingle = TextWriter.AddWriter_Static(babyText, messege);
                 }
 
                 count++;

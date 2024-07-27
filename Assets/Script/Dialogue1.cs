@@ -189,15 +189,15 @@ public class Dialogue1 : MonoBehaviour //캐릭터들 대사
         switch (CharacterDC[0])
         {
             case 0://게임 처음 시작
-                textWriterSingle = TextWriter.AddWriter_Static(UI_Assistant1.instance.characterText, "드디어 왔구나!", .03f, true, true);
+                textWriterSingle = TextWriter.AddWriter_Static(UI_Assistant1.instance.characterText, "드디어 왔구나!");
                 CName.text = "??";
                 break;
             case 1://서빙 튜토리얼
-                textWriterSingle = TextWriter.AddWriter_Static(UI_Assistant1.instance.characterText, "자, 이젠 실전이야!", .03f, true, true);
+                textWriterSingle = TextWriter.AddWriter_Static(UI_Assistant1.instance.characterText, "자, 이젠 실전이야!");
                 CName.text = "제제";
                 break;
             case 2://엔딩 이벤트
-                textWriterSingle = TextWriter.AddWriter_Static(UI_Assistant1.instance.characterText, "우리 카페가 이렇게나 성장하다니!\n정말 놀라운걸?", .03f, true, true);
+                textWriterSingle = TextWriter.AddWriter_Static(UI_Assistant1.instance.characterText, "우리 카페가 이렇게나 성장하다니!\n정말 놀라운걸?");
                 CName.text = "제제";
                 break;
 
@@ -288,11 +288,11 @@ public class Dialogue1 : MonoBehaviour //캐릭터들 대사
         switch (CharacterDC[1])
         {          
             case 0: //카페 첫 방문
-                textWriterSingle = TextWriter.AddWriter_Static(UI_Assistant1.instance.characterText, "어라? 여기는 뭐하는 곳인가요?", .03f, true, true);
+                textWriterSingle = TextWriter.AddWriter_Static(UI_Assistant1.instance.characterText, "어라? 여기는 뭐하는 곳인가요?");
                 CName.text = "??";
                 break;
             case 1: // 친밀도 10
-                textWriterSingle = TextWriter.AddWriter_Static(UI_Assistant1.instance.characterText, "흐음...", .03f, true, true);
+                textWriterSingle = TextWriter.AddWriter_Static(UI_Assistant1.instance.characterText, "흐음...");
                 CName.text = "도리";
                 break;
 
@@ -369,12 +369,12 @@ public class Dialogue1 : MonoBehaviour //캐릭터들 대사
         switch(CharacterDC[2])
         {
             case 0://카페 첫 방문
-                textWriterSingle = TextWriter.AddWriter_Static(UI_Assistant1.instance.characterText, "어? 여기에 이런 곳이 있었나? 드릉드릉", .03f, true, true);
+                textWriterSingle = TextWriter.AddWriter_Static(UI_Assistant1.instance.characterText, "어? 여기에 이런 곳이 있었나? 드릉드릉");
                 CName.text = "??";
                 break;
             case 1: //친밀도 10
                 CharacterList.instance.CharacterFaceList[2].face[0].SetActive(true);
-                textWriterSingle = TextWriter.AddWriter_Static(UI_Assistant1.instance.characterText, "드릉!!! 드르응!!!! 드릉드릉드르릉!!!!!!!", .03f, true, true);
+                textWriterSingle = TextWriter.AddWriter_Static(UI_Assistant1.instance.characterText, "드릉!!! 드르응!!!! 드릉드릉드르릉!!!!!!!");
                 CName.text = "붕붕";
                 break;
         }      
@@ -447,12 +447,12 @@ public class Dialogue1 : MonoBehaviour //캐릭터들 대사
         switch (CharacterDC[3])
         {
             case 0://카페 첫 방문
-                textWriterSingle = TextWriter.AddWriter_Static(UI_Assistant1.instance.characterText, "오잉? 모야모야? 여기 모야?", .03f, true, true);
+                textWriterSingle = TextWriter.AddWriter_Static(UI_Assistant1.instance.characterText, "오잉? 모야모야? 여기 모야?");
                 CName.text = "??";
                 break;
             case 1: //친밀도 10
                 CharacterList.instance.CharacterFaceList[3].face[0].SetActive(true);
-                textWriterSingle = TextWriter.AddWriter_Static(UI_Assistant1.instance.characterText, "모야모야, 진짜 짜증나!!", .03f, true, true);
+                textWriterSingle = TextWriter.AddWriter_Static(UI_Assistant1.instance.characterText, "모야모야, 진짜 짜증나!!");
                 CName.text = "빵빵";
                 break;
         }
@@ -530,11 +530,11 @@ public class Dialogue1 : MonoBehaviour //캐릭터들 대사
         switch (CharacterDC[4])
         {
             case 0://카페 첫 방문
-                textWriterSingle = TextWriter.AddWriter_Static(UI_Assistant1.instance.characterText, "꺄르르~ 안녕하세요~", .03f, true, true);
+                textWriterSingle = TextWriter.AddWriter_Static(UI_Assistant1.instance.characterText, "꺄르르~ 안녕하세요~");
                 CName.text = "???";
                 break;
             case 1: //친밀도 10
-                textWriterSingle = TextWriter.AddWriter_Static(UI_Assistant1.instance.characterText, "있잖아요~ 원래 나는요..", .03f, true, true);
+                textWriterSingle = TextWriter.AddWriter_Static(UI_Assistant1.instance.characterText, "있잖아요~ 원래 나는요..");
                 CName.text = "개나리";
                 if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                 {
@@ -597,11 +597,11 @@ public class Dialogue1 : MonoBehaviour //캐릭터들 대사
         switch (CharacterDC[5])
         {
             case 0://카페 첫 방문
-                textWriterSingle = TextWriter.AddWriter_Static(UI_Assistant1.instance.characterText, "안냐!!", .03f, true, true);
+                textWriterSingle = TextWriter.AddWriter_Static(UI_Assistant1.instance.characterText, "안냐!!");
                 CName.text = "??";
                 break;
             case 1:
-                textWriterSingle = TextWriter.AddWriter_Static(UI_Assistant1.instance.characterText, "이거!! ..콩!!", .03f, true, true);
+                textWriterSingle = TextWriter.AddWriter_Static(UI_Assistant1.instance.characterText, "이거!! ..콩!!");
                 CName.text = "또롱";
                 if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                 {
@@ -662,11 +662,11 @@ public class Dialogue1 : MonoBehaviour //캐릭터들 대사
         switch (CharacterDC[6])
         {
             case 0://카페 첫 방문
-                textWriterSingle = TextWriter.AddWriter_Static(UI_Assistant1.instance.characterText, "정말이지 허름한 곳이로군. 큼큼.", .03f, true, true);
+                textWriterSingle = TextWriter.AddWriter_Static(UI_Assistant1.instance.characterText, "정말이지 허름한 곳이로군. 큼큼.");
                 CName.text = "???";
                 break;
             case 1: //친밀도 10
-                textWriterSingle = TextWriter.AddWriter_Static(UI_Assistant1.instance.characterText, "여봐라, 귀한 분이 오셨는데\n어서 모시지 않고 뭐하느냐~", .03f, true, true);
+                textWriterSingle = TextWriter.AddWriter_Static(UI_Assistant1.instance.characterText, "여봐라, 귀한 분이 오셨는데\n어서 모시지 않고 뭐하느냐~");
                 CName.text = "도로시";
                 break;
         }
@@ -729,11 +729,11 @@ public class Dialogue1 : MonoBehaviour //캐릭터들 대사
         switch (CharacterDC[7])
         {
             case 0://카페 첫 방문
-                textWriterSingle = TextWriter.AddWriter_Static(UI_Assistant1.instance.characterText, "안녕하세요..!", .03f, true, true);
+                textWriterSingle = TextWriter.AddWriter_Static(UI_Assistant1.instance.characterText, "안녕하세요..!");
                 CName.text = "??";
                 break;
             case 1: //친밀도 15
-                textWriterSingle = TextWriter.AddWriter_Static(UI_Assistant1.instance.characterText, "오늘도 코스모스 카페는 참 따뜻하네요.", .03f, true, true);
+                textWriterSingle = TextWriter.AddWriter_Static(UI_Assistant1.instance.characterText, "오늘도 코스모스 카페는 참 따뜻하네요.");
                 CName.text = "루루";
                 if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                 {
@@ -844,11 +844,11 @@ public class Dialogue1 : MonoBehaviour //캐릭터들 대사
         switch (CharacterDC[8])
         {
             case 0://카페 첫 방문
-                textWriterSingle = TextWriter.AddWriter_Static(UI_Assistant1.instance.characterText, "안녕하세요~\n혹시 여기가 코스모스 카페 맞나요?", .03f, true, true);
+                textWriterSingle = TextWriter.AddWriter_Static(UI_Assistant1.instance.characterText, "안녕하세요~\n혹시 여기가 코스모스 카페 맞나요?");
                 CName.text = "??";
                 break;
             case 1: //친밀도 15
-                textWriterSingle = TextWriter.AddWriter_Static(UI_Assistant1.instance.characterText, "오늘은 당신에게 특별한 이야기를 해주고 싶어요.", .03f, true, true);
+                textWriterSingle = TextWriter.AddWriter_Static(UI_Assistant1.instance.characterText, "오늘은 당신에게 특별한 이야기를 해주고 싶어요.");
                 CName.text = "샌디";
                 if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                 {
@@ -951,11 +951,11 @@ public class Dialogue1 : MonoBehaviour //캐릭터들 대사
         switch (CharacterDC[9])
         {
             case 0://카페 첫 방문
-                textWriterSingle = TextWriter.AddWriter_Static(UI_Assistant1.instance.characterText, "여기가 그 카페인가? 왕!", .03f, true, true);
+                textWriterSingle = TextWriter.AddWriter_Static(UI_Assistant1.instance.characterText, "여기가 그 카페인가? 왕!");
                 CName.text = "??";
                 break;
             case 1: //친밀도 10, 서빙 후
-                textWriterSingle = TextWriter.AddWriter_Static(UI_Assistant1.instance.characterText, "이걸 뽀삐도 같이 먹을 수 있다면 좋을 텐데..", .03f, true, true);
+                textWriterSingle = TextWriter.AddWriter_Static(UI_Assistant1.instance.characterText, "이걸 뽀삐도 같이 먹을 수 있다면 좋을 텐데..");
                 CName.text = "친구";
                 if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                 {
@@ -1028,11 +1028,11 @@ public class Dialogue1 : MonoBehaviour //캐릭터들 대사
         switch (CharacterDC[10])
         {
             case 0://카페 첫 방문
-                textWriterSingle = TextWriter.AddWriter_Static(UI_Assistant1.instance.characterText, "실례합니다! 아무도 없으십니까!", .03f, true, true);
+                textWriterSingle = TextWriter.AddWriter_Static(UI_Assistant1.instance.characterText, "실례합니다! 아무도 없으십니까!");
                 CName.text = "??";
                 break;
             case 1: //친밀도 10이상, 서빙 후, 카페에 공주 있을 경우
-                textWriterSingle = TextWriter.AddWriter_Static(UI_Assistant1.instance.characterText, "저... 그런데 말입니다.", .03f, true, true);
+                textWriterSingle = TextWriter.AddWriter_Static(UI_Assistant1.instance.characterText, "저... 그런데 말입니다.");
                 CName.text = "찰스";
                 if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                 {
@@ -1042,7 +1042,7 @@ public class Dialogue1 : MonoBehaviour //캐릭터들 대사
                 break;
             case 2: //친밀도 15이상, 서빙 전, 공주 친밀도 10이상, 카페에 공주 있을 경우
                 CharacterList.instance.CharacterFaceList[8].face[1].SetActive(true);
-                textWriterSingle = TextWriter.AddWriter_Static(UI_Assistant1.instance.characterText, babyName + "님.. 저 좀 도와주십쇼..", .03f, true, true);
+                textWriterSingle = TextWriter.AddWriter_Static(UI_Assistant1.instance.characterText, babyName + "님.. 저 좀 도와주십쇼..");
                 CName.text = "찰스";
                 if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                 {
@@ -1155,11 +1155,11 @@ public class Dialogue1 : MonoBehaviour //캐릭터들 대사
         switch (CharacterDC[11])
         {
             case 0://카페 첫 방문
-                textWriterSingle = TextWriter.AddWriter_Static(UI_Assistant1.instance.characterText, "....", .03f, true, true);
+                textWriterSingle = TextWriter.AddWriter_Static(UI_Assistant1.instance.characterText, "....");
                 CName.text = "??";
                 break;
             case 1: //친밀도 10이상
-                textWriterSingle = TextWriter.AddWriter_Static(UI_Assistant1.instance.characterText, "여, 여긴 참 따뜻한 곳이야..\n난 이 곳이 정말 조, 좋아.", .03f, true, true);
+                textWriterSingle = TextWriter.AddWriter_Static(UI_Assistant1.instance.characterText, "여, 여긴 참 따뜻한 곳이야..\n난 이 곳이 정말 조, 좋아.");
                 CName.text = "??";
                 if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                 {
@@ -1168,7 +1168,7 @@ public class Dialogue1 : MonoBehaviour //캐릭터들 대사
                 }
                 break;
             case 2: //친밀도 20이상
-                textWriterSingle = TextWriter.AddWriter_Static(UI_Assistant1.instance.characterText, "저, 저기... 있잖아..", .03f, true, true);
+                textWriterSingle = TextWriter.AddWriter_Static(UI_Assistant1.instance.characterText, "저, 저기... 있잖아..");
                 CName.text = UI_Assistant1.instance.namedName;
                 if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                 {
@@ -1307,12 +1307,12 @@ public class Dialogue1 : MonoBehaviour //캐릭터들 대사
         switch (CharacterDC[12])
         {
             case 0://카페 첫 방문
-                textWriterSingle = TextWriter.AddWriter_Static(UI_Assistant1.instance.characterText, "이 곳이야.", .03f, true, true);
+                textWriterSingle = TextWriter.AddWriter_Static(UI_Assistant1.instance.characterText, "이 곳이야.");
                 CName.text = "??";
                 break;
             case 1: //친밀도 15
                 CharacterList.instance.CharacterFaceList[12].face[0].SetActive(true);
-                textWriterSingle = TextWriter.AddWriter_Static(UI_Assistant1.instance.characterText, "그러고보니 디노 너..", .03f, true, true);
+                textWriterSingle = TextWriter.AddWriter_Static(UI_Assistant1.instance.characterText, "그러고보니 디노 너..");
                 CName.text = "히로";
                 break;
         }
@@ -1403,11 +1403,11 @@ public class Dialogue1 : MonoBehaviour //캐릭터들 대사
         switch (CharacterDC[13])
         {
             case 0://카페 첫 방문
-                textWriterSingle = TextWriter.AddWriter_Static(UI_Assistant1.instance.characterText, "흠흠.. 혹시 지금 영업하고 있소?", .03f, true, true);
+                textWriterSingle = TextWriter.AddWriter_Static(UI_Assistant1.instance.characterText, "흠흠.. 혹시 지금 영업하고 있소?");
                 CName.text = "???";
                 break;
             case 1: //친밀도 15
-                textWriterSingle = TextWriter.AddWriter_Static(UI_Assistant1.instance.characterText, "반갑네, 오늘도 이 카페는 따뜻하구먼.", .03f, true, true);
+                textWriterSingle = TextWriter.AddWriter_Static(UI_Assistant1.instance.characterText, "반갑네, 오늘도 이 카페는 따뜻하구먼.");
                 CName.text = "닥터 펭";
                 if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                 {
@@ -1507,12 +1507,12 @@ public class Dialogue1 : MonoBehaviour //캐릭터들 대사
             case 0://카페 첫 방문
                 CharacterList.instance.CharacterFaceList[13].face[0].SetActive(false);
                 CharacterList.instance.CharacterFaceList[13].face[1].SetActive(true);
-                textWriterSingle = TextWriter.AddWriter_Static(UI_Assistant1.instance.babyText, "어라? 참새가 왜 바닥에 누워있지?", .03f, true, true);
+                textWriterSingle = TextWriter.AddWriter_Static(UI_Assistant1.instance.babyText, "어라? 참새가 왜 바닥에 누워있지?");
                 break;
             case 1: //친밀도 20이상
                 CharacterList.instance.CharacterFaceList[13].face[0].SetActive(false);
                 CharacterList.instance.CharacterFaceList[13].face[1].SetActive(true);
-                textWriterSingle = TextWriter.AddWriter_Static(UI_Assistant1.instance.babyText, "로랑드 할아버지! 할아버지 몸에\n달린 그 줄들은 뭐에요?", .03f, true, true);
+                textWriterSingle = TextWriter.AddWriter_Static(UI_Assistant1.instance.babyText, "로랑드 할아버지! 할아버지 몸에\n달린 그 줄들은 뭐에요?");
                 CharacterMove.instance.InCount();//큰 캐릭터 일러스트는 바로 들어오기
                 break;
         }
