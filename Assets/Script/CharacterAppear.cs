@@ -196,7 +196,7 @@ public class CharacterAppear : MonoBehaviour
                                 CharacterVisit.instance.CancelInvoke("RandomVisit");
                                 Debug.Log("랜덤방문 취소");
                             }
-                            if (c != 9)
+                            if (c != 9) // 강아지 필통(친구)는 메뉴 주문 후 발생 *****에러 있음, 주문 받고 친밀도 이벤트 시작하고 이전 주문 받은 거로 인해 작은 캐릭터 사라지는 문제
                             {
                                 MenuHint.instance.CantClickMHB();
                                 GameScript1.instance.CantClickUI();
