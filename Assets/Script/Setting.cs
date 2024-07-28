@@ -91,7 +91,7 @@ public class Setting : MonoBehaviour
             PlayerPrefs.DeleteKey("NextAppear");
             PlayerPrefs.DeleteKey("Reputation");
             PlayerPrefs.DeleteKey("StarNum");
-            PlayerPrefs.DeleteKey("end");
+            PlayerPrefs.DeleteKey("EndingState");
             PlayerPrefs.DeleteKey("HPAmount");
             PlayerPrefs.DeleteKey("RemainMinTimer");
             PlayerPrefs.DeleteKey("RemainSecTimer");
@@ -106,7 +106,7 @@ public class Setting : MonoBehaviour
             PlayerPrefs.DeleteKey("FMRP");
             PlayerPrefs.DeleteKey("EVRP");
             PlayerPrefs.DeleteKey("BabyName");
-            PlayerPrefs.DeleteKey("NamedName");
+            PlayerPrefs.DeleteKey("NameForNameless");
             PlayerPrefs.DeleteKey("BgmOnOff");
             PlayerPrefs.DeleteKey("SEOnOff");
         }

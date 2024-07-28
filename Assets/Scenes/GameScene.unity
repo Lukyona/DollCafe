@@ -11097,7 +11097,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 367665412}
-  - component: {fileID: 367665414}
   m_Layer: 0
   m_Name: UI_Assistant
   m_TagString: Untagged
@@ -11125,38 +11124,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &367665414
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 367665411}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7724cc1532203b34bbc3499d6c40524c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  count: 0
-  CName: {fileID: 1221228894}
-  panel: {fileID: 962486055}
-  panel1: {fileID: 297233652}
-  panel2: {fileID: 1755719180}
-  panel3: {fileID: 1683776887}
-  panel4: {fileID: 850878763}
-  panel5: {fileID: 523636010}
-  panel6: {fileID: 1910152972}
-  panel7: {fileID: 1730601525}
-  panel8: {fileID: 1657706121}
-  characterText: {fileID: 1859479566}
-  babyText: {fileID: 1278631721}
-  textBoxAnimator: {fileID: 70937688}
-  stop: 0
-  namedName: 
-  NameSetting: {fileID: 2104357760}
-  BabyNameSetting: {fileID: 104692889}
-  talking: 0
-  getMenu: 0
 --- !u!1 &379293932
 GameObject:
   m_ObjectHideFlags: 0
@@ -43357,6 +43324,7 @@ GameObject:
   - component: {fileID: 1538706535}
   - component: {fileID: 1538706536}
   - component: {fileID: 1538706537}
+  - component: {fileID: 1538706538}
   m_Layer: 0
   m_Name: GameScript
   m_TagString: Untagged
@@ -43396,7 +43364,6 @@ MonoBehaviour:
   - {fileID: 183046232}
   - {fileID: 106322522}
   - {fileID: 849537561}
-  mainCount: 0
   TBAnimator: {fileID: 70937688}
   textnum: 0
   babyTextBox: {fileID: 1437856791}
@@ -43438,6 +43405,7 @@ MonoBehaviour:
   TipNoteAnimator: {fileID: 395229138}
   Tip2: {fileID: 201226726}
   Tip3: {fileID: 925840050}
+  mainCount: 0
   tipNum: 0
   exchangeMessageWindow: {fileID: 0}
   change: 0
@@ -43535,7 +43503,6 @@ MonoBehaviour:
   CName: {fileID: 1221228894}
   messegeArray: []
   CharacterDC: 000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
-  babyName: 
 --- !u!114 &1538706519
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -44024,6 +43991,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   GameClosingWindow: {fileID: 517708581}
   inputName: 
+  charNameSettingWindow: {fileID: 2104357760}
+  babyNameSettingWindow: {fileID: 104692889}
   inputField: {fileID: 1746894583}
   babyInputField: {fileID: 1474337010}
   nameCheckingWindow: {fileID: 2067570898}
@@ -44068,6 +44037,35 @@ MonoBehaviour:
   noResetButton: {fileID: 1978913559}
   creditView: {fileID: 1951395129}
   bar: {fileID: 608015914}
+--- !u!114 &1538706538
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1538706512}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7724cc1532203b34bbc3499d6c40524c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  count: 0
+  CName: {fileID: 1221228894}
+  panel: {fileID: 962486055}
+  panel1: {fileID: 297233652}
+  panel2: {fileID: 1755719180}
+  panel3: {fileID: 1683776887}
+  panel4: {fileID: 850878763}
+  panel5: {fileID: 523636010}
+  panel6: {fileID: 1910152972}
+  panel7: {fileID: 1730601525}
+  panel8: {fileID: 1657706121}
+  characterText: {fileID: 1859479566}
+  babyText: {fileID: 1278631721}
+  textBoxAnimator: {fileID: 70937688}
+  stop: 0
+  talking: 0
+  getMenu: 0
 --- !u!1 &1544820110
 GameObject:
   m_ObjectHideFlags: 0
@@ -59456,7 +59454,7 @@ GameObject:
   - component: {fileID: 2104357764}
   - component: {fileID: 2104357763}
   m_Layer: 0
-  m_Name: NameSetting
+  m_Name: CharNameSetting
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

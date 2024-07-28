@@ -80,6 +80,16 @@ public class TimeManager : MonoBehaviour
         }
     }
         
+    public void AfterWatchingAds()
+    {
+        SetLoadingState(true);
+        if (IsTimerNotNull())
+        {
+            StopTimer();
+        }
+        StartTimer();
+    }
+
     public bool SaveAppQuitTime() //종료 시간 저장
     {
         //Debug.Log("SaveAppQuitTime");

@@ -633,7 +633,6 @@ public class VisitorNote : MonoBehaviour
     {
         Name.text = name;
         Name.gameObject.SetActive(true);
-        UI_Assistant1.instance.namedName = name;
         SaveVisitorNoteInfo();
     }
 
@@ -689,7 +688,7 @@ public class VisitorNote : MonoBehaviour
                 whichStory.text = "찰스와의 첫 만남을 회상할까요?";
                 break;
             case 11:
-                whichStory.text = UI_Assistant1.instance.namedName + "와(과)의\n첫 만남을 회상할까요?";
+                whichStory.text = SystemManager.instance.GetNameForNameless() + "와(과)의\n첫 만남을 회상할까요?";
                 break;
             case 12:
                 whichStory.text = "히로&디노와의\n첫 만남을 회상할까요?";
@@ -719,7 +718,7 @@ public class VisitorNote : MonoBehaviour
     {
         if (fmRP != 0)//첫 만남 다시보기일 때
         {
-            Dialogue1.instance.CharacterDC[fmRP] = 0;//캐릭터DC를 0으로 만들고
+            Dialogue.instance.CharacterDC[fmRP] = 0;//캐릭터DC를 0으로 만들고
             if (fmRP != 14)
             {
                 GameScript1.instance.CharacterStart(fmRP);
@@ -733,27 +732,27 @@ public class VisitorNote : MonoBehaviour
         {
             if (evRP <= 10)//10까지
             {
-                Dialogue1.instance.CharacterDC[evRP] = 1;//캐릭터DC를 1로 만들고
+                Dialogue.instance.CharacterDC[evRP] = 1;//캐릭터DC를 1로 만들고
                 GameScript1.instance.CharacterStart(evRP);
             }
             else if (evRP == 11)//찰스2 이벤트
             {
-                Dialogue1.instance.CharacterDC[10] = 2;
+                Dialogue.instance.CharacterDC[10] = 2;
                 GameScript1.instance.CharacterStart(10);
             }
             else if (evRP == 12)//무명이1 이벤트
             {
-                Dialogue1.instance.CharacterDC[11] = 1;
+                Dialogue.instance.CharacterDC[11] = 1;
                 GameScript1.instance.CharacterStart(11);
             }
             else if (evRP == 13)//무명이2 이벤트
             {
-                Dialogue1.instance.CharacterDC[11] = 2;
+                Dialogue.instance.CharacterDC[11] = 2;
                 GameScript1.instance.CharacterStart(11);
             }
             else //14부터
             {
-                Dialogue1.instance.CharacterDC[evRP - 2] = 1;//캐릭터DC를 1로 만들고
+                Dialogue.instance.CharacterDC[evRP - 2] = 1;//캐릭터DC를 1로 만들고
                 int n = evRP - 2;
                 if (evRP == 16)
                 {
@@ -829,7 +828,7 @@ public class VisitorNote : MonoBehaviour
                 break;
             case 11:
                 menuName.text = "'밀크초콜릿 볼'";
-                whichCharacter.text = UI_Assistant1.instance.namedName + "을(를) 위한 특별 메뉴!";
+                whichCharacter.text = SystemManager.instance.GetNameForNameless() + "을(를) 위한 특별 메뉴!";
                 Menu.instance.SpecialMenu[8].GetComponent<Image>().sprite = Menu.instance.NonameDessert.sprite;
                 menuImage.sprite = Menu.instance.SpecialMenu[8].GetComponent<Image>().sprite; //이미지 설정
                 menuImage.GetComponent<RectTransform>().sizeDelta = new Vector2(Menu.instance.SpecialMenu[8].GetComponent<RectTransform>().rect.width, Menu.instance.SpecialMenu[8].GetComponent<RectTransform>().rect.height);
@@ -1067,9 +1066,9 @@ public class VisitorNote : MonoBehaviour
                 }
             }
 
-            if(PlayerPrefs.HasKey("NamedName"))
+            if(PlayerPrefs.HasKey("NameForNameless"))
             {
-                string n = PlayerPrefs.GetString("NamedName");
+                string n = PlayerPrefs.GetString("NameForNameless");
                 NameInfoOpen(n);
             }
 
@@ -1085,37 +1084,37 @@ public class VisitorNote : MonoBehaviour
                 replayOn = 0;
                 if (fmRP != 0)//첫 만남 다시보기일 때
                 {
-                    Dialogue1.instance.CharacterDC[fmRP] = 3;
+                    Dialogue.instance.CharacterDC[fmRP] = 3;
                     fmRP = 0;
                 }
                 else if (evRP != 0) //이벤트 다시보기일 때
                 {
                     if (evRP <= 10)//10까지
                     {
-                        Dialogue1.instance.CharacterDC[evRP] = 3;
+                        Dialogue.instance.CharacterDC[evRP] = 3;
                     }
                     else if (evRP == 11)//찰스2 이벤트
                     {
-                        Dialogue1.instance.CharacterDC[10] = 3;
+                        Dialogue.instance.CharacterDC[10] = 3;
                     }
                     else if (evRP == 12)//무명이1 이벤트
                     {
-                        Dialogue1.instance.CharacterDC[11] = 3;
+                        Dialogue.instance.CharacterDC[11] = 3;
                     }
                     else if (evRP == 13)//무명이2 이벤트
                     {
-                        Dialogue1.instance.CharacterDC[11] = 3;
+                        Dialogue.instance.CharacterDC[11] = 3;
                     }
                     else //14부터
                     {
-                        Dialogue1.instance.CharacterDC[evRP - 2] = 3;
+                        Dialogue.instance.CharacterDC[evRP - 2] = 3;
                     }
                     evRP = 0;
                 }
             }
             for(int i = 1; i <= 14; i++)
             {
-                if (i != 0 && Dialogue1.instance.CharacterDC[i] == 3)//제제가 아닌 캐릭터의 DC가 3이면, 시나리오가 끝났으면
+                if (i != 0 && Dialogue.instance.CharacterDC[i] == 3)//제제가 아닌 캐릭터의 DC가 3이면, 시나리오가 끝났으면
                 {
                     VisitorNote.instance.RePlayButton[i - 1].gameObject.SetActive(true);//다시보기 버튼 활성화
                     if (i == 1)//도리는 손님노트 이미지를 2번째 표정으로 바꿈

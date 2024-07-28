@@ -60,7 +60,7 @@ public class HPManager : MonoBehaviour
             m_RechargeTimerCoroutine = null;
         }
 
-        SystemManager.instance.AfterWatchingAds();
+        TimeManager.instance.AfterWatchingAds();
         GameScript1.instance.plusHP.interactable = true;
     }
 

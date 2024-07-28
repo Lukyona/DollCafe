@@ -25,10 +25,6 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
 
     public int stop = 0; // 특정한 터치가 필요한 경우에는 1, 대사가 막무가내로 넘어가는 것을 방지하기 위함
 
-    public string namedName; //플레이어가 붙여준 무명이의 이름
-    public GameObject NameSetting;
-    public GameObject BabyNameSetting;
-
     public bool talking = false; // true면 대화중
 
     public int getMenu = 0; //1이면 주인공 아기가 스페셜 메뉴를 가져오는 중, 친밀도 이벤트 시나리오 중 아기 페이드인에 사용
@@ -41,17 +37,14 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
         }
     }
 
-    public void BabyNameSet()
-    {
-        BabyNameSetting.SetActive(true);
-    }
+
 
     public void OpenDialogue() //대화 시작
     {
         talking = true;
         count = 0;
         SystemManager.instance.SetCanTouch(false);
-        Dialogue1.instance.SelectedFirstDialogue(); //첫 문장 나타남
+        Dialogue.instance.SelectedFirstDialogue(); //첫 문장 나타남
         SystemManager.instance.Invoke("SetCanTouchTrue", 1.5f); 
     }  
 
@@ -65,8 +58,8 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
         else
         {
             DialogueEvent(); //대화 이벤트 있으면 실행
-            Dialogue1.instance.SelectedNextDialogue(); //다음 대사 가져오기
-            string[] messegeArray = Dialogue1.instance.messegeArray;
+            Dialogue.instance.SelectedNextDialogue(); //다음 대사 가져오기
+            string[] messegeArray = Dialogue.instance.messegeArray;
             if (count < messegeArray.Length) //대사 카운트가 대사 갯수와 같아질 때까지 반복
             {
                 string messege = messegeArray[count];
@@ -91,13 +84,13 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                 babyText.text = "";
                 if(VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//첫 만남이나 이벤트 다시보기가 아닐 경우
                 {
-                    if (Dialogue1.instance.CharacterDC[Dialogue1.instance.CharacterNum] == 0 || Dialogue1.instance.CharacterDC[0] == 1)//캐릭터들의 첫 방문이거나 제제 튜토리얼 때는 BackToCafe() 실행
+                    if (Dialogue.instance.CharacterDC[Dialogue.instance.CharacterNum] == 0 || Dialogue.instance.CharacterDC[0] == 1)//캐릭터들의 첫 방문이거나 제제 튜토리얼 때는 BackToCafe() 실행
                     {
                         GameScript1.instance.BackToCafe(); //카페로 복귀
                     }
                     else //그 외에 친밀도 이벤트 대화의 경우는 BackToCafe2() 실행
                     {
-                        GameScript1.instance.BackToCafe2(Dialogue1.instance.CharacterNum);
+                        GameScript1.instance.BackToCafe2(Dialogue.instance.CharacterNum);
                     }
                 }
                 else//첫 만남 혹은 이벤트 다시보기일 때
@@ -113,10 +106,10 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
     
     private void DialogueEvent() //대화 이벤트
     {
-        switch (Dialogue1.instance.CharacterNum)
+        switch (Dialogue.instance.CharacterNum)
         {
             case 0: //제제
-                if (Dialogue1.instance.CharacterDC[0] == 0)
+                if (Dialogue.instance.CharacterDC[0] == 0)
                 {
                     switch (count)
                     {
@@ -130,7 +123,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             break;
                         case 4:
                             SystemManager.instance.SetCanTouch(false);
-                            Invoke("BabyNameSet", 1.3f);//아기 이름 설정
+                            SystemManager.instance.Invoke("ShowBabyNameSettingWindow", 1.3f);//아기 이름 설정
                             break;
                         case 5:
                             CharacterList.instance.CharacterFaceList[13].face[1].SetActive(false);
@@ -199,7 +192,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             break;
                     }
                 }
-                else if (Dialogue1.instance.CharacterDC[0] == 1)
+                else if (Dialogue.instance.CharacterDC[0] == 1)
                 {
                     switch (count)
                     {
@@ -229,7 +222,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             break;
                     }
                 }
-                else if (Dialogue1.instance.CharacterDC[0] == 1)
+                else if (Dialogue.instance.CharacterDC[0] == 1)
                 {
                     if(count == 11)
                     {
@@ -238,7 +231,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                 }
                 break;
             case 1: // 도리
-                if (Dialogue1.instance.CharacterDC[1] == 0)
+                if (Dialogue.instance.CharacterDC[1] == 0)
                 {
                     switch (count)
                     {
@@ -269,7 +262,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             break;
                     }
                 }
-                else if (Dialogue1.instance.CharacterDC[1] == 1)
+                else if (Dialogue.instance.CharacterDC[1] == 1)
                 {
                     switch (count)
                     {
@@ -441,7 +434,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                 break;
 
             case 2: //붕붕
-                if (Dialogue1.instance.CharacterDC[2] == 0)
+                if (Dialogue.instance.CharacterDC[2] == 0)
                 {
                     switch (count)
                     {
@@ -480,7 +473,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             break;
                     }
                 }
-                else if (Dialogue1.instance.CharacterDC[2] == 1)
+                else if (Dialogue.instance.CharacterDC[2] == 1)
                 {
                     switch (count)
                     {
@@ -605,7 +598,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                 break;
 
             case 3: //빵빵
-                if (Dialogue1.instance.CharacterDC[3] == 0)
+                if (Dialogue.instance.CharacterDC[3] == 0)
                 {
                     switch (count)
                     {
@@ -642,7 +635,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             break;
                     }
                 }
-                else if (Dialogue1.instance.CharacterDC[3] == 1)
+                else if (Dialogue.instance.CharacterDC[3] == 1)
                 {
                     switch (count)
                     {
@@ -765,7 +758,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                 break;
 
             case 4: //개나리
-                if (Dialogue1.instance.CharacterDC[4] == 0)
+                if (Dialogue.instance.CharacterDC[4] == 0)
                 {
                     switch (count)
                     {
@@ -807,7 +800,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             break;
                     }
                 }
-                else if (Dialogue1.instance.CharacterDC[4] == 1)
+                else if (Dialogue.instance.CharacterDC[4] == 1)
                 {
                     switch (count)
                     {
@@ -868,7 +861,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                 break;
 
             case 5: //또롱이
-                if (Dialogue1.instance.CharacterDC[5] == 0)
+                if (Dialogue.instance.CharacterDC[5] == 0)
                 {
                     switch (count)
                     {
@@ -917,7 +910,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             break;
                     }
                 }
-                else if (Dialogue1.instance.CharacterDC[5] == 1)
+                else if (Dialogue.instance.CharacterDC[5] == 1)
                 {
                     switch (count)
                     {
@@ -969,7 +962,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                 break;
 
             case 6: //도로시
-                if (Dialogue1.instance.CharacterDC[6] == 0)
+                if (Dialogue.instance.CharacterDC[6] == 0)
                 {
                     switch (count)
                     {
@@ -1007,7 +1000,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             break;
                     }
                 }
-                else if (Dialogue1.instance.CharacterDC[6] == 1)
+                else if (Dialogue.instance.CharacterDC[6] == 1)
                 {
                     switch (count)
                     {
@@ -1097,7 +1090,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                 break;
 
             case 7: //루루
-                if (Dialogue1.instance.CharacterDC[7] == 0)
+                if (Dialogue.instance.CharacterDC[7] == 0)
                 {
                     switch (count)
                     {
@@ -1139,7 +1132,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             break;
                     }
                 }
-                else if (Dialogue1.instance.CharacterDC[7] == 1)
+                else if (Dialogue.instance.CharacterDC[7] == 1)
                 {
                     switch (count)
                     {
@@ -1281,7 +1274,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                 break;
 
                 case 8: //샌디
-                if (Dialogue1.instance.CharacterDC[8] == 0)
+                if (Dialogue.instance.CharacterDC[8] == 0)
                 {
                     switch (count)
                     {
@@ -1319,7 +1312,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             break;
                     }
                 }
-                else if (Dialogue1.instance.CharacterDC[8] == 1)
+                else if (Dialogue.instance.CharacterDC[8] == 1)
                 {
                     switch (count)
                     {
@@ -1416,7 +1409,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                     break;
 
                 case 9: //친구
-                if (Dialogue1.instance.CharacterDC[9] == 0)
+                if (Dialogue.instance.CharacterDC[9] == 0)
                 {
                     switch (count)
                     {
@@ -1456,7 +1449,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             break;
                     }
                 }
-                else if (Dialogue1.instance.CharacterDC[9] == 1)
+                else if (Dialogue.instance.CharacterDC[9] == 1)
                 {
                     switch (count)
                     {
@@ -1542,7 +1535,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                 break;          
 
             case 10: //찰스
-                if (Dialogue1.instance.CharacterDC[10] == 0)
+                if (Dialogue.instance.CharacterDC[10] == 0)
                 {
                     switch (count)
                     {
@@ -1579,7 +1572,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             break;
                     }
                 }
-                else if (Dialogue1.instance.CharacterDC[10] == 1)
+                else if (Dialogue.instance.CharacterDC[10] == 1)
                 {
                     switch (count)
                     {
@@ -1624,7 +1617,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             break;
                     }
                 }
-                else if (Dialogue1.instance.CharacterDC[10] == 2)
+                else if (Dialogue.instance.CharacterDC[10] == 2)
                 {
                     switch (count)
                     {
@@ -1828,7 +1821,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                 break;
 
             case 11: //무명이
-                if (Dialogue1.instance.CharacterDC[11] == 0)
+                if (Dialogue.instance.CharacterDC[11] == 0)
                 {
                     switch (count)
                     {
@@ -1875,7 +1868,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             break;
                     }
                 }
-                else if (Dialogue1.instance.CharacterDC[11] == 1)
+                else if (Dialogue.instance.CharacterDC[11] == 1)
                 {
                     switch (count)
                     {
@@ -1937,8 +1930,8 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             GameScript1.instance.textnum = 1;
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
-                                SystemManager.instance.SetCanTouch(false);;
-                                NameSetting.SetActive(true);
+                                SystemManager.instance.SetCanTouch(false);
+                                SystemManager.instance.ShowCharNameSettingWindow();
                             }
                             break;
                         case 21:
@@ -1948,7 +1941,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                         case 22:
                             SystemManager.instance.SetCanTouch(true);
                             GameScript1.instance.textnum = 0;
-                            CName.text = namedName;
+                            CName.text = SystemManager.instance.GetNameForNameless();
                             break;
                         case 23:
                             GameScript1.instance.textnum = 1;
@@ -1965,7 +1958,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
 
                     }
                 }
-                else if (Dialogue1.instance.CharacterDC[11] == 2)
+                else if (Dialogue.instance.CharacterDC[11] == 2)
                 {
                     switch (count)
                     {
@@ -2155,7 +2148,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                 break;
 
             case 12: //히로디노
-                if (Dialogue1.instance.CharacterDC[12] == 0)
+                if (Dialogue.instance.CharacterDC[12] == 0)
                 {
                     switch (count)
                     {
@@ -2206,7 +2199,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             break;
                     }
                 }
-                else if (Dialogue1.instance.CharacterDC[12] == 1)
+                else if (Dialogue.instance.CharacterDC[12] == 1)
                 {
                     switch (count)
                     {
@@ -2368,7 +2361,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                 break;
 
             case 13: //닥터 펭
-                if (Dialogue1.instance.CharacterDC[13] == 0)
+                if (Dialogue.instance.CharacterDC[13] == 0)
                 {
                     switch (count)
                     {
@@ -2425,7 +2418,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             break;
                     }
                 }
-                else if (Dialogue1.instance.CharacterDC[13] == 1)
+                else if (Dialogue.instance.CharacterDC[13] == 1)
                 {
                     switch (count)
                     {
@@ -2544,7 +2537,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
 
 
             case 14: //롤렝드
-                if (Dialogue1.instance.CharacterDC[14] == 0)
+                if (Dialogue.instance.CharacterDC[14] == 0)
                 {
                     switch (count)
                     {
@@ -2636,7 +2629,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             break;
                     }
                 }
-                else if (Dialogue1.instance.CharacterDC[14] == 1)
+                else if (Dialogue.instance.CharacterDC[14] == 1)
                 {
                     switch (count)
                     {

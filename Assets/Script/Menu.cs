@@ -330,7 +330,7 @@ public class Menu : MonoBehaviour
                             GameScript1.instance.CantClickUI();
                         }
                     }
-                    else if(Dialogue1.instance.CharacterDC[10] == 3 && (cNum == 6 || cNum == 10))//찰스2이벤트가 끝난 후 찰스나 도로시일 경우
+                    else if(Dialogue.instance.CharacterDC[10] == 3 && (cNum == 6 || cNum == 10))//찰스2이벤트가 끝난 후 찰스나 도로시일 경우
                     {
                         together2.Enqueue(seatNum);//찰스도로시큐에 자리 저장
                     }
@@ -461,7 +461,7 @@ public class Menu : MonoBehaviour
                     TableMenu[num].GetComponent<RectTransform>().sizeDelta = new Vector2(SpecialMenu[8].GetComponent<RectTransform>().rect.width, SpecialMenu[8].GetComponent<RectTransform>().rect.height); //사이즈 조정
                     TableMenu[num].GetComponent<Image>().sprite = SpecialMenu[8].GetComponent<Image>().sprite;
                 }
-                Popup.instance.SetPopupMenu(SpecialMenu[8], UI_Assistant1.instance.namedName , 80f);
+                Popup.instance.SetPopupMenu(SpecialMenu[8], SystemManager.instance.GetNameForNameless() , 80f);
                 break;
             case 22://히로디노는 똑같은 메뉴
                 if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
@@ -635,7 +635,7 @@ public class Menu : MonoBehaviour
                     together1.Dequeue();
                 }
             }
-            else if (Dialogue1.instance.CharacterDC[10] == 3 && (SmallFade.instance.SittingCharacter[num].name == "sPrincess" || SmallFade.instance.SittingCharacter[num].name == "sSoldier"))
+            else if (Dialogue.instance.CharacterDC[10] == 3 && (SmallFade.instance.SittingCharacter[num].name == "sPrincess" || SmallFade.instance.SittingCharacter[num].name == "sSoldier"))
             {
                 if (SmallFade.instance.SittingCharacter[num].name == "sPrincess")
                 {
@@ -829,7 +829,7 @@ public class Menu : MonoBehaviour
             LockedMenuItems[4].SetActive(false);
             UnlockedMenuItems.Add(MenuObject[7]);
             menu8Open = true;
-            GameScript1.instance.AllScenarioEnd();
+            SystemManager.instance.CheckEndingCondition();
             SaveUnlockedMenuItemInfo();
         }
     }

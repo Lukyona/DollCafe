@@ -48,7 +48,7 @@ public class TouchableObject : MonoBehaviour //터치된 오브젝트 구분, �
 
         SmallFade.instance.CantTouchCharacter(cNum); //캐릭터 터치 불가, 중복 터치 방지
 
-        if (GameScript1.instance.mainCount == 2) //튜토리얼
+        if (SystemManager.instance.GetMainCount() == 2) //튜토리얼
         {
             MenuHint.instance.SetMHB(11);
             MenuHint.instance.SetMHText(cNum, 1);
@@ -103,11 +103,11 @@ public class TouchableObject : MonoBehaviour //터치된 오브젝트 구분, �
             {
                 case 6: // princess 도로시
                     SmallFade.instance.smallFOut.Enqueue(6);
-                    if (Dialogue1.instance.CharacterDC[10] != 3)//찰스2이벤트 이후가 아니면
+                    if (Dialogue.instance.CharacterDC[10] != 3)//찰스2이벤트 이후가 아니면
                     {
                         CharacterVisit.instance.revisit.Enqueue(6);
                     }
-                    else if(Dialogue1.instance.CharacterDC[10] == 3)//이벤트 후면
+                    else if(Dialogue.instance.CharacterDC[10] == 3)//이벤트 후면
                     {
                         if (!SmallFade.instance.x2)
                         {
@@ -124,7 +124,7 @@ public class TouchableObject : MonoBehaviour //터치된 오브젝트 구분, �
                     SmallFade.instance.smallFOut.Enqueue(10);
                     if (CharacterAppear.instance.eventOn != 11)//찰스2 이벤트 중이 아니면
                     {
-                        if (Dialogue1.instance.CharacterDC[10] == 3)//찰스2 이벤트 뒤면
+                        if (Dialogue.instance.CharacterDC[10] == 3)//찰스2 이벤트 뒤면
                         {
                             if (!SmallFade.instance.x2)
                             {
@@ -186,12 +186,12 @@ public class TouchableObject : MonoBehaviour //터치된 오브젝트 구분, �
 
             if (charName != "sHero" && charName != "sDinosour")
             { //히로디노가 아니고
-                if(Dialogue1.instance.CharacterDC[10] != 3 || (Dialogue1.instance.CharacterDC[10] == 3 && charName != "sPrincess" && charName != "sSoldier"))
+                if(Dialogue.instance.CharacterDC[10] != 3 || (Dialogue.instance.CharacterDC[10] == 3 && charName != "sPrincess" && charName != "sSoldier"))
                 {//찰스 이벤트가 다 안 끝났거나 끝났어도 찰스,도로시가 아니면
                     SmallFade.instance.cleanSeat.Enqueue(n); //비워질 자리 큐에 정보 추가
                    // Debug.Log(n + "자리 클린시트큐에 추가됨");
                 }       
-                else if(Dialogue1.instance.CharacterDC[10] == 3 && (charName == "sPrincess" || charName == "sSoldier"))
+                else if(Dialogue.instance.CharacterDC[10] == 3 && (charName == "sPrincess" || charName == "sSoldier"))
                 {//찰스도로시 중 찰스나 도로시일 때
                     if (!SmallFade.instance.x2)//값이 0이어야만 가능
                     {
@@ -278,7 +278,7 @@ public class TouchableObject : MonoBehaviour //터치된 오브젝트 구분, �
                 break;
             case 12:
             case 13:
-                name = UI_Assistant1.instance.namedName + "와(과)";
+                name = SystemManager.instance.GetNameForNameless() + "와(과)";
                 break;
             case 14:
                 name = "히로&디노" + "와";

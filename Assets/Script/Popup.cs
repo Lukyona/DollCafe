@@ -47,7 +47,7 @@ public class Popup : MonoBehaviour // 새로운 손님 팝업
         popupAnimator.SetTrigger("PopupClose"); //닫히는 애니메이션 작동
         Invoke("PopupNotActive", 0.3f); //팝업 비활성화
 
-        if(Dialogue1.instance.CharacterDC[0] == 1) //만약 제제 다이얼로그 카운트가 1이면
+        if(Dialogue.instance.CharacterDC[0] == 1) //만약 제제 다이얼로그 카운트가 1이면
         {
             GameScript1.instance.Invoke("ServingTutorial",0.7f); //서빙 튜토리얼 실행
         }
@@ -69,7 +69,7 @@ public class Popup : MonoBehaviour // 새로운 손님 팝업
     {
         character.GetComponent<RectTransform>().sizeDelta = new Vector2(ch.GetComponent<RectTransform>().rect.width, ch.GetComponent<RectTransform>().rect.height); //사이즈 조정
         character.GetComponent<Image>().sprite = ch.GetComponent<Image>().sprite;
-        if (GameScript1.instance.mainCount == 13) //히로/디노의 경우 이미지 위치 조정
+        if (SystemManager.instance.GetMainCount() == 13) //히로/디노의 경우 이미지 위치 조정
         {
             character.GetComponent<RectTransform >().anchoredPosition = new Vector2(25, 80);
         }

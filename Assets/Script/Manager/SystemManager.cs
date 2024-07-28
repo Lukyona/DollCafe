@@ -14,14 +14,23 @@ public class SystemManager : MonoBehaviour
     bool canTouch = true;
 
 
-    #region 이름 설정 관련 오브젝트 변수
+    #region 이름 설정 관련 변수
     public string inputName; //입력한 이름
+    public GameObject charNameSettingWindow;
+    public GameObject babyNameSettingWindow;
     public GameObject inputField; // 입력창 (무명)
     public GameObject babyInputField; // 입력창 (주인공)
     public GameObject nameCheckingWindow; //이름 확인창
     public Button charNameCheckButton;  //확인버튼
     public Button babyNameCheckButton;
     #endregion
+
+    string nameForNameless; //플레이어가 붙여준 무명이의 이름
+
+
+    int mainCount = 0; 
+    int endingState = 0; // 1 = 엔딩 이벤트 중, 2 = 엔딩 이벤트 완료
+    int tipNum = 0;
 
 
    void Awake()
@@ -34,7 +43,7 @@ public class SystemManager : MonoBehaviour
 
     void Start()
     {
-        GameScript1.instance.LoadDataInfo();//데이터 정보 불러옴
+        LoadDataInfo();//저장된 데이터 불러옴
 
         if (GameScript1.instance.mainCount == 0)
         {
@@ -47,8 +56,7 @@ public class SystemManager : MonoBehaviour
             Debug.Log("스타시스템 25초 뒤 시작");
             if (!CharacterVisit.instance.IsInvoking("RandomVisit"))
             {
-                CharacterVisit.instance.Invoke("RandomVisit", 5f); //캐릭터 랜덤 방문
-             //  Debug.Log("랜덤방문 수동시작 5초 뒤");
+                CharacterVisit.instance.Invoke("RandomVisit", 5f); // 5초 뒤 캐릭터 랜덤 방문
             }
         }
     }
@@ -86,6 +94,13 @@ public class SystemManager : MonoBehaviour
         }
     }
 
+
+    public int GetMainCount()
+    {
+        return mainCount;
+    }
+
+
     public void OnApplicationFocus(bool value)
     {
         if (value) //게임 복귀
@@ -103,10 +118,9 @@ public class SystemManager : MonoBehaviour
                     Star.instance.Invoke("ActivateStarSystem", 25f);//25초 뒤 별 함수 시작
                     Debug.Log("스타시스템 25초 뒤 시작");
                 }
-                if (!CharacterVisit.instance.IsInvoking("RandomVisit") && GameScript1.instance.endStory != 1 && !UI_Assistant1.instance.talking)
-                {//엔딩이벤트를 보기 전이거나 보고 종료하고 다시 들어왔을 경우,대화 중이 아니어야함
+                if (!CharacterVisit.instance.IsInvoking("RandomVisit") && endingState != 1 && !UI_Assistant1.instance.talking)
+                { // 엔딩이벤트 중이 아니어야 하고 대화 중이 아니어야함
                     CharacterVisit.instance.Invoke("RandomVisit", 5f); //캐릭터 랜덤 방문
-                  //  Debug.Log("랜덤방문 수동시작 5초 뒤");
                 }
             }
         }
@@ -117,10 +131,9 @@ public class SystemManager : MonoBehaviour
                 if (GameScript1.instance.mainCount > 3)//붕붕이 등장 이후
                 {
                     TimeManager.instance.SaveAppQuitTime(); //게임 나간 시간 저장     
-                    GameScript1.instance.SaveDataInfo();//데이터 저장
-                   // Debug.Log("데이터 세이브");
+                    SaveDataInfo();//데이터 저장
                     HPManager.instance.SaveHPInfo(); //체력, 타이머 정보 저장                
-                    Dialogue1.instance.SaveCharacterDCInfo();
+                    Dialogue.instance.SaveCharacterDCInfo();
                     Menu.instance.SaveUnlockedMenuItemInfo();
                     VisitorNote.instance.SaveVisitorNoteInfo();
                     if (Star.instance.IsInvoking("ActivateStarSystem"))
@@ -143,7 +156,134 @@ public class SystemManager : MonoBehaviour
         }
     }  
 
+    public void SaveDataInfo() //게임 데이터 정보 저장
+    {
+        //Debug.Log("SaveDataInfo");
+        try
+        {
+            PlayerPrefs.SetInt("MainCount", mainCount); //현재 메인카운트 저장
+            PlayerPrefs.SetInt("NextAppear", CharacterAppear.instance.GetNextAppearNum()); //다음 캐릭터 등장 번호 저장
+            PlayerPrefs.SetInt("Reputation", Menu.instance.reputation); //평판 저장
+            PlayerPrefs.SetInt("EndingState", endingState); //엔딩 상황 저장
+            PlayerPrefs.SetInt("tipNum", tipNum); //팁 넘버 
+            PlayerPrefs.Save(); //세이브
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogError("SaveDataInfo Failed (" + e.Message + ")");
+        }
+    }
+
+    public void LoadDataInfo() //게임 데이터 정보 불러옴
+    {
+        //Debug.Log("LoadDataInfo");
+        try
+        {
+            if (PlayerPrefs.HasKey("MainCount"))
+            {
+                mainCount = PlayerPrefs.GetInt("MainCount");                
+                CharacterAppear.instance.SetNextAppearNum(PlayerPrefs.GetInt("NextAppear"));
+                Menu.instance.reputation = PlayerPrefs.GetInt("Reputation");
+                Star.instance.SetStarNum(PlayerPrefs.GetInt("StarNum"));
+                endingState = PlayerPrefs.GetInt("EndingState");       
+                tipNum = PlayerPrefs.GetInt("tipNum");
+                if (mainCount > 3)//붕붕이 등장 이후면
+                {
+                   // Debug.Log("중요 데이터 로드");
+                    SmallFade.instance.SetCharacter(0);
+                    SmallFade.instance.Invoke("FadeIn", 1f); //제제 작은 캐릭터 페이드인                   
+                    Dialogue.instance.LoadCharacterDCInfo();
+                    VisitorNote.instance.LoadVisitorNoteInfo();
+                    Menu.instance.LoadUnlockedMenuItemInfo();                 
+                    //SystemManager.instance.babyName = PlayerPrefs.GetString("BabyName");
+                    Invoke("CheckTip", 1.5f);//팁 확인
+                    if (endingState != 3) //엔딩이벤트를 본 게 아니라면
+                    {
+                        CheckEndingCondition(); //엔딩 이벤트 조건 충족 체크
+                    } 
+                    for (int i = 1; i <= mainCount - 2; i++)//재방문 캐릭터 설정
+                    {
+                        if(Dialogue.instance.CharacterDC[10] == 3)//찰스2 이벤트를 했을 시에는
+                        {
+                            if (i == 6)//도로시 넘버에서 찰스도로시 추가
+                            {
+                                CharacterVisit.instance.revisit.Enqueue(17);
+                                CharacterVisit.instance.CanRevisit();
+                                continue;
+                            }
+                            if(i == 10)//찰스는 넘기기
+                            {
+                                continue;
+                            }
+                        }                      
+                        CharacterVisit.instance.revisit.Enqueue(i);
+                        CharacterVisit.instance.CanRevisit();
+                    }
+                    if(mainCount == 14 || mainCount == 15 || mainCount == 16)//닥터펭까지 등장했을 경우, 따로 닥터펭 추가(위에서 추가 안됨), 히로디노/롤렝드의 경우도 마찬가지
+                    {
+                        int t = mainCount - 1;
+                        CharacterVisit.instance.revisit.Enqueue(t);
+                        CharacterVisit.instance.CanRevisit();
+                    }
+                }                               
+                PlayerPrefs.Save();
+                if(mainCount > 6)
+                {
+                    SmallFade.instance.SmallCharacter[0].GetComponent<Button>().interactable = true; // 제제 터치 가능
+                }
+            }
+            else
+            {
+                mainCount = 0;
+                CharacterAppear.instance.SetNextAppearNum(0);
+                Menu.instance.reputation = 0;
+                Star.instance.SetStarNum(0);
+            }
+            Menu.instance.reputationText.text = string.Format("{0}", Menu.instance.reputation);
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogError("LoadDataInfo Failed (" + e.Message + ")");
+        }   
+    }
+
+    public void CheckEndingCondition() //모든 시나리오를 봤는지 확인
+    {
+        int sum = 0;
+        for(int i = 1; i <= Dialogue.instance.CharacterDC.Length; i++)
+        {
+            sum += Dialogue.instance.CharacterDC[i];
+        }
+
+        if(sum == 42 && Menu.instance.menu8Open) //캐릭터들 시나리오를 모두 봄 & 마지막 메뉴 잠금 해제 완료
+        {
+            Debug.Log("엔딩 조건 충족");
+
+            //엔딩이벤트 8초 후 시작
+            Invoke("EndingEvent",8f);
+            endingState = 1;
+            SmallFade.instance.SmallCharacter[0].GetComponent<Button>().interactable = false;//제제 클릭 불가
+        }
+        
+        if(sum > 20 && tipNum == 2)
+        {
+            Invoke("TipBubbleOn", 1.5f);
+        }
+    }
+
+
     #region 이름 설정 관련 함수(주인공, 무명 캐릭터)
+
+    public void ShowBabyNameSettingWindow()
+    {
+        babyNameSettingWindow.SetActive(true);
+    }
+
+    public void ShowCharNameSettingWindow()
+    {
+        charNameSettingWindow.SetActive(true);
+    }
+
     public void CheckName() //이름 확인
     {
         if (GameScript1.instance.mainCount == 0)//아기 이름 설정일 경우
@@ -174,22 +314,21 @@ public class SystemManager : MonoBehaviour
     {
         if(GameScript1.instance.mainCount == 0)
         {
-            Dialogue1.instance.babyName = inputName;//입력한 이름을 아기 이름에 대입
-                PlayerPrefs.SetString("BabyName", inputName); //아기 이름 저장                             
-                UI_Assistant1.instance.BabyNameSetting.SetActive(false);//아기 이름 설정창 비활성화          
+            PlayerPrefs.SetString("BabyName", inputName); //아기 이름 저장                             
+            babyNameSettingWindow.SetActive(false);//아기 이름 설정창 비활성화          
         }
         else
         {
-                UI_Assistant1.instance.namedName = inputName;//입력한 이름 캐릭터 이름에 대입
-                PlayerPrefs.SetString("NamedName", inputName);//무명이 이름 저장
-                VisitorNote.instance.NameInfoOpen(inputName);//손님노트에 이름 정보 활성화
-                UI_Assistant1.instance.NameSetting.SetActive(false);//무명이 이름 설정창 비활성화
+            nameForNameless = inputName;//입력한 이름 캐릭터 이름에 대입
+            PlayerPrefs.SetString("NameForNameless", inputName);//무명이 이름 저장
+            VisitorNote.instance.NameInfoOpen(inputName);//손님노트에 이름 정보 활성화
+            charNameSettingWindow.SetActive(false);//무명이 이름 설정창 비활성화
         }              
 
         nameCheckingWindow.SetActive(false);//이름 확인창 비활성화
         PlayerPrefs.Save();
 
-        SystemManager.instance.Invoke("SetCanTouchTrue", 1f);
+        Invoke("SetCanTouchTrue", 1f);
     }
 
     public void UnconfirmName() // 이름 미확정
@@ -203,6 +342,11 @@ public class SystemManager : MonoBehaviour
         {
             charNameCheckButton.interactable = true;
         }
+    }
+
+    public string GetNameForNameless()
+    {
+        return nameForNameless;
     }
     #endregion
     
@@ -222,16 +366,6 @@ public class SystemManager : MonoBehaviour
         canTouch = true;
     }
     #endregion
-
-    public void AfterWatchingAds()
-    {
-        TimeManager.instance.SetLoadingState(true);
-        if (TimeManager.instance.IsTimerNotNull())
-        {
-            TimeManager.instance.StopTimer();
-        }
-        TimeManager.instance.StartTimer();
-    }
 
     #region 게임 종료 관련 함수
     public void YesGameClose()

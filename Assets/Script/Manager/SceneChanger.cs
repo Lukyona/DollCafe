@@ -29,9 +29,9 @@ public class SceneChanger : MonoBehaviour //화면 페이드 인아웃
         {
             case "LogoScene": //로고 씬이라면
                 // PlayerPrefs를 이용하면 로컬에 데이터를 저장할 수 있음. (문자열 키값, 데이터)
-                if (PlayerPrefs.GetInt("end") == 2) //엔딩을 보고난 후에 게임을 킨 거면
+                if (PlayerPrefs.GetInt("EndingState") == 2) //엔딩을 보고난 후에 게임을 킨 거면
                 {               
-                    PlayerPrefs.SetInt("end", 3);
+                    PlayerPrefs.SetInt("EndingState", 3);
                 }
                 PlayerPrefs.Save();
                 Invoke("GoStartScreen", 4f); //스타트씬으로 넘어감
@@ -41,7 +41,7 @@ public class SceneChanger : MonoBehaviour //화면 페이드 인아웃
                 Invoke("LoadCafeScene", 1.3f);
                 break;
             case "EndingCreditScene": //엔딩 크레딧 씬이라면
-                string nName = PlayerPrefs.GetString("NamedName"); //플레이어가 설정한 이름들 가져오기
+                string nName = PlayerPrefs.GetString("NameForNameless"); //플레이어가 설정한 이름들 가져오기
                 string bName = PlayerPrefs.GetString("BabyName");
                 { // 엔딩 크레딧 내용
                     creditText.text = "\n<Art - Background>\n\n김지수\n\nMomo\n\n< Art - Character >\n\nMomo\n\nNuba\n\nVint"
@@ -98,7 +98,7 @@ public class SceneChanger : MonoBehaviour //화면 페이드 인아웃
     void LoadCafeScene()
     {
         string sceneName = "";
-        if (PlayerPrefs.GetInt("end") == 2)//엔딩 이벤트 보고 종료하지 않은 채 다시 들어온 경우
+        if (PlayerPrefs.GetInt("EndingState") == 2)//엔딩 이벤트 보고 종료하지 않은 채 다시 들어온 경우
         {
             sceneName = "PrepareScene";
         }

@@ -84,7 +84,7 @@ namespace Google.Android.AppBundle.Editor.Internal.PlayServices
             /// <param name="handle">Stream identifier.</param>
             /// <param name="text">String</param>
             /// <param name="data">Bytes</param>
-            /// <param name="end">Whether this is the end of the stream.</param>
+            /// <param name="EndingState">Whether this is the end of the stream.</param>
             public StreamData(int handle, string text, byte[] data, bool end)
             {
                 this.handle = handle;

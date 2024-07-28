@@ -107,7 +107,7 @@ public class CharacterAppear : MonoBehaviour
         int c = CharacterVisit.instance.visitC;
         if (c == 14 || c == 15)//닥터펭, 롤렝드의 경우
         {
-            if (Dialogue1.instance.CharacterDC[c - 1] != 0 && Dialogue1.instance.CharacterDC[c - 1] != 3)
+            if (Dialogue.instance.CharacterDC[c - 1] != 0 && Dialogue.instance.CharacterDC[c - 1] != 3)
             {
                 if(c == 14)
                 {
@@ -156,7 +156,7 @@ public class CharacterAppear : MonoBehaviour
         }
         else
         {
-            if (Dialogue1.instance.CharacterDC[c] != 0 && Dialogue1.instance.CharacterDC[c] != 3) //첫만남이 아니고, 시나리오를 다 보지 않았을 때
+            if (Dialogue.instance.CharacterDC[c] != 0 && Dialogue.instance.CharacterDC[c] != 3) //첫만남이 아니고, 시나리오를 다 보지 않았을 때
             {
                 switch (c)
                 {
@@ -215,7 +215,7 @@ public class CharacterAppear : MonoBehaviour
                         }
                         break;
                     case 10://찰스1
-                        if (Dialogue1.instance.CharacterDC[10] == 1)//찰스1
+                        if (Dialogue.instance.CharacterDC[10] == 1)//찰스1
                         {
                             if (VisitorNote.instance.FriendshipInfo[8] == 10)
                             {//친밀도 10일 때, 서빙횟수가 10번일 때
@@ -246,7 +246,7 @@ public class CharacterAppear : MonoBehaviour
                                 }
                             }
                         }
-                        else if (Dialogue1.instance.CharacterDC[10] == 2)//찰스2
+                        else if (Dialogue.instance.CharacterDC[10] == 2)//찰스2
                         {
                             if (VisitorNote.instance.friendshipGauge[c - 2].GetComponent<Image>().fillAmount == 1f && VisitorNote.instance.friendshipGauge[4].GetComponent<Image>().fillAmount == 1f)
                             {// 찰스, 도로시 친밀도 모두 최대일때
@@ -280,7 +280,7 @@ public class CharacterAppear : MonoBehaviour
                         }
                         break;
                     case 11:
-                        if (Dialogue1.instance.CharacterDC[11] == 1)//무명이1
+                        if (Dialogue.instance.CharacterDC[11] == 1)//무명이1
                         {
                             if (VisitorNote.instance.FriendshipInfo[9] == 10)//친밀도 10일때
                             {
@@ -300,7 +300,7 @@ public class CharacterAppear : MonoBehaviour
                                 }
                             }
                         }
-                        else if (Dialogue1.instance.CharacterDC[11] == 2)//무명이2
+                        else if (Dialogue.instance.CharacterDC[11] == 2)//무명이2
                         {
                             if (VisitorNote.instance.friendshipGauge[c - 2].GetComponent<Image>().fillAmount == 1f)//친밀도 20일때
                             {

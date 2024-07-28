@@ -8,7 +8,6 @@ public class GameScript1 : MonoBehaviour //전체적인 게임스트립트
     public static GameScript1 instance;
     public GameObject panel; //대화할 때 쓰는 회색 반투명 패널
     public GameObject[] BigCharacter; //큰 캐릭터 이미지 배열
-    public int mainCount = 0; 
     public Animator TBAnimator; //텍스트박스 애니메이터
     public int textnum = 0; // 0 = character, 1 = baby
     public GameObject babyTextBox;
@@ -61,6 +60,9 @@ public class GameScript1 : MonoBehaviour //전체적인 게임스트립트
     public Text Tip2;
     public Text Tip3;
 
+    public int mainCount = 0; 
+
+
     private void Awake()
     {
         if (instance == null)
@@ -76,134 +78,12 @@ public class GameScript1 : MonoBehaviour //전체적인 게임스트립트
                   
     }
 
-    public void Cheat()
-    {
-        
-       // tipNum = 0;
-        //Menu.instance.menu8Open = 1;
-        // Star.instance.starCoroutine = Star.instance.StartCoroutine(Star.instance.StarAppear());
-        // mainCount = 16;
-         // Menu.instance.reputation += 300;
-        // pNum = 0;
-        //PlayerPrefs.DeleteKey("PurchaseCount");
-       //    VisitorNote.instance.openPage = 14;
-        Dialogue1.instance.CharacterDC[9] = 3; //1도리
-        Dialogue1.instance.CharacterDC[10] = 3; //1도리
-        Dialogue1.instance.CharacterDC[12] = 3; //1도리
-        //endStory = 1;
-        //VisitorNote.instance.friendshipGauge[8].GetComponent<Image>().fillAmount = 1f; //0 도리~~ 4도로시~~~
-        //VisitorNote.instance.FriendshipInfo[8] = 10;
-        //VisitorNote.instance.friendshipGauge[9].GetComponent<Image>().fillAmount = 1f; 
-        //VisitorNote.instance.FriendshipInfo[9] = 10;
-
-    }
     public void Reset_P()
     {
         PlayerPrefs.SetInt("PurchaseCount", 0); //인앱 결제 정보 저장
         PlayerPrefs.Save(); //세이브
     }
 
-    public bool SaveDataInfo() //게임 데이터 정보 저장
-    {
-        //Debug.Log("SaveDataInfo");
-        bool result = false;
-        try
-        {
-            PlayerPrefs.SetInt("MainCount", mainCount); //현재 메인카운트 저장
-            PlayerPrefs.SetInt("NextAppear", CharacterAppear.instance.GetNextAppearNum()); //다음 캐릭터 등장 번호 저장
-            PlayerPrefs.SetInt("Reputation", Menu.instance.reputation); //평판 저장
-            PlayerPrefs.SetInt("StarNum", Star.instance.GetCurrentStarNum()); //별 개수 저장
-            PlayerPrefs.SetInt("end", endStory);//엔딩 상황 저장
-            PlayerPrefs.SetInt("tipNum", tipNum);//팁 넘버 
-            PlayerPrefs.Save(); //세이브
-            result = true;
-        }
-        catch (System.Exception e)
-        {
-            Debug.LogError("SaveDataInfo Failed (" + e.Message + ")");
-        }
-        return result;
-    }
-
-    public bool LoadDataInfo() //게임 데이터 정보 불러옴
-    {
-        //Debug.Log("LoadDataInfo");
-        bool result = false;
-        try
-        {
-            if (PlayerPrefs.HasKey("MainCount"))
-            {
-                mainCount = PlayerPrefs.GetInt("MainCount");                
-                CharacterAppear.instance.SetNextAppearNum(PlayerPrefs.GetInt("NextAppear"));
-                Menu.instance.reputation = PlayerPrefs.GetInt("Reputation");
-                Star.instance.SetStarNum(PlayerPrefs.GetInt("StarNum"));
-                endStory = PlayerPrefs.GetInt("end");       
-                tipNum = PlayerPrefs.GetInt("tipNum");
-                if (mainCount > 3)//붕붕이 등장 이후면
-                {
-                   // Debug.Log("중요 데이터 로드");
-                    SmallFade.instance.SetCharacter(0);
-                    SmallFade.instance.Invoke("FadeIn", 1f); //제제 작은 캐릭터 페이드인                   
-                    Dialogue1.instance.LoadCharacterDCInfo();
-                    VisitorNote.instance.LoadVisitorNoteInfo();
-                    Menu.instance.LoadUnlockedMenuItemInfo();                 
-                    Dialogue1.instance.babyName = PlayerPrefs.GetString("BabyName");
-                    Invoke("CheckTip", 1.5f);//팁 확인
-                    if (endStory != 3)//엔딩이벤트를 본 게 아니라면
-                    {
-                        AllScenarioEnd();//엔딩 이벤트 충족 조건 확인해주기
-                    } 
-                    for (int i = 1; i <= mainCount - 2; i++)//재방문 캐릭터 설정
-                    {
-                        if(Dialogue1.instance.CharacterDC[10] == 3)//찰스2 이벤트를 했을 시에는
-                        {
-                            if (i == 6)//도로시 넘버에서 찰스도로시 추가
-                            {
-                                CharacterVisit.instance.revisit.Enqueue(17);
-                                CharacterVisit.instance.CanRevisit();
-                                continue;
-                            }
-                            if(i == 10)//찰스는 넘기기
-                            {
-                                continue;
-                            }
-                        }                      
-                        CharacterVisit.instance.revisit.Enqueue(i);
-                        CharacterVisit.instance.CanRevisit();
-                    }
-                    if(mainCount == 14 || mainCount == 15 || mainCount == 16)//닥터펭까지 등장했을 경우, 따로 닥터펭 추가(위에서 추가 안됨), 히로디노/롤렝드의 경우도 마찬가지
-                    {
-                        int t = mainCount - 1;
-                        CharacterVisit.instance.revisit.Enqueue(t);
-                        CharacterVisit.instance.CanRevisit();
-                    }
-                }                               
-                PlayerPrefs.Save();
-                if(mainCount > 6)
-                {
-                    SmallFade.instance.SmallCharacter[0].GetComponent<Button>().interactable = true;
-                }
-                //Debug.Log("다음 등장 :" + CharacterAppear.instance.GetNextAppearNum());
-                //Debug.Log("이벤트 넘버 : " + CharacterAppear.instance.eventOn);
-                //Debug.Log("메인카운트 " + mainCount);
-            }
-            else
-            {
-                mainCount = 0;
-                CharacterAppear.instance.SetNextAppearNum(0);
-                Menu.instance.reputation = 0;
-                Star.instance.SetStarNum(0);
-            }
-            Menu.instance.reputationText.text = string.Format("{0}", Menu.instance.reputation);
-            result = true;
-        }
-        catch (System.Exception e)
-        {
-            Debug.LogError("LoadDataInfo Failed (" + e.Message + ")");
-        }   
-           // Cheat();
-        return result;
-    }
 
     public void FirstTutorial()
     {
@@ -296,16 +176,16 @@ public class GameScript1 : MonoBehaviour //전체적인 게임스트립트
                 CantClickUI(); //그 후 바로 도리가 등장할 것이므로 설정 제외한 버튼들 모두 터치 불가
                 SmallFade.instance.Invoke("FadeIn",1f); //제제 작은 캐릭터 페이드인
                 Invoke("BearStart", 2f); //도리 등장
-                Dialogue1.instance.CharacterNum = 1; //다음 캐릭터 곰
-                Dialogue1.instance.CharacterDC[0]++; //제제 다이얼로그 카운트 증가
+                Dialogue.instance.CharacterNum = 1; //다음 캐릭터 곰
+                Dialogue.instance.CharacterDC[0]++; //제제 다이얼로그 카운트 증가
                 mainCount++; //메인 카운트 증가
                 break;
             case 1:
                 DownTextbox(); //도리 카페 첫 방문 후
                 Popup.instance.SetPopupCharacter(BigCharacter[1]); //새 캐릭터 도리 팝업 세팅
                 Popup.instance.OpenPopup(); //팝업 등장
-                Dialogue1.instance.CharacterNum = 0; //다음 캐릭터 제제(튜토리얼)
-                Dialogue1.instance.CharacterDC[1]++; //도리 다이얼로그 카운트 증가
+                Dialogue.instance.CharacterNum = 0; //다음 캐릭터 제제(튜토리얼)
+                Dialogue.instance.CharacterDC[1]++; //도리 다이얼로그 카운트 증가
                 mainCount++; //메인 카운트 증가
                 break;
             case 2:
@@ -313,8 +193,8 @@ public class GameScript1 : MonoBehaviour //전체적인 게임스트립트
                 Menu.instance.Invoke("ReactionFadeIn", 1f);
                 UI_Assistant1.instance.panel7.SetActive(false);               
                 SmallFade.instance.FadeIn();
-                Dialogue1.instance.CharacterNum = 2; //다음 등장 캐릭터 붕붕
-                Dialogue1.instance.CharacterDC[0]++; //제제 다이얼로그 카운트 증가                              
+                Dialogue.instance.CharacterNum = 2; //다음 등장 캐릭터 붕붕
+                Dialogue.instance.CharacterDC[0]++; //제제 다이얼로그 카운트 증가                              
                 MenuHint.instance.tuto = false;
                 Menu.instance.close.GetComponent<Button>().interactable = true; //메뉴 닫기 버튼 가능
                 jejeOn = false;
@@ -330,7 +210,7 @@ public class GameScript1 : MonoBehaviour //전체적인 게임스트립트
                 Popup.instance.SetPopupCharacter(BigCharacter[2]); //변경되는 것
                 Popup.instance.OpenPopup();
                 CharacterAppear.instance.SetNextAppearNum(3); //다음 등장은 빵빵
-                Dialogue1.instance.CharacterDC[2]++; //변경되는 것
+                Dialogue.instance.CharacterDC[2]++; //변경되는 것
                 VisitorNote.instance.page[1].SetActive(true); //변경되는 것
                 VisitorNote.instance.openPage++;
                 SmallFade.instance.SmallCharacter[1] = bear;
@@ -363,7 +243,7 @@ public class GameScript1 : MonoBehaviour //전체적인 게임스트립트
         PlayerPrefs.SetInt("MainCount", mainCount); //현재 메인카운트 저장
         PlayerPrefs.SetInt("NextAppear", CharacterAppear.instance.GetNextAppearNum()); //다음 캐릭터 등장 번호 저장
         PlayerPrefs.Save(); //세이브
-        Dialogue1.instance.SaveCharacterDCInfo();
+        Dialogue.instance.SaveCharacterDCInfo();
         VisitorNote.instance.SaveVisitorNoteInfo();
     }
 
@@ -457,7 +337,7 @@ public class GameScript1 : MonoBehaviour //전체적인 게임스트립트
         BgmManager.instance.StopBgm();
         BgmManager.instance.PlayCharacterBGM(n);//캐릭터 테마 재생      
         textnum = 0;
-        Dialogue1.instance.CharacterNum = n;
+        Dialogue.instance.CharacterNum = n;
         BigCharacter[n].SetActive(true);
         gameObject.GetComponent<CharacterMove>().enabled = true;
         CharacterMove.instance.SetCharacter(BigCharacter[n]);
@@ -490,7 +370,7 @@ public class GameScript1 : MonoBehaviour //전체적인 게임스트립트
         gameObject.GetComponent<CharacterMove>().enabled = true;
         BigCharacter[14].SetActive(true);
         CharacterMove.instance.SetCharacter(BigCharacter[14]);
-        Dialogue1.instance.CharacterNum = 14;
+        Dialogue.instance.CharacterNum = 14;
         textnum = 1; //할아버지 캐릭터만 특수하게 이렇게 시작
         CharacterMove.instance.OutCount();
         panel.SetActive(true);
@@ -510,19 +390,19 @@ public class GameScript1 : MonoBehaviour //전체적인 게임스트립트
         }
     }
 
-    public void BackToCafe2(int n)//이벤트 대화 종료 후, n은 Dialogue1의 캐릭터 넘버
+    public void BackToCafe2(int n)//이벤트 대화 종료 후, n은 Dialogue의 캐릭터 넘버
     {
         if(endStory == 1)//엔딩이벤트 본 후
         {
             BgmManager.instance.BGMFadeOut();
             DownTextbox();
-            Dialogue1.instance.CharacterDC[n] = 3;
+            Dialogue.instance.CharacterDC[n] = 3;
             HPManager.instance.SaveHPInfo();
             TimeManager.instance.SaveAppQuitTime();
-            Dialogue1.instance.SaveCharacterDCInfo();
+            Dialogue.instance.SaveCharacterDCInfo();
             Menu.instance.SaveUnlockedMenuItemInfo();
             endStory = 2;//엔딩이벤트를 봤음
-            SaveDataInfo();//데이터 저장
+            SystemManager.instance.SaveDataInfo();//데이터 저장
             VisitorNote.instance.SaveVisitorNoteInfo();           
             if (Star.instance.IsInvoking("ActivateStarSystem"))
             {
@@ -570,7 +450,7 @@ public class GameScript1 : MonoBehaviour //전체적인 게임스트립트
                     BgmManager.instance.BGMFadeOut();
                     BgmManager.instance.Invoke("PlayCafeBgm", 3f);
                     Menu.instance.ReactionFadeIn();
-                    Dialogue1.instance.CharacterDC[n] = 3; // 3이면 더 이상 시나리오 없음
+                    Dialogue.instance.CharacterDC[n] = 3; // 3이면 더 이상 시나리오 없음
                     VisitorNote.instance.RePlayButton[n - 1].gameObject.SetActive(true);//다시보기 버튼 활성화
                     c = n;
                     Invoke("InActiveBigCharacter", 1f);
@@ -587,28 +467,28 @@ public class GameScript1 : MonoBehaviour //전체적인 게임스트립트
                     {
                         VisitorNote.instance.characterInfo[n - 1].GetComponent<Image>().sprite = BigCharacter[17].GetComponent<Image>().sprite;
                     }
-                    AllScenarioEnd();
+                    SystemManager.instance.CheckEndingCondition();
                     break;
                 case 10:
                     f = 10;
-                    if (Dialogue1.instance.CharacterDC[n] == 1)//찰스1 이벤트
+                    if (Dialogue.instance.CharacterDC[n] == 1)//찰스1 이벤트
                     {
                         MenuHint.instance.CanClickMHB();//메뉴힌트버블 터치 가능
                         BgmManager.instance.BGMFadeOut();
                         BgmManager.instance.Invoke("PlayCafeBgm", 3f);
-                        Dialogue1.instance.CharacterDC[10]++;
+                        Dialogue.instance.CharacterDC[10]++;
                         SmallFade.instance.CanClickCharacter(6);//도로시 클릭 가능하게
                         Menu.instance.menuFOut.Enqueue(Menu.instance.tmpNum); //메뉴 페이드아웃 큐에 추가
                         Menu.instance.MenuFadeOut();//메뉴 페이드아웃
                         c = n;
                         Invoke("InActiveBigCharacter", 1f);
                     }
-                    else if (Dialogue1.instance.CharacterDC[n] == 2)//찰스2 이벤트
+                    else if (Dialogue.instance.CharacterDC[n] == 2)//찰스2 이벤트
                     {
                         MenuHint.instance.CanClickMHB();//메뉴힌트버블 터치 가능
                         BgmManager.instance.BGMFadeOut();
                         BgmManager.instance.Invoke("PlayCafeBgm", 3f);
-                        Dialogue1.instance.CharacterDC[10] = 3;
+                        Dialogue.instance.CharacterDC[10] = 3;
                         UI_Assistant1.instance.getMenu = 0;
                         SmallFade.instance.CanClickCharacter(6);//도로시 클릭 가능하게
                         SmallFade.instance.CanClickCharacter(10);//찰스 클릭 가능하게
@@ -617,18 +497,18 @@ public class GameScript1 : MonoBehaviour //전체적인 게임스트립트
                         Invoke("InActiveBigCharacter", 0.5f);
                         VisitorNote.instance.RePlayButton[n - 1].gameObject.SetActive(true);         
                     }
-                    AllScenarioEnd();
+                    SystemManager.instance.CheckEndingCondition();
                     break;
                 case 11:
-                    if (Dialogue1.instance.CharacterDC[n] == 1)//무명이1 이벤트
+                    if (Dialogue.instance.CharacterDC[n] == 1)//무명이1 이벤트
                     {
                         f = 11;
-                        Dialogue1.instance.CharacterDC[11]++;
+                        Dialogue.instance.CharacterDC[11]++;
                     }
-                    else if (Dialogue1.instance.CharacterDC[n] == 2)//무명이2 이벤트
+                    else if (Dialogue.instance.CharacterDC[n] == 2)//무명이2 이벤트
                     {
                         f = 12;
-                        Dialogue1.instance.CharacterDC[11] = 3;
+                        Dialogue.instance.CharacterDC[11] = 3;
                         VisitorNote.instance.characterInfo[n - 1].GetComponent<Image>().sprite = CharacterList.instance.CharacterFaceList[n - 2].face[3].GetComponent<Image>().sprite;
                         VisitorNote.instance.RePlayButton[n - 1].gameObject.SetActive(true);
                     }
@@ -638,7 +518,7 @@ public class GameScript1 : MonoBehaviour //전체적인 게임스트립트
                     Menu.instance.ReactionFadeIn();
                     c = n;
                     Invoke("InActiveBigCharacter", 1f);
-                    AllScenarioEnd();
+                    SystemManager.instance.CheckEndingCondition();
                     break;
 
             }
@@ -648,7 +528,7 @@ public class GameScript1 : MonoBehaviour //전체적인 게임스트립트
                // Debug.Log("랜덤방문 10초 뒤");
             }
         }
-        Dialogue1.instance.SaveCharacterDCInfo();
+        Dialogue.instance.SaveCharacterDCInfo();
         VisitorNote.instance.SaveVisitorNoteInfo();
     }
 
@@ -674,31 +554,6 @@ public class GameScript1 : MonoBehaviour //전체적인 게임스트립트
         else if (f == 13 || f == 9)//닥터펭, 친구 이벤트의 경우
         {
             CharacterList.instance.CharacterFaceList[f - 2].face[0].SetActive(false);
-        }
-    }
-
-    int sum = 0;//합계
-
-    public void AllScenarioEnd()//모든 시나리오를 봤는지 확인
-    {
-        sum = 0;
-        for(int i = 1; i <=14; i++)
-        {
-            sum += Dialogue1.instance.CharacterDC[i];
-        }
-
-        if(sum == 42 && Menu.instance.menu8Open)//캐릭터들 시나리오를 모두 봤으면
-        {
-            Debug.Log("시나리오 다 끝남");
-            Invoke("EndingEvent",8f);
-            endStory = 1;
-            SmallFade.instance.SmallCharacter[0].GetComponent<Button>().interactable = false;//제제 클릭 불가
-            //엔딩이벤트 8초 후 시작
-        }
-        
-        if(sum > 20 && tipNum == 2)
-        {
-            Invoke("TipBubbleOn", 1.5f);
         }
     }
 
@@ -745,7 +600,7 @@ public class GameScript1 : MonoBehaviour //전체적인 게임스트립트
         BgmManager.instance.Invoke("PlayCafeBgm", 3f);
         if (VisitorNote.instance.fmRP != 0)//첫 만남 다시보기 이후면
         {            
-            Dialogue1.instance.CharacterDC[VisitorNote.instance.fmRP] = 3;// 원래 값으로 돌려놓기
+            Dialogue.instance.CharacterDC[VisitorNote.instance.fmRP] = 3;// 원래 값으로 돌려놓기
             c = VisitorNote.instance.fmRP;
             Invoke("InActiveBigCharacter", 0.7f);
             VisitorNote.instance.fmRP = 0;
@@ -760,7 +615,7 @@ public class GameScript1 : MonoBehaviour //전체적인 게임스트립트
                 }
                 c = VisitorNote.instance.evRP;
                 Invoke("InActiveBigCharacter", 0.7f);
-                Dialogue1.instance.CharacterDC[VisitorNote.instance.evRP] = 3;// 원래 값으로 돌려놓기
+                Dialogue.instance.CharacterDC[VisitorNote.instance.evRP] = 3;// 원래 값으로 돌려놓기
             }
             else if(VisitorNote.instance.evRP == 11)//찰스2 이밴트
             {
@@ -768,7 +623,7 @@ public class GameScript1 : MonoBehaviour //전체적인 게임스트립트
                 BigCharacter[10].SetActive(false);
                 c = 6;
                 Invoke("InActiveBigCharacter", 0.5f);
-                Dialogue1.instance.CharacterDC[10] = 3;// 원래 값으로 돌려놓기
+                Dialogue.instance.CharacterDC[10] = 3;// 원래 값으로 돌려놓기
             }
             else if(VisitorNote.instance.evRP == 12 || VisitorNote.instance.evRP == 13)//무명이1,2 이벤트
             {
@@ -782,7 +637,7 @@ public class GameScript1 : MonoBehaviour //전체적인 게임스트립트
                 }
                 c = 11;
                 Invoke("InActiveBigCharacter", 0.5f);
-                Dialogue1.instance.CharacterDC[11] = 3;// 원래 값으로 돌려놓기
+                Dialogue.instance.CharacterDC[11] = 3;// 원래 값으로 돌려놓기
             }
             else if(VisitorNote.instance.evRP >= 14)//14이상이면
             {
@@ -792,7 +647,7 @@ public class GameScript1 : MonoBehaviour //전체적인 게임스트립트
                 }
                 c = VisitorNote.instance.evRP - 2;
                 Invoke("InActiveBigCharacter", 0.7f);
-                Dialogue1.instance.CharacterDC[c] = 3;// 원래 값으로 돌려놓기
+                Dialogue.instance.CharacterDC[c] = 3;// 원래 값으로 돌려놓기
             }
             
             VisitorNote.instance.evRP = 0;
@@ -900,7 +755,7 @@ public class GameScript1 : MonoBehaviour //전체적인 게임스트립트
                 {
                     m = 15;
                 }
-                if (Dialogue1.instance.CharacterDC[11] == 3)
+                if (Dialogue.instance.CharacterDC[11] == 3)
                 {
                     m = 16;
                 }
@@ -923,7 +778,7 @@ public class GameScript1 : MonoBehaviour //전체적인 게임스트립트
 
     void CheckTip()//팁을 볼 수 있었는데 보지 않은 경우 다시팁 말풍선 나타나게 해줌
     {
-        if((mainCount > 6 && tipNum == 0) || (Dialogue1.instance.CharacterDC[1] == 3 && tipNum == 1) 
+        if((mainCount > 6 && tipNum == 0) || (Dialogue.instance.CharacterDC[1] == 3 && tipNum == 1) 
             || (Menu.instance.menu8Open == true && tipNum == 3 && Star.instance.GetCurrentStarNum() >= 5))
         {//또롱이 등장 이후&&팁 넘버 0일 때, 도리 친밀도 이벤트 후&&팁 넘버 1일 때, 메뉴8오픈&&팁넘버3&&별이 5개 이상일 때
             TipBubbleOn();
@@ -1071,7 +926,7 @@ public class GameScript1 : MonoBehaviour //전체적인 게임스트립트
                 JejeText.text = "들었던 팁은 메뉴판 왼쪽의\n느낌표 노트를 터치하면\n다시 볼 수 있어.";
                 break;
             case 16:
-                JejeText.text = UI_Assistant1.instance.namedName + "의 얼굴이\n좀 밝아진 것 같아.";
+                JejeText.text = SystemManager.instance.GetNameForNameless() + "의 얼굴이\n좀 밝아진 것 같아.";
                 break;
             case 20://여기서부터는 게임 팁
                 JejeText.text = "손님이 원하는 메뉴를\n맞추면 3, 맞추지 못하면\n1씩 평판이 증가해!";

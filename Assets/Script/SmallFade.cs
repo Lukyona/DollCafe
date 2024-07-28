@@ -74,7 +74,7 @@ public class SmallFade : MonoBehaviour //작은 캐릭터 스크립트
     int sn = 0; //자리 넘버
     public void SetSeatPosition(int cNum) //앉을 자리 설정
     {
-        if (GameScript1.instance.mainCount == 2)//튜토리얼일 경우
+        if (SystemManager.instance.GetMainCount() == 2)//튜토리얼일 경우
         {
             sn = 1; //2번째 자리, 첫번째 짝수자리, 첫번째 테이블 오른쪽 자리
         }
@@ -96,7 +96,7 @@ public class SmallFade : MonoBehaviour //작은 캐릭터 스크립트
                 // }
                 sn = CharacterSeat[11] + 1;
             }
-            else if((cNum == 10 && (Dialogue1.instance.CharacterDC[10] == 3) || (CharacterAppear.instance.eventOn == 11 && UI_Assistant1.instance.getMenu == 1)))//찰스2이벤트 중 찰스 중간 페이드인
+            else if((cNum == 10 && (Dialogue.instance.CharacterDC[10] == 3) || (CharacterAppear.instance.eventOn == 11 && UI_Assistant1.instance.getMenu == 1)))//찰스2이벤트 중 찰스 중간 페이드인
             {//도로시와 같이 오는 찰스
                 // switch (CharacterSeat[5])//도로시와 같은 테이블 마주보는 자리로 자리 설정
                 // {
@@ -116,7 +116,7 @@ public class SmallFade : MonoBehaviour //작은 캐릭터 스크립트
             }          
             else
             {
-                if (cNum == 11 && Dialogue1.instance.CharacterDC[11] == 3)//무명이, 시나리오 다 봤을 때
+                if (cNum == 11 && Dialogue.instance.CharacterDC[11] == 3)//무명이, 시나리오 다 봤을 때
                 {
                     SmallCharacter[11].GetComponent<Image>().sprite = noName2.sprite;//이미지 변경
                 }
@@ -253,7 +253,7 @@ public class SmallFade : MonoBehaviour //작은 캐릭터 스크립트
             n = cNum;
         }
 
-        if(GameScript1.instance.mainCount > 3 && Dialogue1.instance.CharacterDC[n] != 0 && CharacterAppear.instance.eventOn != 2)
+        if(SystemManager.instance.GetMainCount() > 3 && Dialogue.instance.CharacterDC[n] != 0 && CharacterAppear.instance.eventOn != 2)
         {//붕붕이 친밀도 이벤트, 캐릭터 첫 등장 제외하고 메인카운트 4이상이면 바로 캐릭터 페이드인
             if(IsInvoking("FadeIn"))//다른 캐릭터 페이드인이 인보크 중이면
             {
@@ -315,7 +315,7 @@ public class SmallFade : MonoBehaviour //작은 캐릭터 스크립트
                 break;
         }
         //Debug.Log(fNum + "자리 비워짐");
-        if(GameScript1.instance.mainCount > 7)//메인카운트가 7이상이면
+        if(SystemManager.instance.GetMainCount() > 7)//메인카운트가 7이상이면
         {
             CharacterVisit.instance.Invoke("CanRevisit", 8f);//6초 뒤 재방문 가능
         }
@@ -363,9 +363,9 @@ public class SmallFade : MonoBehaviour //작은 캐릭터 스크립트
             {
                 t = v;
             }
-            if (Dialogue1.instance.CharacterDC[t] == 0)
+            if (Dialogue.instance.CharacterDC[t] == 0)
             {
-                Dialogue1.instance.CharacterDC[t]++; //대화 끝낸 캐릭터 다이얼로그 넘버 증가
+                Dialogue.instance.CharacterDC[t]++; //대화 끝낸 캐릭터 다이얼로그 넘버 증가
             }   
         }
         // Debug.Log("페이드인 될 캐릭터" + v);
@@ -408,7 +408,7 @@ public class SmallFade : MonoBehaviour //작은 캐릭터 스크립트
             }
             SetCharacter(13);           
         }
-        if(Dialogue1.instance.CharacterDC[10] == 3 && v == 6)//찰스와 같이 방문한 도로시 페이드인 끝나면 찰스 나타나게끔
+        if(Dialogue.instance.CharacterDC[10] == 3 && v == 6)//찰스와 같이 방문한 도로시 페이드인 끝나면 찰스 나타나게끔
         {
             SetCharacter(10);
         }
@@ -461,11 +461,11 @@ public class SmallFade : MonoBehaviour //작은 캐릭터 스크립트
 
                 if (z == 6 || z == 10)//도로시나 찰스일 경우
                 {
-                    if ((Dialogue1.instance.CharacterDC[10] == 3 && !x2) || CharacterAppear.instance.eventOn == 11)//찰스 때만 실행, 도로시 땐 실행 안 함
+                    if ((Dialogue.instance.CharacterDC[10] == 3 && !x2) || CharacterAppear.instance.eventOn == 11)//찰스 때만 실행, 도로시 땐 실행 안 함
                     {//찰스2이벤트 이후면 둘 중에 마지막에 나오는 캐릭터 때 실행 혹은 찰스2이벤트 중간의 찰스일 때
                         CleanTable();
                     }
-                    else if (Dialogue1.instance.CharacterDC[10] != 3)//찰스2 이벤트 전이면 다른 캐릭터와 똑같이 실행
+                    else if (Dialogue.instance.CharacterDC[10] != 3)//찰스2 이벤트 전이면 다른 캐릭터와 똑같이 실행
                     {
                         CleanTable();
                     }

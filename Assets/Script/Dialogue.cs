@@ -1,15 +1,16 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-public class Dialogue1 : MonoBehaviour //캐릭터들 대사
+public class Dialogue : MonoBehaviour //캐릭터들 대화
 {
-    public static Dialogue1 instance;
+    public static Dialogue instance;
     public int CharacterNum = 0; //캐릭터 번호, 0은 제제, 1은 도리, 2는 붕붕, …
     private TextWriter.TextWriterSingle textWriterSingle;
     public Text CName; //캐릭터 이름
     public string[] messegeArray = null;
     public int[] CharacterDC = new int[15]; //캐릭터들 다이얼로그 카운트, 인덱스 0 제제, 1 도리, BackToCafe에서 ++
-    public string babyName; //아기 이름
+
+    string babyName; //아기 이름
 
     private void Awake()
     {     
@@ -25,6 +26,11 @@ public class Dialogue1 : MonoBehaviour //캐릭터들 대사
         {
             UI_Assistant1.instance.OpenDialogue2();
         }
+    }
+
+    public void SetBabyName(string name)
+    {
+        babyName = name;
     }
 
     public bool SaveCharacterDCInfo()//캐릭터 대화 진행 정보 저장
@@ -1169,7 +1175,7 @@ public class Dialogue1 : MonoBehaviour //캐릭터들 대사
                 break;
             case 2: //친밀도 20이상
                 textWriterSingle = TextWriter.AddWriter_Static(UI_Assistant1.instance.characterText, "저, 저기... 있잖아..");
-                CName.text = UI_Assistant1.instance.namedName;
+                CName.text = SystemManager.instance.GetNameForNameless();
                 if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                 {
                     SmallFade.instance.smallFIn.Enqueue(17);
@@ -1224,8 +1230,8 @@ public class Dialogue1 : MonoBehaviour //캐릭터들 대사
                     "앗, 내가..?",
                     "응, 너는 나의 처, 첫 친구니까..\n네가 나에게 이, 이름을 지어 줬으면 해.",
                     "으음... 너의 이름은..",//20
-                    UI_Assistant1.instance.namedName + " 어때?",
-                    UI_Assistant1.instance.namedName + "...",
+                    SystemManager.instance.GetNameForNameless() + " 어때?",
+                    SystemManager.instance.GetNameForNameless() + "...",
                     "어때? 마음에 드니?",
                     "물론이지!\n드디어 나에게도 이,이름이 생겼어..!",//24
                     "행복해.. 고, 고마워.",
@@ -1236,7 +1242,7 @@ public class Dialogue1 : MonoBehaviour //캐릭터들 대사
             case 2:
                 messegeArray = new string[]
                 {
-                    "응? 무슨 일이야, " + UI_Assistant1.instance.namedName + "?",
+                    "응? 무슨 일이야, " + SystemManager.instance.GetNameForNameless() + "?",
                     "가, 갑작스러울 수도 있겠지만..\n너한테 꼭 하, 하고 싶은 얘기가 있어!",
                     "나.. 너랑 친구를 하면서\n새로운 가, 감정들을 많이 배웠어.",
                     "즐거움, 기쁨, 행복..\n그리고 친구가 있다는 건 이렇게 좋은 것이라는 걸..",
@@ -1273,7 +1279,7 @@ public class Dialogue1 : MonoBehaviour //캐릭터들 대사
                     "앗, 울리려던 건 아닌데..!\n자, 잠깐만 기다려!",
                     "...",
                     ".....",
-                    UI_Assistant1.instance.namedName + ", 진정하고 이것 좀 봐봐~",//37
+                    SystemManager.instance.GetNameForNameless() + ", 진정하고 이것 좀 봐봐~",//37
                     "이, 이게 뭐야..?",
                     "뭐긴~\n울음도 뚝 그치게 만드는 마법의 디저트지!",//39
                     "자, 봐봐~",
