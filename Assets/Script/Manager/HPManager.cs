@@ -42,11 +42,11 @@ public class HPManager : MonoBehaviour
     {
         if (m_HPAmount < MAX_HP)
         {
-            if(!GameScript1.instance.IsExchanging())//별하트 전환 상태가 아닐 때, 즉 광고 본 뒤일 때
+            if(!SystemManager.instance.IsExchanging())//별하트 전환 상태가 아닐 때, 즉 광고 본 뒤일 때
             {
                 m_HPAmount += 2; //체력 + 2     
             }
-            else if(GameScript1.instance.IsExchanging())//별하트 전환일 때
+            else if(SystemManager.instance.IsExchanging())//별하트 전환일 때
             {
                 m_HPAmount += 1;
             }  
@@ -61,7 +61,7 @@ public class HPManager : MonoBehaviour
         }
 
         TimeManager.instance.AfterWatchingAds();
-        GameScript1.instance.plusHP.interactable = true;
+        SystemManager.instance.CanTouchUI(); // hp버튼 다시 터치 가능
     }
 
     private void Awake() //씬 플레이할 때마다 호출
@@ -78,16 +78,13 @@ public class HPManager : MonoBehaviour
         try
         {
             int pCount = PlayerPrefs.GetInt("PurchaseCount");
-            if(pCount == 1)
+            if(pCount != 0)
             {
                 MAX_HP = 20;
-                GameScript1.instance.PurchasingOneTime();
-            }
-            else if(pCount == 2)
-            {
-                MAX_HP = 20;
-                HPRechargeIntervalMin = 5;
-                GameScript1.instance.PurchasingTwoTime();
+                if(pCount == 2)
+                    HPRechargeIntervalMin = 5;
+
+                SystemManager.instance.UpdatePurchasingState(pCount);
             }
 
             if (PlayerPrefs.HasKey("HPAmount"))
@@ -323,10 +320,6 @@ public class HPManager : MonoBehaviour
 
     public void HPMax20()
     {
-        SEManager.instance.PlayUIClickSound3();
-        PlayerPrefs.SetInt("PurchaseCount", 1); //인앱 결제 정보 저장
-        PlayerPrefs.Save(); //세이브
-
         MAX_HP = 20;
 
         if(m_HPAmount != 10)//구매 전 최대체력(10)이 아니었다면
@@ -338,14 +331,10 @@ public class HPManager : MonoBehaviour
         HPAmount.text = string.Format("{0}", m_HPAmount.ToString());
 
         print("최대 체력 20으로 증가");
-        GameScript1.instance.Invoke("PurchasingSuccess", 0.1f);
     }
 
     public void HPSpeedUp()
     {
-        SEManager.instance.PlayUIClickSound3();
-        PlayerPrefs.SetInt("PurchaseCount", 2); //인앱 결제 정보 저장
-        PlayerPrefs.Save(); //세이브
         HPRechargeIntervalMin = 5; //5분에 1체력 회복
         if(m_RechargeRemainMin >= 5)//현재 남은 타이머가 5분 이상이면 5분으로 만들기
         {
@@ -355,7 +344,6 @@ public class HPManager : MonoBehaviour
             HPRechargeSecTimer.text = string.Format("{0}", m_RechargeRemainSec);
         }
         print("체력 회복 속도 2배 증가");
-        GameScript1.instance.Invoke("PurchasingSuccess", 0.1f);
     }
   
 }

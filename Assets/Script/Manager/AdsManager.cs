@@ -8,7 +8,7 @@ public class AdsManager : MonoBehaviour
 {
     public static AdsManager instance;
 
-    public GameObject AdsMessageWindow;
+    [SerializeField] private GameObject AdsMessageWindow;
 
     private RewardedAd rewardedAd;
     bool watchingAds = false; //광고 보는 중 true, 다 보면 false
@@ -80,7 +80,7 @@ public class AdsManager : MonoBehaviour
     public void AgreeToWatchAds() // 광고 보는 것에 동의하는 버튼을 눌렀을 때
     {
         SetWatchingAds(true);
-        GameScript1.instance.plusHP.interactable = false;
+        SystemManager.instance.CantTouchUI(); // 버튼 터치 불가
         AdsMessageWindow.SetActive(false);
         Invoke(nameof(WantAds), 0.3f);
     }
@@ -109,7 +109,7 @@ public class AdsManager : MonoBehaviour
             {
                 isLoaded = true; // 광고 로드 완료
                 //Debug.Log(stopLoad);
-                GameScript1.instance.plusHP.interactable = true; // 다시 광고 버튼 터치 가능
+                SystemManager.instance.CanTouchUI(); // 다시 버튼 터치 가능
                //Debug.Log("광고 로드 완료");
             }
         } 
@@ -124,6 +124,12 @@ public class AdsManager : MonoBehaviour
     {
         return watchingAds;
     }
+
+    public void SetAdsMessageWindowActive(bool value)
+    {
+        AdsMessageWindow.SetActive(value);
+    }
+
 
    private void RegisterEventHandlers(RewardedAd ad)
     {

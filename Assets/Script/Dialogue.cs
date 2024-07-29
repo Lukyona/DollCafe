@@ -12,6 +12,9 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
 
     string babyName; //아기 이름
 
+    bool isBabyText = false;
+
+
     private void Awake()
     {     
         if (instance == null)
@@ -31,6 +34,11 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
     public void SetBabyName(string name)
     {
         babyName = name;
+    }
+
+    public bool IsBabayText()
+    {
+        return isBabyText;
     }
 
     public bool SaveCharacterDCInfo()//캐릭터 대화 진행 정보 저장
@@ -1519,7 +1527,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                 CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
                 CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(true);
                 textWriterSingle = TextWriter.AddWriter_Static(UI_Assistant1.instance.babyText, "로랑드 할아버지! 할아버지 몸에\n달린 그 줄들은 뭐에요?");
-                CharacterManager.instance.CharacterIn();//큰 캐릭터 일러스트는 바로 들어오기
+                CharacterManager.instance.CharacterIn(14);//큰 캐릭터 일러스트는 바로 들어오기
                 break;
         }
     }

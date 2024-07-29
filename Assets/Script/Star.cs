@@ -106,6 +106,11 @@ public class Star : MonoBehaviour
             
             PlayerPrefs.SetInt("StarNum", starNum); //별 개수 저장
             PlayerPrefs.Save();
+
+            if(!SystemManager.instance.IsInvoking("CheckTipState") && starNum >= 3) 
+            {
+                SystemManager.instance.CheckTipState();
+            }
         }        
     }
 
