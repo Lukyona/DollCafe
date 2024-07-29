@@ -7,7 +7,9 @@ public class CharacterManager : MonoBehaviour
     public static CharacterManager instance;
 
     #region 캐릭터 움직임 관련 변수
-    private GameObject character;
+    public GameObject[] BigCharacter; //큰 캐릭터 이미지 배열
+
+    int charNum; //캐릭터 넘버
 
     Vector3 charInPos; //대화 시작할 때 캐릭터가 들어오는 위치
     Vector3 charOutPos; //캐릭터가 나가는 위치
@@ -44,16 +46,16 @@ public class CharacterManager : MonoBehaviour
     {
         if (characteInOutState == 1) //들어오기
         {
-            character.transform.position = Vector3.MoveTowards(character.transform.position, charInPos, moveSpeed * Time.deltaTime);
-
+            BigCharacter[charNum].transform.position = Vector3.MoveTowards(BigCharacter[charNum].transform.position, charInPos, moveSpeed * Time.deltaTime);
         }
         else if (characteInOutState == 2) // 나가기
         {
-            character.transform.position = Vector3.MoveTowards(character.transform.position, charOutPos, moveSpeed * Time.deltaTime);
+            BigCharacter[charNum].transform.position = Vector3.MoveTowards(BigCharacter[charNum].transform.position, charOutPos, moveSpeed * Time.deltaTime);
             if (isSoldierEvent) //군인 이벤트 중일 경우
             {
-                if (character.transform.position == charOutPos) //캐릭터가 완전히 나갔을 때 대사 넘기기 가능
+                if (BigCharacter[charNum].transform.position == charOutPos) //캐릭터가 완전히 나갔을 때 대사 넘기기 가능
                 {
+                    BigCharacter[charNum].SetActive(false);
                     SystemManager.instance.SetCanTouch(true);
                 }
                 else //완전히 나가지 않았으면 대사 못 넘김
@@ -66,27 +68,27 @@ public class CharacterManager : MonoBehaviour
         {
             Vector3 princessInPos = new Vector3(150,-50,0); //군인 대화 이벤트, 공주 위치
 
-            character.transform.position = Vector3.MoveTowards(character.transform.position, princessInPos, moveSpeed * Time.deltaTime);
-            if(character.transform.position == princessInPos)//공주 이동 끝나면 바로 찰스 등장
+            BigCharacter[charNum].transform.position = Vector3.MoveTowards(BigCharacter[charNum].transform.position, princessInPos, moveSpeed * Time.deltaTime);
+            if(BigCharacter[charNum].transform.position == princessInPos)//공주 이동 끝나면 바로 찰스 등장
             {
-                SetCharacter(GameScript1.instance.BigCharacter[10]);
-                CharacterIn();
+                CharacterIn(10);
             }
         }
     }
 
-    public void SetCharacter(GameObject obj) // 어떤 캐릭터가 들어오고 나갈지 설정
+    #region 캐릭터 움직임 관련 함수
+    public void CharacterIn(int cNum) //캐릭터 들어와야 할 때
     {
-        character = obj;
-    }
-    
-    public void CharacterIn() //캐릭터 들어와야 할 때
-    {
+        charNum = cNum;
+        BigCharacter[charNum].SetActive(true);
         characteInOutState = 1;
     }
 
-    public void CharacterOut() //캐릭터가 나가야할 때
+    public void CharacterOut(int cNum = -1) //캐릭터가 나가야할 때
     {
+        if(cNum != -1)
+            charNum = cNum;
+            
         characteInOutState = 2;
     }
 
@@ -104,4 +106,8 @@ public class CharacterManager : MonoBehaviour
     {
         isSoldierEvent = value;
     }
+    #endregion
+
+
+
 }

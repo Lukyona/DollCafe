@@ -87,7 +87,7 @@ public class Setting : MonoBehaviour
         {
             Debug.Log("결제 정보 있음");
             PlayerPrefs.DeleteKey("AppQuitTime");
-            PlayerPrefs.DeleteKey("MaCharacterIn");
+            PlayerPrefs.DeleteKey("MainCount");
             PlayerPrefs.DeleteKey("NextAppear");
             PlayerPrefs.DeleteKey("Reputation");
             PlayerPrefs.DeleteKey("StarNum");

@@ -1676,7 +1676,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             {
                                 SmallFade.instance.StartCoroutine(SmallFade.instance.FadeToZero());
                             }
-                            CharacterManager.instance.CharacterOut();
+                            CharacterManager.instance.CharacterOut(10);
                             break;
                         case 20:                            
                             GameScript1.instance.textnum = 1;
@@ -1694,10 +1694,8 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             }
                             break;
                         case 22:
-                            GameScript1.instance.BigCharacter[6].SetActive(true);
                             CharacterManager.instance.CharacterFaceList[4].face[0].SetActive(true);
-                            CharacterManager.instance.SetCharacter(GameScript1.instance.BigCharacter[6]);
-                            CharacterManager.instance.CharacterIn();
+                            CharacterManager.instance.CharacterIn(6);
                             GameScript1.instance.textnum = 0;
                             CName.text = "도로시";
                             break;
@@ -1801,11 +1799,10 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[4].SetActive(true);
                             GameScript1.instance.textnum = 1;
-                            CharacterManager.instance.CharacterOut();//찰스 퇴장
+                            CharacterManager.instance.CharacterOut(10);//찰스 퇴장
                             break;
                         case 51:
-                            CharacterManager.instance.SetCharacter(GameScript1.instance.BigCharacter[6]);
-                            CharacterManager.instance.Invoke("CharacterOut", 0.5f);
+                            CharacterManager.instance.CharacterOut(6);
                             CharacterManager.instance.SetSoldierEvent(false);
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
@@ -2547,7 +2544,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             break;
                         case 1:
                             BgmManager.instance.PlayCharacterBGM(14);//캐릭터 테마 재생
-                            CharacterManager.instance.CharacterIn(); //이 캐릭터만 특수하게 여기서 등장
+                            CharacterManager.instance.CharacterIn(14); //이 캐릭터만 특수하게 여기서 등장
                             GameScript1.instance.textnum = 0;
                             CName.text = "???";
                             break;
