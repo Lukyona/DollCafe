@@ -74,7 +74,7 @@ public class SmallFade : MonoBehaviour //작은 캐릭터 스크립트
     int sn = 0; //자리 넘버
     public void SetSeatPosition(int cNum) //앉을 자리 설정
     {
-        if (SystemManager.instance.GetMainCount() == 2)//튜토리얼일 경우
+        if (SystemManager.instance.GetMaCharacterIn() == 2)//튜토리얼일 경우
         {
             sn = 1; //2번째 자리, 첫번째 짝수자리, 첫번째 테이블 오른쪽 자리
         }
@@ -253,7 +253,7 @@ public class SmallFade : MonoBehaviour //작은 캐릭터 스크립트
             n = cNum;
         }
 
-        if(SystemManager.instance.GetMainCount() > 3 && Dialogue.instance.CharacterDC[n] != 0 && CharacterAppear.instance.eventOn != 2)
+        if(SystemManager.instance.GetMaCharacterIn() > 3 && Dialogue.instance.CharacterDC[n] != 0 && CharacterAppear.instance.eventOn != 2)
         {//붕붕이 친밀도 이벤트, 캐릭터 첫 등장 제외하고 메인카운트 4이상이면 바로 캐릭터 페이드인
             if(IsInvoking("FadeIn"))//다른 캐릭터 페이드인이 인보크 중이면
             {
@@ -315,7 +315,7 @@ public class SmallFade : MonoBehaviour //작은 캐릭터 스크립트
                 break;
         }
         //Debug.Log(fNum + "자리 비워짐");
-        if(SystemManager.instance.GetMainCount() > 7)//메인카운트가 7이상이면
+        if(SystemManager.instance.GetMaCharacterIn() > 7)//메인카운트가 7이상이면
         {
             CharacterVisit.instance.Invoke("CanRevisit", 8f);//6초 뒤 재방문 가능
         }

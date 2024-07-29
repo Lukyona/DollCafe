@@ -28,7 +28,7 @@ public class SystemManager : MonoBehaviour
     string nameForNameless; //플레이어가 붙여준 무명이의 이름
 
 
-    int mainCount = 0; 
+    int maCharacterIn = 0; 
     int endingState = 0; // 1 = 엔딩 이벤트 중, 2 = 엔딩 이벤트 완료
     int tipNum = 0;
 
@@ -43,14 +43,16 @@ public class SystemManager : MonoBehaviour
 
     void Start()
     {
-        LoadDataInfo();//저장된 데이터 불러옴
+        BgmManager.instance.PlayCafeBgm(); //카페 브금 재생
 
-        if (GameScript1.instance.mainCount == 0)
+        LoadDataInfo();//저장된 데이터 불러옴
+    
+        if (maCharacterIn == 0)
         {
             GameScript1.instance.servingTutorial.SetActive(true);
             GameScript1.instance.FirstTutorial(); //게임의 첫 튜토리얼 실행
         }   
-        if (GameScript1.instance.mainCount > 3)//붕붕이 등장 이후면
+        if (maCharacterIn > 3)//붕붕이 등장 이후면
         {
             Star.instance.Invoke("ActivateStarSystem", 25f);//25초 뒤 별 함수 시작
             Debug.Log("스타시스템 25초 뒤 시작");
@@ -74,7 +76,7 @@ public class SystemManager : MonoBehaviour
                         SetCanTouch(false);
                     }
                     OnApplicationFocus(false);
-                    if(GameScript1.instance.mainCount <= 3)
+                    if(maCharacterIn <= 3)
                     {
                         GameClosingWindow.transform.Find("WarningText").gameObject.SetActive(true); // 경고문구 활성
                     }
@@ -95,9 +97,9 @@ public class SystemManager : MonoBehaviour
     }
 
 
-    public int GetMainCount()
+    public int GetMaCharacterIn()
     {
-        return mainCount;
+        return maCharacterIn;
     }
 
 
@@ -105,7 +107,7 @@ public class SystemManager : MonoBehaviour
     {
         if (value) //게임 복귀
         {            
-            if (GameScript1.instance.mainCount > 3)//붕붕이 등장 이후면
+            if (maCharacterIn > 3)//붕붕이 등장 이후면
             {
                 if(!AdsManager.instance.IsWatchingAds())//광고보고 온 경우가 아닐 때
                 {
@@ -128,7 +130,7 @@ public class SystemManager : MonoBehaviour
         {
             if(!GameScript1.instance.delete)
             {          
-                if (GameScript1.instance.mainCount > 3)//붕붕이 등장 이후
+                if (maCharacterIn > 3)//붕붕이 등장 이후
                 {
                     TimeManager.instance.SaveAppQuitTime(); //게임 나간 시간 저장     
                     SaveDataInfo();//데이터 저장
@@ -161,7 +163,7 @@ public class SystemManager : MonoBehaviour
         //Debug.Log("SaveDataInfo");
         try
         {
-            PlayerPrefs.SetInt("MainCount", mainCount); //현재 메인카운트 저장
+            PlayerPrefs.SetInt("MaCharacterIn", maCharacterIn); //현재 메인카운트 저장
             PlayerPrefs.SetInt("NextAppear", CharacterAppear.instance.GetNextAppearNum()); //다음 캐릭터 등장 번호 저장
             PlayerPrefs.SetInt("Reputation", Menu.instance.reputation); //평판 저장
             PlayerPrefs.SetInt("EndingState", endingState); //엔딩 상황 저장
@@ -179,15 +181,15 @@ public class SystemManager : MonoBehaviour
         //Debug.Log("LoadDataInfo");
         try
         {
-            if (PlayerPrefs.HasKey("MainCount"))
+            if (PlayerPrefs.HasKey("MaCharacterIn"))
             {
-                mainCount = PlayerPrefs.GetInt("MainCount");                
+                maCharacterIn = PlayerPrefs.GetInt("MaCharacterIn");                
                 CharacterAppear.instance.SetNextAppearNum(PlayerPrefs.GetInt("NextAppear"));
                 Menu.instance.reputation = PlayerPrefs.GetInt("Reputation");
                 Star.instance.SetStarNum(PlayerPrefs.GetInt("StarNum"));
                 endingState = PlayerPrefs.GetInt("EndingState");       
                 tipNum = PlayerPrefs.GetInt("tipNum");
-                if (mainCount > 3)//붕붕이 등장 이후면
+                if (maCharacterIn > 3)//붕붕이 등장 이후면
                 {
                    // Debug.Log("중요 데이터 로드");
                     SmallFade.instance.SetCharacter(0);
@@ -195,13 +197,13 @@ public class SystemManager : MonoBehaviour
                     Dialogue.instance.LoadCharacterDCInfo();
                     VisitorNote.instance.LoadVisitorNoteInfo();
                     Menu.instance.LoadUnlockedMenuItemInfo();                 
-                    //SystemManager.instance.babyName = PlayerPrefs.GetString("BabyName");
+                    Dialogue.instance.SetBabyName(PlayerPrefs.GetString("BabyName"));
                     Invoke("CheckTip", 1.5f);//팁 확인
                     if (endingState != 3) //엔딩이벤트를 본 게 아니라면
                     {
                         CheckEndingCondition(); //엔딩 이벤트 조건 충족 체크
                     } 
-                    for (int i = 1; i <= mainCount - 2; i++)//재방문 캐릭터 설정
+                    for (int i = 1; i <= maCharacterIn - 2; i++)//재방문 캐릭터 설정
                     {
                         if(Dialogue.instance.CharacterDC[10] == 3)//찰스2 이벤트를 했을 시에는
                         {
@@ -219,22 +221,22 @@ public class SystemManager : MonoBehaviour
                         CharacterVisit.instance.revisit.Enqueue(i);
                         CharacterVisit.instance.CanRevisit();
                     }
-                    if(mainCount == 14 || mainCount == 15 || mainCount == 16)//닥터펭까지 등장했을 경우, 따로 닥터펭 추가(위에서 추가 안됨), 히로디노/롤렝드의 경우도 마찬가지
+                    if(maCharacterIn == 14 || maCharacterIn == 15 || maCharacterIn == 16)//닥터펭까지 등장했을 경우, 따로 닥터펭 추가(위에서 추가 안됨), 히로디노/롤렝드의 경우도 마찬가지
                     {
-                        int t = mainCount - 1;
+                        int t = maCharacterIn - 1;
                         CharacterVisit.instance.revisit.Enqueue(t);
                         CharacterVisit.instance.CanRevisit();
                     }
                 }                               
                 PlayerPrefs.Save();
-                if(mainCount > 6)
+                if(maCharacterIn > 6)
                 {
                     SmallFade.instance.SmallCharacter[0].GetComponent<Button>().interactable = true; // 제제 터치 가능
                 }
             }
             else
             {
-                mainCount = 0;
+                maCharacterIn = 0;
                 CharacterAppear.instance.SetNextAppearNum(0);
                 Menu.instance.reputation = 0;
                 Star.instance.SetStarNum(0);
@@ -286,7 +288,7 @@ public class SystemManager : MonoBehaviour
 
     public void CheckName() //이름 확인
     {
-        if (GameScript1.instance.mainCount == 0)//아기 이름 설정일 경우
+        if (maCharacterIn == 0)//아기 이름 설정일 경우
         {
             inputName = babyInputField.GetComponent<Text>().text; //입력받은 값 넣음
         }
@@ -299,7 +301,7 @@ public class SystemManager : MonoBehaviour
             nameCheckingWindow.transform.GetChild(0).GetComponent<Text>().text = inputName + "?"; //이름 텍스트에 입력한 이름 넣고
             nameCheckingWindow.SetActive(true);//마지막 확인 창 활성화
 
-            if (GameScript1.instance.mainCount == 0)//아기 이름 설정일 경우
+            if (maCharacterIn == 0)//아기 이름 설정일 경우
             {
                 babyNameCheckButton.interactable = false; // 이전 창의 확인 버튼 못 누르게
             }
@@ -312,7 +314,7 @@ public class SystemManager : MonoBehaviour
 
     public void ConfirmName()// 이름 확정
     {
-        if(GameScript1.instance.mainCount == 0)
+        if(maCharacterIn == 0)
         {
             PlayerPrefs.SetString("BabyName", inputName); //아기 이름 저장                             
             babyNameSettingWindow.SetActive(false);//아기 이름 설정창 비활성화          
@@ -334,7 +336,7 @@ public class SystemManager : MonoBehaviour
     public void UnconfirmName() // 이름 미확정
     {
         nameCheckingWindow.SetActive(false);//이름 확인창 비활성화
-        if(GameScript1.instance.mainCount == 0)
+        if(maCharacterIn == 0)
         {
             babyNameCheckButton.interactable = true; //다시 확인 버튼 활성화
         }
@@ -370,7 +372,7 @@ public class SystemManager : MonoBehaviour
     #region 게임 종료 관련 함수
     public void YesGameClose()
     {
-        if(PlayerPrefs.GetInt("MainCount") <= 3 && completeSave)
+        if(PlayerPrefs.GetInt("MaCharacterIn") <= 3 && completeSave)
         {
             Application.Quit();
         }

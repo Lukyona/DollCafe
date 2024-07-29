@@ -40,8 +40,8 @@ public class BgmManager : MonoBehaviour
 
     public void PlayMainBgm() //시작화면 브금
     {
-        int s = PlayerPrefs.GetInt("BgmOnOff");
-        if (s == 1)//브금 off 상태면
+        int stop = PlayerPrefs.GetInt("BgmOnOff");
+        if (stop == 1)//브금 off 상태면
             return;
 
         myAudio = startBgm;
@@ -51,8 +51,8 @@ public class BgmManager : MonoBehaviour
     public void PlayCafeBgm() //카페 브금
     {
         myAudio = cafeBgm;
-        int s = PlayerPrefs.GetInt("BgmOnOff");
-        if (s == 1)//브금 off 상태면
+        int stop = PlayerPrefs.GetInt("BgmOnOff");
+        if (stop == 1)//브금 off 상태면
         {
             OffBgm();
         }
@@ -137,8 +137,8 @@ public class BgmManager : MonoBehaviour
 
     public void BGMFadeOut()
     {
-        int s = PlayerPrefs.GetInt("BgmOnOff");
-        if (s == 1)//브금 off 상태면
+        int stop = PlayerPrefs.GetInt("BgmOnOff");
+        if (stop == 1)//브금 off 상태면
         {
             return;
         }

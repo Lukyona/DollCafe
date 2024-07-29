@@ -48,7 +48,7 @@ public class TouchableObject : MonoBehaviour //터치된 오브젝트 구분, �
 
         SmallFade.instance.CantTouchCharacter(cNum); //캐릭터 터치 불가, 중복 터치 방지
 
-        if (SystemManager.instance.GetMainCount() == 2) //튜토리얼
+        if (SystemManager.instance.GetMaCharacterIn() == 2) //튜토리얼
         {
             MenuHint.instance.SetMHB(11);
             MenuHint.instance.SetMHText(cNum, 1);

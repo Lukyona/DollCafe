@@ -114,8 +114,8 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                     switch (count)
                     {
                         case 1:
-                            CharacterList.instance.CharacterFaceList[13].face[0].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[1].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(true);
                             GameScript1.instance.textnum = 1;
                             break;
                         case 2:
@@ -126,8 +126,8 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             SystemManager.instance.Invoke("ShowBabyNameSettingWindow", 1.3f);//아기 이름 설정
                             break;
                         case 5:
-                            CharacterList.instance.CharacterFaceList[13].face[1].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[0].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
                             GameScript1.instance.textnum = 1;
                             break;
                         case 6:
@@ -135,16 +135,16 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             CName.text = "제제";
                             break;
                         case 7:
-                            CharacterList.instance.CharacterFaceList[13].face[0].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[4].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[4].SetActive(true);
                             GameScript1.instance.textnum = 1;
                             break;
                         case 8:
-                            CharacterList.instance.CharacterFaceList[0].face[0].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[0].face[0].SetActive(true);
                             GameScript1.instance.textnum = 0;
                             break;
                         case 9:
-                            CharacterList.instance.CharacterFaceList[0].face[0].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[0].face[0].SetActive(false);
                             panel.SetActive(false);
                             panel1.SetActive(true);
                             break;
@@ -157,16 +157,16 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             panel3.SetActive(true);
                             break;
                         case 20:
-                            CharacterList.instance.CharacterFaceList[13].face[4].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[1].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[4].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(true);
                             GameScript1.instance.textnum = 1;
                             break;
                         case 21:
                             GameScript1.instance.textnum = 0;
                             break;
                         case 22:
-                            CharacterList.instance.CharacterFaceList[13].face[1].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[0].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
                             GameScript1.instance.textnum = 1;
                             break;
                         case 23:
@@ -179,13 +179,13 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             panel8.SetActive(true);
                             break;
                         case 29:
-                            CharacterList.instance.CharacterFaceList[13].face[0].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[6].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(true);
                             GameScript1.instance.textnum = 1;
                             break;
                         case 30:
-                            CharacterList.instance.CharacterFaceList[13].face[6].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[0].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
                             GameScript1.instance.textnum = 0;
                             panel8.SetActive(false);
                             panel.SetActive(true);
@@ -242,16 +242,16 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             GameScript1.instance.textnum = 0;
                             break;
                         case 4:
-                            CharacterList.instance.CharacterFaceList[13].face[0].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[4].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[4].SetActive(true);
                             GameScript1.instance.textnum = 1;
                             break;
                         case 5:
                             GameScript1.instance.textnum = 0;
                             break;
                         case 6:
-                            CharacterList.instance.CharacterFaceList[13].face[4].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[0].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[4].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
                             GameScript1.instance.textnum = 1;
                             break;
                         case 7:
@@ -281,31 +281,31 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             GameScript1.instance.textnum = 1;
                             break;
                         case 3:
-                            CharacterList.instance.CharacterFaceList[1].face[0].SetActive(true);//표정 1
+                            CharacterManager.instance.CharacterFaceList[1].face[0].SetActive(true);//표정 1
                             GameScript1.instance.textnum = 0;
                             break;
                         case 4:
-                            CharacterList.instance.CharacterFaceList[13].face[0].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[1].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(true);
                             GameScript1.instance.textnum = 1;
                             break;
                         case 5:
                             GameScript1.instance.textnum = 0;
                             break;
                         case 6:
-                            CharacterList.instance.CharacterFaceList[1].face[0].SetActive(false);//표정 기본으로
+                            CharacterManager.instance.CharacterFaceList[1].face[0].SetActive(false);//표정 기본으로
                             break;
                         case 10:
-                            CharacterList.instance.CharacterFaceList[13].face[1].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[6].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(true);
                             GameScript1.instance.textnum = 1;
                             break;
                         case 11:
                             GameScript1.instance.textnum = 0;
                             break;
                         case 12:
-                            CharacterList.instance.CharacterFaceList[13].face[6].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[4].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[4].SetActive(true);
                             GameScript1.instance.textnum = 1;
                             break;
                         case 13:
@@ -315,38 +315,38 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             GameScript1.instance.textnum = 1;
                             break;
                         case 15:
-                            CharacterList.instance.CharacterFaceList[13].face[4].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[6].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[4].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(true);
                             break;
                         case 16:
                             GameScript1.instance.textnum = 0;
                             break;
                         case 17:
-                            CharacterList.instance.CharacterFaceList[1].face[0].SetActive(true);//표정 1
+                            CharacterManager.instance.CharacterFaceList[1].face[0].SetActive(true);//표정 1
                             break;
                         case 18:
-                            CharacterList.instance.CharacterFaceList[13].face[6].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[2].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[2].SetActive(true);
                             GameScript1.instance.textnum = 1;
                             break;
                         case 19:
-                            CharacterList.instance.CharacterFaceList[1].face[0].SetActive(false);//표정 기본으로
+                            CharacterManager.instance.CharacterFaceList[1].face[0].SetActive(false);//표정 기본으로
                             GameScript1.instance.textnum = 0;
                             break;                          
                         case 21:
-                            CharacterList.instance.CharacterFaceList[13].face[2].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[1].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[2].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(true);
                             GameScript1.instance.textnum = 1;
                             break;
                         case 22:
-                            CharacterList.instance.CharacterFaceList[13].face[1].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[6].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(true);
                             break;
                         case 23:
                             GameScript1.instance.textnum = 0;
                             break;
                         case 25:
-                            CharacterList.instance.CharacterFaceList[1].face[1].SetActive(true);//표정 2
+                            CharacterManager.instance.CharacterFaceList[1].face[1].SetActive(true);//표정 2
                             break;
                         case 26:
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
@@ -355,8 +355,8 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             }                              
                             break;
                         case 27://여기서 주인공 아기 메뉴 가지러 페이드아웃
-                            CharacterList.instance.CharacterFaceList[13].face[1].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[3].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[3].SetActive(true);
                             GameScript1.instance.textnum = 1;
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
@@ -365,8 +365,8 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             }                                                  
                             break;
                         case 28:
-                            CharacterList.instance.CharacterFaceList[1].face[1].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[1].face[0].SetActive(true);//표정 1
+                            CharacterManager.instance.CharacterFaceList[1].face[1].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[1].face[0].SetActive(true);//표정 1
                             GameScript1.instance.textnum = 0;
                             if(VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
@@ -381,8 +381,8 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             }
                             break;
                         case 29:
-                            CharacterList.instance.CharacterFaceList[13].face[3].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[0].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[3].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
                             SystemManager.instance.SetCanTouch(false);;
                             GameScript1.instance.textnum = 1;
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
@@ -393,7 +393,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             Popup.instance.OpenPopup();//메뉴 팝업, 팝업 닫으면 다음 대사 넘기기 가능
                             break;
                         case 30:
-                            CharacterList.instance.CharacterFaceList[1].face[0].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[1].face[0].SetActive(false);
                             GameScript1.instance.textnum = 0;
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
@@ -401,12 +401,12 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             }     
                             break;
                         case 31:
-                            CharacterList.instance.CharacterFaceList[13].face[0].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[6].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(true);
                             GameScript1.instance.textnum = 1;
                             break;
                         case 32:
-                            CharacterList.instance.CharacterFaceList[1].face[1].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[1].face[1].SetActive(true);
                             GameScript1.instance.textnum = 0;
                             break;
                         case 33:
@@ -416,8 +416,8 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             GameScript1.instance.textnum = 0;
                             break;
                         case 35:
-                            CharacterList.instance.CharacterFaceList[13].face[6].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[1].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(true);
                             GameScript1.instance.textnum = 1;
                             break;
                         case 36:
@@ -426,8 +426,8 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             {
                                 VisitorNote.instance.OpenNewSentence(1);//도리 손님노트 정보 갱신
                             }
-                            CharacterList.instance.CharacterFaceList[13].face[1].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[0].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
                             break;
                     }
                 }
@@ -439,13 +439,13 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                     switch (count)
                     {
                         case 0:
-                            CharacterList.instance.CharacterFaceList[13].face[0].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[1].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(true);
                             GameScript1.instance.textnum = 1;
                             break;
                         case 1:
-                            CharacterList.instance.CharacterFaceList[13].face[1].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[3].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[3].SetActive(true);
                             break;
                         case 2:
                             GameScript1.instance.textnum = 0;
@@ -457,8 +457,8 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             GameScript1.instance.textnum = 0;
                             break;
                         case 7:
-                            CharacterList.instance.CharacterFaceList[13].face[3].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[0].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[3].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
                             GameScript1.instance.textnum = 1;
                             break;
                         case 8:
@@ -478,8 +478,8 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                     switch (count)
                     {
                         case 0:
-                            CharacterList.instance.CharacterFaceList[13].face[0].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[2].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[2].SetActive(true);
                             GameScript1.instance.textnum = 1;
                             break;
                         case 1:
@@ -501,37 +501,37 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             GameScript1.instance.textnum = 0;
                             break;
                         case 8:
-                            CharacterList.instance.CharacterFaceList[13].face[2].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[3].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[2].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[3].SetActive(true);
                             GameScript1.instance.textnum = 1;
                             break;
                         case 9:
                             GameScript1.instance.textnum = 0;
                             break;
                         case 10:
-                            CharacterList.instance.CharacterFaceList[2].face[0].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[2].face[1].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[2].face[0].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[2].face[1].SetActive(true);
                             break;
                         case 13:
-                            CharacterList.instance.CharacterFaceList[2].face[1].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[2].face[0].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[2].face[1].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[2].face[0].SetActive(true);
                             break;
                         case 14:
-                            CharacterList.instance.CharacterFaceList[2].face[0].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[2].face[1].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[2].face[0].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[2].face[1].SetActive(true);
                             break;
                         case 16:
-                            CharacterList.instance.CharacterFaceList[13].face[3].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[7].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[3].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[7].SetActive(true);
                             GameScript1.instance.textnum = 1;
                             break;
                         case 17:
-                            CharacterList.instance.CharacterFaceList[13].face[7].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[0].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[7].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
                             break;
                         case 19:
-                            CharacterList.instance.CharacterFaceList[13].face[0].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[6].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(true);
                             break;
                         case 20:
                             GameScript1.instance.textnum = 0;
@@ -540,11 +540,11 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             GameScript1.instance.textnum = 1;
                             break;
                         case 22:
-                            CharacterList.instance.CharacterFaceList[13].face[6].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[0].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
                             break;
                         case 25:
-                            CharacterList.instance.CharacterFaceList[2].face[1].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[2].face[1].SetActive(false);
                             GameScript1.instance.textnum = 0;
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
@@ -552,8 +552,8 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             }
                             break;
                         case 27:
-                            CharacterList.instance.CharacterFaceList[13].face[0].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[6].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(true);
                             GameScript1.instance.textnum = 1;
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
@@ -578,8 +578,8 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             }
                             break;
                         case 30:
-                            CharacterList.instance.CharacterFaceList[13].face[6].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[0].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
                             SystemManager.instance.SetCanTouch(false);;
                             GameScript1.instance.textnum = 1;
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
@@ -606,24 +606,24 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             GameScript1.instance.textnum = 1;
                             break;
                         case 1:
-                            CharacterList.instance.CharacterFaceList[3].face[2].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[3].face[2].SetActive(true);
                             GameScript1.instance.textnum = 0;
                             break;
                         case 2:
-                            CharacterList.instance.CharacterFaceList[13].face[0].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[3].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[3].SetActive(true);
                             GameScript1.instance.textnum = 1;
                             break;
                         case 3:
-                            CharacterList.instance.CharacterFaceList[3].face[2].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[3].face[2].SetActive(false);
                             GameScript1.instance.textnum = 0;
                             break;
                         case 5:
                             CName.text = "빵빵";
                             break;
                         case 6:
-                            CharacterList.instance.CharacterFaceList[13].face[3].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[0].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[3].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
                             GameScript1.instance.textnum = 1;
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
@@ -640,8 +640,8 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                     switch (count)
                     {
                         case 0:
-                            CharacterList.instance.CharacterFaceList[13].face[0].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[3].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[3].SetActive(true);
                             GameScript1.instance.textnum = 1;
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
@@ -653,31 +653,31 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             GameScript1.instance.textnum = 0;
                             break;
                         case 4:
-                            CharacterList.instance.CharacterFaceList[13].face[3].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[2].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[3].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[2].SetActive(true);
                             GameScript1.instance.textnum = 1;
                             break;
                         case 5:
                             GameScript1.instance.textnum = 0;
                             break;
                         case 6:
-                            CharacterList.instance.CharacterFaceList[3].face[0].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[3].face[0].SetActive(false);
                             break;
                         case 12:
-                            CharacterList.instance.CharacterFaceList[3].face[0].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[3].face[0].SetActive(true);
                             break;
                         case 15:
-                            CharacterList.instance.CharacterFaceList[13].face[2].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[0].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[2].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
                             GameScript1.instance.textnum = 1;
                             break;
                         case 16:
-                            CharacterList.instance.CharacterFaceList[3].face[0].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[3].face[1].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[3].face[0].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[3].face[1].SetActive(true);
                             GameScript1.instance.textnum = 0;
                             break;
                         case 20:
-                            CharacterList.instance.CharacterFaceList[3].face[1].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[3].face[1].SetActive(false);
                             break;
                         case 21:
                             GameScript1.instance.textnum = 1;
@@ -689,20 +689,20 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             GameScript1.instance.textnum = 1;
                             break;
                         case 27:
-                            CharacterList.instance.CharacterFaceList[13].face[0].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[6].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(true);
                             break;
                         case 28:
                             GameScript1.instance.textnum = 0;
                             break;
                         case 29:
-                            CharacterList.instance.CharacterFaceList[3].face[2].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[3].face[2].SetActive(true);
                             break;
                         case 30:
                             GameScript1.instance.textnum = 1;
                             break;
                         case 31:
-                            CharacterList.instance.CharacterFaceList[3].face[2].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[3].face[2].SetActive(false);
                             GameScript1.instance.textnum = 0;
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
@@ -710,8 +710,8 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             }
                             break;
                         case 32:
-                            CharacterList.instance.CharacterFaceList[13].face[6].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[0].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
                             GameScript1.instance.textnum = 1;
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
@@ -747,11 +747,11 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             Popup.instance.OpenPopup();//메뉴 팝업, 팝업 닫으면 다음 대사 넘기기 가능
                             break;
                         case 37:
-                            CharacterList.instance.CharacterFaceList[3].face[2].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[3].face[2].SetActive(true);
                             GameScript1.instance.textnum = 0;                            
                             break;
                         case 39:
-                            CharacterList.instance.CharacterFaceList[3].face[2].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[3].face[2].SetActive(false);
                             break;
                     }
                 }
@@ -763,8 +763,8 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                     switch (count)
                     {
                         case 0:
-                            CharacterList.instance.CharacterFaceList[13].face[0].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[6].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(true);
                             GameScript1.instance.textnum = 1;
                             break;
                         case 1:
@@ -778,13 +778,13 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             GameScript1.instance.textnum = 0;
                             break;
                         case 6:
-                            CharacterList.instance.CharacterFaceList[13].face[6].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[4].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[4].SetActive(true);
                             GameScript1.instance.textnum = 1;
                             break;
                         case 7:
-                            CharacterList.instance.CharacterFaceList[13].face[4].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[1].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[4].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(true);
                             break;
                         case 8:
                             GameScript1.instance.textnum = 0;
@@ -794,8 +794,8 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             }                          
                             break;
                         case 11:
-                            CharacterList.instance.CharacterFaceList[13].face[1].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[0].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
                             GameScript1.instance.textnum = 1;
                             break;
                     }
@@ -811,8 +811,8 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             GameScript1.instance.textnum = 0;
                             break;
                         case 10:
-                            CharacterList.instance.CharacterFaceList[13].face[0].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[6].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(true);
                             GameScript1.instance.textnum = 1;
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
@@ -820,8 +820,8 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             }              
                             break;
                         case 11:
-                            CharacterList.instance.CharacterFaceList[13].face[6].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[0].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
                                 getMenu = 1;
@@ -884,8 +884,8 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             GameScript1.instance.textnum = 0;
                             break;
                         case 6:
-                            CharacterList.instance.CharacterFaceList[13].face[0].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[1].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(true);
                             GameScript1.instance.textnum = 1;
                             break;
                         case 7:
@@ -893,13 +893,13 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             CName.text = "또롱";
                             break;
                         case 8:
-                            CharacterList.instance.CharacterFaceList[13].face[1].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[6].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(true);
                             GameScript1.instance.textnum = 1;      
                             break;
                         case 9:
-                            CharacterList.instance.CharacterFaceList[13].face[6].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[0].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
                             break;
                         case 10:
                             GameScript1.instance.textnum = 0;
@@ -915,16 +915,16 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                     switch (count)
                     {
                         case 0:
-                            CharacterList.instance.CharacterFaceList[13].face[0].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[1].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(true);
                             GameScript1.instance.textnum = 1;
                             break;
                         case 1:
                             GameScript1.instance.textnum = 0;
                             break;
                         case 2:
-                            CharacterList.instance.CharacterFaceList[13].face[1].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[0].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
                             GameScript1.instance.textnum = 1;
                             break;
                         case 3:
@@ -937,8 +937,8 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             GameScript1.instance.textnum = 0;
                             break;
                         case 12:
-                            CharacterList.instance.CharacterFaceList[13].face[0].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[6].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(true);
                             GameScript1.instance.textnum = 1;
                             break;
                         case 13:
@@ -948,8 +948,8 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             GameScript1.instance.textnum = 1;
                             break;
                         case 15:
-                            CharacterList.instance.CharacterFaceList[13].face[6].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[0].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
                             GameScript1.instance.textnum = 0;
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
@@ -982,8 +982,8 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             CName.text = "도로시";
                             break;
                         case 9:
-                            CharacterList.instance.CharacterFaceList[13].face[0].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[3].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[3].SetActive(true);
                             GameScript1.instance.textnum = 1;
                             break;
                         case 10:
@@ -994,8 +994,8 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             }
                             break;
                         case 12:
-                            CharacterList.instance.CharacterFaceList[13].face[3].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[0].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[3].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
                             GameScript1.instance.textnum = 1;
                             break;
                     }
@@ -1016,16 +1016,16 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             GameScript1.instance.textnum = 0;
                             break;
                         case 2:
-                            CharacterList.instance.CharacterFaceList[13].face[0].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[1].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(true);
                             GameScript1.instance.textnum = 1;
                             break;
                         case 3:
                             GameScript1.instance.textnum = 0;
                             break;
                         case 5:
-                            CharacterList.instance.CharacterFaceList[13].face[1].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[4].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[4].SetActive(true);
                             GameScript1.instance.textnum = 1;
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
@@ -1054,8 +1054,8 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             }
                             break;
                         case 10:
-                            CharacterList.instance.CharacterFaceList[13].face[4].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[0].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[4].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
                             SystemManager.instance.SetCanTouch(false);;
                             GameScript1.instance.textnum = 1;
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
@@ -1070,19 +1070,19 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             GameScript1.instance.textnum = 0;
                             break;
                         case 12:
-                            CharacterList.instance.CharacterFaceList[4].face[0].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[4].face[0].SetActive(true);
                             break;
                         case 15:
-                            CharacterList.instance.CharacterFaceList[4].face[0].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[4].face[0].SetActive(false);
                             break;
                         case 17:
-                            CharacterList.instance.CharacterFaceList[13].face[0].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[6].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(true);
                             GameScript1.instance.textnum = 1;
                             break;
                         case 18:
-                            CharacterList.instance.CharacterFaceList[13].face[6].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[0].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
                             GameScript1.instance.textnum = 0;
                             break;
                     }
@@ -1114,8 +1114,8 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             CName.text = "루루";
                             break;
                         case 6:
-                            CharacterList.instance.CharacterFaceList[13].face[0].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[3].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[3].SetActive(true);
                             GameScript1.instance.textnum = 1;
                             break;
                         case 7:
@@ -1126,8 +1126,8 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             }
                             break;
                         case 10:
-                            CharacterList.instance.CharacterFaceList[13].face[3].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[0].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[3].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
                             GameScript1.instance.textnum = 1;
                             break;
                     }
@@ -1137,37 +1137,37 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                     switch (count)
                     {
                         case 0:
-                            CharacterList.instance.CharacterFaceList[13].face[0].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[6].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(true);
                             GameScript1.instance.textnum = 1;
                             break;
                         case 1:
-                            CharacterList.instance.CharacterFaceList[5].face[0].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[5].face[0].SetActive(true);
                             GameScript1.instance.textnum = 0;
                             break;
                         case 2:
-                            CharacterList.instance.CharacterFaceList[13].face[6].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[1].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(true);
                             GameScript1.instance.textnum = 1;
                             break;
                         case 3:
                             GameScript1.instance.textnum = 0;
                             break;
                         case 5:
-                            CharacterList.instance.CharacterFaceList[13].face[1].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[4].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[4].SetActive(true);
                             GameScript1.instance.textnum = 1;
                             break;
                         case 6:
                             GameScript1.instance.textnum = 0;
                             break;
                         case 7:
-                            CharacterList.instance.CharacterFaceList[13].face[4].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[0].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[4].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
                             GameScript1.instance.textnum = 1;
                             break;
                         case 8:
-                            CharacterList.instance.CharacterFaceList[5].face[0].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[5].face[0].SetActive(false);
                             GameScript1.instance.textnum = 0;
                             break;
                         case 9:
@@ -1189,29 +1189,29 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             GameScript1.instance.textnum = 0;
                             break;
                         case 36:
-                            CharacterList.instance.CharacterFaceList[5].face[1].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[5].face[1].SetActive(true);
                             break;
                         case 37:
-                            CharacterList.instance.CharacterFaceList[5].face[1].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[5].face[1].SetActive(false);
                             break;
                         case 38:
-                            CharacterList.instance.CharacterFaceList[13].face[0].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[1].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(true);
                             GameScript1.instance.textnum = 1;
                             break;
                         case 39:
                             GameScript1.instance.textnum = 0;
                             break;
                         case 41:
-                            CharacterList.instance.CharacterFaceList[13].face[1].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[0].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
                             GameScript1.instance.textnum = 1;
                             break;
                         case 42:
                             GameScript1.instance.textnum = 0;
                             break;
                         case 52:
-                            CharacterList.instance.CharacterFaceList[5].face[1].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[5].face[1].SetActive(true);
                             break;
                         case 53:
                             GameScript1.instance.textnum = 1;
@@ -1223,7 +1223,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             }
                             break;
                         case 55:
-                            CharacterList.instance.CharacterFaceList[5].face[1].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[5].face[1].SetActive(false);
                             GameScript1.instance.textnum = 0;
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
@@ -1245,8 +1245,8 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             }
                             break;
                         case 59:
-                            CharacterList.instance.CharacterFaceList[13].face[0].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[2].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[2].SetActive(true);
                             SystemManager.instance.SetCanTouch(false);;
                             GameScript1.instance.textnum = 1;
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
@@ -1257,12 +1257,12 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             Popup.instance.OpenPopup();//메뉴 팝업, 팝업 닫으면 다음 대사 넘기기 가능
                             break;
                         case 60:
-                            CharacterList.instance.CharacterFaceList[13].face[2].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[0].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[2].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
                             GameScript1.instance.textnum = 0;
                             break;
                         case 61:
-                            CharacterList.instance.CharacterFaceList[5].face[1].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[5].face[1].SetActive(true);
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
                                 getMenu = 2;
@@ -1286,16 +1286,16 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             CName.text = "샌디";
                             break;
                         case 3:
-                            CharacterList.instance.CharacterFaceList[13].face[0].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[1].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(true);
                             GameScript1.instance.textnum = 1;
                             break;
                         case 4:
                             GameScript1.instance.textnum = 0;
                             break;
                         case 7:
-                            CharacterList.instance.CharacterFaceList[13].face[1].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[6].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(true);
                             GameScript1.instance.textnum = 1;
                             break;
                         case 8:
@@ -1306,8 +1306,8 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             }
                             break;
                         case 10:
-                            CharacterList.instance.CharacterFaceList[13].face[6].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[0].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
                             GameScript1.instance.textnum = 1;
                             break;
                     }
@@ -1317,37 +1317,37 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                     switch (count)
                     {
                         case 0:
-                            CharacterList.instance.CharacterFaceList[13].face[0].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[1].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(true);
                             GameScript1.instance.textnum = 1;
                             break;
                         case 1:
                             GameScript1.instance.textnum = 0;
                             break;
                         case 2:
-                            CharacterList.instance.CharacterFaceList[13].face[1].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[6].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(true);
                             GameScript1.instance.textnum = 1;
                             break;
                         case 3:
                             GameScript1.instance.textnum = 0;
                             break;
                         case 12:
-                            CharacterList.instance.CharacterFaceList[13].face[6].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[4].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[4].SetActive(true);
                             GameScript1.instance.textnum = 1;
                             break;
                         case 13:
                             GameScript1.instance.textnum = 0;
                             break;
                         case 44:
-                            CharacterList.instance.CharacterFaceList[13].face[4].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[6].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[4].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(true);
                             GameScript1.instance.textnum = 1;
                             break;
                         case 46:
-                            CharacterList.instance.CharacterFaceList[13].face[6].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[0].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
                                 SmallFade.instance.smallFOut.Enqueue(16);
@@ -1389,20 +1389,20 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             GameScript1.instance.textnum = 0;
                             break;
                         case 51:
-                            CharacterList.instance.CharacterFaceList[6].face[0].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[6].face[0].SetActive(true);
                             break;
                         case 52:
-                            CharacterList.instance.CharacterFaceList[13].face[0].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[2].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[2].SetActive(true);
                             GameScript1.instance.textnum = 1;
                             break;
                         case 53:
-                            CharacterList.instance.CharacterFaceList[13].face[2].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[0].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[2].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
                             GameScript1.instance.textnum = 0;
                             break;
                         case 54:
-                            CharacterList.instance.CharacterFaceList[6].face[0].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[6].face[0].SetActive(false);
                             break;
                     }
                 }
@@ -1414,8 +1414,8 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                     switch (count)
                     {
                         case 1:
-                            CharacterList.instance.CharacterFaceList[13].face[0].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[6].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(true);
                             GameScript1.instance.textnum = 1;
                             break;
                         case 3:
@@ -1423,16 +1423,16 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             CName.text = "친구";
                             break;
                         case 6:
-                            CharacterList.instance.CharacterFaceList[13].face[6].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[1].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(true);
                             GameScript1.instance.textnum = 1;
                             break;
                         case 7:
                             GameScript1.instance.textnum = 0;
                             break;
                         case 9:
-                            CharacterList.instance.CharacterFaceList[13].face[1].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[3].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[3].SetActive(true);
                             GameScript1.instance.textnum = 1;
                             break;
                         case 10:
@@ -1443,8 +1443,8 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             }
                             break;
                         case 12:
-                            CharacterList.instance.CharacterFaceList[13].face[3].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[0].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[3].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
                             GameScript1.instance.textnum = 1;
                             break;
                     }
@@ -1454,19 +1454,19 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                     switch (count)
                     {
                         case 0:
-                            CharacterList.instance.CharacterFaceList[13].face[0].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[1].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(true);
                             GameScript1.instance.textnum = 1;
                             break;
                         case 1:
                             GameScript1.instance.textnum = 0;
                             break;
                         case 6:
-                            CharacterList.instance.CharacterFaceList[7].face[0].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[7].face[0].SetActive(true);
                             break;
                         case 9:
-                            CharacterList.instance.CharacterFaceList[13].face[1].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[0].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
                             GameScript1.instance.textnum = 1;
                             break;
                         case 10:
@@ -1547,16 +1547,16 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             CName.text = "찰스";
                             break;
                         case 3:
-                            CharacterList.instance.CharacterFaceList[13].face[0].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[1].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(true);
                             GameScript1.instance.textnum = 1;
                             break;
                         case 4:
                             GameScript1.instance.textnum = 0;
                             break;
                         case 6:
-                            CharacterList.instance.CharacterFaceList[13].face[1].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[3].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[3].SetActive(true);
                             GameScript1.instance.textnum = 1;
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
@@ -1564,8 +1564,8 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             }
                             break;
                         case 7:
-                            CharacterList.instance.CharacterFaceList[13].face[3].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[0].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[3].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
                             break;
                         case 8:
                             GameScript1.instance.textnum = 0;
@@ -1577,43 +1577,43 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                     switch (count)
                     {
                         case 0:
-                            CharacterList.instance.CharacterFaceList[13].face[0].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[1].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(true);
                             GameScript1.instance.textnum = 1;
                             break;
                         case 1:
                             GameScript1.instance.textnum = 0;
                             break;
                         case 3:
-                            CharacterList.instance.CharacterFaceList[13].face[1].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[6].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(true);
                             GameScript1.instance.textnum = 1;
                             break;
                         case 4:
-                            CharacterList.instance.CharacterFaceList[8].face[0].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[8].face[0].SetActive(true);
                             GameScript1.instance.textnum = 0;
                             break;
                         case 5:
-                            CharacterList.instance.CharacterFaceList[8].face[0].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[8].face[0].SetActive(false);
                             break;
                         case 7:
-                            CharacterList.instance.CharacterFaceList[8].face[1].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[8].face[1].SetActive(true);
                             break;
                         case 8:
-                            CharacterList.instance.CharacterFaceList[13].face[6].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[4].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[4].SetActive(true);
                             GameScript1.instance.textnum = 1;
                             break;
                         case 9:
-                            CharacterList.instance.CharacterFaceList[8].face[1].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[8].face[2].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[8].face[1].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[8].face[2].SetActive(true);
                             GameScript1.instance.textnum = 0;
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
                                 getMenu = 2;//아기 페이드아웃 위해서 일부러 대입
                             }
-                            CharacterList.instance.CharacterFaceList[13].face[4].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[0].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[4].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
                             break;
                     }
                 }
@@ -1622,16 +1622,16 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                     switch (count)
                     {
                         case 0:
-                            CharacterList.instance.CharacterFaceList[13].face[0].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[1].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(true);
                             GameScript1.instance.textnum = 1;
                             break;
                         case 1:
                             GameScript1.instance.textnum = 0;
                             break;
                         case 5:
-                            CharacterList.instance.CharacterFaceList[13].face[1].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[4].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[4].SetActive(true);
                             GameScript1.instance.textnum = 1;
                             break;
                         case 6:
@@ -1641,42 +1641,42 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             GameScript1.instance.textnum = 1;
                             break;
                         case 9:
-                            CharacterList.instance.CharacterFaceList[13].face[4].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[0].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[4].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
                             break;
                         case 10:
-                            CharacterList.instance.CharacterFaceList[8].face[1].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[8].face[1].SetActive(false);
                             GameScript1.instance.textnum = 0;
                             break;
                         case 14:
-                            CharacterList.instance.CharacterFaceList[13].face[0].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[4].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[4].SetActive(true);
                             GameScript1.instance.textnum = 1;
                             break;
                         case 15:
                             GameScript1.instance.textnum = 0;
                             break;
                         case 16:
-                            CharacterList.instance.CharacterFaceList[13].face[4].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[0].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[4].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
                             GameScript1.instance.textnum = 1;                           
                             break;                            
                         case 18:
-                            CharacterList.instance.CharacterFaceList[8].face[0].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[8].face[0].SetActive(true);
                             GameScript1.instance.textnum = 0;                            
-                            CharacterMove.instance.soldierEvent = 1;
+                            CharacterManager.instance.SetSoldierEvent(true);
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
                                 SmallFade.instance.smallFOut.Enqueue(16);
                             }
                             break;
                         case 19:
-                            CharacterList.instance.CharacterFaceList[8].face[0].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[8].face[0].SetActive(false);
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
                                 SmallFade.instance.StartCoroutine(SmallFade.instance.FadeToZero());
                             }
-                            CharacterMove.instance.OutCount();
+                            CharacterManager.instance.CharacterOut();
                             break;
                         case 20:                            
                             GameScript1.instance.textnum = 1;
@@ -1695,15 +1695,15 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             break;
                         case 22:
                             GameScript1.instance.BigCharacter[6].SetActive(true);
-                            CharacterList.instance.CharacterFaceList[4].face[0].SetActive(true);
-                            CharacterMove.instance.SetCharacter(GameScript1.instance.BigCharacter[6]);
-                            CharacterMove.instance.InCount();
+                            CharacterManager.instance.CharacterFaceList[4].face[0].SetActive(true);
+                            CharacterManager.instance.SetCharacter(GameScript1.instance.BigCharacter[6]);
+                            CharacterManager.instance.CharacterIn();
                             GameScript1.instance.textnum = 0;
                             CName.text = "도로시";
                             break;
                         case 23:
-                            CharacterList.instance.CharacterFaceList[13].face[0].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[1].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(true);
                             GameScript1.instance.textnum = 1;
                             break;
                         case 24:
@@ -1717,8 +1717,8 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             }
                             break;
                         case 25:
-                            CharacterList.instance.CharacterFaceList[13].face[1].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[2].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[2].SetActive(true);
                             SystemManager.instance.SetCanTouch(false);;
                             SystemManager.instance.Invoke("SetCanTouchTrue", 1f);
                             GameScript1.instance.textnum = 1;
@@ -1726,8 +1726,8 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                         case 26:
                             SystemManager.instance.SetCanTouch(false);;
                             SystemManager.instance.Invoke("SetCanTouchTrue", 1.5f);
-                            CharacterList.instance.CharacterFaceList[8].face[2].SetActive(true);
-                            CharacterMove.instance.PrincessMove();//찰스등장을 위해 도로시가 옆으로 이동, 바로 찰스 등장
+                            CharacterManager.instance.CharacterFaceList[8].face[2].SetActive(true);
+                            CharacterManager.instance.PrincessIn();//찰스등장을 위해 도로시가 옆으로 이동, 바로 찰스 등장
                             GameScript1.instance.textnum = 0;
                             CName.text = "찰스";
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
@@ -1743,12 +1743,12 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             CName.text = "찰스";
                             break;
                         case 30:
-                            CharacterList.instance.CharacterFaceList[13].face[2].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[0].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[2].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
                             GameScript1.instance.textnum = 1;
                             break;
                         case 31:
-                            CharacterList.instance.CharacterFaceList[4].face[0].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[4].face[0].SetActive(false);
                             GameScript1.instance.textnum = 0;
                             CName.text = "도로시";
                             break;
@@ -1779,42 +1779,42 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             CName.text = "도로시";
                             break;
                         case 43:
-                            CharacterList.instance.CharacterFaceList[8].face[2].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[8].face[0].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[8].face[2].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[8].face[0].SetActive(true);
                             CName.text = "찰스";
                             break;
                         case 44:
                             CName.text = "도로시";
                             break;
                         case 46:
-                            CharacterList.instance.CharacterFaceList[8].face[0].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[8].face[0].SetActive(false);
                             CName.text = "찰스";
                             break;
                         case 48:
                             CName.text = "도로시";
                             break;
                         case 49:
-                            CharacterList.instance.CharacterFaceList[8].face[2].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[8].face[2].SetActive(true);
                             CName.text = "찰스";
                             break;
                         case 50:
-                            CharacterList.instance.CharacterFaceList[13].face[0].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[4].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[4].SetActive(true);
                             GameScript1.instance.textnum = 1;
-                            CharacterMove.instance.OutCount();//찰스 퇴장
+                            CharacterManager.instance.CharacterOut();//찰스 퇴장
                             break;
                         case 51:
-                            CharacterMove.instance.SetCharacter(GameScript1.instance.BigCharacter[6]);
-                            CharacterMove.instance.Invoke("OutCount", 0.5f);
-                            CharacterMove.instance.soldierEvent = 0;
+                            CharacterManager.instance.SetCharacter(GameScript1.instance.BigCharacter[6]);
+                            CharacterManager.instance.Invoke("CharacterOut", 0.5f);
+                            CharacterManager.instance.SetSoldierEvent(false);
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
                                 VisitorNote.instance.OpenNewSentence(10);
                             }
                             break;
                         case 52:
-                            CharacterList.instance.CharacterFaceList[13].face[4].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[0].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[4].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
                             break;
                     }
                 }
@@ -1826,24 +1826,24 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                     switch (count)
                     {
                         case 0:
-                            CharacterList.instance.CharacterFaceList[13].face[0].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[4].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[4].SetActive(true);
                             GameScript1.instance.textnum = 1;
                             break;
                         case 1:
                             GameScript1.instance.textnum = 0;
                             break;
                         case 2:
-                            CharacterList.instance.CharacterFaceList[13].face[4].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[1].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[4].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(true);
                             GameScript1.instance.textnum = 1;
                             break;
                         case 3:
-                            CharacterList.instance.CharacterFaceList[13].face[1].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[0].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
                             break;
                         case 5:
-                            CharacterList.instance.CharacterFaceList[9].face[0].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[9].face[0].SetActive(true);
                             GameScript1.instance.textnum = 0;
                             break;
                         case 6:
@@ -1853,8 +1853,8 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             GameScript1.instance.textnum = 0;
                             break;
                         case 9:
-                            CharacterList.instance.CharacterFaceList[13].face[0].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[6].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(true);
                             GameScript1.instance.textnum = 1;
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
@@ -1862,8 +1862,8 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             }
                             break;
                         case 10:
-                            CharacterList.instance.CharacterFaceList[13].face[6].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[0].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
                             GameScript1.instance.textnum = 0;
                             break;
                     }
@@ -1873,16 +1873,16 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                     switch (count)
                     {
                         case 0:
-                            CharacterList.instance.CharacterFaceList[13].face[0].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[6].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(true);
                             GameScript1.instance.textnum = 1;
                             break;
                         case 2:
-                            CharacterList.instance.CharacterFaceList[13].face[6].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[0].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
                             break;
                         case 3:
-                            CharacterList.instance.CharacterFaceList[9].face[0].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[9].face[0].SetActive(true);
                             GameScript1.instance.textnum = 0;
                             break;
                         case 4:
@@ -1895,38 +1895,38 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             GameScript1.instance.textnum = 1;
                             break;
                         case 8:
-                            CharacterList.instance.CharacterFaceList[9].face[0].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[9].face[1].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[9].face[0].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[9].face[1].SetActive(true);
                             GameScript1.instance.textnum = 0;
                             break;
                         case 10:
-                            CharacterList.instance.CharacterFaceList[13].face[6].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[3].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[3].SetActive(true);
                             GameScript1.instance.textnum = 1;
                             break;
                         case 11:
-                            CharacterList.instance.CharacterFaceList[13].face[3].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[6].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[3].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(true);
                             break;
                         case 13:
-                            CharacterList.instance.CharacterFaceList[13].face[6].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[0].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
                             break;
                         case 14:
-                            CharacterList.instance.CharacterFaceList[9].face[1].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[9].face[1].SetActive(false);
                             GameScript1.instance.textnum = 0;
                             break;
                         case 18:
-                            CharacterList.instance.CharacterFaceList[13].face[0].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[3].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[3].SetActive(true);
                             GameScript1.instance.textnum = 1;
                             break;
                         case 19:
                             GameScript1.instance.textnum = 0;
                             break;
                         case 20:
-                            CharacterList.instance.CharacterFaceList[13].face[3].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[4].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[3].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[4].SetActive(true);
                             GameScript1.instance.textnum = 1;
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
@@ -1935,8 +1935,8 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             }
                             break;
                         case 21:
-                            CharacterList.instance.CharacterFaceList[13].face[4].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[0].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[4].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
                             break;
                         case 22:
                             SystemManager.instance.SetCanTouch(true);
@@ -1947,7 +1947,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             GameScript1.instance.textnum = 1;
                             break;
                         case 24:
-                            CharacterList.instance.CharacterFaceList[9].face[1].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[9].face[1].SetActive(true);
                             GameScript1.instance.textnum = 0;
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
@@ -1963,8 +1963,8 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                     switch (count)
                     {
                         case 0:
-                            CharacterList.instance.CharacterFaceList[13].face[0].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[1].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(true);
                             GameScript1.instance.textnum = 1;
                             break;
                         case 1:
@@ -1977,50 +1977,50 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             GameScript1.instance.textnum = 0;
                             break;
                         case 15:
-                            CharacterList.instance.CharacterFaceList[13].face[1].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[5].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[5].SetActive(true);
                             GameScript1.instance.textnum = 1;
                             break;
                         case 16:
-                            CharacterList.instance.CharacterFaceList[9].face[0].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[9].face[0].SetActive(true);
                             GameScript1.instance.textnum = 0;
                             break;
                         case 18:
-                            CharacterList.instance.CharacterFaceList[9].face[0].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[9].face[0].SetActive(false);
                             GameScript1.instance.textnum = 1;
                             break;
                         case 19:
-                            CharacterList.instance.CharacterFaceList[13].face[5].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[7].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[5].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[7].SetActive(true);
                             break;
                         case 22:
-                            CharacterList.instance.CharacterFaceList[13].face[7].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[0].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[7].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
                             break;
                         case 25:
-                            CharacterList.instance.CharacterFaceList[13].face[0].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[6].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(true);
                             break;
                         case 28:
-                            CharacterList.instance.CharacterFaceList[9].face[0].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[9].face[0].SetActive(true);
                             GameScript1.instance.textnum = 0;
                             break;
                         case 29:
                             GameScript1.instance.textnum = 1;
                             break;
                         case 30:
-                            CharacterList.instance.CharacterFaceList[9].face[0].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[9].face[1].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[9].face[0].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[9].face[1].SetActive(true);
                             GameScript1.instance.textnum = 0;
                             break;
                         case 31:
-                            CharacterList.instance.CharacterFaceList[13].face[6].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[0].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
                             GameScript1.instance.textnum = 1;
                             break;
                         case 32:
-                            CharacterList.instance.CharacterFaceList[9].face[1].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[9].face[2].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[9].face[1].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[9].face[2].SetActive(true);
                             GameScript1.instance.textnum = 0;
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
@@ -2028,8 +2028,8 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             }
                             break;
                         case 34:
-                            CharacterList.instance.CharacterFaceList[13].face[0].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[2].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[2].SetActive(true);
                             GameScript1.instance.textnum = 1;
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
@@ -2054,8 +2054,8 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             }
                             break;
                         case 37:
-                            CharacterList.instance.CharacterFaceList[13].face[2].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[0].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[2].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
                             SystemManager.instance.SetCanTouch(false);;
                             GameScript1.instance.textnum = 1;
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
@@ -2101,43 +2101,43 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                                 Menu.instance.MenuFadeIn();
                             }
                             Popup.instance.OpenPopup();//메뉴 팝업, 팝업 닫으면 다음 대사 넘기기 가능
-                            CharacterList.instance.CharacterFaceList[13].face[0].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[6].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(true);
                             break;
                         case 44:
-                            CharacterList.instance.CharacterFaceList[9].face[2].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[9].face[1].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[9].face[2].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[9].face[1].SetActive(true);
                             GameScript1.instance.textnum = 0;
                             break;
                         case 45:
-                            CharacterList.instance.CharacterFaceList[13].face[6].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[0].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
                             GameScript1.instance.textnum = 1;
                             break;
                         case 51:
                             GameScript1.instance.textnum = 0;
                             break;
                         case 52:
-                            CharacterList.instance.CharacterFaceList[13].face[0].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[6].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(true);
                             GameScript1.instance.textnum = 1;
                             break;
                         case 53:
-                            CharacterList.instance.CharacterFaceList[9].face[1].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[9].face[0].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[9].face[1].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[9].face[0].SetActive(true);
                             GameScript1.instance.textnum = 0;
                             break;
                         case 54:
                             GameScript1.instance.textnum = 1;
                             break;
                         case 55:
-                            CharacterList.instance.CharacterFaceList[9].face[0].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[6].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[0].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[9].face[0].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
                             GameScript1.instance.textnum = 0;
                             break;
                         case 59:
-                            CharacterList.instance.CharacterFaceList[9].face[3].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[9].face[3].SetActive(true);
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
                                 VisitorNote.instance.OpenNewSentence(12);
@@ -2153,8 +2153,8 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                     switch (count)
                     {
                         case 5:
-                            CharacterList.instance.CharacterFaceList[13].face[0].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[2].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[2].SetActive(true);
                             GameScript1.instance.textnum = 1;
                             break;
                         case 6:
@@ -2168,16 +2168,16 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             CName.text = "히로";
                             break;
                         case 11:
-                            CharacterList.instance.CharacterFaceList[13].face[2].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[0].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[2].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
                             GameScript1.instance.textnum = 1;
                             break;
                         case 12:
                             GameScript1.instance.textnum = 0;
                             break;
                         case 13:
-                            CharacterList.instance.CharacterFaceList[13].face[0].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[3].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[3].SetActive(true);
                             GameScript1.instance.textnum = 1;
                             break;
                         case 14:
@@ -2192,8 +2192,8 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             }
                             break;
                         case 16:
-                            CharacterList.instance.CharacterFaceList[13].face[3].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[0].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[3].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
                             GameScript1.instance.textnum = 0;
                             CName.text = "히로";
                             break;
@@ -2204,37 +2204,37 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                     switch (count)
                     {
                         case 1:
-                            CharacterList.instance.CharacterFaceList[10].face[0].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[10].face[0].SetActive(false);
                             CName.text = "디노";
                             break;
                         case 2:
-                            CharacterList.instance.CharacterFaceList[10].face[1].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[10].face[1].SetActive(true);
                             CName.text = "히로";
                             break;
                         case 3:
-                            CharacterList.instance.CharacterFaceList[10].face[1].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[10].face[2].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[10].face[1].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[10].face[2].SetActive(true);
                             CName.text = "디노";
                             break;
                         case 4:
-                            CharacterList.instance.CharacterFaceList[10].face[2].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[10].face[3].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[10].face[2].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[10].face[3].SetActive(true);
                             CName.text = "히로";
                             break;
                         case 5:
                             CName.text = "디노";
                             break;
                         case 6:
-                            CharacterList.instance.CharacterFaceList[10].face[3].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[10].face[2].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[10].face[3].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[10].face[2].SetActive(true);
                             CName.text = "히로";
                             break;
                         case 7:
                             CName.text = "디노";
                             break;
                         case 8:
-                            CharacterList.instance.CharacterFaceList[10].face[2].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[10].face[3].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[10].face[2].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[10].face[3].SetActive(true);
                             break;
                         case 12:
                             CName.text = "히로";
@@ -2293,19 +2293,19 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             Popup.instance.OpenPopup();//메뉴 팝업, 팝업 닫으면 다음 대사 넘기기 가능
                             break;
                         case 26:
-                            CharacterList.instance.CharacterFaceList[10].face[3].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[10].face[0].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[10].face[3].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[10].face[0].SetActive(true);
                             GameScript1.instance.textnum = 0;
                             CName.text = "히로";
                             break;
                         case 27:
-                            CharacterList.instance.CharacterFaceList[10].face[0].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[10].face[4].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[10].face[0].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[10].face[4].SetActive(true);
                             CName.text = "디노";
                             break;
                         case 28:
-                            CharacterList.instance.CharacterFaceList[13].face[0].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[6].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(true);
                             GameScript1.instance.textnum = 1;
                             break;
                         case 29:
@@ -2316,29 +2316,29 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             CName.text = "히로";
                             break;
                         case 31:
-                            CharacterList.instance.CharacterFaceList[10].face[4].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[10].face[4].SetActive(false);
                             CName.text = "디노";
                             break;
                         case 33:
-                            CharacterList.instance.CharacterFaceList[10].face[1].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[10].face[1].SetActive(true);
                             CName.text = "히로";
                             break;
                         case 34:
-                            CharacterList.instance.CharacterFaceList[10].face[1].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[10].face[2].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[10].face[1].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[10].face[2].SetActive(true);
                             CName.text = "디노";
                             break;
                         case 36:
-                            CharacterList.instance.CharacterFaceList[10].face[2].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[10].face[3].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[10].face[2].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[10].face[3].SetActive(true);
                             CName.text = "히로";
                             break;
                         case 37:
-                            CharacterList.instance.CharacterFaceList[10].face[3].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[10].face[0].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[10].face[3].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[10].face[0].SetActive(true);
                             break;
                         case 38:
-                            CharacterList.instance.CharacterFaceList[10].face[0].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[10].face[0].SetActive(false);
                             CName.text = "디노";
                             break;
                         case 39:
@@ -2352,8 +2352,8 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             }
                             break;
                         case 43:
-                            CharacterList.instance.CharacterFaceList[13].face[6].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[0].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
                             CName.text = "디노";
                             break;
                     }
@@ -2378,8 +2378,8 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             GameScript1.instance.textnum = 0;
                             break;
                         case 6:
-                            CharacterList.instance.CharacterFaceList[13].face[0].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[1].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(true);
                             GameScript1.instance.textnum = 1;
                             break;
                         case 7:
@@ -2395,7 +2395,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             CName.text = "닥터 펭";
                             break;
                         case 13:
-                            CharacterList.instance.CharacterFaceList[11].face[0].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[11].face[0].SetActive(true);
                             break;
                         case 14:
                             GameScript1.instance.textnum = 1;
@@ -2404,8 +2404,8 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             GameScript1.instance.textnum = 0;
                             break;
                         case 16:
-                            CharacterList.instance.CharacterFaceList[13].face[1].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[0].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
                             GameScript1.instance.textnum = 1;
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
@@ -2413,7 +2413,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             }
                             break;
                         case 18:
-                            CharacterList.instance.CharacterFaceList[11].face[0].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[11].face[0].SetActive(false);
                             GameScript1.instance.textnum = 0;
                             break;
                     }
@@ -2429,17 +2429,17 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             GameScript1.instance.textnum = 0;
                             break;
                         case 3:
-                            CharacterList.instance.CharacterFaceList[13].face[0].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[6].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(true);
                             GameScript1.instance.textnum = 1;
                             break;
                         case 4:
-                            CharacterList.instance.CharacterFaceList[11].face[0].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[11].face[0].SetActive(true);
                             GameScript1.instance.textnum = 0;
                             break;
                         case 5:
-                            CharacterList.instance.CharacterFaceList[13].face[6].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[0].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
                             GameScript1.instance.textnum = 1;
                             break;
                         case 6:
@@ -2452,28 +2452,28 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             GameScript1.instance.textnum = 0;
                             break;
                         case 9:
-                            CharacterList.instance.CharacterFaceList[11].face[0].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[11].face[0].SetActive(false);
                             break;
                         case 17:
-                            CharacterList.instance.CharacterFaceList[13].face[0].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[3].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[3].SetActive(true);
                             GameScript1.instance.textnum = 1;
                             break;
                         case 18:
                             GameScript1.instance.textnum = 0;
                             break;
                         case 20:
-                            CharacterList.instance.CharacterFaceList[11].face[1].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[11].face[1].SetActive(true);
                             break;
                         case 23:
-                            CharacterList.instance.CharacterFaceList[11].face[1].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[11].face[1].SetActive(false);
                             break;
                         case 27:
-                            CharacterList.instance.CharacterFaceList[11].face[0].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[11].face[0].SetActive(true);
                             break;
                         case 30:
-                            CharacterList.instance.CharacterFaceList[13].face[3].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[0].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[3].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
                             GameScript1.instance.textnum = 1;
                             break;
                         case 31:
@@ -2484,7 +2484,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             }
                             break;
                         case 33:
-                            CharacterList.instance.CharacterFaceList[11].face[0].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[11].face[0].SetActive(false);
                             break;
                         case 34:
                             GameScript1.instance.textnum = 1;
@@ -2528,7 +2528,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             GameScript1.instance.textnum = 1;
                             break;
                         case 40:
-                            CharacterList.instance.CharacterFaceList[11].face[0].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[11].face[0].SetActive(true);
                             GameScript1.instance.textnum = 0;
                             break;
                     }
@@ -2542,12 +2542,12 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                     switch (count)
                     {
                         case 0:
-                            CharacterList.instance.CharacterFaceList[13].face[1].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[2].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[2].SetActive(true);
                             break;
                         case 1:
                             BgmManager.instance.PlayCharacterBGM(14);//캐릭터 테마 재생
-                            CharacterMove.instance.InCount(); //이 캐릭터만 특수하게 여기서 등장
+                            CharacterManager.instance.CharacterIn(); //이 캐릭터만 특수하게 여기서 등장
                             GameScript1.instance.textnum = 0;
                             CName.text = "???";
                             break;
@@ -2570,16 +2570,16 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             GameScript1.instance.textnum = 0;
                             break;
                         case 10:
-                            CharacterList.instance.CharacterFaceList[13].face[2].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[7].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[2].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[7].SetActive(true);
                             GameScript1.instance.textnum = 1;
                             break;
                         case 11:
                             GameScript1.instance.textnum = 0;                           
                             break;
                         case 13:
-                            CharacterList.instance.CharacterFaceList[13].face[7].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[3].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[7].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[3].SetActive(true);
                             GameScript1.instance.textnum = 1;
                             break;
                         case 14:
@@ -2587,26 +2587,26 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             CName.text = "롤렝드";
                             break;
                         case 15:
-                            CharacterList.instance.CharacterFaceList[13].face[3].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[0].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[3].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
                             GameScript1.instance.textnum = 1;
                             break;
                         case 16:
-                            CharacterList.instance.CharacterFaceList[12].face[0].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[12].face[0].SetActive(true);
                             GameScript1.instance.textnum = 0;
                             break;
                         case 17:
-                            CharacterList.instance.CharacterFaceList[13].face[0].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[3].SetActive(true);
-                            CharacterList.instance.CharacterFaceList[12].face[0].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[3].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[12].face[0].SetActive(false);
                             GameScript1.instance.textnum = 1;
                             break;
                         case 18:
                             GameScript1.instance.textnum = 0;
                             break;
                         case 19:
-                            CharacterList.instance.CharacterFaceList[13].face[3].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[6].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[3].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(true);
                             SEManager.instance.PlayBirdSound();
                             GameScript1.instance.textnum = 1;
                             break;
@@ -2621,8 +2621,8 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             }
                             break;
                         case 22:
-                            CharacterList.instance.CharacterFaceList[13].face[6].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[0].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
                             break;
                         case 24:
                             GameScript1.instance.textnum = 0;
@@ -2640,54 +2640,54 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             CName.text = "롤렝드";
                             break;
                         case 4:
-                            CharacterList.instance.CharacterFaceList[13].face[1].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[6].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(true);
                             GameScript1.instance.textnum = 1;
                             break;
                         case 5:
-                            CharacterList.instance.CharacterFaceList[12].face[0].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[12].face[0].SetActive(true);
                             GameScript1.instance.textnum = 0;
                             break;
                         case 6:
-                            CharacterList.instance.CharacterFaceList[13].face[6].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[1].SetActive(true);
-                            CharacterList.instance.CharacterFaceList[12].face[0].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[12].face[0].SetActive(false);
                             GameScript1.instance.textnum = 1;
                             break;
                         case 7:
                             GameScript1.instance.textnum = 0;
                             break;
                         case 10:
-                            CharacterList.instance.CharacterFaceList[13].face[1].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[0].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
                             GameScript1.instance.textnum = 1;
                             break;
                         case 11:
                             GameScript1.instance.textnum = 0;
                             break;
                         case 12:
-                            CharacterList.instance.CharacterFaceList[12].face[1].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[12].face[1].SetActive(true);
                             break;
                         case 14:
-                            CharacterList.instance.CharacterFaceList[12].face[1].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[12].face[1].SetActive(false);
                             break;
                         case 22:
-                            CharacterList.instance.CharacterFaceList[12].face[0].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[12].face[0].SetActive(true);
                             break;
                         case 23:
-                            CharacterList.instance.CharacterFaceList[12].face[0].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[12].face[1].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[12].face[0].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[12].face[1].SetActive(true);
                             break;
                         case 26:
-                            CharacterList.instance.CharacterFaceList[13].face[0].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[7].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[7].SetActive(true);
                             GameScript1.instance.textnum = 1;
                             break;
                         case 27:
                             GameScript1.instance.textnum = 0;
                             break;
                         case 28:
-                            CharacterList.instance.CharacterFaceList[12].face[1].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[12].face[1].SetActive(false);
                             break;
                         case 29:
                             GameScript1.instance.textnum = 1;
@@ -2696,34 +2696,34 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             GameScript1.instance.textnum = 0;
                             break;
                         case 35:
-                            CharacterList.instance.CharacterFaceList[12].face[1].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[12].face[1].SetActive(true);
                             break;
                         case 36:
-                            CharacterList.instance.CharacterFaceList[12].face[1].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[12].face[1].SetActive(false);
                             break;
                         case 38:
-                            CharacterList.instance.CharacterFaceList[12].face[0].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[12].face[0].SetActive(true);
                             break;
                         case 39:
-                            CharacterList.instance.CharacterFaceList[12].face[0].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[12].face[0].SetActive(false);
                             break;
                         case 41:
-                            CharacterList.instance.CharacterFaceList[12].face[0].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[12].face[0].SetActive(true);
                             break;
                         case 44:
-                            CharacterList.instance.CharacterFaceList[13].face[7].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[0].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[7].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
                             GameScript1.instance.textnum = 1;
                             break;
                         case 45:
                             GameScript1.instance.textnum = 0;
                             break;
                         case 46:
-                            CharacterList.instance.CharacterFaceList[12].face[0].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[12].face[0].SetActive(false);
                             break;
                         case 47:
-                            CharacterList.instance.CharacterFaceList[13].face[0].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[3].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[3].SetActive(true);
                             GameScript1.instance.textnum = 1;
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
@@ -2756,8 +2756,8 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             }
                             break;
                         case 51:
-                            CharacterList.instance.CharacterFaceList[13].face[3].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[0].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[3].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
                             SystemManager.instance.SetCanTouch(false);;
                             GameScript1.instance.textnum = 1;
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
@@ -2777,18 +2777,18 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             GameScript1.instance.textnum = 0;
                             break;
                         case 55:
-                            CharacterList.instance.CharacterFaceList[12].face[0].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[12].face[0].SetActive(true);
                             break;
                         case 56:
-                            CharacterList.instance.CharacterFaceList[12].face[0].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[12].face[0].SetActive(false);
                             break;
                         case 57:
-                            CharacterList.instance.CharacterFaceList[13].face[0].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[6].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(true);
                             GameScript1.instance.textnum = 1;
                             break;
                         case 59:
-                            CharacterList.instance.CharacterFaceList[12].face[0].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[12].face[0].SetActive(true);
                             GameScript1.instance.textnum = 0;
                             break;
                         case 60:
@@ -2801,11 +2801,11 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                                 getMenu = 2;
                                 VisitorNote.instance.OpenNewSentence(15);
                             }
-                            CharacterList.instance.CharacterFaceList[13].face[6].SetActive(false);
-                            CharacterList.instance.CharacterFaceList[13].face[0].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
                             break;
                         case 62:
-                            CharacterList.instance.CharacterFaceList[12].face[0].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[12].face[0].SetActive(false);
                             break;
                     }
                 }

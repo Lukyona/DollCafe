@@ -1119,15 +1119,15 @@ public class VisitorNote : MonoBehaviour
                     VisitorNote.instance.RePlayButton[i - 1].gameObject.SetActive(true);//다시보기 버튼 활성화
                     if (i == 1)//도리는 손님노트 이미지를 2번째 표정으로 바꿈
                     {
-                        VisitorNote.instance.characterInfo[i - 1].GetComponent<Image>().sprite = CharacterList.instance.CharacterFaceList[i].face[1].GetComponent<Image>().sprite;
+                        VisitorNote.instance.characterInfo[i - 1].GetComponent<Image>().sprite = CharacterManager.instance.CharacterFaceList[i].face[1].GetComponent<Image>().sprite;
                     }
                     if(i == 11)
                     {
-                        VisitorNote.instance.characterInfo[i - 1].GetComponent<Image>().sprite = CharacterList.instance.CharacterFaceList[i - 2].face[3].GetComponent<Image>().sprite;
+                        VisitorNote.instance.characterInfo[i - 1].GetComponent<Image>().sprite = CharacterManager.instance.CharacterFaceList[i - 2].face[3].GetComponent<Image>().sprite;
                     }
                     if(i == 12 || i == 13)
                     {
-                        VisitorNote.instance.characterInfo[i - 1].GetComponent<Image>().sprite = CharacterList.instance.CharacterFaceList[i - 2].face[0].GetComponent<Image>().sprite;
+                        VisitorNote.instance.characterInfo[i - 1].GetComponent<Image>().sprite = CharacterManager.instance.CharacterFaceList[i - 2].face[0].GetComponent<Image>().sprite;
                     }
                     if(i == 14)
                     {
