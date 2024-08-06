@@ -1,15 +1,13 @@
 ﻿using UnityEngine;
 
-
-
 public class CharacterManager : MonoBehaviour 
 {
     public static CharacterManager instance;
 
     #region 캐릭터 움직임 관련 변수
-    public GameObject[] BigCharacter; //큰 캐릭터 이미지 배열
+    [SerializeField] GameObject[] BigCharacter; //큰 캐릭터 이미지 배열
 
-    int charNum; //캐릭터 넘버
+    int characterNum; //캐릭터 넘버
 
     Vector3 charInPos; //대화 시작할 때 캐릭터가 들어오는 위치
     Vector3 charOutPos; //캐릭터가 나가는 위치
@@ -27,6 +25,12 @@ public class CharacterManager : MonoBehaviour
     }
 
     public FaceList[] CharacterFaceList; //오브젝트 배열을 가지고 있는 배열
+
+    int faceNum = -1;//표정 비활성화에 쓰임
+
+
+
+
 
     private void Awake()
     {
@@ -46,16 +50,16 @@ public class CharacterManager : MonoBehaviour
     {
         if (characteInOutState == 1) //들어오기
         {
-            BigCharacter[charNum].transform.position = Vector3.MoveTowards(BigCharacter[charNum].transform.position, charInPos, moveSpeed * Time.deltaTime);
+            BigCharacter[characterNum].transform.position = Vector3.MoveTowards(BigCharacter[characterNum].transform.position, charInPos, moveSpeed * Time.deltaTime);
         }
         else if (characteInOutState == 2) // 나가기
         {
-            BigCharacter[charNum].transform.position = Vector3.MoveTowards(BigCharacter[charNum].transform.position, charOutPos, moveSpeed * Time.deltaTime);
+            BigCharacter[characterNum].transform.position = Vector3.MoveTowards(BigCharacter[characterNum].transform.position, charOutPos, moveSpeed * Time.deltaTime);
             if (isSoldierEvent) //군인 이벤트 중일 경우
             {
-                if (BigCharacter[charNum].transform.position == charOutPos) //캐릭터가 완전히 나갔을 때 대사 넘기기 가능
+                if (BigCharacter[characterNum].transform.position == charOutPos) //캐릭터가 완전히 나갔을 때 대사 넘기기 가능
                 {
-                    BigCharacter[charNum].SetActive(false);
+                    DeactivateBigCharacter();
                     SystemManager.instance.SetCanTouch(true);
                 }
                 else //완전히 나가지 않았으면 대사 못 넘김
@@ -68,8 +72,8 @@ public class CharacterManager : MonoBehaviour
         {
             Vector3 princessInPos = new Vector3(150,-50,0); //군인 대화 이벤트, 공주 위치
 
-            BigCharacter[charNum].transform.position = Vector3.MoveTowards(BigCharacter[charNum].transform.position, princessInPos, moveSpeed * Time.deltaTime);
-            if(BigCharacter[charNum].transform.position == princessInPos)//공주 이동 끝나면 바로 찰스 등장
+            BigCharacter[characterNum].transform.position = Vector3.MoveTowards(BigCharacter[characterNum].transform.position, princessInPos, moveSpeed * Time.deltaTime);
+            if(BigCharacter[characterNum].transform.position == princessInPos)//공주 이동 끝나면 바로 찰스 등장
             {
                 CharacterIn(10);
             }
@@ -79,15 +83,15 @@ public class CharacterManager : MonoBehaviour
     #region 캐릭터 움직임 관련 함수
     public void CharacterIn(int cNum) //캐릭터 들어와야 할 때
     {
-        charNum = cNum;
-        BigCharacter[charNum].SetActive(true);
+        characterNum = cNum;
+        BigCharacter[characterNum].SetActive(true);
         characteInOutState = 1;
     }
 
     public void CharacterOut(int cNum = -1) //캐릭터가 나가야할 때
     {
         if(cNum != -1)
-            charNum = cNum;
+            characterNum = cNum;
             
         characteInOutState = 2;
     }
@@ -108,6 +112,53 @@ public class CharacterManager : MonoBehaviour
     }
     #endregion
 
+    public GameObject GetBigCharacter(int cNum)
+    {
+        return BigCharacter[cNum];
+    }
 
+    void DeactivateBigCharacter()//큰 캐릭터 비활성화하는 함수
+    {
+        BigCharacter[characterNum].SetActive(false);
+        DeactivateCharacterMoving();
+        if(faceNum != -1)//표정 비활성화해야할 것이 있으면
+        {
+            DeactivateCharacterFace();
+        }
+    }
+
+    public int GetCharacterNum()
+    {
+        return characterNum;
+    }
+
+    public void SetFaceNum(int value)
+    {
+        faceNum = value;
+    }
+
+    void DeactivateCharacterFace()
+    {
+        if (faceNum == 1)//도리
+        {
+            CharacterFaceList[1].face[1].SetActive(false);//표정 비활성화
+        }
+        else if (faceNum == 10)//찰스1,2
+        {
+            CharacterFaceList[8].face[2].SetActive(false);
+        }
+        else if (faceNum == 11 || faceNum == 7)//무명1, 루루
+        {
+            CharacterFaceList[faceNum - 2].face[1].SetActive(false);//표정 비활성화
+        }
+        else if (faceNum == 12)//무명2
+        {
+            CharacterFaceList[9].face[3].SetActive(false);
+        }
+        else if (faceNum == 13 || faceNum == 9)//닥터펭, 친구 이벤트의 경우
+        {
+            CharacterFaceList[faceNum - 2].face[0].SetActive(false);
+        }
+    }
 
 }

@@ -66,6 +66,7 @@ public class BgmManager : MonoBehaviour
         switch (n)
         {
             case 0://엔딩의 제제
+                if(SystemManager.instance.GetMainCount() < 3) return;
                 myAudio = endingSound;
                 myAudio.volume = 1f;
                 break;

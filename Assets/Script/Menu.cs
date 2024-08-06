@@ -144,15 +144,14 @@ public class Menu : MonoBehaviour
             menuBoardAnimator.SetTrigger("MenuBoardUp"); //메뉴판 올라옴
             close.GetComponent<Button>().interactable = true; //닫기 버튼 가능
 
-            if (MenuHint.instance.tuto) //서빙 튜토리얼일 경우
+            if (SystemManager.instance.GetMainCount() == 2) //서빙 튜토리얼일 경우
             {
                 close.GetComponent<Button>().interactable = false; //닫기 버튼 불가
                 UI_Assistant1.instance.panel6.SetActive(false); //패널 없애고
-                SmallFade.instance.InvisibleCharacter(); //캐릭터와 메뉴 힌트 말풍선 안 보이게, 보이게 하면 메뉴판 위로 겹쳐짐
-                MenuHint.instance.HintFadeOut(1); //메뉴힌트 페이드아웃
+                //SmallFade.instance.InvisibleCharacter(); //캐릭터와 메뉴 힌트 말풍선 안 보이게, 보이게 하면 메뉴판 위로 겹쳐짐
                 UI_Assistant1.instance.OpenDialogue2(); //다음 대사 나타남
                 Invoke("CanClickMenu", 2f);
-                //GameScript1.instance.Invoke("TutorialDownBox", 1.3f);
+                //SystemManager.instance.Invoke("TutorialDownBox", 1.3f);
             }
             else
             {
@@ -204,10 +203,10 @@ public class Menu : MonoBehaviour
 
             HPManager.instance.UseHP(); //체력 소모
 
-            if((cNum == 9 && CharacterAppear.instance.eventOn == 9) || (cNum == 10 && CharacterAppear.instance.eventOn == 10) || (cNum == 15 && CharacterAppear.instance.eventOn == 16))//친구,찰스1,롤렝드 친밀도 이벤트일 경우
-            {//클릭된 캐릭터와 이벤트 캐릭터가 동일하면
+            if((cNum == 9 && CharacterAppear.instance.eventOn == 9) || (cNum == 10 && CharacterAppear.instance.eventOn == 10) || (cNum == 15 && CharacterAppear.instance.eventOn == 16))
+            {// 친구,찰스1,롤렝드 친밀도 이벤트일 경우 클릭된 캐릭터와 이벤트 캐릭터가 동일하면
                 goEvent = 1;
-                GameScript1.instance.CantClickUI();
+                SystemManager.instance.CantTouchUI();
                 MenuHint.instance.CantClickMHB();//뒤에 메뉴판이 떠있는 채로 이벤트 시작하는 걸 방지하기 위함
                 if (MenuHint.instance.RightMenu[seatNum] == n) //캐릭터가 원하는 메뉴가 n이면, 원하는 메뉴와 플레이어가 고른 메뉴가 일치
                 {
@@ -267,20 +266,20 @@ public class Menu : MonoBehaviour
                 SetTableMenu(n, seatNum); //테이블에 올려질 메뉴는 n                
                 menuFIn.Enqueue(seatNum);//메뉴 페이드인 큐에 자리 정보 추가
                 MenuFadeIn();
-                if (MenuHint.instance.tuto) //서빙 튜토리얼일 경우
+                if (SystemManager.instance.GetMainCount() == 2) //서빙 튜토리얼일 경우
                 {
                     reactionFIn.Enqueue(seatNum); //리액션 페이드인 큐에 자리 정보 추가
-                    SmallFade.instance.Invoke("VisibleCharacter",0.3f); //캐릭터 다시 보이게 하고
-                                                                        // GameScript1.instance.TutorialUpBox();
+                    //SmallFade.instance.Invoke("VisibleCharacter",0.3f); //캐릭터 다시 보이게 하고
+                                                                        // SystemManager.instance.TutorialUpBox();
                     UI_Assistant1.instance.Invoke("OpenDialogue2",0.5f);
                     SystemManager.instance.Invoke("SetCanTouchTrue", 1.5f);
-                    VisitorNote.instance.IncreaseFrinedshipGauge(1);
+                    VisitorNote.instance.IncreaseFrinedshipGauge(cNum);
                 }
                 else
                 {
-                    if((cNum == 11 && CharacterAppear.instance.eventOn == 12))//무명이1 이벤트이고 무명이 서빙을 했을 때
+                    if(cNum == 11 && CharacterAppear.instance.eventOn == 12)//무명이1 이벤트이고 무명이 서빙을 했을 때
                     {
-                        GameScript1.instance.CantClickUI();
+                        SystemManager.instance.CantTouchUI();
                         MenuHint.instance.CantClickMHB();//뒤에 메뉴판이 떠있는 채로 이벤트 시작하는 걸 방지하기 위함
                         reactionFIn.Enqueue(seatNum); //리액션 페이드인 큐에 자리 정보 추가
                         goEvent = 1;
@@ -327,7 +326,7 @@ public class Menu : MonoBehaviour
                         {
                             MenuHint.instance.CantClickMHB();//뒤에 메뉴판이 떠있는 채로 이벤트 시작하는 걸 방지하기 위함
                             goEvent = 1;
-                            GameScript1.instance.CantClickUI();
+                            SystemManager.instance.CantTouchUI();
                         }
                     }
                     else if(Dialogue.instance.CharacterDC[10] == 3 && (cNum == 6 || cNum == 10))//찰스2이벤트가 끝난 후 찰스나 도로시일 경우
@@ -705,23 +704,23 @@ public class Menu : MonoBehaviour
 
         if((CharacterAppear.instance.eventOn == 9 || CharacterAppear.instance.eventOn == 10)&& UI_Assistant1.instance.getMenu == 0 && goEvent == 1)//친구,찰스1 친밀도 이벤트 처음일 때
         {
-            GameScript1.instance.CharacterStart(CharacterAppear.instance.eventOn);//시나리오 시작
+            SystemManager.instance.BeginDialogue(CharacterAppear.instance.eventOn);//시나리오 시작
             goEvent = 0;
         }
         if(CharacterAppear.instance.eventOn == 12 && goEvent == 1)//무명이1 친밀도 이벤트의 경우
         {
-            GameScript1.instance.CharacterStart(11);
+            SystemManager.instance.BeginDialogue(11);
             goEvent = 0;
         }
         if (CharacterAppear.instance.eventOn == 14 && heroOk && dinoOk && UI_Assistant1.instance.getMenu == 0 && goEvent == 1)//히로디노 친밀도 이벤트의 경우
         {
-            GameScript1.instance.CharacterStart(12);
+            SystemManager.instance.BeginDialogue(12);
             goEvent = 0;
         }
         if(CharacterAppear.instance.eventOn == 16 && UI_Assistant1.instance.getMenu == 0 && goEvent == 1)//롤렝드 친밀도 이벤트의 경우
         {
-            GameScript1.instance.GrandfatherStart();
-            SmallFade.instance.smallFIn.Enqueue(17);
+            SystemManager.instance.BeginDialogue(14);
+            SmallFade.instance.smallFadeIn.Enqueue(17);
             SmallFade.instance.FadeIn();
             goEvent = 0;
         }
@@ -801,7 +800,7 @@ public class Menu : MonoBehaviour
             UnlockedMenuItems.Add(MenuObject[5]);
             menu6Open = true;
             LockedMenu[2].gameObject.SetActive(true);
-            GameScript1.instance.TipBubbleOn();
+            SystemManager.instance.ShowBangBubble();
             SaveUnlockedMenuItemInfo();
         }
     }

@@ -34,7 +34,7 @@ public class SceneChanger : MonoBehaviour //화면 페이드 인아웃
                     PlayerPrefs.SetInt("EndingState", 3);
                 }
                 PlayerPrefs.Save();
-                Invoke("GoStartScreen", 4f); //스타트씬으로 넘어감
+                Invoke("GoStartScene", 4f); //스타트씬으로 넘어감
                 break;
             case "GoodNightScene": //로딩 씬이라면
                 lodingBar.fillAmount = 0;
@@ -52,10 +52,10 @@ public class SceneChanger : MonoBehaviour //화면 페이드 인아웃
                     + bName + "\n\n\nand You"
                     + "\n\n\n\n\n\n\n\n\n지금까지 카페 코스모스를 방문해주셔서 감사합니다.";
                 }
-                Invoke("GoStartScreen", 75f); //75초 후 스타트씬으로 넘어감
+                Invoke("GoStartScene", 75f); //75초 후 스타트씬으로 넘어감
                 break;
             case "PrepareScene": //영업 준비 씬이라면
-                Invoke("GoStartScreen", 4f); //4초 후 스타트씬으로 넘어감
+                Invoke("GoStartScene", 4f); //4초 후 스타트씬으로 넘어감
                 break;
             default:
                 break;
@@ -85,12 +85,12 @@ public class SceneChanger : MonoBehaviour //화면 페이드 인아웃
         SceneManager.LoadScene(sceneToLoad); //씬 로드
     }
 
-     public void GoStartScreen()//스타트 씬으로 이동
+     public void GoStartScene()//스타트 씬으로 이동
     {
         FadeToScene(1);
     }
 
-    public void GoEndingCreditScreen()//엔딩크레딧씬으로 이동
+    public void GoEndingCreditScene()//엔딩크레딧씬으로 이동
     {
         FadeToScene(4);
     }

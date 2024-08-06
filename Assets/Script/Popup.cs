@@ -47,9 +47,12 @@ public class Popup : MonoBehaviour // 새로운 손님 팝업
         popupAnimator.SetTrigger("PopupClose"); //닫히는 애니메이션 작동
         Invoke("PopupNotActive", 0.3f); //팝업 비활성화
 
-        if(Dialogue.instance.CharacterDC[0] == 1) //만약 제제 다이얼로그 카운트가 1이면
+        if(SystemManager.instance.GetMainCount() == 2) //도리 방문, 첫 손님
         {
-            GameScript1.instance.Invoke("ServingTutorial",0.7f); //서빙 튜토리얼 실행
+            //서빙 튜토리얼 실행
+            SmallFade.instance.AddToFadeOut(0);
+            SmallFade.instance.Invoke("FadeOut",0.7f);
+            SystemManager.instance.BeginDialogue(0);
         }
     }
 
@@ -65,7 +68,7 @@ public class Popup : MonoBehaviour // 새로운 손님 팝업
 
     }
 
-    public void SetPopupCharacter(GameObject ch) //팝업창에 나올 캐릭터 설정
+    public void SetPopupCharacter(in GameObject ch) //팝업창에 나올 캐릭터 설정, 매개변수는 읽기 전용 in키워드 사용
     {
         character.GetComponent<RectTransform>().sizeDelta = new Vector2(ch.GetComponent<RectTransform>().rect.width, ch.GetComponent<RectTransform>().rect.height); //사이즈 조정
         character.GetComponent<Image>().sprite = ch.GetComponent<Image>().sprite;

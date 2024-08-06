@@ -4,7 +4,7 @@ using UnityEngine.UI;
 public class Dialogue : MonoBehaviour //캐릭터들 대화
 {
     public static Dialogue instance;
-    public int CharacterNum = 0; //캐릭터 번호, 0은 제제, 1은 도리, 2는 붕붕, …
+    int characterNum = 0; //캐릭터 번호, 0은 제제, 1은 도리, 2는 붕붕, …
     private TextWriter.TextWriterSingle textWriterSingle;
     public Text CName; //캐릭터 이름
     public string[] messegeArray = null;
@@ -31,14 +31,32 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
         }
     }
 
+    public void SetCharacterNum(int num)
+    {
+        characterNum = num;
+    }
+
     public void SetBabyName(string name)
     {
         babyName = name;
     }
 
+    public void SetIsBabyText(bool value)
+    {
+        isBabyText = value;
+    }
+
     public bool IsBabayText()
     {
         return isBabyText;
+    }
+
+    public void UpdateCharacterDC(int cNum = -1)
+    {
+        if(cNum != -1)
+            characterNum = cNum;
+
+        ++CharacterDC[characterNum];
     }
 
     public bool SaveCharacterDCInfo()//캐릭터 대화 진행 정보 저장
@@ -94,7 +112,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
 
     public void SelectedFirstDialogue() //대화창이 등장할 때의 첫 문장
     {
-        switch (CharacterNum)
+        switch (characterNum)
         {
             case 0:
                 HelperStartDialogue();
@@ -147,7 +165,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
 
     public void SelectedNextDialogue() //첫 문장 후의 대사들
     {
-        switch (CharacterNum)
+        switch (characterNum)
         {
             case 0:
                 HelperNextDialogue();
@@ -552,7 +570,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                 CName.text = "개나리";
                 if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                 {
-                    SmallFade.instance.smallFIn.Enqueue(16);
+                    SmallFade.instance.smallFadeIn.Enqueue(16);
                     SmallFade.instance.FadeIn();
                 }
                 break;
@@ -620,7 +638,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                 if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                 {
                     SmallFade.instance.SetBabySeat(SmallFade.instance.CharacterSeat[4]);//또롱이 건너편으로  자리 잡기
-                    SmallFade.instance.smallFIn.Enqueue(17);
+                    SmallFade.instance.smallFadeIn.Enqueue(17);
                     SmallFade.instance.FadeIn();
                 }
                 break;
@@ -751,7 +769,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                 CName.text = "루루";
                 if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                 {
-                    SmallFade.instance.smallFIn.Enqueue(17);
+                    SmallFade.instance.smallFadeIn.Enqueue(17);
                     SmallFade.instance.FadeIn();
                 }
                 break;
@@ -866,7 +884,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                 CName.text = "샌디";
                 if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                 {
-                    SmallFade.instance.smallFIn.Enqueue(16);
+                    SmallFade.instance.smallFadeIn.Enqueue(16);
                     SmallFade.instance.FadeIn();
                 }
                 break;
@@ -973,7 +991,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                 CName.text = "친구";
                 if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                 {
-                    SmallFade.instance.smallFIn.Enqueue(17);
+                    SmallFade.instance.smallFadeIn.Enqueue(17);
                     SmallFade.instance.FadeIn();
                 }
                 break;
@@ -1050,7 +1068,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                 CName.text = "찰스";
                 if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                 {
-                    SmallFade.instance.smallFIn.Enqueue(16);
+                    SmallFade.instance.smallFadeIn.Enqueue(16);
                     SmallFade.instance.FadeIn();
                 }
                 break;
@@ -1060,7 +1078,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                 CName.text = "찰스";
                 if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                 {
-                    SmallFade.instance.smallFIn.Enqueue(16);
+                    SmallFade.instance.smallFadeIn.Enqueue(16);
                     SmallFade.instance.FadeIn();
                 }
                 break;
@@ -1177,7 +1195,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                 CName.text = "??";
                 if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                 {
-                    SmallFade.instance.smallFIn.Enqueue(17);
+                    SmallFade.instance.smallFadeIn.Enqueue(17);
                     SmallFade.instance.FadeIn();
                 }
                 break;
@@ -1186,7 +1204,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                 CName.text = SystemManager.instance.GetNameForNameless();
                 if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                 {
-                    SmallFade.instance.smallFIn.Enqueue(17);
+                    SmallFade.instance.smallFadeIn.Enqueue(17);
                     SmallFade.instance.FadeIn();
                 }
                 break;
@@ -1425,7 +1443,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                 CName.text = "닥터 펭";
                 if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                 {
-                    SmallFade.instance.smallFIn.Enqueue(16);
+                    SmallFade.instance.smallFadeIn.Enqueue(16);
                     SmallFade.instance.FadeIn();
                 }
                 break;

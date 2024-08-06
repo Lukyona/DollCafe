@@ -11,7 +11,7 @@ public class SystemManager : MonoBehaviour
     public GameObject gameClosingWindow;
 
     public Button menuButton;
-    public Button noteButton;
+    public Button visitorNoteButton;
     public Button plusHPButton;
 
     bool completeSave = false;
@@ -42,7 +42,7 @@ public class SystemManager : MonoBehaviour
     bool exchanging = false; //별->하트 간 전환 상태
 
     #region 이름 설정 관련 변수
-    public string inputName; //입력한 이름
+    string inputName; //입력한 이름
     public GameObject charNameSettingWindow;
     public GameObject babyNameSettingWindow;
     public GameObject inputField; // 입력창 (무명)
@@ -90,9 +90,9 @@ public class SystemManager : MonoBehaviour
 
         LoadDataInfo();//저장된 데이터 불러옴
     
-        if (mainCount == 0)
+        if (mainCount == 0) // 초기화했거나 게임을 처음 시작하는 상태
         {
-            GameScript1.instance.servingTutorial.SetActive(true);
+            CantTouchUI(); // 설정 제외한 버튼들 모두 터치 불가
             CharacterManager.instance.CharacterIn(0);
         }   
         if (mainCount > 3)//붕붕이 등장 이후면
@@ -187,7 +187,7 @@ public class SystemManager : MonoBehaviour
         }
         else //게임 이탈
         {
-            if(!GameScript1.instance.delete)
+            if(!Setting.instance.IsReset())
             {          
                 if (mainCount > 3)//붕붕이 등장 이후
                 {
@@ -308,6 +308,196 @@ public class SystemManager : MonoBehaviour
         }   
     }
 
+    public void BackToCafe() //대화를 끝내고 카페로 복귀
+    {
+        EndDialogue();
+
+        switch (mainCount)
+        {
+            case 0: //제제의 튜토리얼 설명이 끝난 상황, 도리 등장 전
+                SmallFade.instance.SetCharacter(0); //제제 작은 캐릭터 설정
+                SmallFade.instance.Invoke("FadeIn", 1f); //제제 작은 캐릭터 페이드인
+                Invoke(nameof(BeginDialogue), 2f); // 2초 뒤 도리 등장
+                break;
+            case 1: //도리 방문 후
+                Popup.instance.SetPopupCharacter(CharacterManager.instance.GetBigCharacter(1)); //새 캐릭터 도리 팝업 세팅
+                Popup.instance.OpenPopup(); //팝업 등장, 팝업 닫으면 서빙 튜토리얼 시작
+                Dialogue.instance.SetCharacterNum(0); //다음 대화 캐릭터 제제(튜토리얼)
+                break;
+            case 2: // 서빙 튜토리얼 완료
+                Menu.instance.Invoke("ReactionFadeIn", 1f); // 도리 리액션 말풍선 페이드인
+                UI_Assistant1.instance.panel7.SetActive(false);      
+                SmallFade.instance.SetCharacter(0); // 제제 자리로 돌아가기
+                SmallFade.instance.FadeIn();
+                Dialogue.instance.SetCharacterNum(2); //다음 등장 캐릭터 붕붕
+                Menu.instance.close.GetComponent<Button>().interactable = true; //메뉴 닫기 버튼 가능
+                Invoke(nameof(BeginDialogue), 7f);
+                break;
+            case 3: //붕붕이 등장 후
+                AfterFirstMeet(mainCount);
+                CanTouchUI();//메뉴판,노트, 체력 충전 버튼 터치 가능
+                Star.instance.ActivateStarSystem();//바로 별 활성화 함수 시작
+                break;
+            case 6: //또롱 등장 후 
+                AfterFirstMeet(mainCount);
+                VisitorNote.instance.nextPageButton.SetActive(true); //5번째 페이지로 넘어가기 위해 다음 페이지 버튼 보이게함   
+                SmallFade.instance.SmallCharacter[0].GetComponent<Button>().interactable = true;//제제 터치 가능
+                ShowBangBubble();// 팁 말풍선 등장
+                break;
+            default:
+                AfterFirstMeet(mainCount);
+                break;
+        }
+        mainCount++; //메인 카운트 증가
+
+        PlayerPrefs.SetInt("MainCount", mainCount); //현재 메인카운트 저장
+        PlayerPrefs.SetInt("NextAppear", CharacterAppear.instance.GetNextAppearNum()); //다음 캐릭터 등장 번호 저장
+        PlayerPrefs.Save(); //세이브
+        Dialogue.instance.SaveCharacterDCInfo();
+        VisitorNote.instance.SaveVisitorNoteInfo();
+    }
+
+    void AfterFirstMeet(int mCount)
+    {       
+        if (mCount == 9)
+        {
+            Popup.instance.SetPopupCharacter(CharacterManager.instance.GetBigCharacter(15));//샌디 이미지2, 이미지 비율/위치 문제
+        }
+        else if(mCount == 15)
+        {
+            Popup.instance.SetPopupCharacter(CharacterManager.instance.GetBigCharacter(16));//롤렝드 이미지2
+        }
+        else
+        {
+            Popup.instance.SetPopupCharacter(CharacterManager.instance.GetBigCharacter(mCount-1)); //새 손님 팝업           
+        }
+        Popup.instance.OpenPopup();
+
+        CharacterAppear.instance.SetNextAppearNum(mCount); //다음 등장 캐릭터 설정 
+        SmallFade.instance.SetCharacter(CharacterManager.instance.GetCharacterNum());
+        SmallFade.instance.Invoke("FadeIn", 1f);
+
+        if (!CharacterVisit.instance.IsInvoking("RandomVisit"))
+        {
+            CharacterVisit.instance.Invoke("RandomVisit", 10f); //캐릭터 랜덤 방문
+        }
+       
+        if(mainCount < 6)
+        {
+            VisitorNote.instance.page[mainCount - 2].SetActive(true); //손님 노트 페이지 오픈
+        }
+        else if(mainCount >= 6)
+        {
+            VisitorNote.instance.NextPageOpen[mainCount - 6] = 1; //페이지 열렸음
+        }
+        VisitorNote.instance.openPage++;
+    }
+
+    public void BackToCafe2(int cNum)//이벤트 대화 종료 후, n은 Dialogue의 캐릭터 넘버
+    {
+        EndDialogue(cNum);
+        if(endingState == 1)//엔딩이벤트 본 후
+        {
+            HPManager.instance.SaveHPInfo();
+            TimeManager.instance.SaveAppQuitTime();
+            Dialogue.instance.SaveCharacterDCInfo();
+            Menu.instance.SaveUnlockedMenuItemInfo();
+            VisitorNote.instance.SaveVisitorNoteInfo();           
+            endingState = 2;//엔딩이벤트를 봤음
+            PlayerPrefs.SetInt("EndingState", endingState);
+            SaveDataInfo();
+            if (Star.instance.IsInvoking("ActivateStarSystem"))
+            {
+                Star.instance.CancelInvoke("ActivateStarSystem");//별 활성화 함수 중단
+                if (Star.instance.IsStarSystemRunning())
+                {
+                    Star.instance.DeactivateStarSystem();
+                }
+                //Debug.Log("스타 인보크 중 종료1");
+            }
+            else
+            {
+                if (Star.instance.IsStarSystemRunning())
+                {
+                    Star.instance.DeactivateStarSystem();
+                    //Debug.Log("스타 종료2");
+                }
+            }
+            SceneChanger.instance.Invoke("GoEndingCreditScene", 1f);//1초 후 엔딩크레딧 화면으로 이동
+        }
+        else
+        {
+            CanTouchUI();
+            CharacterAppear.instance.eventOn = 0; //친밀도 이벤트 종료됨 
+            MenuHint.instance.CanClickMHB();//메뉴힌트버블 터치 가능
+
+            switch (cNum)
+            {
+                default:   
+                    Menu.instance.ReactionFadeIn();
+                    if(cNum == 1 || cNum == 7 || cNum == 9 || cNum == 13)//도리, 루루, 친구, 닥터펭은 표정 비활성화 필요
+                    {
+                        CharacterManager.instance.SetFaceNum(cNum);
+                    }
+                    VisitorNote.instance.RePlayButton[cNum - 1].gameObject.SetActive(true);//다시보기 버튼 활성화
+
+                    if(cNum == 1)//도리는 손님노트 이미지를 2번째 표정으로 바꿈
+                    {
+                        VisitorNote.instance.characterInfo[cNum - 1].GetComponent<Image>().sprite = CharacterManager.instance.CharacterFaceList[cNum].face[1].GetComponent<Image>().sprite;
+                        ShowBangBubble();
+                    }
+                    else if(cNum == 12 || cNum == 13)//히로디노, 닥터펭은 1번째 표정으로 바꾸기
+                    {
+                        VisitorNote.instance.characterInfo[cNum - 1].GetComponent<Image>().sprite = CharacterManager.instance.CharacterFaceList[cNum - 2].face[0].GetComponent<Image>().sprite;
+                    }
+                    else if(cNum == 14)//롤렝드는 따로
+                    {
+                        VisitorNote.instance.characterInfo[cNum - 1].GetComponent<Image>().sprite = CharacterManager.instance.GetBigCharacter(17).GetComponent<Image>().sprite;
+                    }
+                    break;
+                case 10:
+                    CharacterManager.instance.SetFaceNum(cNum);
+                    if (Dialogue.instance.CharacterDC[cNum] == 1)//찰스1 이벤트
+                    {
+                        SmallFade.instance.CanClickCharacter(6);//도로시 클릭 가능하게
+                        Menu.instance.menuFOut.Enqueue(Menu.instance.tmpNum); //메뉴 페이드아웃 큐에 추가
+                        Menu.instance.MenuFadeOut();//메뉴 페이드아웃
+                    }
+                    else if (Dialogue.instance.CharacterDC[cNum] == 2)//찰스2 이벤트
+                    {
+                        UI_Assistant1.instance.getMenu = 0;
+                        SmallFade.instance.CanClickCharacter(6);//도로시 클릭 가능하게
+                        SmallFade.instance.CanClickCharacter(10);//찰스 클릭 가능하게
+                        VisitorNote.instance.RePlayButton[cNum - 1].gameObject.SetActive(true);         
+                    }
+                    break;
+                case 11:
+                    if (Dialogue.instance.CharacterDC[cNum] == 1)//무명이1 이벤트
+                    {
+                        CharacterManager.instance.SetFaceNum(11);
+                    }
+                    else if (Dialogue.instance.CharacterDC[cNum] == 2)//무명이2 이벤트
+                    {
+                        CharacterManager.instance.SetFaceNum(12);
+                        VisitorNote.instance.characterInfo[cNum - 1].GetComponent<Image>().sprite = CharacterManager.instance.CharacterFaceList[cNum - 2].face[3].GetComponent<Image>().sprite;
+                        VisitorNote.instance.RePlayButton[cNum - 1].gameObject.SetActive(true);
+                    }
+                    Menu.instance.ReactionFadeIn();
+                    break;
+            }
+
+            CheckEndingCondition();
+
+            if (!CharacterVisit.instance.IsInvoking("RandomVisit"))
+            {
+                CharacterVisit.instance.Invoke("RandomVisit", 12f); //캐릭터 랜덤 방문
+               // Debug.Log("랜덤방문 10초 뒤");
+            }
+        }
+        Dialogue.instance.SaveCharacterDCInfo();
+        VisitorNote.instance.SaveVisitorNoteInfo();
+    }
+
     public void CheckEndingCondition() //모든 시나리오를 봤는지 확인
     {
         int sum = 0;
@@ -323,6 +513,8 @@ public class SystemManager : MonoBehaviour
             //엔딩이벤트 8초 후 시작
             Invoke("EndingEvent",8f);
             endingState = 1;
+            PlayerPrefs.SetInt("EndingState", endingState);
+            PlayerPrefs.Save();
             SmallFade.instance.SmallCharacter[0].GetComponent<Button>().interactable = false;//제제 클릭 불가
         }
         
@@ -332,69 +524,162 @@ public class SystemManager : MonoBehaviour
         }
     }
 
+    public void AfterRePlayStroy()//다시보기를 마친 후 실행
+    {
+        VisitorNote.instance.replayOn = 2;
+        VisitorNote.instance.ClickVNButton(); //노트 올라오기
+        EndDialogue();
+        if (VisitorNote.instance.fmRP != 0)//첫 만남 다시보기 이후면
+        {            
+            Dialogue.instance.CharacterDC[VisitorNote.instance.fmRP] = 3;// 원래 값으로 돌려놓기
+            VisitorNote.instance.fmRP = 0;
+        }
+        if (VisitorNote.instance.evRP != 0)
+        {
+            if(VisitorNote.instance.evRP <= 10)//찰스1 이벤트까지
+            {
+                if (VisitorNote.instance.evRP == 1 || VisitorNote.instance.evRP == 7 || VisitorNote.instance.evRP == 10)//도리, 루루, 찰스 표정 비활성화 필요
+                {
+                    CharacterManager.instance.SetFaceNum(VisitorNote.instance.evRP);
+                }
+                Dialogue.instance.CharacterDC[VisitorNote.instance.evRP] = 3;// 원래 값으로 돌려놓기
+            }
+            else if(VisitorNote.instance.evRP == 11)//찰스2 이밴트
+            {
+                CharacterManager.instance.SetFaceNum(10);
+                Dialogue.instance.CharacterDC[10] = 3;// 원래 값으로 돌려놓기
+            }
+            else if(VisitorNote.instance.evRP == 12 || VisitorNote.instance.evRP == 13)//무명이1,2 이벤트
+            {
+                if (VisitorNote.instance.evRP == 12)//무명이1 이벤트
+                {
+                    CharacterManager.instance.SetFaceNum(11);
+                }
+                else if (VisitorNote.instance.evRP == 13)//무명이2 이벤트
+                {
+                    CharacterManager.instance.SetFaceNum(12);
+                }
+                Dialogue.instance.CharacterDC[11] = 3;// 원래 값으로 돌려놓기
+            }
+            else if(VisitorNote.instance.evRP >= 14)//14이상이면
+            {
+                if (VisitorNote.instance.evRP == 15)//닥터펭 이벤트
+                {
+                    CharacterManager.instance.SetFaceNum(13);
+                }
+                Dialogue.instance.CharacterDC[VisitorNote.instance.evRP - 2] = 3;// 원래 값으로 돌려놓기
+            }
+            
+            VisitorNote.instance.evRP = 0;
+        }
+        Invoke("EndRePlay", 1.1f);
+    }
+
+    void EndRePlay()//다시보기가 완전히 끝났음
+    {
+        VisitorNote.instance.replayOn = 0;
+    }
+
+    void EndingEvent()
+    {
+        if(!Menu.instance.UIOn && SmallFade.instance.TableEmpty[0] == 0 && SmallFade.instance.TableEmpty[1] == 0 && SmallFade.instance.TableEmpty[2] == 0)
+        { //테이블이 모두 비었고 UI가 올라와있지 않은 상태에서 실행
+            CantTouchUI();
+            jejeBubble.gameObject.SetActive(false);
+            bangBubble.gameObject.SetActive(false);
+            SmallFade.instance.AddToFadeOut(0);
+            SmallFade.instance.FadeOut(); //작은 제제 페이드아웃
+            SmallFade.instance.SmallCharacter[0].GetComponent<Button>().interactable = false;//제제 클릭 불가
+            BeginDialogue(0);
+        }
+        else
+        {
+            Invoke("EndingEvent", 2f);
+        }
+    }
+
     #region 대화 관련 함수
-    public void BeginDialogue(int cNum)
+    public void BeginDialogue(int cNum = -1)
     {       
+        if (BgmManager.instance.IsInvoking("PlayCafeBgm")) //카페 배경음이 invoke중이면
+        {
+            BgmManager.instance.CancelInvoke("PlayCafeBgm");//invoke 취소
+        }
+        BgmManager.instance.StopBgm();
+        if(mainCount == 1) cNum = 1;
+        if(mainCount == 3) cNum = 2;
+
+        BgmManager.instance.PlayCharacterBGM(cNum);//캐릭터 배경음악 재생   
+
+        Dialogue.instance.SetCharacterNum(cNum);
+        Dialogue.instance.SetIsBabyText(false);
+        if(cNum == 14 && mainCount == 15)
+            Dialogue.instance.SetIsBabyText(true);
+
         CharacterManager.instance.CharacterIn(cNum); 
         panel.SetActive(true); //캐릭터가 들어옴과 동시에 회색 패널 작동
         UpTextBox(); // 대화창 등장
     }
 
-    public void EndDialogue(int cNum) //캐릭터가 화면 밖으로 나가도록
+    public void EndDialogue(int cNum = -1) //캐릭터가 화면 밖으로 나가도록
     {
+        TBAnimator.SetTrigger("TextBoxDown");       
         CharacterManager.instance.CharacterOut(cNum); //자동으로 나감
+        Dialogue.instance.UpdateCharacterDC(cNum);
         panel.SetActive(false); //회색 패널 해제
+        Invoke(nameof(DeactivateTextBox), 0.4f);
+
+        BgmManager.instance.BGMFadeOut();
+        if(endingState != 1)
+            BgmManager.instance.Invoke("PlayCafeBgm", 3f);
     }
 
-    void UpTextBox()
+    public void UpTextBox()
     {
         if(Dialogue.instance.IsBabayText()) // 주인공 대사면
         {
             babyTextBox.SetActive(true);
         }
-        else //baby text
+        else 
         {
             characterTextBox.SetActive(true);
         }
 
         TBAnimator.SetTrigger("TextBoxUp");
-        UI_Assistant1.instance.OpenDialogue(); //대화 시작, 대사 띄움
+        if(mainCount == 2)
+            UI_Assistant1.instance.Invoke("OpenDialogue2", 0.1f); //다음 대사
+        else
+            UI_Assistant1.instance.OpenDialogue(); //대화 시작, 대사 띄움
     }
 
-    void DownTextbox() //대화창 내려감
+    public void DownTextBox() //서빙 튜토리얼 시 사용
     {
-        TBAnimator.SetTrigger("TextBoxDown");       
-        CharacterManager.instance.CharacterOut(); 
+        TBAnimator.SetTrigger("TextBoxDown");
     }
 
-    public void ChageToBabyTB() // 캐릭터 대사창에서 주인공 대사창으로 전환
+    public void ChangeToBabyTB() // 캐릭터 대사창에서 주인공 대사창으로 전환
     {
         characterTextBox.SetActive(false);
         babyTextBox.SetActive(true);
     }
 
-    public void ChageToCharacterTB() // 주인공 대사창에서 캐릭터 대사창으로 전환
+    public void ChangeToCharacterTB() // 주인공 대사창에서 캐릭터 대사창으로 전환
     {
         babyTextBox.SetActive(false);
         characterTextBox.SetActive(true);   
     }
 
-    public void TutorialDownBox()//서빙 튜토리얼 시 사용
+    void DeactivateTextBox()
     {
-        TBAnimator.SetTrigger("TextBoxDown");
-        if(UI_Assistant1.instance.count == 2)
+        if (characterTextBox.activeSelf == true)
         {
-            SmallFade.instance.tutorialBear.GetComponent<Button>().interactable = true;
+            characterTextBox.SetActive(false);
+        }
+        if (babyTextBox.activeSelf == true)
+        {
+            babyTextBox.SetActive(false);
         }
     }
-
-    public void TutorialUpBox()//서빙 튜토리얼 시 사용
-    {
-        TBAnimator.SetTrigger("TextBoxUp");
-        UI_Assistant1.instance.Invoke("OpenDialogue2", 0.1f); //다음 대사
-    }
-
-
     #endregion
     
     #region 팁 & 제제 말풍선 관련 함수
@@ -830,14 +1115,14 @@ public class SystemManager : MonoBehaviour
     public void CanTouchUI() // 버튼들 터치 가능, 설정 버튼 제외
     {
         menuButton.GetComponent<Button>().interactable = true;
-        noteButton.GetComponent<Button>().interactable = true;
+        visitorNoteButton.GetComponent<Button>().interactable = true;
         plusHPButton.GetComponent<Button>().interactable = true;
     }
 
     public void CantTouchUI() // 버튼들 터치 불가능
     {
         menuButton.GetComponent<Button>().interactable = false;
-        noteButton.GetComponent<Button>().interactable = false;
+        visitorNoteButton.GetComponent<Button>().interactable = false;
         plusHPButton.GetComponent<Button>().interactable = false;
     }
 

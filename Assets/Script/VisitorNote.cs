@@ -438,7 +438,7 @@ public class VisitorNote : MonoBehaviour
                     }
                     if (n == 6 && LikeMenu2[c - 2].activeSelf == false)
                     {
-                        GameScript1.instance.CharacterStart(5);//또롱이 이벤트 시작
+                        SystemManager.instance.BeginDialogue(5);//또롱이 이벤트 시작
                         CharacterAppear.instance.eventOn = 5;
                         LikeMenu2[c - 2].SetActive(true);
                         LikeMenu2Open[3] = 1;
@@ -721,11 +721,11 @@ public class VisitorNote : MonoBehaviour
             Dialogue.instance.CharacterDC[fmRP] = 0;//캐릭터DC를 0으로 만들고
             if (fmRP != 14)
             {
-                GameScript1.instance.CharacterStart(fmRP);
+                SystemManager.instance.BeginDialogue(fmRP);
             }
             else if (fmRP == 14)
             {
-                GameScript1.instance.GrandfatherStart();
+                SystemManager.instance.BeginDialogue(14);
             }
         }
         else if (evRP != 0) //이벤트 다시보기
@@ -733,22 +733,22 @@ public class VisitorNote : MonoBehaviour
             if (evRP <= 10)//10까지
             {
                 Dialogue.instance.CharacterDC[evRP] = 1;//캐릭터DC를 1로 만들고
-                GameScript1.instance.CharacterStart(evRP);
+                SystemManager.instance.BeginDialogue(evRP);
             }
             else if (evRP == 11)//찰스2 이벤트
             {
                 Dialogue.instance.CharacterDC[10] = 2;
-                GameScript1.instance.CharacterStart(10);
+                SystemManager.instance.BeginDialogue(10);
             }
             else if (evRP == 12)//무명이1 이벤트
             {
                 Dialogue.instance.CharacterDC[11] = 1;
-                GameScript1.instance.CharacterStart(11);
+                SystemManager.instance.BeginDialogue(11);
             }
             else if (evRP == 13)//무명이2 이벤트
             {
                 Dialogue.instance.CharacterDC[11] = 2;
-                GameScript1.instance.CharacterStart(11);
+                SystemManager.instance.BeginDialogue(11);
             }
             else //14부터
             {
@@ -756,11 +756,11 @@ public class VisitorNote : MonoBehaviour
                 int n = evRP - 2;
                 if (evRP == 16)
                 {
-                    GameScript1.instance.GrandfatherStart();
+                    SystemManager.instance.BeginDialogue(14);
                 }
                 else
                 {
-                    GameScript1.instance.CharacterStart(n);
+                    SystemManager.instance.BeginDialogue(n);
                 }
             }
         }
@@ -1131,7 +1131,7 @@ public class VisitorNote : MonoBehaviour
                     }
                     if(i == 14)
                     {
-                        VisitorNote.instance.characterInfo[i - 1].GetComponent<Image>().sprite = GameScript1.instance.BigCharacter[17].GetComponent<Image>().sprite;
+                        VisitorNote.instance.characterInfo[i - 1].GetComponent<Image>().sprite = CharacterManager.instance.GetBigCharacter(17).GetComponent<Image>().sprite;
                     }
                 }         
             }

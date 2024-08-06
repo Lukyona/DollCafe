@@ -63,17 +63,18 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
             if (count < messegeArray.Length) //대사 카운트가 대사 갯수와 같아질 때까지 반복
             {
                 string messege = messegeArray[count];
-                if (GameScript1.instance.textnum == 0) //캐릭터 대사일 경우
+                if (Dialogue.instance.IsBabayText()) //주인공 대사일 경우
+                {
+                    characterText.text = "";
+                     SystemManager.instance.ChangeToBabyTB();
+                     textWriterSingle = TextWriter.AddWriter_Static(babyText, messege);
+                     
+                }
+                else
                 {
                      babyText.text = "";
-                     GameScript1.instance.ChageToCharacter(); //캐릭터 대사창으로 변경
+                     SystemManager.instance.ChangeToCharacterTB(); //캐릭터 대사창으로 변경
                      textWriterSingle = TextWriter.AddWriter_Static(characterText, messege);
-                }
-                else //아기 대사일 경우
-                {
-                     characterText.text = "";
-                     GameScript1.instance.ChageToBaby();
-                     textWriterSingle = TextWriter.AddWriter_Static(babyText, messege);
                 }
 
                 count++;
@@ -84,18 +85,18 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                 babyText.text = "";
                 if(VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//첫 만남이나 이벤트 다시보기가 아닐 경우
                 {
-                    if (Dialogue.instance.CharacterDC[Dialogue.instance.CharacterNum] == 0 || Dialogue.instance.CharacterDC[0] == 1)//캐릭터들의 첫 방문이거나 제제 튜토리얼 때는 BackToCafe() 실행
+                    if (Dialogue.instance.CharacterDC[CharacterManager.instance.GetCharacterNum()] == 0 || Dialogue.instance.CharacterDC[0] == 1)//캐릭터들의 첫 방문이거나 제제 튜토리얼 때는 BackToCafe() 실행
                     {
-                        GameScript1.instance.BackToCafe(); //카페로 복귀
+                        SystemManager.instance.BackToCafe(); //카페로 복귀
                     }
                     else //그 외에 친밀도 이벤트 대화의 경우는 BackToCafe2() 실행
                     {
-                        GameScript1.instance.BackToCafe2(Dialogue.instance.CharacterNum);
+                        SystemManager.instance.BackToCafe2(CharacterManager.instance.GetCharacterNum());
                     }
                 }
                 else//첫 만남 혹은 이벤트 다시보기일 때
                 {
-                    GameScript1.instance.AfterRePlaySenario();
+                    SystemManager.instance.AfterRePlayStroy();
                 }
                 
                 talking = false;
@@ -106,7 +107,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
     
     private void DialogueEvent() //대화 이벤트
     {
-        switch (Dialogue.instance.CharacterNum)
+        switch (CharacterManager.instance.GetCharacterNum())
         {
             case 0: //제제
                 if (Dialogue.instance.CharacterDC[0] == 0)
@@ -116,10 +117,10 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                         case 1:
                             CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(true);
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             break;
                         case 2:
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             break;
                         case 4:
                             SystemManager.instance.SetCanTouch(false);
@@ -128,20 +129,20 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                         case 5:
                             CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             break;
                         case 6:
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             CName.text = "제제";
                             break;
                         case 7:
                             CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[4].SetActive(true);
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             break;
                         case 8:
                             CharacterManager.instance.CharacterFaceList[0].face[0].SetActive(true);
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             break;
                         case 9:
                             CharacterManager.instance.CharacterFaceList[0].face[0].SetActive(false);
@@ -159,18 +160,18 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                         case 20:
                             CharacterManager.instance.CharacterFaceList[13].face[4].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(true);
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             break;
                         case 21:
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             break;
                         case 22:
                             CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             break;
                         case 23:
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             panel3.SetActive(false);
                             panel4.SetActive(true);
                             break;
@@ -181,12 +182,12 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                         case 29:
                             CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(true);
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             break;
                         case 30:
                             CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             panel8.SetActive(false);
                             panel.SetActive(true);
                             break;
@@ -197,28 +198,25 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                     switch (count)
                     {
                         case 1:
-                            SmallFade.instance.SetCharacter(99); //튜토용 도리 작은 캐릭터 설정
+                            SmallFade.instance.SetCharacter(1); //도리 작은 캐릭터 설정
                             break;
-                        case 2:
-                            SmallFade.instance.FadeIn();
+                        case 2: 
+                            SmallFade.instance.FadeIn(); //도리 페이드인
                             panel.SetActive(false);
                             panel5.SetActive(true);
-                            SystemManager.instance.SetCanTouch(false);;
-                            GameScript1.instance.Invoke("TutorialDownBox", 1.3f);
+                            SystemManager.instance.SetCanTouch(false);
+                            SystemManager.instance.Invoke("DownTextBox", 1.3f);
                             break;
-                        case 3:
+                        case 3: //도리 터치 후, 메뉴 힌트 말풍선 등장
                             SystemManager.instance.Invoke("SetCanTouchTrue", 1f);
                             break;
-                        case 5:
-                            SystemManager.instance.SetCanTouch(false);;
-                            MenuHint.instance.Invoke("ActiveMH", 1f);
+                        case 5: // 메뉴 힌트 말풍선 터치 활성화
+                            SystemManager.instance.SetCanTouch(false);
+                            MenuHint.instance.Invoke("CanClickMHB",1f);
                             break;
                         case 7:
                             panel6.SetActive(false);
                             panel7.SetActive(true);
-                            break;
-                        case 8:
-                            SmallFade.instance.SetCharacter(0);
                             break;
                     }
                 }
@@ -236,26 +234,26 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                     switch (count)
                     {
                         case 0:
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             break;
                         case 1:
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             break;
                         case 4:
                             CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[4].SetActive(true);
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             break;
                         case 5:
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             break;
                         case 6:
                             CharacterManager.instance.CharacterFaceList[13].face[4].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             break;
                         case 7:
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             break;
                         case 8:
                             CName.text = "도리";
@@ -267,30 +265,30 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                     switch (count)
                     {
                         case 0:
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
-                                SmallFade.instance.smallFIn.Enqueue(17);
+                                SmallFade.instance.smallFadeIn.Enqueue(17);
                                 SmallFade.instance.FadeIn();//주인공 아기 페이드인
                             }
                             break;
                         case 1:
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             break;
                         case 2:
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             break;
                         case 3:
                             CharacterManager.instance.CharacterFaceList[1].face[0].SetActive(true);//표정 1
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             break;
                         case 4:
                             CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(true);
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             break;
                         case 5:
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             break;
                         case 6:
                             CharacterManager.instance.CharacterFaceList[1].face[0].SetActive(false);//표정 기본으로
@@ -298,28 +296,28 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                         case 10:
                             CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(true);
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             break;
                         case 11:
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             break;
                         case 12:
                             CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[4].SetActive(true);
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             break;
                         case 13:
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             break;
                         case 14:
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             break;
                         case 15:
                             CharacterManager.instance.CharacterFaceList[13].face[4].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(true);
                             break;
                         case 16:
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             break;
                         case 17:
                             CharacterManager.instance.CharacterFaceList[1].face[0].SetActive(true);//표정 1
@@ -327,23 +325,23 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                         case 18:
                             CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[2].SetActive(true);
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             break;
                         case 19:
                             CharacterManager.instance.CharacterFaceList[1].face[0].SetActive(false);//표정 기본으로
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             break;                          
                         case 21:
                             CharacterManager.instance.CharacterFaceList[13].face[2].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(true);
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             break;
                         case 22:
                             CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(true);
                             break;
                         case 23:
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             break;
                         case 25:
                             CharacterManager.instance.CharacterFaceList[1].face[1].SetActive(true);//표정 2
@@ -357,7 +355,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                         case 27://여기서 주인공 아기 메뉴 가지러 페이드아웃
                             CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[3].SetActive(true);
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
                                 getMenu = 1; //메뉴 가지러 갔음
@@ -367,12 +365,12 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                         case 28:
                             CharacterManager.instance.CharacterFaceList[1].face[1].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[1].face[0].SetActive(true);//표정 1
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             if(VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
                                 SystemManager.instance.SetCanTouch(false);;
                                 SystemManager.instance.Invoke("SetCanTouchTrue", 1f);
-                                SmallFade.instance.smallFIn.Enqueue(17);//주인공 아기 페이드인 준비
+                                SmallFade.instance.smallFadeIn.Enqueue(17);//주인공 아기 페이드인 준비
                                 Menu.instance.FEventMenu(1);//스페셜 메뉴 준비
                             }
                             else //다시보기일 때, 특별 메뉴 팝업 설정
@@ -384,7 +382,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             CharacterManager.instance.CharacterFaceList[13].face[3].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
                             SystemManager.instance.SetCanTouch(false);;
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
                                 SmallFade.instance.FadeIn(); //주인공 아기 페이드인 실행
@@ -394,7 +392,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             break;
                         case 30:
                             CharacterManager.instance.CharacterFaceList[1].face[0].SetActive(false);
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
                                 getMenu = 2; //메뉴 갖다줬음
@@ -403,25 +401,25 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                         case 31:
                             CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(true);
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             break;
                         case 32:
                             CharacterManager.instance.CharacterFaceList[1].face[1].SetActive(true);
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             break;
                         case 33:
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             break;
                         case 34:
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             break;
                         case 35:
                             CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(true);
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             break;
                         case 36:
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
                                 VisitorNote.instance.OpenNewSentence(1);//도리 손님노트 정보 갱신
@@ -441,32 +439,28 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                         case 0:
                             CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(true);
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             break;
                         case 1:
                             CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[3].SetActive(true);
                             break;
                         case 2:
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             break;
                         case 4:
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             break;
                         case 5:
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             break;
                         case 7:
                             CharacterManager.instance.CharacterFaceList[13].face[3].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             break;
                         case 8:
-                            GameScript1.instance.textnum = 0;
-                            if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
-                            {
-                                SmallFade.instance.SetCharacter(2);
-                            }
+                            Dialogue.instance.SetIsBabyText(false);
                             break;
                         case 10:
                             CName.text = "붕붕";
@@ -480,33 +474,33 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                         case 0:
                             CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[2].SetActive(true);
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             break;
                         case 1:
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
                                 SmallFade.instance.FadeIn();//붕붕 페이드인
-                                SmallFade.instance.smallFIn.Enqueue(16); //아기 페이드인 준비
+                                SmallFade.instance.smallFadeIn.Enqueue(16); //아기 페이드인 준비
                             }                             
                             break;
                         case 2:
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
                                 SmallFade.instance.FadeIn();//아기 페이드인
                             }      
                             break;
                         case 3:
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             break;
                         case 8:
                             CharacterManager.instance.CharacterFaceList[13].face[2].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[3].SetActive(true);
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             break;
                         case 9:
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             break;
                         case 10:
                             CharacterManager.instance.CharacterFaceList[2].face[0].SetActive(false);
@@ -523,7 +517,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                         case 16:
                             CharacterManager.instance.CharacterFaceList[13].face[3].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[7].SetActive(true);
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             break;
                         case 17:
                             CharacterManager.instance.CharacterFaceList[13].face[7].SetActive(false);
@@ -534,10 +528,10 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(true);
                             break;
                         case 20:
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             break;
                         case 21:
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             break;
                         case 22:
                             CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(false);
@@ -545,7 +539,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             break;
                         case 25:
                             CharacterManager.instance.CharacterFaceList[2].face[1].SetActive(false);
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
                                 SmallFade.instance.smallFOut.Enqueue(16);//아기 페이드아웃 준비
@@ -554,7 +548,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                         case 27:
                             CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(true);
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
                                 getMenu = 1; //메뉴 가지러 갔음
@@ -562,14 +556,14 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             }                                                                           
                             break;
                         case 28:
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             break;
                         case 29:
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
                                 SystemManager.instance.SetCanTouch(false);;
                                 SystemManager.instance.Invoke("SetCanTouchTrue", 1f);
-                                SmallFade.instance.smallFIn.Enqueue(16);//주인공 아기 페이드인 준비
+                                SmallFade.instance.smallFadeIn.Enqueue(16);//주인공 아기 페이드인 준비
                                 Menu.instance.FEventMenu(2);//스페셜 메뉴 준비
                             }
                             else //다시보기일 때, 특별 메뉴 팝업 설정
@@ -581,7 +575,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
                             SystemManager.instance.SetCanTouch(false);;
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
                                 SmallFade.instance.FadeIn(); //주인공 아기 페이드인 실행
@@ -591,7 +585,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             Popup.instance.OpenPopup();//메뉴 팝업, 팝업 닫으면 다음 대사 넘기기 가능
                             break;
                         case 31:
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             break;
                     }
                 }
@@ -603,20 +597,20 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                     switch (count)
                     {
                         case 0:
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             break;
                         case 1:
                             CharacterManager.instance.CharacterFaceList[3].face[2].SetActive(true);
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             break;
                         case 2:
                             CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[3].SetActive(true);
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             break;
                         case 3:
                             CharacterManager.instance.CharacterFaceList[3].face[2].SetActive(false);
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             break;
                         case 5:
                             CName.text = "빵빵";
@@ -624,14 +618,14 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                         case 6:
                             CharacterManager.instance.CharacterFaceList[13].face[3].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
                                 SmallFade.instance.SetCharacter(3);
                             }
                             break;
                         case 7:
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             break;
                     }
                 }
@@ -642,23 +636,23 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                         case 0:
                             CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[3].SetActive(true);
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
-                                SmallFade.instance.smallFIn.Enqueue(17);
+                                SmallFade.instance.smallFadeIn.Enqueue(17);
                                 SmallFade.instance.FadeIn();
                             }
                             break;
                         case 1:
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             break;
                         case 4:
                             CharacterManager.instance.CharacterFaceList[13].face[3].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[2].SetActive(true);
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             break;
                         case 5:
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             break;
                         case 6:
                             CharacterManager.instance.CharacterFaceList[3].face[0].SetActive(false);
@@ -669,41 +663,41 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                         case 15:
                             CharacterManager.instance.CharacterFaceList[13].face[2].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             break;
                         case 16:
                             CharacterManager.instance.CharacterFaceList[3].face[0].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[3].face[1].SetActive(true);
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             break;
                         case 20:
                             CharacterManager.instance.CharacterFaceList[3].face[1].SetActive(false);
                             break;
                         case 21:
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             break;
                         case 22:
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             break;
                         case 23:
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             break;
                         case 27:
                             CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(true);
                             break;
                         case 28:
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             break;
                         case 29:
                             CharacterManager.instance.CharacterFaceList[3].face[2].SetActive(true);
                             break;
                         case 30:
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             break;
                         case 31:
                             CharacterManager.instance.CharacterFaceList[3].face[2].SetActive(false);
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
                                 SmallFade.instance.smallFOut.Enqueue(17);
@@ -712,7 +706,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                         case 32:
                             CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
                                 getMenu = 1;
@@ -720,14 +714,14 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             }               
                             break;
                         case 33:
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             break;
                         case 35:
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
                                 SystemManager.instance.SetCanTouch(false);;
                                 SystemManager.instance.Invoke("SetCanTouchTrue", 1f);
-                                SmallFade.instance.smallFIn.Enqueue(17);
+                                SmallFade.instance.smallFadeIn.Enqueue(17);
                                 Menu.instance.FEventMenu(3);
                             }
                             else //다시보기일 때, 특별 메뉴 팝업 설정
@@ -737,7 +731,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             break;
                         case 36:
                             SystemManager.instance.SetCanTouch(false);;
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
                                 SmallFade.instance.FadeIn();
@@ -748,7 +742,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             break;
                         case 37:
                             CharacterManager.instance.CharacterFaceList[3].face[2].SetActive(true);
-                            GameScript1.instance.textnum = 0;                            
+                            Dialogue.instance.SetIsBabyText(false);                            
                             break;
                         case 39:
                             CharacterManager.instance.CharacterFaceList[3].face[2].SetActive(false);
@@ -765,29 +759,29 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                         case 0:
                             CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(true);
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             break;
                         case 1:
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             CName.text = "개나리";
                             break;
                         case 2:
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             break;
                         case 3:
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             break;
                         case 6:
                             CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[4].SetActive(true);
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             break;
                         case 7:
                             CharacterManager.instance.CharacterFaceList[13].face[4].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(true);
                             break;
                         case 8:
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
                                 SmallFade.instance.SetCharacter(4);
@@ -796,7 +790,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                         case 11:
                             CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             break;
                     }
                 }
@@ -805,15 +799,15 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                     switch (count)
                     {
                         case 7:
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             break;
                         case 8:
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             break;
                         case 10:
                             CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(true);
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
                                 SmallFade.instance.smallFOut.Enqueue(16);
@@ -829,12 +823,12 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             }
                             break;
                         case 12:
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
                                 SystemManager.instance.SetCanTouch(false);;
                                 SystemManager.instance.Invoke("SetCanTouchTrue", 1f);
-                                SmallFade.instance.smallFIn.Enqueue(16);
+                                SmallFade.instance.smallFadeIn.Enqueue(16);
                                 Menu.instance.FEventMenu(4);
                             }
                             else //다시보기일 때, 특별 메뉴 팝업 설정
@@ -844,7 +838,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             break;
                         case 13:
                             SystemManager.instance.SetCanTouch(false);;
-                            GameScript1.instance.textnum = 1;                           
+                            Dialogue.instance.SetIsBabyText(true);                           
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
                                 SmallFade.instance.FadeIn();
@@ -854,7 +848,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             Popup.instance.OpenPopup();//메뉴 팝업, 팝업 닫으면 다음 대사 넘기기 가능
                             break;
                         case 14:
-                            GameScript1.instance.textnum = 0;                        
+                            Dialogue.instance.SetIsBabyText(false);                        
                             break;
                     }
                 }
@@ -866,43 +860,43 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                     switch (count)
                     {
                         case 0:
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             break;
                         case 1:
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             break;
                         case 2:
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             break;
                         case 3:
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             break;
                         case 4:
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             break;
                         case 5:
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             break;
                         case 6:
                             CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(true);
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             break;
                         case 7:
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             CName.text = "또롱";
                             break;
                         case 8:
                             CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(true);
-                            GameScript1.instance.textnum = 1;      
+                            Dialogue.instance.SetIsBabyText(true);      
                             break;
                         case 9:
                             CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
                             break;
                         case 10:
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
                                 SmallFade.instance.SetCharacter(5);
@@ -917,40 +911,40 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                         case 0:
                             CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(true);
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             break;
                         case 1:
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             break;
                         case 2:
                             CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             break;
                         case 3:
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             break;
                         case 5:
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             break;
                         case 6:
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             break;
                         case 12:
                             CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(true);
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             break;
                         case 13:
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             break;
                         case 14:
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             break;
                         case 15:
                             CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
                                 VisitorNote.instance.OpenNewSentence(5);//손님노트 정보 갱신
@@ -967,16 +961,16 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                     switch (count)
                     {
                         case 1:
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             break;
                         case 2:
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             break;
                         case 5:
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             break;
                         case 6:
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             break;
                         case 8:
                             CName.text = "도로시";
@@ -984,10 +978,10 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                         case 9:
                             CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[3].SetActive(true);
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             break;
                         case 10:
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
                                 SmallFade.instance.SetCharacter(6);
@@ -996,7 +990,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                         case 12:
                             CharacterManager.instance.CharacterFaceList[13].face[3].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             break;
                     }
                 }
@@ -1005,35 +999,35 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                     switch (count)
                     {
                         case 0:
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
-                                SmallFade.instance.smallFIn.Enqueue(16);
+                                SmallFade.instance.smallFadeIn.Enqueue(16);
                                 SmallFade.instance.FadeIn();
                             }
                             break;
                         case 1:
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             break;
                         case 2:
                             CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(true);
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             break;
                         case 3:
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             break;
                         case 5:
                             CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[4].SetActive(true);
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
                                 SmallFade.instance.smallFOut.Enqueue(16);
                             }
                             break;
                         case 6:
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
                                 getMenu = 1;
@@ -1045,7 +1039,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             {
                                 SystemManager.instance.SetCanTouch(false);;
                                 SystemManager.instance.Invoke("SetCanTouchTrue", 1f);
-                                SmallFade.instance.smallFIn.Enqueue(16);
+                                SmallFade.instance.smallFadeIn.Enqueue(16);
                                 Menu.instance.FEventMenu(6);
                             }
                             else //다시보기일 때, 특별 메뉴 팝업 설정
@@ -1057,7 +1051,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             CharacterManager.instance.CharacterFaceList[13].face[4].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
                             SystemManager.instance.SetCanTouch(false);;
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
                                 SmallFade.instance.FadeIn();
@@ -1067,7 +1061,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             Popup.instance.OpenPopup();//메뉴 팝업, 팝업 닫으면 다음 대사 넘기기 가능
                             break;
                         case 11:
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             break;
                         case 12:
                             CharacterManager.instance.CharacterFaceList[4].face[0].SetActive(true);
@@ -1078,12 +1072,12 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                         case 17:
                             CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(true);
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             break;
                         case 18:
                             CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             break;
                     }
                 }
@@ -1095,31 +1089,31 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                     switch (count)
                     {
                         case 0:
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             break;
                         case 1:
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             break;
                         case 2:
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             break;
                         case 3:
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             break;
                         case 4:
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             break;
                         case 5:
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             CName.text = "루루";
                             break;
                         case 6:
                             CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[3].SetActive(true);
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             break;
                         case 7:
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
                                 SmallFade.instance.SetCharacter(7);
@@ -1128,7 +1122,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                         case 10:
                             CharacterManager.instance.CharacterFaceList[13].face[3].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             break;
                     }
                 }
@@ -1139,54 +1133,54 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                         case 0:
                             CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(true);
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             break;
                         case 1:
                             CharacterManager.instance.CharacterFaceList[5].face[0].SetActive(true);
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             break;
                         case 2:
                             CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(true);
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             break;
                         case 3:
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             break;
                         case 5:
                             CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[4].SetActive(true);
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             break;
                         case 6:
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             break;
                         case 7:
                             CharacterManager.instance.CharacterFaceList[13].face[4].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             break;
                         case 8:
                             CharacterManager.instance.CharacterFaceList[5].face[0].SetActive(false);
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             break;
                         case 9:
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             break;
                         case 11:
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             break;
                         case 20:
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             break;
                         case 21:
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             break;
                         case 28:
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             break;
                         case 29:
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             break;
                         case 36:
                             CharacterManager.instance.CharacterFaceList[5].face[1].SetActive(true);
@@ -1197,24 +1191,24 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                         case 38:
                             CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(true);
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             break;
                         case 39:
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             break;
                         case 41:
                             CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             break;
                         case 42:
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             break;
                         case 52:
                             CharacterManager.instance.CharacterFaceList[5].face[1].SetActive(true);
                             break;
                         case 53:
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             break;
                         case 54:
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
@@ -1224,7 +1218,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             break;
                         case 55:
                             CharacterManager.instance.CharacterFaceList[5].face[1].SetActive(false);
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
                                 getMenu = 1;
@@ -1236,7 +1230,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             {
                                 SystemManager.instance.SetCanTouch(false);;
                                 SystemManager.instance.Invoke("SetCanTouchTrue", 1f);
-                                SmallFade.instance.smallFIn.Enqueue(17);
+                                SmallFade.instance.smallFadeIn.Enqueue(17);
                                 Menu.instance.FEventMenu(7);
                             }
                             else //다시보기일 때, 특별 메뉴 팝업 설정
@@ -1248,7 +1242,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[2].SetActive(true);
                             SystemManager.instance.SetCanTouch(false);;
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
                                 SmallFade.instance.FadeIn();
@@ -1259,7 +1253,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                         case 60:
                             CharacterManager.instance.CharacterFaceList[13].face[2].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             break;
                         case 61:
                             CharacterManager.instance.CharacterFaceList[5].face[1].SetActive(true);
@@ -1279,27 +1273,27 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                     switch (count)
                     {
                         case 0:
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             break;
                         case 1:
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             CName.text = "샌디";
                             break;
                         case 3:
                             CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(true);
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             break;
                         case 4:
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             break;
                         case 7:
                             CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(true);
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             break;
                         case 8:
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
                                 SmallFade.instance.SetCharacter(8);
@@ -1308,7 +1302,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                         case 10:
                             CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             break;
                     }
                 }
@@ -1319,31 +1313,31 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                         case 0:
                             CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(true);
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             break;
                         case 1:
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             break;
                         case 2:
                             CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(true);
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             break;
                         case 3:
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             break;
                         case 12:
                             CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[4].SetActive(true);
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             break;
                         case 13:
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             break;
                         case 44:
                             CharacterManager.instance.CharacterFaceList[13].face[4].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(true);
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             break;
                         case 46:
                             CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(false);
@@ -1354,7 +1348,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             }
                             break;
                         case 47:
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
                                 getMenu = 1;
@@ -1366,7 +1360,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             {
                                 SystemManager.instance.SetCanTouch(false);;
                                 SystemManager.instance.Invoke("SetCanTouchTrue", 1f);
-                                SmallFade.instance.smallFIn.Enqueue(16);
+                                SmallFade.instance.smallFadeIn.Enqueue(16);
                                 Menu.instance.FEventMenu(8);
                             }
                             else //다시보기일 때, 특별 메뉴 팝업 설정
@@ -1376,7 +1370,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             break;
                         case 49:
                             SystemManager.instance.SetCanTouch(false);;
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
                                 SmallFade.instance.FadeIn();
@@ -1386,7 +1380,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             Popup.instance.OpenPopup();//메뉴 팝업, 팝업 닫으면 다음 대사 넘기기 가능
                             break;
                         case 50:
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             break;
                         case 51:
                             CharacterManager.instance.CharacterFaceList[6].face[0].SetActive(true);
@@ -1394,12 +1388,12 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                         case 52:
                             CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[2].SetActive(true);
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             break;
                         case 53:
                             CharacterManager.instance.CharacterFaceList[13].face[2].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             break;
                         case 54:
                             CharacterManager.instance.CharacterFaceList[6].face[0].SetActive(false);
@@ -1416,27 +1410,27 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                         case 1:
                             CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(true);
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             break;
                         case 3:
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             CName.text = "친구";
                             break;
                         case 6:
                             CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(true);
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             break;
                         case 7:
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             break;
                         case 9:
                             CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[3].SetActive(true);
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             break;
                         case 10:
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
                                 SmallFade.instance.SetCharacter(9);
@@ -1445,7 +1439,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                         case 12:
                             CharacterManager.instance.CharacterFaceList[13].face[3].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             break;
                     }
                 }
@@ -1456,10 +1450,10 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                         case 0:
                             CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(true);
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             break;
                         case 1:
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             break;
                         case 6:
                             CharacterManager.instance.CharacterFaceList[7].face[0].SetActive(true);
@@ -1467,13 +1461,13 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                         case 9:
                             CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             break;
                         case 10:
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             break;
                         case 14:
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             break;
                         case 16:
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
@@ -1486,7 +1480,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             }
                             break;
                         case 17:
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
                                 getMenu = 1;
@@ -1498,7 +1492,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             {
                                 SystemManager.instance.SetCanTouch(false);;
                                 SystemManager.instance.Invoke("SetCanTouchTrue", 1f);
-                                SmallFade.instance.smallFIn.Enqueue(17);
+                                SmallFade.instance.smallFadeIn.Enqueue(17);
                                 Menu.instance.FEventMenu(9);
                             }
                             else //다시보기일 때, 특별 메뉴 팝업 설정
@@ -1508,7 +1502,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             break;
                         case 20:
                             SystemManager.instance.SetCanTouch(false);;
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
                                 SmallFade.instance.FadeIn();
@@ -1517,13 +1511,13 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             Popup.instance.OpenPopup();//메뉴 팝업, 팝업 닫으면 다음 대사 넘기기 가능
                             break;
                         case 21:
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             break;
                         case 23:
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             break;
                         case 24:
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
                                 getMenu = 2;
@@ -1540,24 +1534,24 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                     switch (count)
                     {
                         case 0:
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             break;
                         case 1:
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             CName.text = "찰스";
                             break;
                         case 3:
                             CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(true);
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             break;
                         case 4:
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             break;
                         case 6:
                             CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[3].SetActive(true);
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
                                 SmallFade.instance.SetCharacter(10);
@@ -1568,7 +1562,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
                             break;
                         case 8:
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             break;
                     }
                 }
@@ -1579,19 +1573,19 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                         case 0:
                             CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(true);
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             break;
                         case 1:
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             break;
                         case 3:
                             CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(true);
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             break;
                         case 4:
                             CharacterManager.instance.CharacterFaceList[8].face[0].SetActive(true);
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             break;
                         case 5:
                             CharacterManager.instance.CharacterFaceList[8].face[0].SetActive(false);
@@ -1602,12 +1596,12 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                         case 8:
                             CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[4].SetActive(true);
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             break;
                         case 9:
                             CharacterManager.instance.CharacterFaceList[8].face[1].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[8].face[2].SetActive(true);
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
                                 getMenu = 2;//아기 페이드아웃 위해서 일부러 대입
@@ -1624,21 +1618,21 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                         case 0:
                             CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(true);
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             break;
                         case 1:
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             break;
                         case 5:
                             CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[4].SetActive(true);
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             break;
                         case 6:
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             break;
                         case 8:
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             break;
                         case 9:
                             CharacterManager.instance.CharacterFaceList[13].face[4].SetActive(false);
@@ -1646,24 +1640,24 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             break;
                         case 10:
                             CharacterManager.instance.CharacterFaceList[8].face[1].SetActive(false);
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             break;
                         case 14:
                             CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[4].SetActive(true);
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             break;
                         case 15:
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             break;
                         case 16:
                             CharacterManager.instance.CharacterFaceList[13].face[4].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
-                            GameScript1.instance.textnum = 1;                           
+                            Dialogue.instance.SetIsBabyText(true);                           
                             break;                            
                         case 18:
                             CharacterManager.instance.CharacterFaceList[8].face[0].SetActive(true);
-                            GameScript1.instance.textnum = 0;                            
+                            Dialogue.instance.SetIsBabyText(false);                            
                             CharacterManager.instance.SetSoldierEvent(true);
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
@@ -1679,7 +1673,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             CharacterManager.instance.CharacterOut(10);
                             break;
                         case 20:                            
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
                                 SystemManager.instance.SetCanTouch(false);;
@@ -1696,16 +1690,16 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                         case 22:
                             CharacterManager.instance.CharacterFaceList[4].face[0].SetActive(true);
                             CharacterManager.instance.CharacterIn(6);
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             CName.text = "도로시";
                             break;
                         case 23:
                             CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(true);
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             break;
                         case 24:
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
                                 SystemManager.instance.SetCanTouch(false);;
@@ -1719,14 +1713,14 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             CharacterManager.instance.CharacterFaceList[13].face[2].SetActive(true);
                             SystemManager.instance.SetCanTouch(false);;
                             SystemManager.instance.Invoke("SetCanTouchTrue", 1f);
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             break;
                         case 26:
                             SystemManager.instance.SetCanTouch(false);;
                             SystemManager.instance.Invoke("SetCanTouchTrue", 1.5f);
                             CharacterManager.instance.CharacterFaceList[8].face[2].SetActive(true);
                             CharacterManager.instance.PrincessIn();//찰스등장을 위해 도로시가 옆으로 이동, 바로 찰스 등장
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             CName.text = "찰스";
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
@@ -1743,22 +1737,22 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                         case 30:
                             CharacterManager.instance.CharacterFaceList[13].face[2].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             break;
                         case 31:
                             CharacterManager.instance.CharacterFaceList[4].face[0].SetActive(false);
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             CName.text = "도로시";
                             break;
                         case 33:
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
                                 Menu.instance.MenuFadeOut();
                             }
                             break;
                         case 34:
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             CName.text = "찰스";
                             break;
                         case 35:
@@ -1798,7 +1792,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                         case 50:
                             CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[4].SetActive(true);
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             CharacterManager.instance.CharacterOut(10);//찰스 퇴장
                             break;
                         case 51:
@@ -1825,15 +1819,15 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                         case 0:
                             CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[4].SetActive(true);
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             break;
                         case 1:
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             break;
                         case 2:
                             CharacterManager.instance.CharacterFaceList[13].face[4].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(true);
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             break;
                         case 3:
                             CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(false);
@@ -1841,18 +1835,18 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             break;
                         case 5:
                             CharacterManager.instance.CharacterFaceList[9].face[0].SetActive(true);
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             break;
                         case 6:
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             break;
                         case 8:
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             break;
                         case 9:
                             CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(true);
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
                                 SmallFade.instance.SetCharacter(11);
@@ -1861,7 +1855,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                         case 10:
                             CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             break;
                     }
                 }
@@ -1872,7 +1866,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                         case 0:
                             CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(true);
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             break;
                         case 2:
                             CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(false);
@@ -1880,26 +1874,26 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             break;
                         case 3:
                             CharacterManager.instance.CharacterFaceList[9].face[0].SetActive(true);
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             break;
                         case 4:
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             break;
                         case 6:
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             break;
                         case 7:
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             break;
                         case 8:
                             CharacterManager.instance.CharacterFaceList[9].face[0].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[9].face[1].SetActive(true);
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             break;
                         case 10:
                             CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[3].SetActive(true);
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             break;
                         case 11:
                             CharacterManager.instance.CharacterFaceList[13].face[3].SetActive(false);
@@ -1911,20 +1905,20 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             break;
                         case 14:
                             CharacterManager.instance.CharacterFaceList[9].face[1].SetActive(false);
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             break;
                         case 18:
                             CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[3].SetActive(true);
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             break;
                         case 19:
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             break;
                         case 20:
                             CharacterManager.instance.CharacterFaceList[13].face[3].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[4].SetActive(true);
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
                                 SystemManager.instance.SetCanTouch(false);
@@ -1937,15 +1931,15 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             break;
                         case 22:
                             SystemManager.instance.SetCanTouch(true);
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             CName.text = SystemManager.instance.GetNameForNameless();
                             break;
                         case 23:
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             break;
                         case 24:
                             CharacterManager.instance.CharacterFaceList[9].face[1].SetActive(true);
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
                                 getMenu = 2;
@@ -1962,29 +1956,29 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                         case 0:
                             CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(true);
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             break;
                         case 1:
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             break;
                         case 6:
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             break;
                         case 7:
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             break;
                         case 15:
                             CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[5].SetActive(true);
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             break;
                         case 16:
                             CharacterManager.instance.CharacterFaceList[9].face[0].SetActive(true);
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             break;
                         case 18:
                             CharacterManager.instance.CharacterFaceList[9].face[0].SetActive(false);
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             break;
                         case 19:
                             CharacterManager.instance.CharacterFaceList[13].face[5].SetActive(false);
@@ -2000,25 +1994,25 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             break;
                         case 28:
                             CharacterManager.instance.CharacterFaceList[9].face[0].SetActive(true);
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             break;
                         case 29:
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             break;
                         case 30:
                             CharacterManager.instance.CharacterFaceList[9].face[0].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[9].face[1].SetActive(true);
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             break;
                         case 31:
                             CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             break;
                         case 32:
                             CharacterManager.instance.CharacterFaceList[9].face[1].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[9].face[2].SetActive(true);
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
                                 SmallFade.instance.smallFOut.Enqueue(17);
@@ -2027,7 +2021,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                         case 34:
                             CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[2].SetActive(true);
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
                                 getMenu = 1;
@@ -2035,14 +2029,14 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             }
                             break;
                         case 35:
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             break;
                         case 36:
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
                                 SystemManager.instance.SetCanTouch(false);;
                                 SystemManager.instance.Invoke("SetCanTouchTrue", 1f);
-                                SmallFade.instance.smallFIn.Enqueue(17);
+                                SmallFade.instance.smallFadeIn.Enqueue(17);
                                 Menu.instance.FEventMenu(11);
                             }
                             else //다시보기일 때, 특별 메뉴 팝업 설정
@@ -2054,7 +2048,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             CharacterManager.instance.CharacterFaceList[13].face[2].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
                             SystemManager.instance.SetCanTouch(false);;
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
                                 SmallFade.instance.FadeIn();
@@ -2063,10 +2057,10 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             Popup.instance.OpenPopup();//메뉴 팝업, 팝업 닫으면 다음 대사 넘기기 가능
                             break;
                         case 38:
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             break;
                         case 39:
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             break;
                         case 41:
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
@@ -2092,7 +2086,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             break;
                         case 43:
                             SystemManager.instance.SetCanTouch(false);;
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
                                 Menu.instance.MenuFadeIn();
@@ -2104,34 +2098,34 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                         case 44:
                             CharacterManager.instance.CharacterFaceList[9].face[2].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[9].face[1].SetActive(true);
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             break;
                         case 45:
                             CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             break;
                         case 51:
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             break;
                         case 52:
                             CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(true);
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             break;
                         case 53:
                             CharacterManager.instance.CharacterFaceList[9].face[1].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[9].face[0].SetActive(true);
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             break;
                         case 54:
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             break;
                         case 55:
                             CharacterManager.instance.CharacterFaceList[9].face[0].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             break;
                         case 59:
                             CharacterManager.instance.CharacterFaceList[9].face[3].SetActive(true);
@@ -2152,37 +2146,37 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                         case 5:
                             CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[2].SetActive(true);
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             break;
                         case 6:
-                            GameScript1.instance.textnum = 0;                          
+                            Dialogue.instance.SetIsBabyText(false);                          
                             break;
                         case 7:
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             break;
                         case 8:
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             CName.text = "히로";
                             break;
                         case 11:
                             CharacterManager.instance.CharacterFaceList[13].face[2].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             break;
                         case 12:
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             break;
                         case 13:
                             CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[3].SetActive(true);
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             break;
                         case 14:
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             CName.text = "디노";
                             break;
                         case 15:
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
                                 SmallFade.instance.SetCharacter(12);
@@ -2191,7 +2185,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                         case 16:
                             CharacterManager.instance.CharacterFaceList[13].face[3].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             CName.text = "히로";
                             break;
                     }
@@ -2252,7 +2246,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             CName.text = "디노";
                             break;
                         case 23:
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
                                 SystemManager.instance.SetCanTouch(false);;
@@ -2292,7 +2286,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                         case 26:
                             CharacterManager.instance.CharacterFaceList[10].face[3].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[10].face[0].SetActive(true);
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             CName.text = "히로";
                             break;
                         case 27:
@@ -2303,10 +2297,10 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                         case 28:
                             CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(true);
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             break;
                         case 29:
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             CName.text = "디노";
                             break;
                         case 30:
@@ -2363,30 +2357,30 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                     switch (count)
                     {
                         case 0:
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             break;
                         case 1:
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             break;
                         case 3:
-                            GameScript1.instance.textnum = 1;                          
+                            Dialogue.instance.SetIsBabyText(true);                          
                             break;
                         case 5:
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             break;
                         case 6:
                             CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(true);
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             break;
                         case 7:
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             break;
                         case 8:
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             break;
                         case 9:
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             break;
                         case 10:
                             CName.text = "닥터 펭";
@@ -2395,15 +2389,15 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             CharacterManager.instance.CharacterFaceList[11].face[0].SetActive(true);
                             break;
                         case 14:
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             break;
                         case 15:
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             break;
                         case 16:
                             CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
                                 SmallFade.instance.SetCharacter(14);
@@ -2411,7 +2405,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             break;
                         case 18:
                             CharacterManager.instance.CharacterFaceList[11].face[0].SetActive(false);
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             break;
                     }
                 }
@@ -2420,33 +2414,33 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                     switch (count)
                     {
                         case 0:
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             break;
                         case 1:
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             break;
                         case 3:
                             CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(true);
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             break;
                         case 4:
                             CharacterManager.instance.CharacterFaceList[11].face[0].SetActive(true);
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             break;
                         case 5:
                             CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             break;
                         case 6:
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             break;
                         case 7:
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             break;
                         case 8:
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             break;
                         case 9:
                             CharacterManager.instance.CharacterFaceList[11].face[0].SetActive(false);
@@ -2454,10 +2448,10 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                         case 17:
                             CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[3].SetActive(true);
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             break;
                         case 18:
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             break;
                         case 20:
                             CharacterManager.instance.CharacterFaceList[11].face[1].SetActive(true);
@@ -2471,10 +2465,10 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                         case 30:
                             CharacterManager.instance.CharacterFaceList[13].face[3].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             break;
                         case 31:
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
                                 SmallFade.instance.smallFOut.Enqueue(16);
@@ -2484,7 +2478,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             CharacterManager.instance.CharacterFaceList[11].face[0].SetActive(false);
                             break;
                         case 34:
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
                                 getMenu = 1;
@@ -2492,14 +2486,14 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             }
                             break;
                         case 35:
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             break;
                         case 36:
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
                                 SystemManager.instance.SetCanTouch(false);;
                                 SystemManager.instance.Invoke("SetCanTouchTrue", 1f);
-                                SmallFade.instance.smallFIn.Enqueue(16);
+                                SmallFade.instance.smallFadeIn.Enqueue(16);
                                 Menu.instance.FEventMenu(14);
                             }
                             else //다시보기일 때, 특별 메뉴 팝업 설정
@@ -2509,7 +2503,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             break;
                         case 37:
                             SystemManager.instance.SetCanTouch(false);;
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
                                 SmallFade.instance.FadeIn();
@@ -2519,14 +2513,14 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             Popup.instance.OpenPopup();//메뉴 팝업, 팝업 닫으면 다음 대사 넘기기 가능
                             break;
                         case 38:
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             break;
                         case 39:
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             break;
                         case 40:
                             CharacterManager.instance.CharacterFaceList[11].face[0].SetActive(true);
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             break;
                     }
                 }
@@ -2545,73 +2539,73 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                         case 1:
                             BgmManager.instance.PlayCharacterBGM(14);//캐릭터 테마 재생
                             CharacterManager.instance.CharacterIn(14); //이 캐릭터만 특수하게 여기서 등장
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             CName.text = "???";
                             break;
                         case 2:
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             break;
                         case 3:
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             break;
                         case 5:
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             break;
                         case 6:
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             break;
                         case 8:
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             break;
                         case 9:
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             break;
                         case 10:
                             CharacterManager.instance.CharacterFaceList[13].face[2].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[7].SetActive(true);
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             break;
                         case 11:
-                            GameScript1.instance.textnum = 0;                           
+                            Dialogue.instance.SetIsBabyText(false);                           
                             break;
                         case 13:
                             CharacterManager.instance.CharacterFaceList[13].face[7].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[3].SetActive(true);
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             break;
                         case 14:
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             CName.text = "롤렝드";
                             break;
                         case 15:
                             CharacterManager.instance.CharacterFaceList[13].face[3].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             break;
                         case 16:
                             CharacterManager.instance.CharacterFaceList[12].face[0].SetActive(true);
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             break;
                         case 17:
                             CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[3].SetActive(true);
                             CharacterManager.instance.CharacterFaceList[12].face[0].SetActive(false);
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             break;
                         case 18:
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             break;
                         case 19:
                             CharacterManager.instance.CharacterFaceList[13].face[3].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(true);
                             SEManager.instance.PlayBirdSound();
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             break;
                         case 20:
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             break;
                         case 21:
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
                                 SmallFade.instance.SetCharacter(15);
@@ -2622,7 +2616,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
                             break;
                         case 24:
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             break;
                     }
                 }
@@ -2633,34 +2627,34 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                         case 0:
                             BgmManager.instance.StopBgm();
                             BgmManager.instance.PlayCharacterBGM(14);//캐릭터 테마 재생
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             CName.text = "롤렝드";
                             break;
                         case 4:
                             CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(true);
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             break;
                         case 5:
                             CharacterManager.instance.CharacterFaceList[12].face[0].SetActive(true);
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             break;
                         case 6:
                             CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(true);
                             CharacterManager.instance.CharacterFaceList[12].face[0].SetActive(false);
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             break;
                         case 7:
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             break;
                         case 10:
                             CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             break;
                         case 11:
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             break;
                         case 12:
                             CharacterManager.instance.CharacterFaceList[12].face[1].SetActive(true);
@@ -2678,19 +2672,19 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                         case 26:
                             CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[7].SetActive(true);
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             break;
                         case 27:
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             break;
                         case 28:
                             CharacterManager.instance.CharacterFaceList[12].face[1].SetActive(false);
                             break;
                         case 29:
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             break;
                         case 30:
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             break;
                         case 35:
                             CharacterManager.instance.CharacterFaceList[12].face[1].SetActive(true);
@@ -2710,10 +2704,10 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                         case 44:
                             CharacterManager.instance.CharacterFaceList[13].face[7].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             break;
                         case 45:
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             break;
                         case 46:
                             CharacterManager.instance.CharacterFaceList[12].face[0].SetActive(false);
@@ -2721,7 +2715,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                         case 47:
                             CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[3].SetActive(true);
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
                                 SystemManager.instance.SetCanTouch(false);;
@@ -2732,7 +2726,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             }
                             break;
                         case 48:
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
                                 getMenu = 1;
@@ -2744,7 +2738,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             {
                                 SystemManager.instance.SetCanTouch(false);;
                                 SystemManager.instance.Invoke("SetCanTouchTrue", 1f);
-                                SmallFade.instance.smallFIn.Enqueue(17);
+                                SmallFade.instance.smallFadeIn.Enqueue(17);
                                 Menu.instance.FEventMenu(15);
                             }
                             else //다시보기일 때, 특별 메뉴 팝업 설정
@@ -2756,7 +2750,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             CharacterManager.instance.CharacterFaceList[13].face[3].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
                             SystemManager.instance.SetCanTouch(false);;
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
                                 SmallFade.instance.FadeIn();
@@ -2765,13 +2759,13 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             Popup.instance.OpenPopup();//메뉴 팝업, 팝업 닫으면 다음 대사 넘기기 가능
                             break;
                         case 52:
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             break;
                         case 53:
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             break;
                         case 54:
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             break;
                         case 55:
                             CharacterManager.instance.CharacterFaceList[12].face[0].SetActive(true);
@@ -2782,17 +2776,17 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                         case 57:
                             CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(true);
-                            GameScript1.instance.textnum = 1;
+                            Dialogue.instance.SetIsBabyText(true);
                             break;
                         case 59:
                             CharacterManager.instance.CharacterFaceList[12].face[0].SetActive(true);
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             break;
                         case 60:
-                            GameScript1.instance.textnum = 1;                           
+                            Dialogue.instance.SetIsBabyText(true);                           
                             break;
                         case 61:
-                            GameScript1.instance.textnum = 0;
+                            Dialogue.instance.SetIsBabyText(false);
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
                                 getMenu = 2;

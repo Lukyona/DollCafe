@@ -20,11 +20,6 @@ public class MenuHint : MonoBehaviour
     private Text[] HintText = new Text[6]; // 메뉴 힌트 말풍선 메세지
     
 
-    public GameObject tutorialBubble; //서빙 튜토리얼
-    public Text tutorialText;
-
-    public bool tuto = false; // true면 서빙튜토리얼 상황
-
     public int[] RightMenu = new int[6]; //그 자리의 캐릭터가 원하는 메뉴 넘버 
 
     Queue<int> mhFade = new Queue<int>();//페이드인 시 사용
@@ -58,18 +53,6 @@ public class MenuHint : MonoBehaviour
         HintBubble[n].SetActive(false);
     }
 
-    public void ActiveMH() //메뉴 힌트 활성화
-    {
-        if(tuto)
-        {
-            HintBubble[seatNum].GetComponent<Button>().interactable = true;
-        }
-        else
-        {
-            HintBubble[m].SetActive(true);
-        }       
-    }
-
     public void CantClickMHB()//메뉴힌트버블 터치 불가, 캐릭터 이벤트 시 실행
     {
         for(int i = 0; i < 6; i++)
@@ -94,19 +77,9 @@ public class MenuHint : MonoBehaviour
 
     public void SetMHB(int num) //어떤 메뉴힌트 말풍선 이미지를 쓸 것인지 설정, 자리에 따라 이미지가 조금 다름
     {       
-        if(num == 11) // 튜토리얼 중
-        {
-            HintBubble[1] = tutorialBubble;
-            HintText[1] = tutorialText;
-            tuto = true; //튜토리얼 상태
-            seatNum = 1;
-        }
-        else
-        {
-            HintBubble[num] = MH[num]; //말풍선1로 설정
-            HintText[num] = MH[num].GetComponentInChildren<Text>(); //말풍선1의 메세지로 설정
-            seatNum = num;  
-        }
+        HintBubble[num] = MH[num]; //말풍선1로 설정
+        HintText[num] = MH[num].GetComponentInChildren<Text>(); //말풍선1의 메세지로 설정
+        seatNum = num;  
         
         mhFade.Enqueue(seatNum);
        // Debug.Log("메뉴힌트 큐 추가 " + seatNum);
@@ -403,7 +376,7 @@ public class MenuHint : MonoBehaviour
         if(!mhFadeIn)
         {
             //Debug.Log("함수 MHFadeIn");
-            if (tuto) //만약 튜토리얼이면
+            if (SystemManager.instance.GetMainCount() == 2) //만약 서빙 튜토리얼이면
             {
                 UI_Assistant1.instance.panel5.SetActive(false); //패널 5 닫고 
                 UI_Assistant1.instance.panel6.SetActive(true); //패널 6이 보이게
@@ -418,15 +391,16 @@ public class MenuHint : MonoBehaviour
     {
         mhFadeIn = true;
         int n = mhFade.Peek();
-        if (tuto) //튜토리얼이면
+        m = n;
+
+        if (SystemManager.instance.GetMainCount() == 2) //튜토리얼이면
         {
-            GameScript1.instance.TutorialUpBox();
+            SystemManager.instance.UpTextBox();
+            CantClickMHB();
         }
-        else
-        {
-            m = n;
-            ActiveMH(); //메뉴힌트 버블 활성화
-        }
+
+        HintBubble[m].SetActive(true);
+
         HintBubble[n].GetComponent<Image>().color = new Color(HintBubble[n].GetComponent<Image>().color.r, HintBubble[n].GetComponent<Image>().color.g, HintBubble[n].GetComponent<Image>().color.b, 0);
         HintText[n].GetComponent<Text>().color = new Color(HintText[n].GetComponent<Text>().color.r, HintText[n].GetComponent<Text>().color.g, HintText[n].GetComponent<Text>().color.b, 0);
         while (HintBubble[n].GetComponent<Image>().color.a < 1.0f)

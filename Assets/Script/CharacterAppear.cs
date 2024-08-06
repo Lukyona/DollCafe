@@ -7,7 +7,7 @@ public class CharacterAppear : MonoBehaviour
 {
     public static CharacterAppear instance;
 
-    public int nextAppear = 0;
+    int nextAppear = 0;
 
     void Awake()
     {
@@ -42,62 +42,62 @@ public class CharacterAppear : MonoBehaviour
     {
         if (Menu.instance.reputation >= 9 && nextAppear == 3)
         {//평판이 9 이상이며 다음 등장 캐릭터 번호가 3일 때
-            GameScript1.instance.CharacterStart(3); //빵빵 등장
+            SystemManager.instance.BeginDialogue(3); //빵빵 등장
         }
 
         if (Menu.instance.reputation >= 21 && nextAppear == 4)
         {
-            GameScript1.instance.CharacterStart(4);//개나리 등장
+            SystemManager.instance.BeginDialogue(4);//개나리 등장
         }
 
         if (Menu.instance.reputation >= 36 && nextAppear == 5)
         {
-            GameScript1.instance.CharacterStart(5);//또롱 등장
+            SystemManager.instance.BeginDialogue(5);//또롱 등장
         }
 
         if (Menu.instance.reputation >= 55 && nextAppear == 6)
         {
-            GameScript1.instance.CharacterStart(6);
+            SystemManager.instance.BeginDialogue(6);
         }
 
         if (Menu.instance.reputation >= 70 && nextAppear == 7)
         {
-            GameScript1.instance.CharacterStart(7);
+            SystemManager.instance.BeginDialogue(7);
         }
 
         if (Menu.instance.reputation >= 85 && nextAppear == 8 && Menu.instance.menu4Open)
         {
-            GameScript1.instance.CharacterStart(8);
+            SystemManager.instance.BeginDialogue(8);
         }
 
         if (Menu.instance.reputation >= 95 && nextAppear == 9)
         {
-            GameScript1.instance.CharacterStart(9);
+            SystemManager.instance.BeginDialogue(9);
         }
 
         if (Menu.instance.reputation >= 150 && nextAppear == 10 && Menu.instance.menu5Open)
         {
-            GameScript1.instance.CharacterStart(10);
+            SystemManager.instance.BeginDialogue(10);
         }
 
         if (Menu.instance.reputation >= 180 && nextAppear == 11)
         {
-            GameScript1.instance.CharacterStart(11);
+            SystemManager.instance.BeginDialogue(11);
         }
 
         if (Menu.instance.reputation >= 260 && nextAppear == 12 && Menu.instance.menu6Open)
         {
-            GameScript1.instance.CharacterStart(12);
+            SystemManager.instance.BeginDialogue(12);
         }
 
         if (Menu.instance.reputation >= 320 && nextAppear == 13 && Menu.instance.menu7Open)
         {
-            GameScript1.instance.CharacterStart(13);
+            SystemManager.instance.BeginDialogue(13);
         }
 
         if (Menu.instance.reputation >= 400 && nextAppear == 14)
         {
-            GameScript1.instance.GrandfatherStart();
+            SystemManager.instance.BeginDialogue(14);
         }
     }
                                                                                                                             //5또롱이도 있음
@@ -119,7 +119,7 @@ public class CharacterAppear : MonoBehaviour
                             Debug.Log("랜덤방문 취소");
                         }
                         MenuHint.instance.CantClickMHB();
-                        GameScript1.instance.CantClickUI();
+                        SystemManager.instance.CantTouchUI();
                         eventOn = 15;//친밀도 이벤트 진행 중
                         if (Menu.instance.UIOn || UI_Assistant1.instance.talking || VisitorNote.instance.replayOn != 0)//만약 UI가 올라와있다면
                         {
@@ -171,7 +171,7 @@ public class CharacterAppear : MonoBehaviour
                                 CharacterVisit.instance.CancelInvoke("RandomVisit");
                             }
                             MenuHint.instance.CantClickMHB();
-                            GameScript1.instance.CantClickUI();//UI올라온 상태에서의 시나리오 진행을 막기 위함
+                            SystemManager.instance.CantTouchUI();//UI올라온 상태에서의 시나리오 진행을 막기 위함
                             eventOn = c;//친밀도 이벤트 진행 중
                             if (Menu.instance.UIOn || UI_Assistant1.instance.talking || VisitorNote.instance.replayOn != 0)//만약 UI가 올라와있다면
                             {
@@ -199,7 +199,7 @@ public class CharacterAppear : MonoBehaviour
                             if (c != 9) // 강아지 필통(친구)는 메뉴 주문 후 발생 *****에러 있음, 주문 받고 친밀도 이벤트 시작하고 이전 주문 받은 거로 인해 작은 캐릭터 사라지는 문제
                             {
                                 MenuHint.instance.CantClickMHB();
-                                GameScript1.instance.CantClickUI();
+                                SystemManager.instance.CantTouchUI();
                             }
                             eventOn = c;//친밀도 이벤트 진행 중
                             if (Menu.instance.UIOn || UI_Assistant1.instance.talking || VisitorNote.instance.replayOn != 0)//만약 UI가 올라와있다면
@@ -267,7 +267,7 @@ public class CharacterAppear : MonoBehaviour
                                     (SmallFade.instance.TableEmpty[1] == 0 && SmallFade.instance.TableEmpty[2] == 0))
                                     {
                                         MenuHint.instance.CantClickMHB();
-                                        GameScript1.instance.CantClickUI();
+                                        SystemManager.instance.CantTouchUI();
                                         SmallFade.instance.SetCharacter(6);//도로시 페이드인
                                         CharacterVisit.instance.canVisitCharacters.Remove("sPrincess");//도로시는 이 이벤트에서 카페를 방문함
                                     }
@@ -310,7 +310,7 @@ public class CharacterAppear : MonoBehaviour
                                     Debug.Log("랜덤방문 취소");
                                 }
                                 MenuHint.instance.CantClickMHB();
-                                GameScript1.instance.CantClickUI();
+                                SystemManager.instance.CantTouchUI();
                                 eventOn = 13;//친밀도 이벤트 진행 중
                                 if (Menu.instance.UIOn || UI_Assistant1.instance.talking || VisitorNote.instance.replayOn != 0)//만약 UI가 올라와있다면
                                 {

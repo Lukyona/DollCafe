@@ -8,21 +8,21 @@ public class SmallFade : MonoBehaviour //작은 캐릭터 스크립트
     public static SmallFade instance;
     public GameObject[] SmallCharacter; //작은 캐릭터 이미지 배열
     public GameObject[] SittingCharacter = new GameObject[6];//좌석별 현재 앉아있는 캐릭터, 
-
-    public GameObject tutorialBear; //서빙 튜토리얼용 캐릭터
   
     public int[] TableEmpty = new int[3]; //테이블이 비었는지 확인
 
     public int[] CharacterSeat = new int[15]; // 캐릭터 자리 저장 배열
 
     public Queue<int> smallFOut = new Queue<int>(); //작은 캐릭터 페이드아웃 시 사용
-    public Queue<int> smallFIn = new Queue<int>(); //페이드인 시 사용
+    public Queue<int> smallFadeIn = new Queue<int>(); //페이드인 시 사용
 
     public bool x1 = false;//히로, 디노 중 먼저 가는 캐릭터가 true
     public bool x2 = false; //찰스 도로시용
 
     public Image soldier2;//도로시와 같이 오는 찰스 이미지(오른쪽)
     public Image noName2;
+
+    Vector3[] Seat = new Vector3[6]; //작은 캐릭터가 앉을 자리 배열
 
     void Awake()
     {        
@@ -32,12 +32,22 @@ public class SmallFade : MonoBehaviour //작은 캐릭터 스크립트
         }        
     }
 
+    void Start()
+    {
+        Seat[0] = new Vector3(-755,-210,0);
+        Seat[1] = new Vector3(-140,-225,0);
+        Seat[2] = new Vector3(-320,-390,0);
+        Seat[3] = new Vector3(390,-390,0);
+        Seat[4] = new Vector3(210,-200,0);
+        Seat[5] = new Vector3(790,-230,0);
+    }
+
     public void CantTouchCharacter(int n) //캐릭터 클릭 못하게
     {
         SmallCharacter[n].GetComponent<Button>().interactable = false;
     }
 
-    public void CanClickCharacter(int n) //캐릭터 클릭 가능하게, 페이드아웃하고 가능
+    public void CanClickCharacter(int n) //캐릭터 클릭 가능하게, 페이드인하고 가능
     {
         SmallCharacter[n].GetComponent<Button>().interactable = true;
     }
@@ -54,19 +64,13 @@ public class SmallFade : MonoBehaviour //작은 캐릭터 스크립트
 
     public void SetCharacter(int cNum) //작은 캐릭터 설정, cNum은 캐릭터 넘버
     {
-        if (cNum == 99) //서빙 튜토리얼이면
-        {
-            SmallCharacter[1] = tutorialBear;
-            cNum = 1;
-        }
-        
-        smallFIn.Enqueue(cNum);
+        smallFadeIn.Enqueue(cNum);
+
+        if (cNum == 0) return; // 제제는 좌석에 앉지 않으므로 리턴
 
         //Debug.Log("셋캐릭터 " + cNum);
-        if (cNum != 0 && cNum != 99) //캐릭터 넘버가 제제가 아니고, 튜토리얼이 아니면
-        {
-            SetSeatPosition(cNum);
-        }
+        
+        SetSeatPosition(cNum);
         //Debug.Log("함수 SetCharacter");
     }
 
@@ -82,34 +86,10 @@ public class SmallFade : MonoBehaviour //작은 캐릭터 스크립트
         {
             if(cNum == 13)//캐릭터가 디노면, 히로 자리에 따라서 옆에 배정
             {
-                // switch (CharacterSeat[11])
-                // {
-                //     case 0:
-                //         sn = 3;
-                //         break;
-                //     case 1:
-                //         sn = 4;
-                //         break;
-                //     case 2:
-                //         sn = 5;
-                //         break;
-                // }
                 sn = CharacterSeat[11] + 1;
             }
             else if((cNum == 10 && (Dialogue.instance.CharacterDC[10] == 3) || (CharacterAppear.instance.eventOn == 11 && UI_Assistant1.instance.getMenu == 1)))//찰스2이벤트 중 찰스 중간 페이드인
             {//도로시와 같이 오는 찰스
-                // switch (CharacterSeat[5])//도로시와 같은 테이블 마주보는 자리로 자리 설정
-                // {
-                //     case 0:
-                //         sn = 3;
-                //         break;
-                //     case 1:
-                //         sn = 4;
-                //         break;
-                //     case 2:
-                //         sn = 5;
-                //         break;
-                // }
                 sn = CharacterSeat[5] + 1;
 
                 SmallCharacter[10].GetComponent<Image>().sprite = soldier2.sprite;//이미지 변경
@@ -225,7 +205,7 @@ public class SmallFade : MonoBehaviour //작은 캐릭터 스크립트
         //Debug.Log("캐릭넘버 " + cNum + " 자리: " + sn);
 
         // 앉을 자리로 옮기기
-        SmallCharacter[cNum].transform.position = GameScript1.instance.Seat[sn].transform.position;
+        SmallCharacter[cNum].transform.position = Seat[sn];
         SittingCharacter[sn] = SmallCharacter[cNum];
         switch (sn) // 테이블 착석 여부 갱신, 1은 착석, 0은 비었음
         {
@@ -267,16 +247,11 @@ public class SmallFade : MonoBehaviour //작은 캐릭터 스크립트
 
         if (CharacterAppear.instance.eventOn == 2)//특정 캐릭터들은 바로 시나리오 이벤트 시작
         {
-            GameScript1.instance.CharacterStart(CharacterAppear.instance.eventOn);
+            SystemManager.instance.BeginDialogue(CharacterAppear.instance.eventOn);
         }
         if (CharacterAppear.instance.eventOn != 0 && CharacterAppear.instance.eventOn != 14 && UI_Assistant1.instance.getMenu != 1)//히로디노이벤트가 아니면 주인공 아기 캐릭터 자리 설정, 두번째 조건은 찰스2 이벤트 때문
         {
-            //if (CharacterAppear.instance.eventOn == 10 && cNum != 6)//찰스1이벤트이고 찰스일 때는
-            
-                SetBabySeat(sn);
-            
-
-            
+            SetBabySeat(sn);          
         }
         //Debug.Log("함수 SetSeatPosition");
     }
@@ -285,12 +260,12 @@ public class SmallFade : MonoBehaviour //작은 캐릭터 스크립트
     {
         if(s % 2 == 0) // 캐릭터 자리가 왼쪽(짝수)면
         {
-            SmallCharacter[16].transform.position = GameScript1.instance.Seat[s+1].transform.position; //주인공 아기를 오른쪽 자리로 옮김
+            SmallCharacter[16].transform.position = Seat[s+1]; //주인공 아기를 오른쪽 자리로 옮김
             SittingCharacter[s+1] = SmallCharacter[16];
         }
         else
         {
-            SmallCharacter[17].transform.position = GameScript1.instance.Seat[s-1].transform.position;
+            SmallCharacter[17].transform.position = Seat[s-1];
             SittingCharacter[s-1] = SmallCharacter[17];
         }
     }
@@ -327,6 +302,11 @@ public class SmallFade : MonoBehaviour //작은 캐릭터 스크립트
         cleanSeat.Dequeue();
     }
 
+    public void AddToFadeOut(int cNum)
+    {
+        smallFOut.Enqueue(cNum);
+    }
+
     bool sFade = false;//페이드인 진행 상태 구분에 사용
     public void FadeIn() //작은 캐릭터 페이드인
     {
@@ -343,7 +323,128 @@ public class SmallFade : MonoBehaviour //작은 캐릭터 스크립트
 
     public void FadeOut() //작은 캐릭터 페이드아웃
     {
-        TouchableObject.instance.FadeOutCharacter();
+     
+        int n = Menu.instance.seatInfo.Peek();
+        string charName = instance.SittingCharacter[n].name;
+
+        // 캐릭터 오브젝트 이름 예시 : small_1Bear
+        int idx = charName.IndexOf("_");
+
+        idx = TouchableObject.instance.GetNumber(idx, charName);
+
+        switch(idx)
+        {
+            case 6: // princess 도로시
+                smallFOut.Enqueue(6);
+                if (Dialogue.instance.CharacterDC[10] != 3)//찰스2이벤트 이후가 아니면
+                {
+                    CharacterVisit.instance.revisit.Enqueue(6);
+                }
+                else if(Dialogue.instance.CharacterDC[10] == 3)//이벤트 후면
+                {
+                    if (!x2)
+                    {
+                        x2 = true;
+                    }
+                    else if (x2)
+                    {
+                        x2 = false;
+                    }
+                }
+                //Debug.Log("페이드아웃 될 캐릭터 도로시");
+                break;
+            case 10: // soldier 찰스
+                smallFOut.Enqueue(10);
+                if (CharacterAppear.instance.eventOn != 11)//찰스2 이벤트 중이 아니면
+                {
+                    if (Dialogue.instance.CharacterDC[10] == 3)//찰스2 이벤트 뒤면
+                    {
+                        if (!x2)
+                        {
+                            x2 = true;
+                        }
+                        else if (x2)
+                        {
+                            x2 = false;
+                        }    
+                    }
+                    else
+                    {
+                        CharacterVisit.instance.revisit.Enqueue(10);
+                    }
+                    // Debug.Log("페이드아웃 될 캐릭터 찰스");
+                }
+                break;
+            case 12: // hero 히로
+                if(!x1)//히로가 먼저 가는 거면
+                {
+                    x1 = true;
+                }
+                else if(x1)//디노가 먼저 갔으면
+                {
+                    x1 = false; //값을 0으로 만들고
+                }
+                smallFOut.Enqueue(12);
+                // Debug.Log("페이드아웃 될 캐릭터 히로");
+                break;
+            case 13: // dinosour 디노
+                if (!x1)
+                {
+                    x1 = true;
+                }
+                else if (x1)
+                {
+                    x1 = false;
+                }
+                smallFOut.Enqueue(13); 
+                //  Debug.Log("페이드아웃 될 캐릭터 디노");
+                break;
+
+            default: // 오브젝트 이름에 _이 들어가지 않아 idx가 -1인 경우 or 별다른 처리가 필요없는 캐릭터일 경우
+                if(charName == "sBabyLeft")
+                {
+                    smallFOut.Enqueue(17);
+                }
+                else if(charName == "sBabyRight")
+                {
+                    smallFOut.Enqueue(16);
+                }
+                else
+                {
+                    smallFOut.Enqueue(idx);
+                    CharacterVisit.instance.revisit.Enqueue(idx);
+                }
+                break;
+        }
+
+        if (charName != "small_12Hero" && charName != "small_13Dinosour")
+        { //히로디노가 아니고
+            if(Dialogue.instance.CharacterDC[10] != 3 || (Dialogue.instance.CharacterDC[10] == 3 && charName != "small_6Princess" && charName != "small_10Soldier"))
+            {//찰스 이벤트가 다 안 끝났거나 끝났어도 찰스,도로시가 아니면
+                cleanSeat.Enqueue(n); //비워질 자리 큐에 정보 추가
+                // Debug.Log(n + "자리 클린시트큐에 추가됨");
+            }       
+            else if(Dialogue.instance.CharacterDC[10] == 3 && (charName == "small_6Princess" || charName == "small_10Soldier"))
+            {//찰스도로시 중 찰스나 도로시일 때
+                if (!x2)//값이 0이어야만 가능
+                {
+                    cleanSeat.Enqueue(n); //비워질 자리 큐에 정보 추가
+                    CharacterVisit.instance.revisit.Enqueue(17);
+                }
+            }
+        }
+        else
+        {
+            if (!x1)//값이 0이어야만 가능
+            {
+                cleanSeat.Enqueue(n); //비워질 자리 큐에 정보 추가
+                //  Debug.Log(n + "자리 클린시트큐에 추가됨");
+                CharacterVisit.instance.revisit.Enqueue(13);
+            }
+        }       
+        Menu.instance.seatInfo.Dequeue();
+        SittingCharacter[n] = null;//버그 대비 페이드아웃 시 null 넣기
+    
         StartCoroutine(FadeToZero());//페이드아웃 시작         
         //Debug.Log("함수 SmallFadeOut");
     }
@@ -351,23 +452,8 @@ public class SmallFade : MonoBehaviour //작은 캐릭터 스크립트
     public IEnumerator FadeToFullAlpha() // 알파값 0에서 1로 전환
     {
         sFade = true;
-        int v = smallFIn.Peek();
-        if (v != 13 && v != 0 && v != 17 && v != 16)//디노,제제, 주인공 아기가 아닌 캐릭터 첫 등장이면
-        {
-            int t;
-            if(v > 12)
-            {
-                t = v - 1;
-            }
-            else
-            {
-                t = v;
-            }
-            if (Dialogue.instance.CharacterDC[t] == 0)
-            {
-                Dialogue.instance.CharacterDC[t]++; //대화 끝낸 캐릭터 다이얼로그 넘버 증가
-            }   
-        }
+        int v = smallFadeIn.Peek();
+       
         // Debug.Log("페이드인 될 캐릭터" + v);
 
         SmallCharacter[v].SetActive(true); //작은 캐릭터 활성화      
@@ -380,7 +466,7 @@ public class SmallFade : MonoBehaviour //작은 캐릭터 스크립트
         }
         //Debug.Log("페이드인 됨" + v);
         
-        smallFIn.Dequeue();
+        smallFadeIn.Dequeue();
 
         if ((CharacterAppear.instance.eventOn == 0 || CharacterAppear.instance.eventOn == 9 || CharacterAppear.instance.eventOn == 12 || CharacterAppear.instance.eventOn == 16) 
             && v != 0 && v != 17 && v != 16)
@@ -418,19 +504,19 @@ public class SmallFade : MonoBehaviour //작은 캐릭터 스크립트
         {//친밀도 이벤트가 진행 중이고, 주인공 아기가 아니고, 특정 캐릭터(이벤트)가 아닐때
             if (CharacterAppear.instance.eventOn <= 10)
             {
-                GameScript1.instance.CharacterStart(CharacterAppear.instance.eventOn); //해당 캐릭터 시나리오 등장
+                SystemManager.instance.BeginDialogue(CharacterAppear.instance.eventOn); //해당 캐릭터 시나리오 등장
             }
             else if (CharacterAppear.instance.eventOn >= 11 && CharacterAppear.instance.eventOn <= 13)//이벤트 넘버 11~13
             {
                 if (UI_Assistant1.instance.getMenu == 0 && CharacterAppear.instance.eventOn != 12)//첫번째 조건은 찰스2 이벤트 때문, 두번째 조건은 무명이1 이벤트때문
                 {
-                    GameScript1.instance.CharacterStart(v);
+                    SystemManager.instance.BeginDialogue(v);
                 }           
             }
             else if (CharacterAppear.instance.eventOn == 15)//닥터 펭 친밀도 이벤트의 경우
             {
                 int v2 = v - 1;
-                GameScript1.instance.CharacterStart(v2);              
+                SystemManager.instance.BeginDialogue(v2);              
             }
         }
         sFade = false;
@@ -439,10 +525,7 @@ public class SmallFade : MonoBehaviour //작은 캐릭터 스크립트
     public int z;
     public IEnumerator FadeToZero()  // 알파값 1에서 0으로 전환
     {
-        if (!GameScript1.jejeOn) //제제가 아닐 경우
-        {
-            z = smallFOut.Peek();
-        }
+        z = smallFOut.Peek();
         SmallCharacter[z].GetComponent<Image>().color = new Color(SmallCharacter[z].GetComponent<Image>().color.r, SmallCharacter[z].GetComponent<Image>().color.g, SmallCharacter[z].GetComponent<Image>().color.b, 1);
         while (SmallCharacter[z].GetComponent<Image>().color.a > 0.0f)
         {
@@ -450,10 +533,10 @@ public class SmallFade : MonoBehaviour //작은 캐릭터 스크립트
             yield return null;
         }
         //Debug.Log("페이드아웃 됨" + z);
+        smallFOut.Dequeue();
 
         if (z != 0) //제제가 아닐 경우
         {
-            smallFOut.Dequeue();
             SmallCharacter[z].SetActive(false);//캐릭터 비활성화
             if(z != 16 && z != 17)//아기 제외
             {

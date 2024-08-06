@@ -18,6 +18,8 @@ public class Setting : MonoBehaviour
     public GameObject creditView;
     public Scrollbar bar;
 
+    bool isReset = false;
+
     void Awake()
     {
         if (instance == null)
@@ -76,7 +78,7 @@ public class Setting : MonoBehaviour
         SEManager.instance.PlayUIClickSound2();
         yesResetButton.interactable = false;
         noResetButton.interactable = false;        
-        GameScript1.instance.delete = true;
+        isReset = true;
 
         if(PlayerPrefs.GetInt("PurchaseCount") == 0)//결제한 것이 없으면 데이터 모두 삭제
         {
@@ -120,6 +122,11 @@ public class Setting : MonoBehaviour
         resetButton.interactable = true;
         settingClose.interactable = true;
         creditButton.interactable = true;
+    }
+
+    public bool IsReset()
+    {
+        return isReset;
     }
 
     public void ShowCredit()//크레딧버튼 눌렀을 때
