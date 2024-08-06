@@ -42153,7 +42153,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1538706514}
-  - component: {fileID: 1538706513}
   - component: {fileID: 1538706516}
   - component: {fileID: 1538706517}
   - component: {fileID: 1538706519}
@@ -42181,77 +42180,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1538706513
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1538706512}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b088c92c8ec06ae4888bcbeb92898767, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  panel: {fileID: 962486055}
-  BigCharacter:
-  - {fileID: 54237565}
-  - {fileID: 613698859}
-  - {fileID: 1579231344}
-  - {fileID: 437677234}
-  - {fileID: 1696660528}
-  - {fileID: 1546163314}
-  - {fileID: 1672650289}
-  - {fileID: 1625607538}
-  - {fileID: 2014586506}
-  - {fileID: 783034331}
-  - {fileID: 763305065}
-  - {fileID: 2107647595}
-  - {fileID: 26394545}
-  - {fileID: 1390588133}
-  - {fileID: 1036168168}
-  - {fileID: 183046232}
-  - {fileID: 106322522}
-  - {fileID: 849537561}
-  textnum: 0
-  babyTextBox: {fileID: 1437856791}
-  characterTextBox: {fileID: 232229280}
-  Seat:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  servingTutorial: {fileID: 0}
-  bear: {fileID: 124675994}
-  endStory: 0
-  delete: 0
-  PurchasingWindow: {fileID: 1195668364}
-  PurchasingText: {fileID: 1126024390}
-  FishBreadText: {fileID: 1739857071}
-  CompletePurchasingWindow: {fileID: 1099271356}
-  CompletePurchasingText: {fileID: 829689449}
-  pButton1: {fileID: 575918833}
-  pButton2: {fileID: 0}
-  littleFishBreadText: {fileID: 641081301}
-  FishBreadButton: {fileID: 2053028304}
-  FishBread2: {fileID: 1691167823}
-  JejeBubble: {fileID: 108787060}
-  JejeText: {fileID: 403727727}
-  jejeBubbleAnimator: {fileID: 108787062}
-  Tip: {fileID: 1153131256}
-  TipMessage: {fileID: 1880541412}
-  StarLackMessage: {fileID: 2046973729}
-  starLackAnimator: {fileID: 2046973732}
-  TipNoteButton: {fileID: 1652410461}
-  TNBAnimator: {fileID: 1652410464}
-  TipNote: {fileID: 395229136}
-  TipNoteAnimator: {fileID: 395229138}
-  Tip2: {fileID: 201226726}
-  Tip3: {fileID: 925840050}
-  mainCount: 0
-  exchangeMessageWindow: {fileID: 0}
 --- !u!4 &1538706514
 Transform:
   m_ObjectHideFlags: 0
