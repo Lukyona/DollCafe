@@ -234,10 +234,10 @@ public class CharacterAppear : MonoBehaviour
                                     if (((SmallFade.instance.TableEmpty[0] == 0 && SmallFade.instance.TableEmpty[1] == 0) ||
                                     (SmallFade.instance.TableEmpty[0] == 0 && SmallFade.instance.TableEmpty[2] == 0) ||
                                     (SmallFade.instance.TableEmpty[1] == 0 && SmallFade.instance.TableEmpty[2] == 0))
-                                    && CharacterVisit.instance.canVisitCharacters.Contains("sPrincess"))
+                                    && CharacterVisit.instance.canVisitCharacters.Contains("small_6Princess"))
                                     {
                                         SmallFade.instance.SetCharacter(6);//도로시 페이드인
-                                        CharacterVisit.instance.canVisitCharacters.Remove("sPrincess");//도로시는 이 이벤트에서 카페를 방문함
+                                        CharacterVisit.instance.canVisitCharacters.Remove("small_6Princess");//도로시는 이 이벤트에서 카페를 방문함
                                     }
                                     else //두 개 이상의 테이블이 비지 않았다면
                                     {
@@ -269,7 +269,7 @@ public class CharacterAppear : MonoBehaviour
                                         MenuHint.instance.CantClickMHB();
                                         SystemManager.instance.CantTouchUI();
                                         SmallFade.instance.SetCharacter(6);//도로시 페이드인
-                                        CharacterVisit.instance.canVisitCharacters.Remove("sPrincess");//도로시는 이 이벤트에서 카페를 방문함
+                                        CharacterVisit.instance.canVisitCharacters.Remove("small_6Princess");//도로시는 이 이벤트에서 카페를 방문함
                                     }
                                     else //두 개 이상의 테이블이 비지 않았다면
                                     {

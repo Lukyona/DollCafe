@@ -92,7 +92,7 @@ public class HPManager : MonoBehaviour
                 m_HPAmount = PlayerPrefs.GetInt("HPAmount");
                 savedMinTimer = PlayerPrefs.GetInt("SavedMinTimer");
                 savedSecTimer = PlayerPrefs.GetInt("SavedSecTimer");
-                Debug.Log("남았던 타이머: " + savedMinTimer + "분 " + savedSecTimer);
+                //Debug.Log("남았던 타이머: " + savedMinTimer + "분 " + savedSecTimer);
                     
                 if (m_HPAmount < 0)
                 {
@@ -101,7 +101,7 @@ public class HPManager : MonoBehaviour
             }
             else
             {
-                Debug.Log("체력 정보 없음");
+                //Debug.Log("체력 정보 없음");
             }
 
             HPAmount.text = m_HPAmount.ToString(); //가지고 있는 체력 양 표시
@@ -176,7 +176,7 @@ public class HPManager : MonoBehaviour
 
         int elapsedMin = (int)(TimeManager.instance.GetDateTime() - m_AppQuitTime).TotalMinutes; // 게임 종료 후 경과된 시간(분)
         int elapsedSec = (int)((TimeManager.instance.GetDateTime() - m_AppQuitTime).TotalSeconds % 60); // 게임 종료 후 경과된 시간(초)
-        print(elapsedMin + "분 " + elapsedSec + "초 지남");
+        //print(elapsedMin + "분 " + elapsedSec + "초 지남");
 
         int calculatedMin =  elapsedMin - savedMinTimer; // 분 계산
         int calculatedSec = elapsedSec - savedSecTimer;  // 초 계산

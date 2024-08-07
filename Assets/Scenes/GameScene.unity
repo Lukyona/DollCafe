@@ -2844,7 +2844,7 @@ GameObject:
   - component: {fileID: 83385832}
   - component: {fileID: 83385831}
   m_Layer: 5
-  m_Name: NoName (4)
+  m_Name: Nameless (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5300,7 +5300,7 @@ GameObject:
   - component: {fileID: 156412875}
   - component: {fileID: 156412874}
   m_Layer: 5
-  m_Name: NoName (1)
+  m_Name: Nameless (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6835,7 +6835,7 @@ GameObject:
   - component: {fileID: 194912744}
   - component: {fileID: 194912747}
   m_Layer: 5
-  m_Name: small_11NoName
+  m_Name: small_11Nameless
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -12215,7 +12215,7 @@ GameObject:
   - component: {fileID: 411934136}
   - component: {fileID: 411934137}
   m_Layer: 0
-  m_Name: NoNameBgm
+  m_Name: NamelessBgm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -35605,7 +35605,7 @@ GameObject:
   - component: {fileID: 1315502896}
   - component: {fileID: 1315502895}
   m_Layer: 5
-  m_Name: NoName (3)
+  m_Name: Nameless (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -42238,7 +42238,7 @@ MonoBehaviour:
   x1: 0
   x2: 0
   soldier2: {fileID: 991923546}
-  noName2: {fileID: 194634141}
+  nameless2: {fileID: 194634141}
 --- !u!114 &1538706517
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -42432,7 +42432,7 @@ MonoBehaviour:
   sunFlowerSound: {fileID: 1371019330}
   dogSound: {fileID: 1360526874}
   grandFatherSound: {fileID: 2042657141}
-  noNameSound: {fileID: 411934137}
+  namelessSound: {fileID: 411934137}
   endingSound: {fileID: 951789120}
 --- !u!82 &1538706531
 AudioSource:
@@ -42690,7 +42690,6 @@ MonoBehaviour:
   jejeBubbleAnimator: {fileID: 108787062}
   jejeText: {fileID: 403727727}
   exchangeMessageWindow: {fileID: 1336604589}
-  inputName: 
   charNameSettingWindow: {fileID: 2104357760}
   babyNameSettingWindow: {fileID: 104692889}
   inputField: {fileID: 1746894583}
@@ -48561,7 +48560,7 @@ GameObject:
   - component: {fileID: 1731739174}
   - component: {fileID: 1731739173}
   m_Layer: 5
-  m_Name: NoName (2)
+  m_Name: Nameless (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -58339,7 +58338,7 @@ GameObject:
   - component: {fileID: 2107647598}
   - component: {fileID: 2107647597}
   m_Layer: 5
-  m_Name: NoName
+  m_Name: Nameless
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

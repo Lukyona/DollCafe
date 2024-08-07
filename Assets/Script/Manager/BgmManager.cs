@@ -23,7 +23,7 @@ public class BgmManager : MonoBehaviour
     [SerializeField] AudioSource sunFlowerSound;
     [SerializeField] AudioSource dogSound;
     [SerializeField] AudioSource grandFatherSound;
-    [SerializeField] AudioSource noNameSound;
+    [SerializeField] AudioSource namelessSound;
     [SerializeField] AudioSource endingSound;
     #endregion
 
@@ -111,7 +111,7 @@ public class BgmManager : MonoBehaviour
                 myAudio.volume = 1f;
                 break;
             case 11://무명이
-                myAudio = noNameSound;
+                myAudio = namelessSound;
                 myAudio.volume = 0.6f;
                 break;
             case 12://히로디노

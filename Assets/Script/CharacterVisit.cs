@@ -49,65 +49,65 @@ public class CharacterVisit : MonoBehaviour //캐릭터 등장에 관한 스크�
             int cNum = 0;
             switch (canVisitCharacters[num])
             {
-                case "sBear":
+                case "small_1Bear":
                     cNum = 1;
-                    canVisitCharacters.Remove("sBear"); 
+                    canVisitCharacters.Remove("small_1Bear"); 
                     break;
-                case "sCar":
+                case "small_2Car":
                     cNum = 2;
-                    canVisitCharacters.Remove("sCar");
+                    canVisitCharacters.Remove("small_2Car");
                     break;
-                case "sBread":
+                case "small_3Bread":
                     cNum = 3;
-                    canVisitCharacters.Remove("sBread");
+                    canVisitCharacters.Remove("small_3Bread");
                     break;
-                case "sRabbit":
+                case "small_4Rabbit":
                     cNum = 4;
-                    canVisitCharacters.Remove("sRabbit");
+                    canVisitCharacters.Remove("small_4Rabbit");
                     break;
-                case "sDdorong":
+                case "small_5Ddorong":
                     cNum = 5;
-                    canVisitCharacters.Remove("sDdorong");
+                    canVisitCharacters.Remove("small_5Ddorong");
                     break;
-                case "sPrincess":
+                case "small_6Princess":
                     cNum = 6;
-                    canVisitCharacters.Remove("sPrincess");
+                    canVisitCharacters.Remove("small_6Princess");
                     break;
-                case "sFamilySeries":
+                case "small_7FamilySeries":
                     cNum = 7;
-                    canVisitCharacters.Remove("sFamilySeries");
+                    canVisitCharacters.Remove("small_7FamilySeries");
                     break;
-                case "sSunflower":
+                case "small_8SunFlower":
                     cNum = 8;
-                    canVisitCharacters.Remove("sSunflower");
+                    canVisitCharacters.Remove("small_8SunFlower");
                     break;
-                case "sDog":
+                case "small_9Dog":
                     cNum = 9;
-                    canVisitCharacters.Remove("sDog");
+                    canVisitCharacters.Remove("small_9Dog");
                     break;
-                case "sSoldier":
+                case "small_10Soldier":
                     cNum = 10;
-                    canVisitCharacters.Remove("sSoldier");
+                    canVisitCharacters.Remove("small_10Soldier");
                     break;
-                case "sNoName":
+                case "small_11Nameless":
                     cNum = 11;
-                    canVisitCharacters.Remove("sNoName");
+                    canVisitCharacters.Remove("small_11Nameless");
                     break;
-                case "sHero&sDinosour":
+                case "small_12Hero&13Dianosoour":
                     cNum = 12;//히로부터 등장
-                    canVisitCharacters.Remove("sHero&sDinosour");
+                    canVisitCharacters.Remove("small_12Hero&13Dianosoour");
                     break;
-                case "sPenguin":
+                case "small_14Penguin":
                     cNum = 14;
-                    canVisitCharacters.Remove("sPenguin");
+                    canVisitCharacters.Remove("small_14Penguin");
                     break;
-                case "sGrandfather":
+                case "small_15Grandfather":
                     cNum = 15;
-                    canVisitCharacters.Remove("sGrandfather");
+                    canVisitCharacters.Remove("small_15Grandfather");
                     break;
-                case "sPrincess&sSoldier":
+                case "small_6Princess&10Soldier":
                     cNum = 6;//도로시부터 등장
-                    canVisitCharacters.Remove("sPrincess&sSoldier");
+                    canVisitCharacters.Remove("small_6Princess&10Soldier");
                     break;
             }
             visitC = cNum;
@@ -132,63 +132,63 @@ public class CharacterVisit : MonoBehaviour //캐릭터 등장에 관한 스크�
             switch (rNum)
             {
                 case 1:
-                    canVisitCharacters.Add("sBear");
+                    canVisitCharacters.Add("small_1Bear");
                     //Debug.Log("도리 재방문 가능");
                     break;
                 case 2:
-                    canVisitCharacters.Add("sCar");
+                    canVisitCharacters.Add("small_2Car");
                     //Debug.Log("붕붕 재방문 가능");
                     break;
                 case 3:
-                    canVisitCharacters.Add("sBread");
+                    canVisitCharacters.Add("small_3Bread");
                     // Debug.Log("빵빵 재방문 가능");
                     break;
                 case 4:
-                    canVisitCharacters.Add("sRabbit");
+                    canVisitCharacters.Add("small_4Rabbit");
                     // Debug.Log("개나리 재방문 가능");
                     break;
                 case 5:
-                    canVisitCharacters.Add("sDdorong");
+                    canVisitCharacters.Add("small_5Ddorong");
                     // Debug.Log("또롱 재방문 가능");
                     break;
                 case 6:
-                    canVisitCharacters.Add("sPrincess");
+                    canVisitCharacters.Add("small_6Princess");
                     //Debug.Log("도로시 재방문 가능");
                     break;
                 case 7:
-                    canVisitCharacters.Add("sFamilySeries");
+                    canVisitCharacters.Add("small_7FamilySeries");
                     //Debug.Log("루루 재방문 가능");
                     break;
                 case 8:
-                    canVisitCharacters.Add("sSunflower");
+                    canVisitCharacters.Add("small_8SunFlower");
                     // Debug.Log("샌디 재방문 가능");
                     break;
                 case 9:
-                    canVisitCharacters.Add("sDog");
+                    canVisitCharacters.Add("small_9Dog");
                     // Debug.Log("친구 재방문 가능");
                     break;
                 case 10:
-                    canVisitCharacters.Add("sSoldier");
+                    canVisitCharacters.Add("small_10Soldier");
                     //Debug.Log("찰스 재방문 가능");
                     break;
                 case 11:
-                    canVisitCharacters.Add("sNoName");
+                    canVisitCharacters.Add("small_11Nameless");
                    // Debug.Log("무명이 재방문 가능");
                     break;
                 case 13://히로디노
-                    canVisitCharacters.Add("sHero&sDinosour");
+                    canVisitCharacters.Add("small_12Hero&13Dianosoour");
                    // Debug.Log("히로디노 재방문 가능");
                     break;
                 case 14:
-                    canVisitCharacters.Add("sPenguin");
+                    canVisitCharacters.Add("small_14Penguin");
                    // Debug.Log("닥터펭 재방문 가능");
                     break;
                 case 15:
-                    canVisitCharacters.Add("sGrandfather");
+                    canVisitCharacters.Add("small_15Grandfather");
                    // Debug.Log("롤렝드 재방문 가능");
                     break;
                 case 17:
-                    canVisitCharacters.Add("sPrincess&sSoldier");
+                    canVisitCharacters.Add("small_6Princess&10Soldier");
                   // Debug.Log("찰스도로시 재방문 가능");
                     break;
             }

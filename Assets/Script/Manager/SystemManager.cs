@@ -44,7 +44,7 @@ public class SystemManager : MonoBehaviour
     bool exchanging = false; //별->하트 간 전환 상태
 
     #region 이름 설정 관련 변수
-    public string inputName; //입력한 이름
+    string inputName; //입력한 이름
     public GameObject charNameSettingWindow;
     public GameObject babyNameSettingWindow;
     public GameObject inputField; // 입력창 (무명)
@@ -242,9 +242,9 @@ public class SystemManager : MonoBehaviour
         //Debug.Log("LoadDataInfo");
         try
         {
-            if (PlayerPrefs.HasKey("mainCount"))
+            if (PlayerPrefs.HasKey("MainCount"))
             {
-                mainCount = PlayerPrefs.GetInt("mainCount");                
+                mainCount = PlayerPrefs.GetInt("MainCount");                
                 CharacterAppear.instance.SetNextAppearNum(PlayerPrefs.GetInt("NextAppear"));
                 Menu.instance.reputation = PlayerPrefs.GetInt("Reputation");
                 Star.instance.SetStarNum(PlayerPrefs.GetInt("StarNum"));
@@ -253,8 +253,7 @@ public class SystemManager : MonoBehaviour
                 if (mainCount > 3)//붕붕이 등장 이후면
                 {
                    // Debug.Log("중요 데이터 로드");
-                    SmallFade.instance.SetCharacter(0);
-                    SmallFade.instance.Invoke("FadeIn", 1f); //제제 작은 캐릭터 페이드인                   
+                    SmallFade.instance.SetCharacter(0); //제제 작은 캐릭터 페이드인 
                     Dialogue.instance.LoadCharacterDCInfo();
                     VisitorNote.instance.LoadVisitorNoteInfo();
                     Menu.instance.LoadUnlockedMenuItemInfo();                 
@@ -317,8 +316,7 @@ public class SystemManager : MonoBehaviour
         switch (mainCount)
         {
             case 0: //제제의 튜토리얼 설명이 끝난 상황, 도리 등장 전
-                SmallFade.instance.SetCharacter(0); //제제 작은 캐릭터 설정
-                SmallFade.instance.Invoke("FadeIn", 1f); //제제 작은 캐릭터 페이드인
+                SmallFade.instance.SetCharacter(0); //제제 작은 캐릭터 설정&페이드인
                 BeginDialogue(1, 2f); // 2초 뒤 도리 등장
                 break;
             case 1: //도리 방문 후
@@ -330,7 +328,6 @@ public class SystemManager : MonoBehaviour
                 Menu.instance.Invoke("ReactionFadeIn", 1f); // 도리 리액션 말풍선 페이드인
                 UI_Assistant1.instance.panel7.SetActive(false);      
                 SmallFade.instance.SetCharacter(0); // 제제 자리로 돌아가기
-                SmallFade.instance.FadeIn();
                 Dialogue.instance.SetCharacterNum(2); //다음 등장 캐릭터 붕붕
                 Menu.instance.close.GetComponent<Button>().interactable = true; //메뉴 닫기 버튼 가능
                 BeginDialogue(2, 7f);
@@ -376,9 +373,8 @@ public class SystemManager : MonoBehaviour
         Popup.instance.OpenPopup();
 
         CharacterAppear.instance.SetNextAppearNum(mCount); //다음 등장 캐릭터 설정 
-        SmallFade.instance.SetCharacter(CharacterManager.instance.GetCharacterNum());
-        SmallFade.instance.Invoke("FadeIn", 1f);
-
+        SmallFade.instance.SetCharacter(CharacterManager.instance.GetCharacterNum()); // 작은 캐릭터 설정 후 페이드인까지
+        
         if (!CharacterVisit.instance.IsInvoking("RandomVisit"))
         {
             CharacterVisit.instance.Invoke("RandomVisit", 10f); //캐릭터 랜덤 방문
@@ -503,7 +499,7 @@ public class SystemManager : MonoBehaviour
     public void CheckEndingCondition() //모든 시나리오를 봤는지 확인
     {
         int sum = 0;
-        for(int i = 1; i <= Dialogue.instance.CharacterDC.Length; i++)
+        for(int i = 1; i < Dialogue.instance.CharacterDC.Length; i++)
         {
             sum += Dialogue.instance.CharacterDC[i];
         }
@@ -646,7 +642,6 @@ public class SystemManager : MonoBehaviour
         if(mainCount > 2)
         {
             BgmManager.instance.BGMFadeOut();
-
             if(endingState != 1)
                 BgmManager.instance.Invoke("PlayCafeBgm", 3f);
         }

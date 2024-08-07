@@ -61,7 +61,7 @@ public class Star : MonoBehaviour
             int idx = Random.Range(0, StarList.Count); //0~6까지
             StarList.Remove(StarList[idx]); //그 값을 삭제
             //Debug.Log("스타 삭제된 번호 " + n);
-            Debug.Log("스타 리스트 크기 " + StarList.Count);
+            //Debug.Log("스타 리스트 크기 " + StarList.Count);
             Stars[idx].SetActive(true); //해당 별 활성화
             Stars[idx].GetComponent<Button>().interactable = true; //한번만 클릭 가능
 

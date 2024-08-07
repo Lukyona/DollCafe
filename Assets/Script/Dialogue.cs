@@ -149,7 +149,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                 SoldierFirstDialogue();
                 break;
             case 11:
-                NoNameFirstDialogue();
+                NamelessFirstDialogue();
                 break;
             case 12:
                 HeroDinosourFirstDialogue();
@@ -202,7 +202,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                 SoldierNextDialogue();
                 break;
             case 11:
-                NoNameNextDialogue();
+                NamelessNextDialogue();
                 break;
             case 12:
                 HeroDinosourNextDialogue();
@@ -1183,7 +1183,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
         }
     }
 
-    void NoNameFirstDialogue() //무명이 첫 문장
+    void NamelessFirstDialogue() //무명이 첫 문장
     {
         switch (CharacterDC[11])
         {
@@ -1212,7 +1212,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
         }
     }
 
-    void NoNameNextDialogue() //무명이 첫 문장 제외한 대사
+    void NamelessNextDialogue() //무명이 첫 문장 제외한 대사
     {
         switch (CharacterDC[11])
         {

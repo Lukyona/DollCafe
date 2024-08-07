@@ -57,13 +57,18 @@ public class CharacterManager : MonoBehaviour
             {
                 if (BigCharacter[characterNum].transform.position == charOutPos) //캐릭터가 완전히 나갔을 때 대사 넘기기 가능
                 {
-                    DeactivateBigCharacter();
                     SystemManager.instance.SetCanTouch(true);
                 }
                 else //완전히 나가지 않았으면 대사 못 넘김
                 {
                     SystemManager.instance.SetCanTouch(false); // 터치로 대사 못 넘기게 함
                 }
+            }
+            else
+            {
+                if (BigCharacter[characterNum].transform.position == charOutPos) // 캐릭터가 완전히 화면 밖으로 나갔다면 비활성화
+                    DeactivateBigCharacter();
+
             }
         }
         else if (characteInOutState == 3)//군인 대화 이벤트, 공주 이동

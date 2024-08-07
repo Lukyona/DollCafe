@@ -636,13 +636,13 @@ public class Menu : MonoBehaviour
                     together1.Dequeue();
                 }
             }
-            else if (Dialogue.instance.CharacterDC[10] == 3 && (SmallFade.instance.SittingCharacter[num].name == "sPrincess" || SmallFade.instance.SittingCharacter[num].name == "sSoldier"))
+            else if (Dialogue.instance.CharacterDC[10] == 3 && (SmallFade.instance.SittingCharacter[num].name == "small_6Princess" || SmallFade.instance.SittingCharacter[num].name == "small_10Soldier"))
             {
-                if (SmallFade.instance.SittingCharacter[num].name == "sPrincess")
+                if (SmallFade.instance.SittingCharacter[num].name == "small_6Princess")
                 {
                     pOk = true;
                 }
-                if (SmallFade.instance.SittingCharacter[num].name == "sSoldier")
+                if (SmallFade.instance.SittingCharacter[num].name == "small_10Soldier")
                 {
                     sOk = true;
                 }
@@ -744,9 +744,9 @@ public class Menu : MonoBehaviour
         TableMenu[n].SetActive(false);
         if((CharacterAppear.instance.eventOn != 9 && CharacterAppear.instance.eventOn != 11 && CharacterAppear.instance.eventOn != 13 && CharacterAppear.instance.eventOn != 14 && CharacterAppear.instance.eventOn != 16)
             || (SmallFade.instance.SittingCharacter[n].name != "sDog" && CharacterAppear.instance.eventOn == 9)
-            || (SmallFade.instance.SittingCharacter[n].name != "sPrincess" && SmallFade.instance.SittingCharacter[n].name != "sSoldier" && CharacterAppear.instance.eventOn == 11)
+            || (SmallFade.instance.SittingCharacter[n].name != "small_6Princess" && SmallFade.instance.SittingCharacter[n].name != "small_10Soldier" && CharacterAppear.instance.eventOn == 11)
             || (SmallFade.instance.SittingCharacter[n].name != "sHero" && SmallFade.instance.SittingCharacter[n].name != "sDinosour" && CharacterAppear.instance.eventOn == 14)
-            || (SmallFade.instance.SittingCharacter[n].name != "sGrandfather" && CharacterAppear.instance.eventOn == 16))
+            || (SmallFade.instance.SittingCharacter[n].name != "small_15Grandfather" && CharacterAppear.instance.eventOn == 16))
         {//특정 캐릭터 친밀도 이벤트가 아닐 때, 혹은 특정 캐릭터 이벤트여도 해당 이벤트 캐릭터가 아닐 때
             seatInfo.Enqueue(n);//EachObject의 seatInfo 큐에 자리 정보 저장, 작은 캐릭터 페이드아웃 시 쓰임
             //Debug.Log("페이드아웃될 자리 " + n);

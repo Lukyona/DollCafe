@@ -20,7 +20,7 @@ public class SmallFade : MonoBehaviour //작은 캐릭터 스크립트
     public bool x2 = false; //찰스 도로시용
 
     public Image soldier2;//도로시와 같이 오는 찰스 이미지(오른쪽)
-    public Image noName2;
+    public Image nameless2;
 
     Vector3[] Seat = new Vector3[6]; //작은 캐릭터가 앉을 자리 배열
 
@@ -47,7 +47,6 @@ public class SmallFade : MonoBehaviour //작은 캐릭터 스크립트
         return SmallCharacter[cNum];
     }
 
-
     public void CantTouchCharacter(int n) //캐릭터 클릭 못하게
     {
         SmallCharacter[n].GetComponent<Button>().interactable = false;
@@ -62,9 +61,13 @@ public class SmallFade : MonoBehaviour //작은 캐릭터 스크립트
     {
         smallFadeIn.Enqueue(cNum);
 
-        if (cNum == 0) return; // 제제는 좌석에 앉지 않으므로 리턴
+        if (cNum == 0) // 제제는 좌석에 앉지 않으므로 페이드인
+        {
+            Invoke(nameof(FadeIn),1f);
+            return;
+        }
 
-        //Debug.Log("셋캐릭터 " + cNum);
+        Debug.Log("셋캐릭터 " + cNum);
         
         SetSeatPosition(cNum);
 
@@ -91,17 +94,16 @@ public class SmallFade : MonoBehaviour //작은 캐릭터 스크립트
             {
                 sn = CharacterSeat[11] + 1;
             }
-            else if((cNum == 10 && (Dialogue.instance.CharacterDC[10] == 3) || (CharacterAppear.instance.eventOn == 11 && UI_Assistant1.instance.getMenu == 1)))//찰스2이벤트 중 찰스 중간 페이드인
+            else if(cNum == 10 && (Dialogue.instance.CharacterDC[10] == 3) || (CharacterAppear.instance.eventOn == 11 && UI_Assistant1.instance.getMenu == 1))//찰스2이벤트 중 찰스 중간 페이드인
             {//도로시와 같이 오는 찰스
                 sn = CharacterSeat[5] + 1;
-
                 SmallCharacter[10].GetComponent<Image>().sprite = soldier2.sprite;//이미지 변경
             }          
-            else
+            else // 혼자인 캐릭터 자리 설정
             {
                 if (cNum == 11 && Dialogue.instance.CharacterDC[11] == 3)//무명이, 시나리오 다 봤을 때
                 {
-                    SmallCharacter[11].GetComponent<Image>().sprite = noName2.sprite;//이미지 변경
+                    SmallCharacter[11].GetComponent<Image>().sprite = nameless2.sprite;//이미지 변경
                 }
 
                 if (TableEmpty[0] == 0 && TableEmpty[1] == 0 && TableEmpty[2] == 0) //모든 테이블이 빈 상태면
@@ -236,8 +238,8 @@ public class SmallFade : MonoBehaviour //작은 캐릭터 스크립트
             n = cNum;
         }
 
-        if(SystemManager.instance.GetMainCount() > 3 && Dialogue.instance.CharacterDC[n] != 0 && CharacterAppear.instance.eventOn != 2)
-        {//붕붕이 친밀도 이벤트, 캐릭터 첫 등장 제외하고 메인카운트 4이상이면 바로 캐릭터 페이드인
+        if(SystemManager.instance.GetMainCount() > 2 && Dialogue.instance.CharacterDC[n] != 0 && CharacterAppear.instance.eventOn != 2)
+        {//붕붕이 친밀도 이벤트, 캐릭터 첫 등장 제외하고 메인카운트 3이상이면 바로 캐릭터 페이드인
             if(IsInvoking("FadeIn"))//다른 캐릭터 페이드인이 인보크 중이면
             {
                 Invoke("FadeIn", 0.7f); //0.7초 뒤 실행
@@ -425,7 +427,7 @@ public class SmallFade : MonoBehaviour //작은 캐릭터 스크립트
             if(Dialogue.instance.CharacterDC[10] != 3 || (Dialogue.instance.CharacterDC[10] == 3 && charName != "small_6Princess" && charName != "small_10Soldier"))
             {//찰스 이벤트가 다 안 끝났거나 끝났어도 찰스,도로시가 아니면
                 cleanSeat.Enqueue(n); //비워질 자리 큐에 정보 추가
-                // Debug.Log(n + "자리 클린시트큐에 추가됨");
+                 //Debug.Log(n + "자리 클린시트큐에 추가됨");
             }       
             else if(Dialogue.instance.CharacterDC[10] == 3 && (charName == "small_6Princess" || charName == "small_10Soldier"))
             {//찰스도로시 중 찰스나 도로시일 때
@@ -436,7 +438,7 @@ public class SmallFade : MonoBehaviour //작은 캐릭터 스크립트
                 }
             }
         }
-        else
+        else // 히로 혹은 디노일 경우
         {
             if (!x1)//값이 0이어야만 가능
             {
@@ -457,7 +459,7 @@ public class SmallFade : MonoBehaviour //작은 캐릭터 스크립트
         sFade = true;
         int v = smallFadeIn.Peek();
        
-        // Debug.Log("페이드인 될 캐릭터" + v);
+         Debug.Log("페이드인 될 캐릭터" + v);
 
         SmallCharacter[v].SetActive(true); //작은 캐릭터 활성화      
 
@@ -467,7 +469,7 @@ public class SmallFade : MonoBehaviour //작은 캐릭터 스크립트
            SmallCharacter[v].GetComponent<Image>().color = new Color(SmallCharacter[v].GetComponent<Image>().color.r,SmallCharacter[v].GetComponent<Image>().color.g,SmallCharacter[v].GetComponent<Image>().color.b,SmallCharacter[v].GetComponent<Image>().color.a + (Time.deltaTime / 0.8f));
             yield return null;
         }
-        //Debug.Log("페이드인 됨" + v);
+        Debug.Log("페이드인 됨" + v);
         
         smallFadeIn.Dequeue();
 
@@ -485,7 +487,7 @@ public class SmallFade : MonoBehaviour //작은 캐릭터 스크립트
             }
             if(CharacterAppear.instance.eventOn == 10 && v == 10)//찰스만 클릭가능
             {
-                CanClickCharacter(v);
+                CanClickCharacter(10);
             }
         }
 
