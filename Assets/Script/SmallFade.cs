@@ -42,6 +42,12 @@ public class SmallFade : MonoBehaviour //작은 캐릭터 스크립트
         Seat[5] = new Vector3(790,-230,0);
     }
 
+    public GameObject GetSmallCharacter(int cNum)
+    {
+        return SmallCharacter[cNum];
+    }
+
+
     public void CantTouchCharacter(int n) //캐릭터 클릭 못하게
     {
         SmallCharacter[n].GetComponent<Button>().interactable = false;
@@ -52,16 +58,6 @@ public class SmallFade : MonoBehaviour //작은 캐릭터 스크립트
         SmallCharacter[n].GetComponent<Button>().interactable = true;
     }
 
-    public void InvisibleCharacter()//튜토용, 캐릭터 안 보이게
-    {
-        SmallCharacter[1].SetActive(false);
-    }
-    public void VisibleCharacter()//튜토용, 캐릭터 보이게
-    {
-        SmallCharacter[1].SetActive(true);
-    }
-
-
     public void SetCharacter(int cNum) //작은 캐릭터 설정, cNum은 캐릭터 넘버
     {
         smallFadeIn.Enqueue(cNum);
@@ -71,6 +67,13 @@ public class SmallFade : MonoBehaviour //작은 캐릭터 스크립트
         //Debug.Log("셋캐릭터 " + cNum);
         
         SetSeatPosition(cNum);
+
+        if (SystemManager.instance.GetMainCount() == 2)//서빙 튜토리얼일 경우
+        {
+            //회색 패널보다 레이어가 뒤에 위치해있어서 터치가 안되므로 일시적으로 순서를 패널보다 앞쪽으로 배치한다
+            SmallCharacter[1].transform.parent.GetComponent<Canvas>().sortingOrder = 7;
+        }
+
         //Debug.Log("함수 SetCharacter");
     }
 
@@ -78,7 +81,7 @@ public class SmallFade : MonoBehaviour //작은 캐릭터 스크립트
     int sn = 0; //자리 넘버
     public void SetSeatPosition(int cNum) //앉을 자리 설정
     {
-        if (SystemManager.instance.GetMainCount() == 2)//튜토리얼일 경우
+        if (SystemManager.instance.GetMainCount() == 2)//서빙 튜토리얼일 경우
         {
             sn = 1; //2번째 자리, 첫번째 짝수자리, 첫번째 테이블 오른쪽 자리
         }
@@ -302,11 +305,6 @@ public class SmallFade : MonoBehaviour //작은 캐릭터 스크립트
         cleanSeat.Dequeue();
     }
 
-    public void AddToFadeOut(int cNum)
-    {
-        smallFOut.Enqueue(cNum);
-    }
-
     bool sFade = false;//페이드인 진행 상태 구분에 사용
     public void FadeIn() //작은 캐릭터 페이드인
     {
@@ -321,9 +319,14 @@ public class SmallFade : MonoBehaviour //작은 캐릭터 스크립트
         }     
     }
 
-    public void FadeOut() //작은 캐릭터 페이드아웃
+    public void FadeOutJeje()
     {
-     
+        smallFOut.Enqueue(0);
+        StartCoroutine(FadeToZero());//페이드아웃 시작         
+    }
+
+    public void FadeOut() //작은 캐릭터 페이드아웃
+    {   
         int n = Menu.instance.seatInfo.Peek();
         string charName = instance.SittingCharacter[n].name;
 
@@ -522,27 +525,26 @@ public class SmallFade : MonoBehaviour //작은 캐릭터 스크립트
         sFade = false;
     }
 
-    public int z;
     public IEnumerator FadeToZero()  // 알파값 1에서 0으로 전환
     {
-        z = smallFOut.Peek();
-        SmallCharacter[z].GetComponent<Image>().color = new Color(SmallCharacter[z].GetComponent<Image>().color.r, SmallCharacter[z].GetComponent<Image>().color.g, SmallCharacter[z].GetComponent<Image>().color.b, 1);
-        while (SmallCharacter[z].GetComponent<Image>().color.a > 0.0f)
+        int cNum = smallFOut.Peek();
+        SmallCharacter[cNum].GetComponent<Image>().color = new Color(SmallCharacter[cNum].GetComponent<Image>().color.r, SmallCharacter[cNum].GetComponent<Image>().color.g, SmallCharacter[cNum].GetComponent<Image>().color.b, 1);
+        while (SmallCharacter[cNum].GetComponent<Image>().color.a > 0.0f)
         {
-            SmallCharacter[z].GetComponent<Image>().color = new Color(SmallCharacter[z].GetComponent<Image>().color.r, SmallCharacter[z].GetComponent<Image>().color.g, SmallCharacter[z].GetComponent<Image>().color.b, SmallCharacter[z].GetComponent<Image>().color.a - (Time.deltaTime / 0.8f));
+            SmallCharacter[cNum].GetComponent<Image>().color = new Color(SmallCharacter[cNum].GetComponent<Image>().color.r, SmallCharacter[cNum].GetComponent<Image>().color.g, SmallCharacter[cNum].GetComponent<Image>().color.b, SmallCharacter[cNum].GetComponent<Image>().color.a - (Time.deltaTime / 0.8f));
             yield return null;
         }
-        //Debug.Log("페이드아웃 됨" + z);
+        //Debug.Log("페이드아웃 됨" + cNum);
         smallFOut.Dequeue();
 
-        if (z != 0) //제제가 아닐 경우
+        if (cNum != 0) //제제가 아닐 경우
         {
-            SmallCharacter[z].SetActive(false);//캐릭터 비활성화
-            if(z != 16 && z != 17)//아기 제외
+            SmallCharacter[cNum].SetActive(false);//캐릭터 비활성화
+            if(cNum != 16 && cNum != 17)//아기 제외
             {
-                CharacterSeat[z - 1] = 0;//자리 0으로 초기화
+                CharacterSeat[cNum - 1] = 0;//자리 0으로 초기화
 
-                if (z == 6 || z == 10)//도로시나 찰스일 경우
+                if (cNum == 6 || cNum == 10)//도로시나 찰스일 경우
                 {
                     if ((Dialogue.instance.CharacterDC[10] == 3 && !x2) || CharacterAppear.instance.eventOn == 11)//찰스 때만 실행, 도로시 땐 실행 안 함
                     {//찰스2이벤트 이후면 둘 중에 마지막에 나오는 캐릭터 때 실행 혹은 찰스2이벤트 중간의 찰스일 때
@@ -553,7 +555,7 @@ public class SmallFade : MonoBehaviour //작은 캐릭터 스크립트
                         CleanTable();
                     }
                 }
-                else if(z == 12 || z == 13)
+                else if(cNum == 12 || cNum == 13)
                 {
                     if (!x1)//히로디노는 마지막에 나오는 캐릭터 때 실행
                     {
@@ -573,7 +575,7 @@ public class SmallFade : MonoBehaviour //작은 캐릭터 스크립트
         
         if(CharacterAppear.instance.eventOn == 0 && UI_Assistant1.instance.getMenu == 2)//친밀도 이벤트가 끝났을 때
         {
-            switch(z)//해당 캐릭터에 따라서 주인공 아기 이미지 페이드아웃
+            switch(cNum)//해당 캐릭터에 따라서 주인공 아기 이미지 페이드아웃
             {
                 case 1:
                 case 3:
@@ -597,11 +599,11 @@ public class SmallFade : MonoBehaviour //작은 캐릭터 스크립트
                     Menu.instance.heroOk = false;
                     break;
             }
-            if(z != 12)//히로만 아니면
+            if(cNum != 12)//히로만 아니면
             {
                 UI_Assistant1.instance.getMenu = 0;
             }           
-            if(z != 12 && z != 13)//히로디노만 아니면
+            if(cNum != 12 && cNum != 13)//히로디노만 아니면
             {
                 StartCoroutine(FadeToZero());//페이드아웃 시작
             }            

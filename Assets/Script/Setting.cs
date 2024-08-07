@@ -53,12 +53,10 @@ public class Setting : MonoBehaviour
         settingWindowAnimator.SetTrigger("SettingDown"); //설정창 내려감
         settingButton.GetComponent<Button>().interactable = true; //설정 버튼 터치 가능
 
-            SystemManager.instance.SetCanTouch(true);// 터치 불가, 대사 넘기기 가능
 
-        if (UI_Assistant1.instance.talking && SystemManager.instance.CanTouch())//대화 중이고, 특정한 터치를 해야하는 경우가 아닐 때
+        if (!SystemManager.instance.IsNeedAction()) //특정한 터치를 해야하는 경우가 아닐 때
         {
-            SystemManager.instance.SetCanTouch(false);
-            SystemManager.instance.Invoke("SetCanTouchTrue", 1f);
+            SystemManager.instance.SetCanTouch(true,1f);
         }
 
         Menu.instance.UIOn = false;

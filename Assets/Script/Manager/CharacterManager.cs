@@ -30,8 +30,6 @@ public class CharacterManager : MonoBehaviour
 
 
 
-
-
     private void Awake()
     {
         if (instance == null)

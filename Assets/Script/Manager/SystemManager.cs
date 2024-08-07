@@ -18,6 +18,8 @@ public class SystemManager : MonoBehaviour
 
     bool canTouch = true;
 
+    bool needAction = false;
+
     #region 팁 관련 변수 
     public GameObject bangBubble;
     public GameObject tipMessageWindow;
@@ -42,7 +44,7 @@ public class SystemManager : MonoBehaviour
     bool exchanging = false; //별->하트 간 전환 상태
 
     #region 이름 설정 관련 변수
-    string inputName; //입력한 이름
+    public string inputName; //입력한 이름
     public GameObject charNameSettingWindow;
     public GameObject babyNameSettingWindow;
     public GameObject inputField; // 입력창 (무명)
@@ -93,7 +95,7 @@ public class SystemManager : MonoBehaviour
         if (mainCount == 0) // 초기화했거나 게임을 처음 시작하는 상태
         {
             CantTouchUI(); // 설정 제외한 버튼들 모두 터치 불가
-            CharacterManager.instance.CharacterIn(0);
+            BeginDialogue(0);
         }   
         if (mainCount > 3)//붕붕이 등장 이후면
         {
@@ -317,7 +319,7 @@ public class SystemManager : MonoBehaviour
             case 0: //제제의 튜토리얼 설명이 끝난 상황, 도리 등장 전
                 SmallFade.instance.SetCharacter(0); //제제 작은 캐릭터 설정
                 SmallFade.instance.Invoke("FadeIn", 1f); //제제 작은 캐릭터 페이드인
-                Invoke(nameof(BeginDialogue), 2f); // 2초 뒤 도리 등장
+                BeginDialogue(1, 2f); // 2초 뒤 도리 등장
                 break;
             case 1: //도리 방문 후
                 Popup.instance.SetPopupCharacter(CharacterManager.instance.GetBigCharacter(1)); //새 캐릭터 도리 팝업 세팅
@@ -331,7 +333,7 @@ public class SystemManager : MonoBehaviour
                 SmallFade.instance.FadeIn();
                 Dialogue.instance.SetCharacterNum(2); //다음 등장 캐릭터 붕붕
                 Menu.instance.close.GetComponent<Button>().interactable = true; //메뉴 닫기 버튼 가능
-                Invoke(nameof(BeginDialogue), 7f);
+                BeginDialogue(2, 7f);
                 break;
             case 3: //붕붕이 등장 후
                 AfterFirstMeet(mainCount);
@@ -587,8 +589,7 @@ public class SystemManager : MonoBehaviour
             CantTouchUI();
             jejeBubble.gameObject.SetActive(false);
             bangBubble.gameObject.SetActive(false);
-            SmallFade.instance.AddToFadeOut(0);
-            SmallFade.instance.FadeOut(); //작은 제제 페이드아웃
+            SmallFade.instance.FadeOutJeje();
             SmallFade.instance.SmallCharacter[0].GetComponent<Button>().interactable = false;//제제 클릭 불가
             BeginDialogue(0);
         }
@@ -599,26 +600,39 @@ public class SystemManager : MonoBehaviour
     }
 
     #region 대화 관련 함수
-    public void BeginDialogue(int cNum = -1)
+    public void BeginDialogue(int cNum = -1, float time = 0f)
     {       
         if (BgmManager.instance.IsInvoking("PlayCafeBgm")) //카페 배경음이 invoke중이면
         {
             BgmManager.instance.CancelInvoke("PlayCafeBgm");//invoke 취소
         }
-        BgmManager.instance.StopBgm();
         if(mainCount == 1) cNum = 1;
         if(mainCount == 3) cNum = 2;
-
-        BgmManager.instance.PlayCharacterBGM(cNum);//캐릭터 배경음악 재생   
 
         Dialogue.instance.SetCharacterNum(cNum);
         Dialogue.instance.SetIsBabyText(false);
         if(cNum == 14 && mainCount == 15)
             Dialogue.instance.SetIsBabyText(true);
 
+        StartCoroutine(DialogueCoroutine(cNum, time));
+    }
+
+    IEnumerator DialogueCoroutine(int cNum, float time)
+    {
+        if(time != 0f)
+        {
+            yield return new WaitForSeconds(time);
+        }
+        if(mainCount > 2)
+        {
+            BgmManager.instance.StopBgm();
+            BgmManager.instance.PlayCharacterBGM(cNum);//캐릭터 배경음악 재생 
+        }
         CharacterManager.instance.CharacterIn(cNum); 
         panel.SetActive(true); //캐릭터가 들어옴과 동시에 회색 패널 작동
         UpTextBox(); // 대화창 등장
+
+        yield break;
     }
 
     public void EndDialogue(int cNum = -1) //캐릭터가 화면 밖으로 나가도록
@@ -629,9 +643,13 @@ public class SystemManager : MonoBehaviour
         panel.SetActive(false); //회색 패널 해제
         Invoke(nameof(DeactivateTextBox), 0.4f);
 
-        BgmManager.instance.BGMFadeOut();
-        if(endingState != 1)
-            BgmManager.instance.Invoke("PlayCafeBgm", 3f);
+        if(mainCount > 2)
+        {
+            BgmManager.instance.BGMFadeOut();
+
+            if(endingState != 1)
+                BgmManager.instance.Invoke("PlayCafeBgm", 3f);
+        }
     }
 
     public void UpTextBox()
@@ -646,7 +664,7 @@ public class SystemManager : MonoBehaviour
         }
 
         TBAnimator.SetTrigger("TextBoxUp");
-        if(mainCount == 2)
+        if(mainCount == 2 && UI_Assistant1.instance.GetCurrentDialogueCount() != 0)
             UI_Assistant1.instance.Invoke("OpenDialogue2", 0.1f); //다음 대사
         else
             UI_Assistant1.instance.OpenDialogue(); //대화 시작, 대사 띄움
@@ -977,7 +995,8 @@ public class SystemManager : MonoBehaviour
     {
         if(mainCount == 0)
         {
-            PlayerPrefs.SetString("BabyName", inputName); //아기 이름 저장                             
+            PlayerPrefs.SetString("BabyName", inputName); //아기 이름 저장   
+            Dialogue.instance.SetBabyName(inputName);                          
             babyNameSettingWindow.SetActive(false);//아기 이름 설정창 비활성화          
         }
         else
@@ -991,7 +1010,8 @@ public class SystemManager : MonoBehaviour
         nameCheckingWindow.SetActive(false);//이름 확인창 비활성화
         PlayerPrefs.Save();
 
-        Invoke("SetCanTouchTrue", 1f);
+        SetCanTouch(true, 1f);
+        SetNeedAction(false);
     }
 
     public void UnconfirmName() // 이름 미확정
@@ -1097,19 +1117,26 @@ public class SystemManager : MonoBehaviour
     #endregion
 
     #region 터치 관련 함수
-    public void SetCanTouch(bool value)
+    public void SetCanTouch(bool value, float time = 0f)
     {
+        if(time == 0f)
+            canTouch = value;
+        else
+        {
+            StartCoroutine(UpdateTouchState(value, time));
+        }
+    }
+
+    IEnumerator UpdateTouchState(bool value, float time)
+    {
+        yield return new WaitForSeconds(time);
         canTouch = value;
+        yield break; //코루틴 종료
     }
 
     public bool CanTouch()
     {
         return canTouch;
-    }
-
-    public void SetCanTouchTrue() // Invoke용
-    {
-        canTouch = true;
     }
 
     public void CanTouchUI() // 버튼들 터치 가능, 설정 버튼 제외
@@ -1124,6 +1151,16 @@ public class SystemManager : MonoBehaviour
         menuButton.GetComponent<Button>().interactable = false;
         visitorNoteButton.GetComponent<Button>().interactable = false;
         plusHPButton.GetComponent<Button>().interactable = false;
+    }
+
+    public void SetNeedAction(bool value)
+    {
+        needAction = value;
+    }
+
+    public bool IsNeedAction()
+    {
+        return needAction;
     }
 
     #endregion

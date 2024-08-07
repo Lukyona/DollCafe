@@ -146,12 +146,14 @@ public class Menu : MonoBehaviour
 
             if (SystemManager.instance.GetMainCount() == 2) //서빙 튜토리얼일 경우
             {
+                // 레이어 순서 원래대로 변경
+                SmallFade.instance.GetSmallCharacter(1).transform.parent.GetComponent<Canvas>().sortingOrder = 2;
+                MenuHint.instance.GetHintBubble(1).transform.parent.GetComponent<Canvas>().sortingOrder = 4;
+
                 close.GetComponent<Button>().interactable = false; //닫기 버튼 불가
                 UI_Assistant1.instance.panel6.SetActive(false); //패널 없애고
-                //SmallFade.instance.InvisibleCharacter(); //캐릭터와 메뉴 힌트 말풍선 안 보이게, 보이게 하면 메뉴판 위로 겹쳐짐
                 UI_Assistant1.instance.OpenDialogue2(); //다음 대사 나타남
                 Invoke("CanClickMenu", 2f);
-                //SystemManager.instance.Invoke("TutorialDownBox", 1.3f);
             }
             else
             {
@@ -272,7 +274,7 @@ public class Menu : MonoBehaviour
                     //SmallFade.instance.Invoke("VisibleCharacter",0.3f); //캐릭터 다시 보이게 하고
                                                                         // SystemManager.instance.TutorialUpBox();
                     UI_Assistant1.instance.Invoke("OpenDialogue2",0.5f);
-                    SystemManager.instance.Invoke("SetCanTouchTrue", 1.5f);
+                    SystemManager.instance.SetCanTouch(true,1.5f);
                     VisitorNote.instance.IncreaseFrinedshipGauge(cNum);
                 }
                 else

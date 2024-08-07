@@ -40,6 +40,11 @@ public class MenuHint : MonoBehaviour
         }
     }
 
+    public GameObject GetHintBubble(int num)
+    {
+        return HintBubble[num];
+    }
+
     public void HintFadeOut(int num)//메뉴힌트 페이드아웃
     {
         StartCoroutine(FadeToZero(num)); //페이드아웃 시작
@@ -397,6 +402,7 @@ public class MenuHint : MonoBehaviour
         {
             SystemManager.instance.UpTextBox();
             CantClickMHB();
+            HintBubble[m].transform.parent.GetComponent<Canvas>().sortingOrder = 7;
         }
 
         HintBubble[m].SetActive(true);

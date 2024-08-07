@@ -45,7 +45,6 @@ public class TouchableObject : MonoBehaviour //터치된 오브젝트 구분, �
         cNum = GetNumber(idx, gameObject.name); // 캐릭터 오브젝트의 숫자 추출
 
         sNum = SmallFade.instance.CharacterSeat[cNum - 1];
-
         SmallFade.instance.CantTouchCharacter(cNum); //캐릭터 터치 불가, 중복 터치 방지
 
         MenuHint.instance.SetMHB(sNum);

@@ -25,7 +25,8 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
 
     void Update() //화면의 아무 곳이나 터치하면 다음 대사 나타남
     {
-        if (UI_Assistant1.instance.talking && SystemManager.instance.CanTouch() && Input.GetMouseButtonDown(0))
+        if (UI_Assistant1.instance.talking && SystemManager.instance.CanTouch() 
+            && !SystemManager.instance.IsNeedAction() && Input.GetMouseButtonDown(0))
         {
             UI_Assistant1.instance.OpenDialogue2();
         }
@@ -282,7 +283,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                 messegeArray = new string[] {
                     "서빙은 어떻게 하는 건지 알려줄게!",
                     "먼저 손님을 터치하면 손님이 원하는 메뉴에 대한 힌트를 얻을 수 있어.",
-                    "손님을 터치해보자!",
+                    "손님을 터치해보자!",//2
                     "이 손님은 오렌지가 들어간 음료를\n마시고 싶어하는 거 같은데?",
                     "말풍선을 터치하면 어떤 것을 서빙할 지\n고를 수 있도록 메뉴판이 등장해.",
                     "말풍선을 터치해보자!",

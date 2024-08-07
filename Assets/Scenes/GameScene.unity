@@ -42239,7 +42239,6 @@ MonoBehaviour:
   x2: 0
   soldier2: {fileID: 991923546}
   noName2: {fileID: 194634141}
-  z: 0
 --- !u!114 &1538706517
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -42691,6 +42690,7 @@ MonoBehaviour:
   jejeBubbleAnimator: {fileID: 108787062}
   jejeText: {fileID: 403727727}
   exchangeMessageWindow: {fileID: 1336604589}
+  inputName: 
   charNameSettingWindow: {fileID: 2104357760}
   babyNameSettingWindow: {fileID: 104692889}
   inputField: {fileID: 1746894583}
@@ -42759,7 +42759,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7724cc1532203b34bbc3499d6c40524c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  count: 0
   CName: {fileID: 1221228894}
   panel: {fileID: 962486055}
   panel1: {fileID: 297233652}

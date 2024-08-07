@@ -50,8 +50,7 @@ public class Popup : MonoBehaviour // 새로운 손님 팝업
         if(SystemManager.instance.GetMainCount() == 2) //도리 방문, 첫 손님
         {
             //서빙 튜토리얼 실행
-            SmallFade.instance.AddToFadeOut(0);
-            SmallFade.instance.Invoke("FadeOut",0.7f);
+            SmallFade.instance.FadeOutJeje();
             SystemManager.instance.BeginDialogue(0);
         }
     }
