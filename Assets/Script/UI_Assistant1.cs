@@ -628,10 +628,6 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             CharacterManager.instance.CharacterFaceList[13].face[3].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
                             Dialogue.instance.SetIsBabyText(true);
-                            if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
-                            {
-                                SmallFade.instance.SetCharacter(3);
-                            }
                             break;
                         case 7:
                             Dialogue.instance.SetIsBabyText(false);
@@ -790,11 +786,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(true);
                             break;
                         case 8:
-                            Dialogue.instance.SetIsBabyText(false);
-                            if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
-                            {
-                                SmallFade.instance.SetCharacter(4);
-                            }                          
+                            Dialogue.instance.SetIsBabyText(false);                    
                             break;
                         case 11:
                             CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(false);
@@ -906,10 +898,6 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             break;
                         case 10:
                             Dialogue.instance.SetIsBabyText(false);
-                            if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
-                            {
-                                SmallFade.instance.SetCharacter(5);
-                            }
                             break;
                     }
                 }
@@ -991,10 +979,6 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             break;
                         case 10:
                             Dialogue.instance.SetIsBabyText(false);
-                            if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
-                            {
-                                SmallFade.instance.SetCharacter(6);
-                            }
                             break;
                         case 12:
                             CharacterManager.instance.CharacterFaceList[13].face[3].SetActive(false);
@@ -1123,10 +1107,6 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             break;
                         case 7:
                             Dialogue.instance.SetIsBabyText(false);
-                            if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
-                            {
-                                SmallFade.instance.SetCharacter(7);
-                            }
                             break;
                         case 10:
                             CharacterManager.instance.CharacterFaceList[13].face[3].SetActive(false);
@@ -1303,10 +1283,6 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             break;
                         case 8:
                             Dialogue.instance.SetIsBabyText(false);
-                            if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
-                            {
-                                SmallFade.instance.SetCharacter(8);
-                            }
                             break;
                         case 10:
                             CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(false);
@@ -1440,10 +1416,6 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             break;
                         case 10:
                             Dialogue.instance.SetIsBabyText(false);
-                            if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
-                            {
-                                SmallFade.instance.SetCharacter(9);
-                            }
                             break;
                         case 12:
                             CharacterManager.instance.CharacterFaceList[13].face[3].SetActive(false);
@@ -1561,10 +1533,6 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[3].SetActive(true);
                             Dialogue.instance.SetIsBabyText(true);
-                            if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
-                            {
-                                SmallFade.instance.SetCharacter(10);
-                            }
                             break;
                         case 7:
                             CharacterManager.instance.CharacterFaceList[13].face[3].SetActive(false);
@@ -1856,10 +1824,6 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(true);
                             Dialogue.instance.SetIsBabyText(true);
-                            if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
-                            {
-                                SmallFade.instance.SetCharacter(11);
-                            }
                             break;
                         case 10:
                             CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(false);
@@ -2186,10 +2150,6 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             break;
                         case 15:
                             Dialogue.instance.SetIsBabyText(true);
-                            if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
-                            {
-                                SmallFade.instance.SetCharacter(12);
-                            }
                             break;
                         case 16:
                             CharacterManager.instance.CharacterFaceList[13].face[3].SetActive(false);
@@ -2407,10 +2367,6 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
                             Dialogue.instance.SetIsBabyText(true);
-                            if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
-                            {
-                                SmallFade.instance.SetCharacter(14);
-                            }
                             break;
                         case 18:
                             CharacterManager.instance.CharacterFaceList[11].face[0].SetActive(false);
@@ -2534,8 +2490,6 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                     }
                 }
                 break;
-
-
             case 14: //롤렝드
                 if (Dialogue.instance.CharacterDC[14] == 0)
                 {
@@ -2615,10 +2569,6 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             break;
                         case 21:
                             Dialogue.instance.SetIsBabyText(true);
-                            if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
-                            {
-                                SmallFade.instance.SetCharacter(15);
-                            }
                             break;
                         case 22:
                             CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(false);

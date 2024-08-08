@@ -78,6 +78,12 @@ public class Setting : MonoBehaviour
         noResetButton.interactable = false;        
         isReset = true;
 
+        DeleteUserInfo();
+        SceneChanger.instance.FadeToScene(1); // 시작씬으로 이동
+    }
+
+    public void DeleteUserInfo()
+    {
         if(PlayerPrefs.GetInt("PurchaseCount") == 0)//결제한 것이 없으면 데이터 모두 삭제
         {
             PlayerPrefs.DeleteAll();
@@ -110,9 +116,7 @@ public class Setting : MonoBehaviour
             PlayerPrefs.DeleteKey("BgmOnOff");
             PlayerPrefs.DeleteKey("SEOnOff");
         }
-        SceneChanger.instance.FadeToScene(1); // 시작씬으로 이동
     }
-
     public void CancelReset() //초기화 취소버튼 눌렀을 때
     {
         SEManager.instance.PlayUIClickSound2();

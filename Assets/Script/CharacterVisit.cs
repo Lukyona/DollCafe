@@ -26,7 +26,7 @@ public class CharacterVisit : MonoBehaviour //캐릭터 등장에 관한 스크�
         }
         if(canVisitCharacters.Count == 0) //현재 방문 가능한 캐릭터가 없을 시 3초 뒤 이 함수 재실행
         {
-            if(!CharacterVisit.instance.IsInvoking("RandomVisit"))
+            if(!IsInvoking("RandomVisit"))
             {
                 Invoke("RandomVisit", 3f);
               //  Debug.Log("수동 방문 가능 캐릭터 없음, 3초 뒤");
@@ -35,7 +35,7 @@ public class CharacterVisit : MonoBehaviour //캐릭터 등장에 관한 스크�
         }
         if (SmallFade.instance.TableEmpty[0] == 1 && SmallFade.instance.TableEmpty[1] == 1 && SmallFade.instance.TableEmpty[2] == 1) //세 테이블에 모두 손님이 있으면
         {
-            if (!CharacterVisit.instance.IsInvoking("RandomVisit"))
+            if (!IsInvoking("RandomVisit"))
             {
                 Invoke("RandomVisit", 5f);
               //  Debug.Log("수동 빈 테이블 없음, 5초 뒤");

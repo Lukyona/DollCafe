@@ -51,7 +51,7 @@ public class Popup : MonoBehaviour // 새로운 손님 팝업
         {
             //서빙 튜토리얼 실행
             SmallFade.instance.FadeOutJeje();
-            SystemManager.instance.BeginDialogue(0);
+            SystemManager.instance.BeginDialogue(0, 1f);
         }
     }
 

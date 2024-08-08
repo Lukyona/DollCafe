@@ -67,7 +67,7 @@ public class SmallFade : MonoBehaviour //작은 캐릭터 스크립트
             return;
         }
 
-        Debug.Log("셋캐릭터 " + cNum);
+        //Debug.Log("셋캐릭터 " + cNum);
         
         SetSeatPosition(cNum);
 
@@ -240,9 +240,9 @@ public class SmallFade : MonoBehaviour //작은 캐릭터 스크립트
 
         if(SystemManager.instance.GetMainCount() > 2 && Dialogue.instance.CharacterDC[n] != 0 && CharacterAppear.instance.eventOn != 2)
         {//붕붕이 친밀도 이벤트, 캐릭터 첫 등장 제외하고 메인카운트 3이상이면 바로 캐릭터 페이드인
-            if(IsInvoking("FadeIn"))//다른 캐릭터 페이드인이 인보크 중이면
+            if(IsInvoking(nameof(FadeIn)))//다른 캐릭터 페이드인이 인보크 중이면
             {
-                Invoke("FadeIn", 0.7f); //0.7초 뒤 실행
+                Invoke(nameof(FadeIn), 0.7f); //0.7초 뒤 실행
             }
             else
             {
@@ -341,11 +341,7 @@ public class SmallFade : MonoBehaviour //작은 캐릭터 스크립트
         {
             case 6: // princess 도로시
                 smallFOut.Enqueue(6);
-                if (Dialogue.instance.CharacterDC[10] != 3)//찰스2이벤트 이후가 아니면
-                {
-                    CharacterVisit.instance.revisit.Enqueue(6);
-                }
-                else if(Dialogue.instance.CharacterDC[10] == 3)//이벤트 후면
+                if(Dialogue.instance.CharacterDC[10] == 3)//이벤트 후면
                 {
                     if (!x2)
                     {
@@ -372,10 +368,6 @@ public class SmallFade : MonoBehaviour //작은 캐릭터 스크립트
                         {
                             x2 = false;
                         }    
-                    }
-                    else
-                    {
-                        CharacterVisit.instance.revisit.Enqueue(10);
                     }
                     // Debug.Log("페이드아웃 될 캐릭터 찰스");
                 }
@@ -404,7 +396,6 @@ public class SmallFade : MonoBehaviour //작은 캐릭터 스크립트
                 smallFOut.Enqueue(13); 
                 //  Debug.Log("페이드아웃 될 캐릭터 디노");
                 break;
-
             default: // 오브젝트 이름에 _이 들어가지 않아 idx가 -1인 경우 or 별다른 처리가 필요없는 캐릭터일 경우
                 if(charName == "sBabyLeft")
                 {
@@ -417,7 +408,6 @@ public class SmallFade : MonoBehaviour //작은 캐릭터 스크립트
                 else
                 {
                     smallFOut.Enqueue(idx);
-                    CharacterVisit.instance.revisit.Enqueue(idx);
                 }
                 break;
         }
@@ -434,7 +424,6 @@ public class SmallFade : MonoBehaviour //작은 캐릭터 스크립트
                 if (!x2)//값이 0이어야만 가능
                 {
                     cleanSeat.Enqueue(n); //비워질 자리 큐에 정보 추가
-                    CharacterVisit.instance.revisit.Enqueue(17);
                 }
             }
         }
@@ -444,7 +433,6 @@ public class SmallFade : MonoBehaviour //작은 캐릭터 스크립트
             {
                 cleanSeat.Enqueue(n); //비워질 자리 큐에 정보 추가
                 //  Debug.Log(n + "자리 클린시트큐에 추가됨");
-                CharacterVisit.instance.revisit.Enqueue(13);
             }
         }       
         Menu.instance.seatInfo.Dequeue();
@@ -459,7 +447,7 @@ public class SmallFade : MonoBehaviour //작은 캐릭터 스크립트
         sFade = true;
         int v = smallFadeIn.Peek();
        
-         Debug.Log("페이드인 될 캐릭터" + v);
+        //Debug.Log("페이드인 될 캐릭터" + v);
 
         SmallCharacter[v].SetActive(true); //작은 캐릭터 활성화      
 
@@ -469,7 +457,7 @@ public class SmallFade : MonoBehaviour //작은 캐릭터 스크립트
            SmallCharacter[v].GetComponent<Image>().color = new Color(SmallCharacter[v].GetComponent<Image>().color.r,SmallCharacter[v].GetComponent<Image>().color.g,SmallCharacter[v].GetComponent<Image>().color.b,SmallCharacter[v].GetComponent<Image>().color.a + (Time.deltaTime / 0.8f));
             yield return null;
         }
-        Debug.Log("페이드인 됨" + v);
+        //Debug.Log("페이드인 됨" + v);
         
         smallFadeIn.Dequeue();
 
@@ -525,6 +513,8 @@ public class SmallFade : MonoBehaviour //작은 캐릭터 스크립트
             }
         }
         sFade = false;
+
+        yield break;
     }
 
     public IEnumerator FadeToZero()  // 알파값 1에서 0으로 전환
@@ -542,19 +532,24 @@ public class SmallFade : MonoBehaviour //작은 캐릭터 스크립트
         if (cNum != 0) //제제가 아닐 경우
         {
             SmallCharacter[cNum].SetActive(false);//캐릭터 비활성화
+
             if(cNum != 16 && cNum != 17)//아기 제외
             {
                 CharacterSeat[cNum - 1] = 0;//자리 0으로 초기화
 
                 if (cNum == 6 || cNum == 10)//도로시나 찰스일 경우
                 {
-                    if ((Dialogue.instance.CharacterDC[10] == 3 && !x2) || CharacterAppear.instance.eventOn == 11)//찰스 때만 실행, 도로시 땐 실행 안 함
-                    {//찰스2이벤트 이후면 둘 중에 마지막에 나오는 캐릭터 때 실행 혹은 찰스2이벤트 중간의 찰스일 때
+                    if (Dialogue.instance.CharacterDC[10] == 3 && !x2)
+                    {//찰스2이벤트 이후면 둘 중에 마지막에 사라지는 캐릭터 때 실행
                         CleanTable();
+                        CharacterVisit.instance.revisit.Enqueue(17);
+
                     }
                     else if (Dialogue.instance.CharacterDC[10] != 3)//찰스2 이벤트 전이면 다른 캐릭터와 똑같이 실행
                     {
                         CleanTable();
+                        if(CharacterAppear.instance.eventOn != 11)
+                            CharacterVisit.instance.revisit.Enqueue(cNum);
                     }
                 }
                 else if(cNum == 12 || cNum == 13)
@@ -562,11 +557,13 @@ public class SmallFade : MonoBehaviour //작은 캐릭터 스크립트
                     if (!x1)//히로디노는 마지막에 나오는 캐릭터 때 실행
                     {
                         CleanTable();
+                        CharacterVisit.instance.revisit.Enqueue(13);
                     }
                 }
                 else //혼자인 캐릭터
                 {
                     CleanTable();
+                    CharacterVisit.instance.revisit.Enqueue(cNum);
                 }           
             }
             if (smallFOut.Count != 0)

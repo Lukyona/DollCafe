@@ -153,7 +153,7 @@ public class Menu : MonoBehaviour
                 close.GetComponent<Button>().interactable = false; //닫기 버튼 불가
                 UI_Assistant1.instance.panel6.SetActive(false); //패널 없애고
                 UI_Assistant1.instance.OpenDialogue2(); //다음 대사 나타남
-                Invoke("CanClickMenu", 2f);
+                Invoke("CanClickMenu", 1f);
             }
             else
             {
