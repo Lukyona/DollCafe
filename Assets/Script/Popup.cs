@@ -21,7 +21,7 @@ public class Popup : MonoBehaviour // 새로운 손님 팝업
 
     public void OpenPopup() //팝업 열림
     {
-        Menu.instance.UIOn = true;
+        SystemManager.instance.SetUIOpen(true);
         SEManager.instance.PlayPopupSound(); //효과음
 
         if (CharacterAppear.instance.eventOn != 0 || VisitorNote.instance.evRP != 0) // 스페셜 메뉴 팝업인 경우
@@ -42,7 +42,7 @@ public class Popup : MonoBehaviour // 새로운 손님 팝업
 
     public void ClosePopup() //팝업 닫기 버튼 눌렀을 때
     {
-        Menu.instance.UIOn = false;
+        SystemManager.instance.SetUIOpen(false);
         SEManager.instance.PlayUICloseSound(); //효과음
         popupAnimator.SetTrigger("PopupClose"); //닫히는 애니메이션 작동
         Invoke("PopupNotActive", 0.3f); //팝업 비활성화

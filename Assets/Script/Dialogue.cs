@@ -42,7 +42,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
         babyName = name;
     }
 
-    public void SetIsBabyText(bool value)
+    public void SetBabyText(bool value)
     {
         isBabyText = value;
     }
@@ -58,11 +58,11 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
             characterNum = cNum;
 
         ++CharacterDC[characterNum];
+        SaveCharacterDCInfo();
     }
 
-    public bool SaveCharacterDCInfo()//캐릭터 대화 진행 정보 저장
+    public void SaveCharacterDCInfo()//캐릭터 대화 진행 정보 저장
     {
-        bool result = false;
         try
         {
             string strArr = ""; // 문자열 생성
@@ -78,13 +78,11 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
 
             PlayerPrefs.SetString("CharacterDC", strArr); // PlyerPrefs에 문자열 형태로 저장
             PlayerPrefs.Save(); //세이브
-            result = true;
         }
         catch (System.Exception e)
         {
             Debug.LogError("SaveCharacterDCInfo Failed (" + e.Message + ")");
         }
-        return result;
     }
 
     public bool LoadCharacterDCInfo() //캐릭터 대화 진행 정보 불러오기

@@ -20,6 +20,8 @@ public class SystemManager : MonoBehaviour
 
     bool needAction = false;
 
+    bool isUIOpen = false; // 메뉴판, 손님노트, 팁 노트, 설정창, 팝업창 등이 올라온 상태인지 구분
+
     #region 팁 관련 변수 
     public GameObject bangBubble;
     public GameObject tipMessageWindow;
@@ -127,7 +129,7 @@ public class SystemManager : MonoBehaviour
 
         if(!bangBubble.gameObject.activeSelf && !jejeBubble.gameObject.activeSelf) // 제제 말풍선 + 느낌표 말풍선이 나타나있지 않을 때
         {
-            if (tipNum == 3 && Menu.instance.menu8Open) // 팁 다 봄 + 마지막 메뉴 잠금 해제 상태
+            if (tipNum == 3 && Menu.instance.IsMenuOpen(8)) // 팁 다 봄 + 마지막 메뉴 잠금 해제 상태
             {
                 if (Star.instance.GetCurrentStarNum() >= 5 && HPManager.instance.GetCurrentHP() != HPManager.instance.GetMaxHP()) // 별 5개 이상 + 최대 체력 아닐 때
                 {
@@ -135,7 +137,7 @@ public class SystemManager : MonoBehaviour
                 }
             }
         }  
-        else if(bangBubble.gameObject.activeSelf && tipNum == 3 && Menu.instance.menu8Open) //느낌표 말풍선 올라와있고 팁넘버 3 + 마지막 메뉴 잠금 해제 완료
+        else if(bangBubble.gameObject.activeSelf && tipNum == 3 && Menu.instance.IsMenuOpen(8)) //느낌표 말풍선 올라와있고 팁넘버 3 + 마지막 메뉴 잠금 해제 완료
         {
             if(HPManager.instance.GetCurrentHP() == HPManager.instance.GetMaxHP()) //현재 체력이 최대치면 느낌표 말풍선 없애기, 체력으로 교환할 필요가 없기 때문
             {
@@ -153,6 +155,16 @@ public class SystemManager : MonoBehaviour
     public int GetMainCount()
     {
         return mainCount;
+    }
+
+    public void SetUIOpen(bool value)
+    {
+        isUIOpen = value;
+    }
+
+    public bool IsUIOpen()
+    {
+        return isUIOpen;
     }
 
     public void OnApplicationFocus(bool value)
@@ -217,7 +229,7 @@ public class SystemManager : MonoBehaviour
         {
             PlayerPrefs.SetInt("MainCount", mainCount); //현재 메인카운트 저장
             PlayerPrefs.SetInt("NextAppear", CharacterAppear.instance.GetNextAppearNum()); //다음 캐릭터 등장 번호 저장
-            PlayerPrefs.SetInt("Reputation", Menu.instance.reputation); //평판 저장
+            PlayerPrefs.SetInt("Reputation", Menu.instance.GetReputation()); //평판 저장
             PlayerPrefs.SetInt("EndingState", endingState); //엔딩 상황 저장
             PlayerPrefs.SetInt("TipNum", tipNum); //팁 넘버 
             PlayerPrefs.Save(); //세이브
@@ -244,7 +256,7 @@ public class SystemManager : MonoBehaviour
 
                 mainCount = 0;
                 CharacterAppear.instance.SetNextAppearNum(0);
-                Menu.instance.reputation = 0;
+                Menu.instance.SetReputation(0);
                 Star.instance.SetStarNum(0);
                 PlayerPrefs.Save();
 
@@ -253,7 +265,7 @@ public class SystemManager : MonoBehaviour
             else // 붕붕이 방문 이후, 기존 정보가 정상적으로 저장됨
             {
                 CharacterAppear.instance.SetNextAppearNum(PlayerPrefs.GetInt("NextAppear"));
-                Menu.instance.reputation = PlayerPrefs.GetInt("Reputation");
+                Menu.instance.SetReputation(PlayerPrefs.GetInt("Reputation"));
                 Star.instance.SetStarNum(PlayerPrefs.GetInt("StarNum"));
                 endingState = PlayerPrefs.GetInt("EndingState");       
                 tipNum = PlayerPrefs.GetInt("TipNum");
@@ -303,7 +315,6 @@ public class SystemManager : MonoBehaviour
                 CharacterVisit.instance.Invoke("RandomVisit", 5f); // 5초 뒤 캐릭터 랜덤 방문
             }                               
 
-            Menu.instance.reputationText.text = string.Format("{0}", Menu.instance.reputation);
         }
         catch (System.Exception e)
         {
@@ -332,7 +343,7 @@ public class SystemManager : MonoBehaviour
                 UI_Assistant1.instance.panel7.SetActive(false);      
                 SmallFade.instance.SetCharacter(0); // 제제 자리로 돌아가기
                 Dialogue.instance.SetCharacterNum(2); //다음 등장 캐릭터 붕붕
-                Menu.instance.close.GetComponent<Button>().interactable = true; //메뉴 닫기 버튼 가능
+                Menu.instance.GetBoardCloseButton().interactable = true; //메뉴 닫기 버튼 가능
                 BeginDialogue(2, 7f); // 7초 후 붕붕 등장
                 break;
             case 3: //붕붕이 등장 후
@@ -507,7 +518,7 @@ public class SystemManager : MonoBehaviour
             sum += Dialogue.instance.CharacterDC[i];
         }
 
-        if(sum == 42 && Menu.instance.menu8Open) //캐릭터들 시나리오를 모두 봄 & 마지막 메뉴 잠금 해제 완료
+        if(sum == 42 && Menu.instance.IsMenuOpen(8)) //캐릭터들 시나리오를 모두 봄 & 마지막 메뉴 잠금 해제 완료
         {
             Debug.Log("엔딩 조건 충족");
 
@@ -583,7 +594,7 @@ public class SystemManager : MonoBehaviour
 
     void EndingEvent()
     {
-        if(!Menu.instance.UIOn && SmallFade.instance.TableEmpty[0] == 0 && SmallFade.instance.TableEmpty[1] == 0 && SmallFade.instance.TableEmpty[2] == 0)
+        if(!isUIOpen && SmallFade.instance.TableEmpty[0] == 0 && SmallFade.instance.TableEmpty[1] == 0 && SmallFade.instance.TableEmpty[2] == 0)
         { //테이블이 모두 비었고 UI가 올라와있지 않은 상태에서 실행
             CantTouchUI();
             jejeBubble.gameObject.SetActive(false);
@@ -609,9 +620,9 @@ public class SystemManager : MonoBehaviour
         if(mainCount == 3) cNum = 2;
 
         Dialogue.instance.SetCharacterNum(cNum);
-        Dialogue.instance.SetIsBabyText(false);
+        Dialogue.instance.SetBabyText(false);
         if(cNum == 14 && mainCount == 15)
-            Dialogue.instance.SetIsBabyText(true);
+            Dialogue.instance.SetBabyText(true);
 
         StartCoroutine(DialogueCoroutine(cNum, time));
     }
@@ -844,6 +855,7 @@ public class SystemManager : MonoBehaviour
     public void TouchTipNoteButton() // 팁 노트 버튼 눌렀을 때
     {
         tipNoteButton.interactable = false;
+        isUIOpen = true;
         SEManager.instance.PlayUIClickSound(); //효과음  
         tipNoteButtonAnimator.SetTrigger("TipButton_Up");
         tipNoteAnimator.SetTrigger("TipNote_Up");
@@ -852,6 +864,7 @@ public class SystemManager : MonoBehaviour
     public void CloseTipNote() // 팁 노트 닫기
     {
         tipNoteButton.interactable = true;
+        isUIOpen = false;
         SEManager.instance.PlayUICloseSound(); //효과음
         tipNoteButtonAnimator.SetTrigger("TipButton_Down");
         tipNoteAnimator.SetTrigger("TipNote_Down");
@@ -1100,6 +1113,7 @@ public class SystemManager : MonoBehaviour
             completePurchasingText.text = "체력의 회복 속도가\n2배 증가하였습니다!";
             fishBreadButton.interactable = false; // 결제 버튼 터치 불가
             fishBreadButton.image.sprite = fishBreadButton.transform.GetChild(1).GetComponent<Image>().sprite;
+            fishBreadButton.transform.GetChild(0).gameObject.SetActive(false); // 이미지 위에 텍스트 안 보이게
         }
     }
 

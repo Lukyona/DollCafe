@@ -36,9 +36,9 @@ public class Setting : MonoBehaviour
 
     public void ShowSetting() //설정 버튼 터치했을 때
     {
-        if (!Menu.instance.UIOn)//UI가 올라오지 않았을 때
+        if (!SystemManager.instance.IsUIOpen())//UI가 올라오지 않았을 때
         {
-            Menu.instance.UIOn = true;
+            SystemManager.instance.SetUIOpen(true);
             SEManager.instance.PlayUIClickSound(); //효과음           
 
             settingWindowAnimator.SetTrigger("SettingUp"); //설정창 올라옴
@@ -59,7 +59,7 @@ public class Setting : MonoBehaviour
             SystemManager.instance.SetCanTouch(true,1f);
         }
 
-        Menu.instance.UIOn = false;
+        SystemManager.instance.SetUIOpen(false);
     }
 
     public void CheckResetGame() //게임 초기화 버튼 눌렀을 때

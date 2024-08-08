@@ -63,9 +63,9 @@ public class VisitorNote : MonoBehaviour
 
     public void ClickVNButton() //손님 노트 버튼 눌렀을 때
     {
-        if(!Menu.instance.UIOn)
+        if(!SystemManager.instance.IsUIOpen())
         {
-            Menu.instance.UIOn = true;
+            SystemManager.instance.SetUIOpen(true);
             SEManager.instance.PlayUIClickSound(); //효과음
             VNButtonAnimator.SetTrigger("VNButtonOut"); //버튼 위로 올라감       
             noteAnimator.SetTrigger("NoteUp"); //노트 올라옴
@@ -74,7 +74,7 @@ public class VisitorNote : MonoBehaviour
 
     public void ClickNoteCloseButton() //노트 닫기 버튼 눌렀을 때
     {
-        Menu.instance.UIOn = false;
+        SystemManager.instance.SetUIOpen(false);
         SEManager.instance.PlayUICloseSound(); //효과음
         noteAnimator.SetTrigger("NoteDown"); //노트 내려감
         VNButtonAnimator.SetTrigger("VNButtonIn"); //버튼 내려옴
@@ -773,86 +773,86 @@ public class VisitorNote : MonoBehaviour
             case 1://도리
                 menuName.text = "'꽃사탕'";//메뉴 이름 설정
                 whichCharacter.text = "도리를 위한 특별 메뉴!";
-                menuImage.sprite = Menu.instance.SpecialMenu[0].GetComponent<Image>().sprite; //이미지 설정
-                menuImage.GetComponent<RectTransform>().sizeDelta = new Vector2(Menu.instance.SpecialMenu[0].GetComponent<RectTransform>().rect.width, Menu.instance.SpecialMenu[0].GetComponent<RectTransform>().rect.height);
+                menuImage.sprite = Menu.instance.GetSpecialMenu(0).GetComponent<Image>().sprite; //이미지 설정
+                menuImage.GetComponent<RectTransform>().sizeDelta = new Vector2(Menu.instance.GetSpecialMenu(0).GetComponent<RectTransform>().rect.width, Menu.instance.GetSpecialMenu(0).GetComponent<RectTransform>().rect.height);
                 menuImage.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 65); //이미지에 따라 위치 조정
                 break;
             case 2:
                 menuName.text = "'기름에이드'";
                 whichCharacter.text = "붕붕을 위한 특별 메뉴!";
-                menuImage.sprite = Menu.instance.SpecialMenu[1].GetComponent<Image>().sprite; //이미지 설정
-                menuImage.GetComponent<RectTransform>().sizeDelta = new Vector2(Menu.instance.SpecialMenu[1].GetComponent<RectTransform>().rect.width, Menu.instance.SpecialMenu[1].GetComponent<RectTransform>().rect.height);
+                menuImage.sprite = Menu.instance.GetSpecialMenu(1).GetComponent<Image>().sprite; //이미지 설정
+                menuImage.GetComponent<RectTransform>().sizeDelta = new Vector2(Menu.instance.GetSpecialMenu(1).GetComponent<RectTransform>().rect.width, Menu.instance.GetSpecialMenu(1).GetComponent<RectTransform>().rect.height);
                 menuImage.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 20); //이미지에 따라 위치 조정
                 break;
             case 3:
                 menuName.text = "'하트잼'";
                 whichCharacter.text = "빵빵을 위한 특별 메뉴!";
-                menuImage.sprite = Menu.instance.SpecialMenu[2].GetComponent<Image>().sprite; //이미지 설정
-                menuImage.GetComponent<RectTransform>().sizeDelta = new Vector2(Menu.instance.SpecialMenu[2].GetComponent<RectTransform>().rect.width, Menu.instance.SpecialMenu[2].GetComponent<RectTransform>().rect.height);
+                menuImage.sprite = Menu.instance.GetSpecialMenu(2).GetComponent<Image>().sprite; //이미지 설정
+                menuImage.GetComponent<RectTransform>().sizeDelta = new Vector2(Menu.instance.GetSpecialMenu(2).GetComponent<RectTransform>().rect.width, Menu.instance.GetSpecialMenu(2).GetComponent<RectTransform>().rect.height);
                 menuImage.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 50); //이미지에 따라 위치 조정
                 break;
             case 4:
                 menuName.text = "'당근케이크'";
                 whichCharacter.text = "개나리를 위한 특별 메뉴!";
-                menuImage.sprite = Menu.instance.SpecialMenu[3].GetComponent<Image>().sprite; //이미지 설정
-                menuImage.GetComponent<RectTransform>().sizeDelta = new Vector2(Menu.instance.SpecialMenu[3].GetComponent<RectTransform>().rect.width, Menu.instance.SpecialMenu[3].GetComponent<RectTransform>().rect.height);
+                menuImage.sprite = Menu.instance.GetSpecialMenu(3).GetComponent<Image>().sprite; //이미지 설정
+                menuImage.GetComponent<RectTransform>().sizeDelta = new Vector2(Menu.instance.GetSpecialMenu(3).GetComponent<RectTransform>().rect.width, Menu.instance.GetSpecialMenu(3).GetComponent<RectTransform>().rect.height);
                 menuImage.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 60); //이미지에 따라 위치 조정
                 break;
             case 6:
                 menuName.text = "'장미컵케이크'";
                 whichCharacter.text = "도로시를 위한 특별 메뉴!";
-                menuImage.sprite = Menu.instance.SpecialMenu[4].GetComponent<Image>().sprite; //이미지 설정
-                menuImage.GetComponent<RectTransform>().sizeDelta = new Vector2(Menu.instance.SpecialMenu[4].GetComponent<RectTransform>().rect.width, Menu.instance.SpecialMenu[4].GetComponent<RectTransform>().rect.height);
+                menuImage.sprite = Menu.instance.GetSpecialMenu(4).GetComponent<Image>().sprite; //이미지 설정
+                menuImage.GetComponent<RectTransform>().sizeDelta = new Vector2(Menu.instance.GetSpecialMenu(4).GetComponent<RectTransform>().rect.width, Menu.instance.GetSpecialMenu(4).GetComponent<RectTransform>().rect.height);
                 menuImage.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 30); //이미지에 따라 위치 조정
                 break;
             case 7:
                 menuName.text = "'수제쿠키세트'";
                 whichCharacter.text = "루루를 위한 특별 메뉴!";
-                menuImage.sprite = Menu.instance.SpecialMenu[5].GetComponent<Image>().sprite; //이미지 설정
-                menuImage.GetComponent<RectTransform>().sizeDelta = new Vector2(Menu.instance.SpecialMenu[5].GetComponent<RectTransform>().rect.width, Menu.instance.SpecialMenu[5].GetComponent<RectTransform>().rect.height);
+                menuImage.sprite = Menu.instance.GetSpecialMenu(5).GetComponent<Image>().sprite; //이미지 설정
+                menuImage.GetComponent<RectTransform>().sizeDelta = new Vector2(Menu.instance.GetSpecialMenu(5).GetComponent<RectTransform>().rect.width, Menu.instance.GetSpecialMenu(5).GetComponent<RectTransform>().rect.height);
                 menuImage.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 50); //이미지에 따라 위치 조정
                 break;
             case 8:
                 menuName.text = "'구름솜사탕과 바다에이드'";
                 whichCharacter.text = "샌디를 위한 특별 메뉴!";
-                menuImage.sprite = Menu.instance.SpecialMenu[6].GetComponent<Image>().sprite; //이미지 설정
-                menuImage.GetComponent<RectTransform>().sizeDelta = new Vector2(Menu.instance.SpecialMenu[6].GetComponent<RectTransform>().rect.width, Menu.instance.SpecialMenu[6].GetComponent<RectTransform>().rect.height);
+                menuImage.sprite = Menu.instance.GetSpecialMenu(6).GetComponent<Image>().sprite; //이미지 설정
+                menuImage.GetComponent<RectTransform>().sizeDelta = new Vector2(Menu.instance.GetSpecialMenu(6).GetComponent<RectTransform>().rect.width, Menu.instance.GetSpecialMenu(6).GetComponent<RectTransform>().rect.height);
                 menuImage.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 20); //이미지에 따라 위치 조정
                 break;
             case 9:
                 menuName.text = "'약사탕과 뼈다귀쿠키'";
                 whichCharacter.text = "친구를 위한 특별 메뉴!";
-                menuImage.sprite = Menu.instance.SpecialMenu[7].GetComponent<Image>().sprite; //이미지 설정
-                menuImage.GetComponent<RectTransform>().sizeDelta = new Vector2(Menu.instance.SpecialMenu[7].GetComponent<RectTransform>().rect.width, Menu.instance.SpecialMenu[7].GetComponent<RectTransform>().rect.height);
+                menuImage.sprite = Menu.instance.GetSpecialMenu(7).GetComponent<Image>().sprite; //이미지 설정
+                menuImage.GetComponent<RectTransform>().sizeDelta = new Vector2(Menu.instance.GetSpecialMenu(7).GetComponent<RectTransform>().rect.width, Menu.instance.GetSpecialMenu(7).GetComponent<RectTransform>().rect.height);
                 menuImage.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 60); //이미지에 따라 위치 조정
                 break;
             case 11:
                 menuName.text = "'밀크초콜릿 볼'";
                 whichCharacter.text = SystemManager.instance.GetNameForNameless() + "을(를) 위한 특별 메뉴!";
-                Menu.instance.SpecialMenu[8].GetComponent<Image>().sprite = Menu.instance.NonameDessert.sprite;
-                menuImage.sprite = Menu.instance.SpecialMenu[8].GetComponent<Image>().sprite; //이미지 설정
-                menuImage.GetComponent<RectTransform>().sizeDelta = new Vector2(Menu.instance.SpecialMenu[8].GetComponent<RectTransform>().rect.width, Menu.instance.SpecialMenu[8].GetComponent<RectTransform>().rect.height);
+                Menu.instance.GetSpecialMenu(8).GetComponent<Image>().sprite = Menu.instance.GetNamelessDessertSprite();
+                menuImage.sprite = Menu.instance.GetSpecialMenu(8).GetComponent<Image>().sprite; //이미지 설정
+                menuImage.GetComponent<RectTransform>().sizeDelta = new Vector2(Menu.instance.GetSpecialMenu(8).GetComponent<RectTransform>().rect.width, Menu.instance.GetSpecialMenu(8).GetComponent<RectTransform>().rect.height);
                 menuImage.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 50); //이미지에 따라 위치 조정
                 break;
             case 12:
                 menuName.text = "'푸른 별푸딩과 용암 핫초코'";
                 whichCharacter.text = "히로와 디노를 위한 특별 메뉴!";
-                menuImage.sprite = Menu.instance.SpecialMenu[9].GetComponent<Image>().sprite; //이미지 설정
-                menuImage.GetComponent<RectTransform>().sizeDelta = new Vector2(Menu.instance.SpecialMenu[9].GetComponent<RectTransform>().rect.width, Menu.instance.SpecialMenu[9].GetComponent<RectTransform>().rect.height);
+                menuImage.sprite = Menu.instance.GetSpecialMenu(9).GetComponent<Image>().sprite; //이미지 설정
+                menuImage.GetComponent<RectTransform>().sizeDelta = new Vector2(Menu.instance.GetSpecialMenu(9).GetComponent<RectTransform>().rect.width, Menu.instance.GetSpecialMenu(9).GetComponent<RectTransform>().rect.height);
                 menuImage.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 50); //이미지에 따라 위치 조정
                 break;
             case 13:
                 menuName.text = "'태양에이드'";
                 whichCharacter.text = "닥터 펭을 위한 특별 메뉴!";
-                menuImage.sprite = Menu.instance.SpecialMenu[10].GetComponent<Image>().sprite; //이미지 설정
-                menuImage.GetComponent<RectTransform>().sizeDelta = new Vector2(Menu.instance.SpecialMenu[10].GetComponent<RectTransform>().rect.width, Menu.instance.SpecialMenu[10].GetComponent<RectTransform>().rect.height);
+                menuImage.sprite = Menu.instance.GetSpecialMenu(10).GetComponent<Image>().sprite; //이미지 설정
+                menuImage.GetComponent<RectTransform>().sizeDelta = new Vector2(Menu.instance.GetSpecialMenu(10).GetComponent<RectTransform>().rect.width, Menu.instance.GetSpecialMenu(10).GetComponent<RectTransform>().rect.height);
                 menuImage.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 20); //이미지에 따라 위치 조정
                 break;
             case 14:
                 menuName.text = "'미소의 무지개떡'";
                 whichCharacter.text = "롤렝드를 위한 특별 메뉴!";
-                menuImage.sprite = Menu.instance.SpecialMenu[11].GetComponent<Image>().sprite; //이미지 설정
-                menuImage.GetComponent<RectTransform>().sizeDelta = new Vector2(Menu.instance.SpecialMenu[11].GetComponent<RectTransform>().rect.width, Menu.instance.SpecialMenu[11].GetComponent<RectTransform>().rect.height);
+                menuImage.sprite = Menu.instance.GetSpecialMenu(11).GetComponent<Image>().sprite; //이미지 설정
+                menuImage.GetComponent<RectTransform>().sizeDelta = new Vector2(Menu.instance.GetSpecialMenu(11).GetComponent<RectTransform>().rect.width, Menu.instance.GetSpecialMenu(11).GetComponent<RectTransform>().rect.height);
                 menuImage.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 70); //이미지에 따라 위치 조정
                 break;
         }

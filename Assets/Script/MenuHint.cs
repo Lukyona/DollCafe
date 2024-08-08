@@ -98,7 +98,7 @@ public class MenuHint : MonoBehaviour
         switch (cNum) // cNum은 캐릭터 넘버
         {
             case 1: //1은 도리
-                if(Menu.instance.menu4Open == true) // 메뉴4가 열렸을 경우
+                if(Menu.instance.IsMenuOpen(4) == true) // 메뉴4가 열렸을 경우
                 {
                     r = Random.Range(1, 10); // 메세지 2개 중에 랜덤, 1~5까지가 첫번째, 6~10까지가 두번째
                     
@@ -126,7 +126,7 @@ public class MenuHint : MonoBehaviour
                 break;
 
             case 3: //3은 빵빵
-                if (Menu.instance.menu6Open == true) // 메뉴6이 열렸을 경우
+                if (Menu.instance.IsMenuOpen(6) == true) // 메뉴6이 열렸을 경우
                 {
                     r = Random.Range(1,10); // 메세지 2개 중에 랜덤
 
@@ -149,7 +149,7 @@ public class MenuHint : MonoBehaviour
                 break;
 
             case 4: //4 개나리
-                if (Menu.instance.menu4Open == true) 
+                if (Menu.instance.IsMenuOpen(4) == true) 
                 {
                     r = Random.Range(1,10); // 메세지 2개 중에 랜덤
                     if (r >= 5) //두번째 메세지일 경우
@@ -171,7 +171,7 @@ public class MenuHint : MonoBehaviour
                 break;
 
             case 5: //또롱
-                if (Menu.instance.menu6Open == true)
+                if (Menu.instance.IsMenuOpen(6) == true)
                 {
                     r = Random.Range(1,10); // 메세지 2개 중에 랜덤
 
@@ -194,7 +194,7 @@ public class MenuHint : MonoBehaviour
                 break;
 
             case 6: //도로시
-                if (Menu.instance.menu8Open == true)
+                if (Menu.instance.IsMenuOpen(8) == true)
                 {
                     r = Random.Range(1,10); // 메세지 2개 중에 랜덤
 
@@ -217,7 +217,7 @@ public class MenuHint : MonoBehaviour
                 break;
 
             case 7: //루루
-                if (Menu.instance.menu7Open == true)
+                if (Menu.instance.IsMenuOpen(7) == true)
                 {
                     r = Random.Range(1,10); // 메세지 2개 중에 랜덤
 
@@ -240,7 +240,7 @@ public class MenuHint : MonoBehaviour
                 break;
 
             case 8: //샌디
-                if (Menu.instance.menu7Open == true)
+                if (Menu.instance.IsMenuOpen(7) == true)
                 {
                     r = Random.Range(1,10); // 메세지 2개 중에 랜덤
 
@@ -263,7 +263,7 @@ public class MenuHint : MonoBehaviour
                 break;
 
             case 9: //친구
-                if (Menu.instance.menu8Open == true)
+                if (Menu.instance.IsMenuOpen(8) == true)
                 {
                     r = Random.Range(1,10); // 메세지 2개 중에 랜덤
 
@@ -287,7 +287,7 @@ public class MenuHint : MonoBehaviour
                 break;
 
             case 10: //찰스
-                if (Menu.instance.menu6Open == true)
+                if (Menu.instance.IsMenuOpen(6) == true)
                 {
                     r = Random.Range(1,10); // 메세지 2개 중에 랜덤
 
@@ -335,7 +335,7 @@ public class MenuHint : MonoBehaviour
                 break;
 
             case 14: //닥터 펭
-                if (Menu.instance.menu8Open == true)
+                if (Menu.instance.IsMenuOpen(8) == true)
                 {
                     r = Random.Range(1,10); // 메세지 2개 중에 랜덤
 

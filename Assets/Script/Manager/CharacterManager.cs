@@ -4,17 +4,15 @@ public class CharacterManager : MonoBehaviour
 {
     public static CharacterManager instance;
 
-    #region 캐릭터 움직임 관련 변수
     [SerializeField] GameObject[] BigCharacter; //큰 캐릭터 이미지 배열
 
-    int characterNum; //캐릭터 넘버
+    int characterNum; //캐릭터 넘버 
 
+    #region 캐릭터 움직임 관련 변수
     Vector3 charInPos; //대화 시작할 때 캐릭터가 들어오는 위치
     Vector3 charOutPos; //캐릭터가 나가는 위치
     float moveSpeed = 1000f; //이동 속도
-
     int characteInOutState = 0; // 1이면 캐릭터가 들어오고, 2면 나가고, 3은 군인이벤트
-
     bool isSoldierEvent = false; //군인 대화 이벤트일 경우 1
     #endregion
     

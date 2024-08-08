@@ -7,40 +7,48 @@ public class Menu : MonoBehaviour
 {
     public static Menu instance;
 
-    public Animator menuButtonAnimator;
-    public Animator menuBoardAnimator;
-    public Animator NoHPMessegeAnimator;
+    [SerializeField] Animator menuButtonAnimator;
+    [SerializeField] Animator menuBoardAnimator;
+    [SerializeField] Animator NoHPMessegeAnimator;
 
-    List<GameObject> UnlockedMenuItems = new List<GameObject>(); // 현재 잠금 해제된 메뉴 리스트
-    public GameObject[] LockedMenuItems; // 잠금 상태인 메뉴 배열, 실루엣 이미지
+    #region 게임 내 오브젝트 변수
+    [SerializeField] Button boardCloseButton;
 
-    public GameObject[] MenuObject; //메뉴 배열
+    [SerializeField] GameObject[] LockedMenuItems; // 잠금 상태인 메뉴 배열, 실루엣 이미지
+    [SerializeField] GameObject[] MenuObject; //모든 메뉴, 8개
+
+    [SerializeField] GameObject[] TableMenu; //테이블 위에 보여질 작은 메뉴 이미지
+
+    [SerializeField] GameObject[] SpecialMenu; //친밀도 이벤트에서 서빙되는 스페셜 메뉴 이미지 배열
+
+    [SerializeField] Button[] LockedMenuButtons; // 잠긴 메뉴 해제 버튼 배열, 0 메뉴5버튼 
+
+    [SerializeField] GameObject[] SmileReaction; //미소 리액션 배열
+    [SerializeField] GameObject[] HeartReaction; //하트 리액션 배열
+
+    [SerializeField] GameObject[] Reaction; //캐릭터의 리액션 이미지
+
+    [SerializeField] Text reputationText; //평판 텍스트
+
+    [SerializeField] GameObject NoHPMessege; //게임 중간이탈, 종료 시 비활성화됨
+
+    [SerializeField] Image NamelessDessert;//무명이 디저트 2번째 이미지
+    #endregion
+
     Vector3[] MenuPosition = new Vector3[6]; //메뉴 위치 배열
     Vector3[] ReactionPosition = new Vector3[6]; //리액션 위치 배열
 
-    public GameObject[] TableMenu; //테이블 위에 보여질 작은 메뉴 이미지
-   
-    public Button close;
+    List<GameObject> UnlockedMenuItems = new List<GameObject>(); // 현재 잠금 해제된 메뉴 리스트
 
-    public GameObject[] SmileReaction; //미소 리액션 배열
-    public GameObject[] HeartReaction; //하트 리액션 배열
+    bool menu4Open = false; //true면 메뉴가 해제된 것
+    bool menu5Open = false;
+    bool menu6Open = false;
+    bool menu7Open = false;
+    bool menu8Open = false;
 
-    public GameObject[] Reaction; //캐릭터의 리액션 이미지
+    int reputation = 0; //평판 
 
-    public bool menu4Open = false; //true면 메뉴가 해제된 것
-    public bool menu5Open = false;
-    public bool menu6Open = false;
-    public bool menu7Open = false;
-    public bool menu8Open = false;
-
-    public Text reputationText; //평판 텍스트
-    public int reputation = 0; //평판 숫자
-
-    public int seatNum = 0; //자리 넘버
-
-    public GameObject NoHPMessege; //게임 중간이탈, 종료 시 비활성화됨
-
-    public bool UIOn = false; // UI가 열려있지 않은 상태, 열려있으면 true
+    int seatNum = 0; //자리 넘버
 
     public Queue<int> reactionFIn = new Queue<int>();//리액션 페이드인 시 사용
     Queue<int> reactionFOut = new Queue<int>();//리액션 페이드아웃 시 사용
@@ -52,14 +60,10 @@ public class Menu : MonoBehaviour
     public bool pOk = false; //도로시 서빙, 찰스랑 같이 다닐 때부터 사용
     public bool sOk = false; //찰스 서빙
 
-    public Queue<int> together1 = new Queue<int>();//히로디노 자리 정보 저장
-    public Queue<int> together2 = new Queue<int>();//도로시찰스 자리 정보 저장
+    Queue<int> together1 = new Queue<int>();//히로디노 자리 정보 저장
+    Queue<int> together2 = new Queue<int>();//도로시찰스 자리 정보 저장
 
-    public GameObject[] SpecialMenu; //친밀도 이벤트에서 서빙되는 스페셜 메뉴 이미지 배열
-
-    public Button[] LockedMenu; // 잠긴 메뉴 해제 버튼 배열, 0 메뉴5버튼 
-
-    public int cNum;
+    int characterNum;
 
     int goEvent = 0; //메뉴 서빙 후 이벤트가 나오는 캐릭터의 경우, 이벤트 캐릭터가 서빙을 받으면 1
 
@@ -67,24 +71,24 @@ public class Menu : MonoBehaviour
 
     public Queue<int> seatInfo = new Queue<int>(); //자리 정보 큐, 작은 캐릭터 페이드아웃 시 사용
 
-    public Image NonameDessert;//무명이 디저트 2번째 이미지
 
     private void Awake()
     {
         if (instance == null)
         {
-            instance = this;
-            UnlockedMenuItems.Add(MenuObject[0]); // 기본 메뉴 3개는 잠금X
-            UnlockedMenuItems.Add(MenuObject[1]);
-            UnlockedMenuItems.Add(MenuObject[2]);         
+            instance = this;      
         }
     }
 
     void Start()
     {
+        UnlockedMenuItems.Add(MenuObject[0]); // 기본 메뉴 3개는 잠금X
+        UnlockedMenuItems.Add(MenuObject[1]);
+        UnlockedMenuItems.Add(MenuObject[2]);   
+
         for (int i = 0; i < MenuObject.Length; i++)
         {
-            MenuObject[i].GetComponent<Image>().alphaHitTestMinimumThreshold = 1f;
+            MenuObject[i].GetComponent<Image>().alphaHitTestMinimumThreshold = 1f; // 불투명한 Sprite만 터치가 가능하도록 1로 설정
         }
 
         // 자리별 테이블 위에 놓일 메뉴의 위치
@@ -110,10 +114,10 @@ public class Menu : MonoBehaviour
 
     public void ClickMenuButton() //메뉴판 버튼 눌렀을 때
     {
-        if(!UIOn) //다른 ui가 열려있지 않다면
+        if(!SystemManager.instance.IsUIOpen()) //다른 ui가 열려있지 않다면
         {
             MenuHint.instance.CantClickMHB();//다른 메뉴힌트버블 터치 불가
-            UIOn = true;
+            SystemManager.instance.SetUIOpen(true);
             SEManager.instance.PlayUIClickSound(); //효과음
             menuButtonAnimator.SetTrigger("MenuButtonOut"); //메뉴 버튼 위로 올라가고
             menuBoardAnimator.SetTrigger("MenuBoardUp"); //메뉴판이 아래에서 올라옴
@@ -124,9 +128,34 @@ public class Menu : MonoBehaviour
         }
     }
 
+    public Button GetBoardCloseButton()
+    {
+        return boardCloseButton;
+    }
+
+    public void SetSeatNum(int value)
+    {
+        seatNum = value;
+    }
+
+    public void SetCharacterNum(int value)
+    {
+        characterNum = value;
+    }
+
+    public GameObject GetSpecialMenu(int num)
+    {
+        return SpecialMenu[num];
+    }
+
+    public Sprite GetNamelessDessertSprite()
+    {
+        return NamelessDessert.sprite;
+    }
+
     public void ClickMenuCloseButton() //메뉴 닫기 버튼 눌렀을 때
     {
-        UIOn = false; //ui닫음
+        SystemManager.instance.SetUIOpen(false);
         SEManager.instance.PlayUICloseSound(); //효과음
         menuBoardAnimator.SetTrigger("MenuBoardDown"); //메뉴판 아래로 내려가고
         menuButtonAnimator.SetTrigger("MenuButtonIn"); //메뉴버튼 위에서 내려옴
@@ -135,14 +164,13 @@ public class Menu : MonoBehaviour
 
     public void ClickMenuHint() //캐릭터의 메뉴 힌트 말풍선 눌렀을 때
     {
-        if (!UIOn)
+        if (!SystemManager.instance.IsUIOpen())
         {
             MenuHint.instance.CantClickMHB();//다른 메뉴힌트버블 터치 불가
-            UIOn = true;
+            SystemManager.instance.SetUIOpen(true);
             SEManager.instance.PlayUIClickSound2(); //효과음
             menuButtonAnimator.SetTrigger("MenuButtonOut"); //메뉴 버튼 위로 올라가고
             menuBoardAnimator.SetTrigger("MenuBoardUp"); //메뉴판 올라옴
-            close.GetComponent<Button>().interactable = true; //닫기 버튼 가능
 
             if (SystemManager.instance.GetMainCount() == 2) //서빙 튜토리얼일 경우
             {
@@ -150,7 +178,7 @@ public class Menu : MonoBehaviour
                 SmallFade.instance.GetSmallCharacter(1).transform.parent.GetComponent<Canvas>().sortingOrder = 2;
                 MenuHint.instance.GetHintBubble(1).transform.parent.GetComponent<Canvas>().sortingOrder = 4;
 
-                close.GetComponent<Button>().interactable = false; //닫기 버튼 불가
+                boardCloseButton.GetComponent<Button>().interactable = false; //닫기 버튼 불가
                 UI_Assistant1.instance.panel6.SetActive(false); //패널 없애고
                 UI_Assistant1.instance.OpenDialogue2(); //다음 대사 나타남
                 Invoke("CanClickMenu", 1f);
@@ -185,12 +213,22 @@ public class Menu : MonoBehaviour
         NoHPMessegeAnimator.SetTrigger("NoHPFadeOut");
     }
 
+    public void SetReputation(int value)
+    {
+        reputation = value;
+        reputationText.text = string.Format("{0}", reputation);
+    }
+
+    public int GetReputation()
+    {
+        return reputation;
+    }
+
     public void MenuServingFunction(int n)//서빙 함수
     {
         if (HPManager.instance.GetCurrentHP() <= 0) //체력이 0보다 작거나 같으면
         {
             CantClickMenu();
-            NoHPMessege.SetActive(true); //체력 없음 메세지 보이게 함
             NoHPMessegeAnimator.SetTrigger("NoHPFadeIn");
             Invoke("NoHPMessegeFadeOut", 1f); //1초 뒤 메세지 페이드아웃
             Invoke("CanClickMenu", 1.5f);           
@@ -198,14 +236,14 @@ public class Menu : MonoBehaviour
         else //체력이 1이상이면
         {
             CantClickMenu();
-            UIOn = false;
+            SystemManager.instance.SetUIOpen(false);
             menuBoardAnimator.SetTrigger("MenuBoardDown"); //메뉴판 아래로 내려가고
             menuButtonAnimator.SetTrigger("MenuButtonIn"); //메뉴버튼 위에서 내려옴
             MenuHint.instance.CanClickMHB();//다른 메뉴힌트버블 터치 가능
 
             HPManager.instance.UseHP(); //체력 소모
 
-            if((cNum == 9 && CharacterAppear.instance.eventOn == 9) || (cNum == 10 && CharacterAppear.instance.eventOn == 10) || (cNum == 15 && CharacterAppear.instance.eventOn == 16))
+            if((characterNum == 9 && CharacterAppear.instance.eventOn == 9) || (characterNum == 10 && CharacterAppear.instance.eventOn == 10) || (characterNum == 15 && CharacterAppear.instance.eventOn == 16))
             {// 친구,찰스1,롤렝드 친밀도 이벤트일 경우 클릭된 캐릭터와 이벤트 캐릭터가 동일하면
                 goEvent = 1;
                 SystemManager.instance.CantTouchUI();
@@ -213,12 +251,12 @@ public class Menu : MonoBehaviour
                 if (MenuHint.instance.RightMenu[seatNum] == n) //캐릭터가 원하는 메뉴가 n이면, 원하는 메뉴와 플레이어가 고른 메뉴가 일치
                 {
                     SEManager.instance.PlayUIClickSound3();
-                    VisitorNote.instance.GuessMenuRight(cNum, n);
+                    VisitorNote.instance.GuessMenuRight(characterNum, n);
                     if (CharacterAppear.instance.eventOn == 10)//찰스의 경우 평판 증가
                     {
                         reputation += 3;
                         reputationText.text = string.Format("{0}", reputation); //평판 표시
-                        VisitorNote.instance.IncreaseFrinedshipGauge(cNum); //서빙받은 캐릭터의 친밀도 증가
+                        VisitorNote.instance.IncreaseFrinedshipGauge(characterNum); //서빙받은 캐릭터의 친밀도 증가
                     }
                 }
                 else //n이 아니면
@@ -228,7 +266,7 @@ public class Menu : MonoBehaviour
                     {
                         reputation++;
                         reputationText.text = string.Format("{0}", reputation); //평판 표시
-                        VisitorNote.instance.IncreaseFrinedshipGauge(cNum); //서빙받은 캐릭터의 친밀도 증가
+                        VisitorNote.instance.IncreaseFrinedshipGauge(characterNum); //서빙받은 캐릭터의 친밀도 증가
                     }
                 }
                 TableMenu[seatNum].SetActive(true);
@@ -249,7 +287,7 @@ public class Menu : MonoBehaviour
                         CorrectMenuReaction(seatNum); //자리에 따라 맞는 메뉴 리액션 이미지 가져오기
                         reputation += 3; //원하는 메뉴 서빙 시 평판 3 증가
                     }                  
-                    VisitorNote.instance.GuessMenuRight(cNum, n);
+                    VisitorNote.instance.GuessMenuRight(characterNum, n);
                 }
                 else //n이 아니면
                 {
@@ -275,20 +313,20 @@ public class Menu : MonoBehaviour
                                                                         // SystemManager.instance.TutorialUpBox();
                     UI_Assistant1.instance.Invoke("OpenDialogue2",0.5f);
                     SystemManager.instance.SetCanTouch(true,1.5f);
-                    VisitorNote.instance.IncreaseFrinedshipGauge(cNum);
+                    VisitorNote.instance.IncreaseFrinedshipGauge(characterNum);
                 }
                 else
                 {
-                    if(cNum == 11 && CharacterAppear.instance.eventOn == 12)//무명이1 이벤트이고 무명이 서빙을 했을 때
+                    if(characterNum == 11 && CharacterAppear.instance.eventOn == 12)//무명이1 이벤트이고 무명이 서빙을 했을 때
                     {
                         SystemManager.instance.CantTouchUI();
                         MenuHint.instance.CantClickMHB();//뒤에 메뉴판이 떠있는 채로 이벤트 시작하는 걸 방지하기 위함
                         reactionFIn.Enqueue(seatNum); //리액션 페이드인 큐에 자리 정보 추가
                         goEvent = 1;
                     }
-                    else if((cNum == 12 || cNum == 13) && CharacterAppear.instance.eventOn == 14)//히로디노 이벤트인데 캐릭터가 히로나 디노일 때
+                    else if((characterNum == 12 || characterNum == 13) && CharacterAppear.instance.eventOn == 14)//히로디노 이벤트인데 캐릭터가 히로나 디노일 때
                     {
-                        if(cNum == 12)
+                        if(characterNum == 12)
                         {
                             tmpNum = seatNum;//대화 중 메뉴 페이드아웃 큐에 자리 정보 추가하기 위함
                         }                    
@@ -303,14 +341,14 @@ public class Menu : MonoBehaviour
                         }     
                     }
 
-                    if (cNum == 12 || cNum == 13)//디노나 히로 서빙이면
+                    if (characterNum == 12 || characterNum == 13)//디노나 히로 서빙이면
                     {
-                        if (cNum == 12 && CharacterAppear.instance.eventOn == 14)//이벤트일 때만 히로디노OK 먼저 하기
+                        if (characterNum == 12 && CharacterAppear.instance.eventOn == 14)//이벤트일 때만 히로디노OK 먼저 하기
                         {
                             heroOk = true;
                             SmallFade.instance.CanClickCharacter(13);//디노 클릭 가능                           
                         }
-                        else if (cNum == 13 && CharacterAppear.instance.eventOn == 14)
+                        else if (characterNum == 13 && CharacterAppear.instance.eventOn == 14)
                         {
                             dinoOk = true;
                         }
@@ -322,7 +360,7 @@ public class Menu : MonoBehaviour
 
                         if (CharacterAppear.instance.eventOn != 14)//히로디노 친밀도 이벤트가 아니면 친밀도 증가
                         {
-                            VisitorNote.instance.IncreaseFrinedshipGauge(cNum);
+                            VisitorNote.instance.IncreaseFrinedshipGauge(characterNum);
                         }
                         else if (CharacterAppear.instance.eventOn == 14 && dinoOk && heroOk)// 둘 다 서빙완료했을 때, 친밀도 이벤트면 UI클릭 금지
                         {
@@ -331,13 +369,13 @@ public class Menu : MonoBehaviour
                             SystemManager.instance.CantTouchUI();
                         }
                     }
-                    else if(Dialogue.instance.CharacterDC[10] == 3 && (cNum == 6 || cNum == 10))//찰스2이벤트가 끝난 후 찰스나 도로시일 경우
+                    else if(Dialogue.instance.CharacterDC[10] == 3 && (characterNum == 6 || characterNum == 10))//찰스2이벤트가 끝난 후 찰스나 도로시일 경우
                     {
                         together2.Enqueue(seatNum);//찰스도로시큐에 자리 저장
                     }
                     else//디노히로, 찰스도로시가 아니면
                     {
-                        VisitorNote.instance.IncreaseFrinedshipGauge(cNum); //서빙받은 캐릭터의 친밀도 증가
+                        VisitorNote.instance.IncreaseFrinedshipGauge(characterNum); //서빙받은 캐릭터의 친밀도 증가
                     }
                 }
             }          
@@ -455,7 +493,7 @@ public class Menu : MonoBehaviour
             case 31:
                 if(n == 31)//디저트 이미지 교체
                 {
-                    SpecialMenu[8].GetComponent<Image>().sprite = NonameDessert.sprite;
+                    SpecialMenu[8].GetComponent<Image>().sprite = NamelessDessert.sprite;
                 }
                 if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                 {
@@ -763,6 +801,24 @@ public class Menu : MonoBehaviour
         }
     }
 
+    public bool IsMenuOpen(int menuNum)
+    {
+        switch(menuNum)
+        {
+            case 4:
+                return menu4Open;
+            case 5:
+                return menu5Open;
+            case 6:
+                return menu6Open;
+            case 7:
+                return menu7Open;
+            case 8:
+                return menu8Open; 
+        }
+        return false;
+    }
+
     public void UnlockMenuItems4() // 메뉴4 해제
     {
         //만약 스타가 부족하면 열리지 않음
@@ -773,7 +829,7 @@ public class Menu : MonoBehaviour
             LockedMenuItems[0].SetActive(false); //실루엣 이미지 없애고
             UnlockedMenuItems.Add(MenuObject[3]); //UnlockedMenuItems리스트에 메뉴4 추가
             menu4Open = true; //1은 메뉴가 해제됐다는 의미
-            LockedMenu[0].gameObject.SetActive(true);//메뉴 5 해제 버튼 활성화
+            LockedMenuButtons[0].gameObject.SetActive(true);//메뉴 5 해제 버튼 활성화
             SaveUnlockedMenuItemInfo();
         }
     }
@@ -787,7 +843,7 @@ public class Menu : MonoBehaviour
             LockedMenuItems[1].SetActive(false);
             UnlockedMenuItems.Add(MenuObject[4]);          
             menu5Open = true;
-            LockedMenu[1].gameObject.SetActive(true);
+            LockedMenuButtons[1].gameObject.SetActive(true);
             SaveUnlockedMenuItemInfo();
         }
     }
@@ -801,7 +857,7 @@ public class Menu : MonoBehaviour
             LockedMenuItems[2].SetActive(false);
             UnlockedMenuItems.Add(MenuObject[5]);
             menu6Open = true;
-            LockedMenu[2].gameObject.SetActive(true);
+            LockedMenuButtons[2].gameObject.SetActive(true);
             SystemManager.instance.ShowBangBubble();
             SaveUnlockedMenuItemInfo();
         }
@@ -816,7 +872,7 @@ public class Menu : MonoBehaviour
             LockedMenuItems[3].SetActive(false);
             UnlockedMenuItems.Add(MenuObject[6]);
             menu7Open = true;
-            LockedMenu[3].gameObject.SetActive(true);
+            LockedMenuButtons[3].gameObject.SetActive(true);
             SaveUnlockedMenuItemInfo();
         }
     }
@@ -901,7 +957,7 @@ public class Menu : MonoBehaviour
         }      
         if(x != 8)
         {
-            LockedMenu[x - 4].gameObject.SetActive(true);//다음 메뉴 해제 버튼 활성화
+            LockedMenuButtons[x - 4].gameObject.SetActive(true);//다음 메뉴 해제 버튼 활성화
         }
     }
 }

@@ -19,7 +19,7 @@ public class CharacterAppear : MonoBehaviour
 
     void Update() //캐릭터들 첫방문
     {
-        if (!Menu.instance.UIOn && !UI_Assistant1.instance.talking && eventOn == 0 && VisitorNote.instance.replayOn == 0) // UI가 올라와있지 않고 대화 중이 아닐 때
+        if (!SystemManager.instance.IsUIOpen() && !UI_Assistant1.instance.talking && eventOn == 0 && VisitorNote.instance.replayOn == 0) // UI가 올라와있지 않고 대화 중이 아닐 때
         {
             if (SmallFade.instance.TableEmpty[0] == 0 || SmallFade.instance.TableEmpty[1] == 0 || SmallFade.instance.TableEmpty[2] == 0) //테이블이 하나라도 비었다면
             {
@@ -40,62 +40,62 @@ public class CharacterAppear : MonoBehaviour
 
     void WhichCharacterAppear()
     {
-        if (Menu.instance.reputation >= 9 && nextAppear == 3)
+        if (Menu.instance.GetReputation() >= 9 && nextAppear == 3)
         {//평판이 9 이상이며 다음 등장 캐릭터 번호가 3일 때
             SystemManager.instance.BeginDialogue(3); //빵빵 등장
         }
 
-        if (Menu.instance.reputation >= 21 && nextAppear == 4)
+        if (Menu.instance.GetReputation() >= 21 && nextAppear == 4)
         {
             SystemManager.instance.BeginDialogue(4);//개나리 등장
         }
 
-        if (Menu.instance.reputation >= 36 && nextAppear == 5)
+        if (Menu.instance.GetReputation() >= 36 && nextAppear == 5)
         {
             SystemManager.instance.BeginDialogue(5);//또롱 등장
         }
 
-        if (Menu.instance.reputation >= 55 && nextAppear == 6)
+        if (Menu.instance.GetReputation() >= 55 && nextAppear == 6)
         {
             SystemManager.instance.BeginDialogue(6);
         }
 
-        if (Menu.instance.reputation >= 70 && nextAppear == 7)
+        if (Menu.instance.GetReputation() >= 70 && nextAppear == 7)
         {
             SystemManager.instance.BeginDialogue(7);
         }
 
-        if (Menu.instance.reputation >= 85 && nextAppear == 8 && Menu.instance.menu4Open)
+        if (Menu.instance.GetReputation() >= 85 && nextAppear == 8 && Menu.instance.IsMenuOpen(4))
         {
             SystemManager.instance.BeginDialogue(8);
         }
 
-        if (Menu.instance.reputation >= 95 && nextAppear == 9)
+        if (Menu.instance.GetReputation() >= 95 && nextAppear == 9)
         {
             SystemManager.instance.BeginDialogue(9);
         }
 
-        if (Menu.instance.reputation >= 150 && nextAppear == 10 && Menu.instance.menu5Open)
+        if (Menu.instance.GetReputation() >= 150 && nextAppear == 10 && Menu.instance.IsMenuOpen(5))
         {
             SystemManager.instance.BeginDialogue(10);
         }
 
-        if (Menu.instance.reputation >= 180 && nextAppear == 11)
+        if (Menu.instance.GetReputation() >= 180 && nextAppear == 11)
         {
             SystemManager.instance.BeginDialogue(11);
         }
 
-        if (Menu.instance.reputation >= 260 && nextAppear == 12 && Menu.instance.menu6Open)
+        if (Menu.instance.GetReputation() >= 260 && nextAppear == 12 && Menu.instance.IsMenuOpen(6))
         {
             SystemManager.instance.BeginDialogue(12);
         }
 
-        if (Menu.instance.reputation >= 320 && nextAppear == 13 && Menu.instance.menu7Open)
+        if (Menu.instance.GetReputation() >= 320 && nextAppear == 13 && Menu.instance.IsMenuOpen(7))
         {
             SystemManager.instance.BeginDialogue(13);
         }
 
-        if (Menu.instance.reputation >= 400 && nextAppear == 14)
+        if (Menu.instance.GetReputation() >= 400 && nextAppear == 14)
         {
             SystemManager.instance.BeginDialogue(14);
         }
@@ -121,7 +121,7 @@ public class CharacterAppear : MonoBehaviour
                         MenuHint.instance.CantClickMHB();
                         SystemManager.instance.CantTouchUI();
                         eventOn = 15;//친밀도 이벤트 진행 중
-                        if (Menu.instance.UIOn || UI_Assistant1.instance.talking || VisitorNote.instance.replayOn != 0)//만약 UI가 올라와있다면
+                        if (SystemManager.instance.IsUIOpen() || UI_Assistant1.instance.talking || VisitorNote.instance.replayOn != 0)//만약 UI가 올라와있다면
                         {
                             Invoke("FriendshipEvent", 1f);// 1초마다 이 함수 재실행
                         }
@@ -141,7 +141,7 @@ public class CharacterAppear : MonoBehaviour
                             Debug.Log("랜덤방문 취소");
                         }
                         eventOn = 16;//친밀도 이벤트 진행 중
-                        if (Menu.instance.UIOn || UI_Assistant1.instance.talking || VisitorNote.instance.replayOn != 0)//만약 UI가 올라와있다면
+                        if (SystemManager.instance.IsUIOpen() || UI_Assistant1.instance.talking || VisitorNote.instance.replayOn != 0)//만약 UI가 올라와있다면
                         {
                             Invoke("FriendshipEvent", 1f);// 1초마다 이 함수 재실행
                         }
@@ -173,7 +173,7 @@ public class CharacterAppear : MonoBehaviour
                             MenuHint.instance.CantClickMHB();
                             SystemManager.instance.CantTouchUI();//UI올라온 상태에서의 시나리오 진행을 막기 위함
                             eventOn = c;//친밀도 이벤트 진행 중
-                            if (Menu.instance.UIOn || UI_Assistant1.instance.talking || VisitorNote.instance.replayOn != 0)//만약 UI가 올라와있다면
+                            if (SystemManager.instance.IsUIOpen() || UI_Assistant1.instance.talking || VisitorNote.instance.replayOn != 0)//만약 UI가 올라와있다면
                             {
                                 Debug.Log(c + " 친밀도 이벤트 대기");
                                 Invoke("FriendshipEvent", 1f);// 1초마다 이 함수 재실행
@@ -202,7 +202,7 @@ public class CharacterAppear : MonoBehaviour
                                 SystemManager.instance.CantTouchUI();
                             }
                             eventOn = c;//친밀도 이벤트 진행 중
-                            if (Menu.instance.UIOn || UI_Assistant1.instance.talking || VisitorNote.instance.replayOn != 0)//만약 UI가 올라와있다면
+                            if (SystemManager.instance.IsUIOpen() || UI_Assistant1.instance.talking || VisitorNote.instance.replayOn != 0)//만약 UI가 올라와있다면
                             {
                                 Debug.Log(c + " 친밀도 이벤트 대기");
                                 Invoke("FriendshipEvent", 1f);// 1초마다 이 함수 재실행
@@ -225,7 +225,7 @@ public class CharacterAppear : MonoBehaviour
                                     Debug.Log("랜덤방문 취소");
                                 }
                                 eventOn = c; //두 개 이상의 테이블이 비었고 도로시가 방문가능캐릭터일 때 실행, 도로시까지 필요하기 때문
-                                if (Menu.instance.UIOn || UI_Assistant1.instance.talking || VisitorNote.instance.replayOn != 0)//만약 UI가 올라와있다면
+                                if (SystemManager.instance.IsUIOpen() || UI_Assistant1.instance.talking || VisitorNote.instance.replayOn != 0)//만약 UI가 올라와있다면
                                 {
                                     Invoke("FriendshipEvent", 1f);// 1초마다 이 함수 재실행
                                 }
@@ -256,7 +256,7 @@ public class CharacterAppear : MonoBehaviour
                                     Debug.Log("랜덤방문 취소");
                                 }
                                 eventOn = 11; //두 개 이상의 테이블이 비었을 때 실행, 도로시까지 필요하기 때문
-                                if (Menu.instance.UIOn || UI_Assistant1.instance.talking || VisitorNote.instance.replayOn != 0)//만약 UI가 올라와있다면
+                                if (SystemManager.instance.IsUIOpen() || UI_Assistant1.instance.talking || VisitorNote.instance.replayOn != 0)//만약 UI가 올라와있다면
                                 {
                                     Invoke("FriendshipEvent", 1f);// 1초마다 이 함수 재실행
                                 }
@@ -290,7 +290,7 @@ public class CharacterAppear : MonoBehaviour
                                     Debug.Log("랜덤방문 취소");
                                 }
                                 eventOn = 12;//친밀도 이벤트 진행 중
-                                if (Menu.instance.UIOn || UI_Assistant1.instance.talking || VisitorNote.instance.replayOn != 0)//만약 UI가 올라와있다면
+                                if (SystemManager.instance.IsUIOpen() || UI_Assistant1.instance.talking || VisitorNote.instance.replayOn != 0)//만약 UI가 올라와있다면
                                 {
                                     Invoke("FriendshipEvent", 1f);// 1초마다 이 함수 재실행
                                 }
@@ -312,7 +312,7 @@ public class CharacterAppear : MonoBehaviour
                                 MenuHint.instance.CantClickMHB();
                                 SystemManager.instance.CantTouchUI();
                                 eventOn = 13;//친밀도 이벤트 진행 중
-                                if (Menu.instance.UIOn || UI_Assistant1.instance.talking || VisitorNote.instance.replayOn != 0)//만약 UI가 올라와있다면
+                                if (SystemManager.instance.IsUIOpen() || UI_Assistant1.instance.talking || VisitorNote.instance.replayOn != 0)//만약 UI가 올라와있다면
                                 {
                                     Invoke("FriendshipEvent", 1f);// 1초마다 이 함수 재실행
                                 }
@@ -332,7 +332,7 @@ public class CharacterAppear : MonoBehaviour
                                 Debug.Log("랜덤방문 취소");
                             }
                             eventOn = 14;//친밀도 이벤트 진행 중
-                            if (Menu.instance.UIOn || UI_Assistant1.instance.talking || VisitorNote.instance.replayOn != 0)//만약 UI가 올라와있다면
+                            if (SystemManager.instance.IsUIOpen() || UI_Assistant1.instance.talking || VisitorNote.instance.replayOn != 0)//만약 UI가 올라와있다면
                             {
                                 Invoke("FriendshipEvent", 1f);// 1초마다 이 함수 재실행
                             }
