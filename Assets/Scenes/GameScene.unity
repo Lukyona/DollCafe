@@ -16323,7 +16323,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1538706533}
         m_TargetAssemblyTypeName: Menu, Assembly-CSharp
-        m_MethodName: ClickMenuButton
+        m_MethodName: TouchMenuButton
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -42274,26 +42274,26 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1538706514}
+  - component: {fileID: 1538706535}
+  - component: {fileID: 1538706540}
+  - component: {fileID: 1538706530}
+  - component: {fileID: 1538706529}
+  - component: {fileID: 1538706526}
+  - component: {fileID: 1538706536}
+  - component: {fileID: 1538706528}
   - component: {fileID: 1538706516}
   - component: {fileID: 1538706517}
   - component: {fileID: 1538706519}
   - component: {fileID: 1538706520}
   - component: {fileID: 1538706522}
   - component: {fileID: 1538706523}
-  - component: {fileID: 1538706526}
-  - component: {fileID: 1538706528}
-  - component: {fileID: 1538706530}
-  - component: {fileID: 1538706529}
   - component: {fileID: 1538706531}
   - component: {fileID: 1538706532}
   - component: {fileID: 1538706533}
   - component: {fileID: 1538706534}
-  - component: {fileID: 1538706535}
-  - component: {fileID: 1538706536}
   - component: {fileID: 1538706537}
   - component: {fileID: 1538706538}
   - component: {fileID: 1538706539}
-  - component: {fileID: 1538706540}
   m_Layer: 0
   m_Name: GameScript
   m_TagString: Untagged
@@ -42678,6 +42678,7 @@ MonoBehaviour:
   menuButtonAnimator: {fileID: 609390004}
   menuBoardAnimator: {fileID: 1751023026}
   NoHPMessegeAnimator: {fileID: 1433736735}
+  boardCloseButton: {fileID: 1612797254}
   LockedMenuItems:
   - {fileID: 1391983187}
   - {fileID: 534212646}
@@ -42700,43 +42701,6 @@ MonoBehaviour:
   - {fileID: 792075749}
   - {fileID: 996291491}
   - {fileID: 1577030770}
-  close: {fileID: 1612797254}
-  SmileReaction:
-  - {fileID: 8446918}
-  - {fileID: 1067796324}
-  - {fileID: 749525028}
-  - {fileID: 614135726}
-  - {fileID: 1445753137}
-  - {fileID: 1284185518}
-  - {fileID: 1702358220}
-  HeartReaction:
-  - {fileID: 1774752139}
-  - {fileID: 499750621}
-  - {fileID: 714698546}
-  - {fileID: 552619098}
-  - {fileID: 1774563604}
-  - {fileID: 455916366}
-  Reaction:
-  - {fileID: 1670848317}
-  - {fileID: 116880646}
-  - {fileID: 599619636}
-  - {fileID: 1495217956}
-  - {fileID: 2008087108}
-  - {fileID: 1287802305}
-  menu4Open: 0
-  menu5Open: 0
-  menu6Open: 0
-  menu7Open: 0
-  menu8Open: 0
-  reputationText: {fileID: 1534718395}
-  reputation: 0
-  seatNum: 0
-  NoHPMessege: {fileID: 1433736733}
-  UIOn: 0
-  dinoOk: 0
-  heroOk: 0
-  pOk: 0
-  sOk: 0
   SpecialMenu:
   - {fileID: 1702358220}
   - {fileID: 2005402361}
@@ -42752,14 +42716,40 @@ MonoBehaviour:
   - {fileID: 1188301889}
   - {fileID: 1099576375}
   - {fileID: 1466341565}
-  LockedMenu:
+  LockedMenuButtons:
   - {fileID: 214818907}
   - {fileID: 408262950}
   - {fileID: 1773758312}
   - {fileID: 170741926}
-  cNum: 0
+  SmileReaction:
+  - {fileID: 8446918}
+  - {fileID: 1067796324}
+  - {fileID: 749525028}
+  - {fileID: 614135726}
+  - {fileID: 1445753137}
+  - {fileID: 1284185518}
+  HeartReaction:
+  - {fileID: 1774752139}
+  - {fileID: 499750621}
+  - {fileID: 714698546}
+  - {fileID: 552619098}
+  - {fileID: 1774563604}
+  - {fileID: 455916366}
+  Reaction:
+  - {fileID: 1670848317}
+  - {fileID: 116880646}
+  - {fileID: 599619636}
+  - {fileID: 1495217956}
+  - {fileID: 2008087108}
+  - {fileID: 1287802305}
+  reputationText: {fileID: 1534718395}
+  NoHPMessege: {fileID: 1433736733}
+  NamelessDessert: {fileID: 0}
+  dinoOk: 0
+  heroOk: 0
+  pOk: 0
+  sOk: 0
   tmpNum: 0
-  NonameDessert: {fileID: 2071074933}
 --- !u!114 &1538706534
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -44760,7 +44750,6 @@ GameObject:
   - component: {fileID: 1612797255}
   - component: {fileID: 1612797254}
   - component: {fileID: 1612797257}
-  - component: {fileID: 1612797258}
   m_Layer: 0
   m_Name: BoardClose
   m_TagString: Untagged
@@ -44833,7 +44822,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1538706533}
         m_TargetAssemblyTypeName: Menu, Assembly-CSharp
-        m_MethodName: ClickMenuCloseButton
+        m_MethodName: TouchMenuCloseButton
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -44882,102 +44871,6 @@ CanvasRenderer:
   m_GameObject: {fileID: 1612797252}
   m_CullTransparentMesh: 0
 --- !u!82 &1612797257
-AudioSource:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1612797252}
-  m_Enabled: 1
-  serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 97ddbe43a8f0e174f98b53a24c2161b2, type: 3}
-  m_PlayOnAwake: 0
-  m_Volume: 1
-  m_Pitch: 1
-  Loop: 0
-  Mute: 0
-  Spatialize: 0
-  SpatializePostEffects: 0
-  Priority: 128
-  DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 500
-  Pan2D: 0
-  rolloffMode: 0
-  BypassEffects: 0
-  BypassListenerEffects: 0
-  BypassReverbZones: 0
-  rolloffCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  panLevelCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  spreadCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  reverbZoneMixCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
---- !u!82 &1612797258
 AudioSource:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

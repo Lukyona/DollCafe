@@ -1456,7 +1456,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                                 SystemManager.instance.SetCanTouch(false);
                                 SystemManager.instance.SetCanTouch(true,1f);
                                 SmallFade.instance.smallFOut.Enqueue(17);
-                                Menu.instance.menuFOut.Enqueue(Menu.instance.tmpNum); //메뉴 페이드아웃 큐에 추가
+                                Menu.instance.menuFadeOut.Enqueue(Menu.instance.tmpNum); //메뉴 페이드아웃 큐에 추가
                                 Menu.instance.MenuFadeOut();//원래 있던 메뉴 페이드아웃
                             }
                             break;
@@ -2040,7 +2040,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             {
                                 SystemManager.instance.SetCanTouch(false);
                                 SystemManager.instance.SetCanTouch(true,1f);
-                                Menu.instance.menuFOut.Enqueue(Menu.instance.tmpNum); //메뉴 페이드아웃 큐에 추가
+                                Menu.instance.menuFadeOut.Enqueue(Menu.instance.tmpNum); //메뉴 페이드아웃 큐에 추가
                                 Menu.instance.MenuFadeOut();//원래 있던 메뉴 페이드아웃
                             }
                             break;
@@ -2221,12 +2221,12 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                                 SystemManager.instance.SetCanTouch(false);
                                 SystemManager.instance.SetCanTouch(true,2.3f);
                                 getMenu = 1;
-                                Menu.instance.reactionFIn.Enqueue(Menu.instance.tmpNum); //리액션페이드인 큐에 추가
-                                Menu.instance.menuFOut.Enqueue(Menu.instance.tmpNum);//메뉴 페이드아웃큐에 자리 추가
+                                Menu.instance.reactionFadeIn.Enqueue(Menu.instance.tmpNum); //리액션페이드인 큐에 추가
+                                Menu.instance.menuFadeOut.Enqueue(Menu.instance.tmpNum);//메뉴 페이드아웃큐에 자리 추가
                                 Menu.instance.MenuFadeOut();//원래 있던 메뉴 페이드아웃                                
                                 Menu.instance.tmpNum++;
-                                Menu.instance.menuFOut.Enqueue(Menu.instance.tmpNum);//메뉴 페이드아웃큐에 자리 추가
-                                Menu.instance.reactionFIn.Enqueue(Menu.instance.tmpNum); //리액션페이드인 큐에 추가
+                                Menu.instance.menuFadeOut.Enqueue(Menu.instance.tmpNum);//메뉴 페이드아웃큐에 자리 추가
+                                Menu.instance.reactionFadeIn.Enqueue(Menu.instance.tmpNum); //리액션페이드인 큐에 추가
                                // Menu.instance.Invoke("MenuFadeOut", 0.5f);
                             }
                             break;
@@ -2680,7 +2680,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                                 SystemManager.instance.SetCanTouch(false);
                                 SystemManager.instance.SetCanTouch(true,1f);
                                 SmallFade.instance.smallFOut.Enqueue(17);
-                                Menu.instance.menuFOut.Enqueue(Menu.instance.tmpNum); //메뉴 페이드아웃 큐에 추가
+                                Menu.instance.menuFadeOut.Enqueue(Menu.instance.tmpNum); //메뉴 페이드아웃 큐에 추가
                                 Menu.instance.MenuFadeOut();//원래 있던 메뉴 페이드아웃
                             }
                             break;

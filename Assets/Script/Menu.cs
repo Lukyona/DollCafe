@@ -50,10 +50,10 @@ public class Menu : MonoBehaviour
 
     int seatNum = 0; //자리 넘버
 
-    public Queue<int> reactionFIn = new Queue<int>();//리액션 페이드인 시 사용
-    Queue<int> reactionFOut = new Queue<int>();//리액션 페이드아웃 시 사용
-    Queue<int> menuFIn = new Queue<int>();//메뉴 페이드인 시 사용
-    public Queue<int> menuFOut = new Queue<int>();//메뉴 페이드아웃 시 사용
+    public Queue<int> reactionFadeIn = new Queue<int>();//리액션 페이드인 시 사용
+    Queue<int> reactionFadeOut = new Queue<int>();//리액션 페이드아웃 시 사용
+    Queue<int> menuFadeIn = new Queue<int>();//메뉴 페이드인 시 사용
+    public Queue<int> menuFadeOut = new Queue<int>();//메뉴 페이드아웃 시 사용
 
     public bool dinoOk = false; //디노 히로가 모두 서빙을 받았을 시 페이드아웃 가능
     public bool heroOk = false;
@@ -65,12 +65,11 @@ public class Menu : MonoBehaviour
 
     int characterNum;
 
-    int goEvent = 0; //메뉴 서빙 후 이벤트가 나오는 캐릭터의 경우, 이벤트 캐릭터가 서빙을 받으면 1
+    bool canStartEvent = false; //메뉴 서빙 후 친밀도 이벤트가 나오는 캐릭터의 경우, 이벤트 캐릭터가 서빙을 받으면 이벤트 시작
 
     public int tmpNum = 0;//메뉴 서빙 후 이벤트 나오는 캐릭터들 메뉴 위치 임시로 저장
 
     public Queue<int> seatInfo = new Queue<int>(); //자리 정보 큐, 작은 캐릭터 페이드아웃 시 사용
-
 
     private void Awake()
     {
@@ -112,22 +111,6 @@ public class Menu : MonoBehaviour
         }
     }
 
-    public void ClickMenuButton() //메뉴판 버튼 눌렀을 때
-    {
-        if(!SystemManager.instance.IsUIOpen()) //다른 ui가 열려있지 않다면
-        {
-            MenuHint.instance.CantClickMHB();//다른 메뉴힌트버블 터치 불가
-            SystemManager.instance.SetUIOpen(true);
-            SEManager.instance.PlayUIClickSound(); //효과음
-            menuButtonAnimator.SetTrigger("MenuButtonOut"); //메뉴 버튼 위로 올라가고
-            menuBoardAnimator.SetTrigger("MenuBoardUp"); //메뉴판이 아래에서 올라옴
-            for (int i = 0; i < UnlockedMenuItems.Count; i++) //메뉴 터치 불가, 서빙이 아닌 그냥 메뉴판 버튼 클릭 시에는 메뉴 클릭 못함
-            {
-                UnlockedMenuItems[i].GetComponent<Button>().interactable = false;
-            }
-        }
-    }
-
     public Button GetBoardCloseButton()
     {
         return boardCloseButton;
@@ -153,7 +136,23 @@ public class Menu : MonoBehaviour
         return NamelessDessert.sprite;
     }
 
-    public void ClickMenuCloseButton() //메뉴 닫기 버튼 눌렀을 때
+    public void TouchMenuButton() //메뉴판 버튼 눌렀을 때
+    {
+        if(!SystemManager.instance.IsUIOpen()) //다른 ui가 열려있지 않다면
+        {
+            MenuHint.instance.CantClickMHB();//다른 메뉴힌트버블 터치 불가
+            SystemManager.instance.SetUIOpen(true);
+            SEManager.instance.PlayUIClickSound(); //효과음
+            menuButtonAnimator.SetTrigger("MenuButtonOut"); //메뉴 버튼 위로 올라가고
+            menuBoardAnimator.SetTrigger("MenuBoardUp"); //메뉴판이 아래에서 올라옴
+            for (int i = 0; i < UnlockedMenuItems.Count; i++) //메뉴 터치 불가, 서빙이 아닌 그냥 메뉴판 버튼 클릭 시에는 메뉴 클릭 못함
+            {
+                UnlockedMenuItems[i].GetComponent<Button>().interactable = false;
+            }
+        }
+    }
+
+    public void TouchMenuCloseButton() //메뉴 닫기 버튼 눌렀을 때
     {
         SystemManager.instance.SetUIOpen(false);
         SEManager.instance.PlayUICloseSound(); //효과음
@@ -162,7 +161,7 @@ public class Menu : MonoBehaviour
         MenuHint.instance.CanClickMHB();
     }
 
-    public void ClickMenuHint() //캐릭터의 메뉴 힌트 말풍선 눌렀을 때
+    public void TouchMenuHint() //캐릭터의 메뉴 힌트 말풍선 눌렀을 때
     {
         if (!SystemManager.instance.IsUIOpen())
         {
@@ -181,30 +180,32 @@ public class Menu : MonoBehaviour
                 boardCloseButton.GetComponent<Button>().interactable = false; //닫기 버튼 불가
                 UI_Assistant1.instance.panel6.SetActive(false); //패널 없애고
                 UI_Assistant1.instance.OpenDialogue2(); //다음 대사 나타남
-                Invoke("CanClickMenu", 1f);
+                Invoke(nameof(CanTouchMenu), 1f);
             }
             else
             {
-                CanClickMenu();         
+                CanTouchMenu();         
             }           
         }
         //Debug.Log("함수 ClickMenuHint");
     }
 
-    public void CanClickMenu()
+    public void CanTouchMenu()
     {
-        NoHPMessege.SetActive(false);
-        for (int i = 0; i < UnlockedMenuItems.Count; i++) //메뉴 터치 가능
+        if(NoHPMessege.activeSelf)
+            NoHPMessege.SetActive(false);
+
+        foreach (GameObject menu in UnlockedMenuItems)
         {
-            UnlockedMenuItems[i].GetComponent<Button>().interactable = true;
+            menu.GetComponent<Button>().interactable = true;
         }
     }
 
-    public void CantClickMenu()
+    public void CantTouchMenu()
     {  
-        for (int i = 0; i < UnlockedMenuItems.Count; i++) //메뉴 터치 가능
+        foreach (GameObject menu in UnlockedMenuItems)
         {
-            UnlockedMenuItems[i].GetComponent<Button>().interactable = false;
+            menu.GetComponent<Button>().interactable = false;
         }
     }
 
@@ -224,18 +225,18 @@ public class Menu : MonoBehaviour
         return reputation;
     }
 
-    public void MenuServingFunction(int n)//서빙 함수
+    public void MenuServingFunction(int menuNum)//서빙 함수
     {
         if (HPManager.instance.GetCurrentHP() <= 0) //체력이 0보다 작거나 같으면
         {
-            CantClickMenu();
+            CantTouchMenu();
             NoHPMessegeAnimator.SetTrigger("NoHPFadeIn");
-            Invoke("NoHPMessegeFadeOut", 1f); //1초 뒤 메세지 페이드아웃
-            Invoke("CanClickMenu", 1.5f);           
+            Invoke(nameof(NoHPMessegeFadeOut), 1f); //1초 뒤 메세지 페이드아웃
+            Invoke(nameof(CanTouchMenu), 1.5f);           
         }
         else //체력이 1이상이면
         {
-            CantClickMenu();
+            CantTouchMenu();
             SystemManager.instance.SetUIOpen(false);
             menuBoardAnimator.SetTrigger("MenuBoardDown"); //메뉴판 아래로 내려가고
             menuButtonAnimator.SetTrigger("MenuButtonIn"); //메뉴버튼 위에서 내려옴
@@ -245,13 +246,13 @@ public class Menu : MonoBehaviour
 
             if((characterNum == 9 && CharacterAppear.instance.eventOn == 9) || (characterNum == 10 && CharacterAppear.instance.eventOn == 10) || (characterNum == 15 && CharacterAppear.instance.eventOn == 16))
             {// 친구,찰스1,롤렝드 친밀도 이벤트일 경우 클릭된 캐릭터와 이벤트 캐릭터가 동일하면
-                goEvent = 1;
+                canStartEvent = true;
                 SystemManager.instance.CantTouchUI();
                 MenuHint.instance.CantClickMHB();//뒤에 메뉴판이 떠있는 채로 이벤트 시작하는 걸 방지하기 위함
-                if (MenuHint.instance.RightMenu[seatNum] == n) //캐릭터가 원하는 메뉴가 n이면, 원하는 메뉴와 플레이어가 고른 메뉴가 일치
+                if (MenuHint.instance.RightMenu[seatNum] == menuNum) //캐릭터가 원하는 메뉴가 n이면, 원하는 메뉴와 플레이어가 고른 메뉴가 일치
                 {
                     SEManager.instance.PlayUIClickSound3();
-                    VisitorNote.instance.GuessMenuRight(characterNum, n);
+                    VisitorNote.instance.GuessMenuRight(characterNum, menuNum);
                     if (CharacterAppear.instance.eventOn == 10)//찰스의 경우 평판 증가
                     {
                         reputation += 3;
@@ -272,14 +273,14 @@ public class Menu : MonoBehaviour
                 TableMenu[seatNum].SetActive(true);
                 SetMenuPosition();//테이블에 올려질 메뉴 위치 설정               
                 MenuHint.instance.HintFadeOut(seatNum); //메뉴힌트 페이드아웃
-                SetTableMenu(n, seatNum); //테이블에 올려질 메뉴는 n
-                menuFIn.Enqueue(seatNum);//메뉴 페이드인 큐에 자리 정보 추가
+                SetTableMenu(menuNum, seatNum); //테이블에 올려질 메뉴는 n
+                menuFadeIn.Enqueue(seatNum);//메뉴 페이드인 큐에 자리 정보 추가
                 tmpNum = seatNum;//대화 중 메뉴 페이드아웃 큐에 자리 정보 추가하기 위함
                 MenuFadeIn();                
             }
             else
             {
-                if (MenuHint.instance.RightMenu[seatNum] == n) //캐릭터가 원하는 메뉴가 n이면, 원하는 메뉴와 플레이어가 고른 메뉴가 일치
+                if (MenuHint.instance.RightMenu[seatNum] == menuNum) //캐릭터가 원하는 메뉴가 n이면, 원하는 메뉴와 플레이어가 고른 메뉴가 일치
                 {
                     SEManager.instance.PlayUIClickSound3();
                     if(CharacterAppear.instance.eventOn != 14)//히로디노 친밀도 이벤트가 아니면
@@ -287,7 +288,7 @@ public class Menu : MonoBehaviour
                         CorrectMenuReaction(seatNum); //자리에 따라 맞는 메뉴 리액션 이미지 가져오기
                         reputation += 3; //원하는 메뉴 서빙 시 평판 3 증가
                     }                  
-                    VisitorNote.instance.GuessMenuRight(characterNum, n);
+                    VisitorNote.instance.GuessMenuRight(characterNum, menuNum);
                 }
                 else //n이 아니면
                 {
@@ -303,14 +304,12 @@ public class Menu : MonoBehaviour
                 SetMenuPosition();//테이블에 올려질 메뉴 위치 설정
 
                 MenuHint.instance.HintFadeOut(seatNum); //메뉴힌트 페이드아웃
-                SetTableMenu(n, seatNum); //테이블에 올려질 메뉴는 n                
-                menuFIn.Enqueue(seatNum);//메뉴 페이드인 큐에 자리 정보 추가
+                SetTableMenu(menuNum, seatNum); //테이블에 올려질 메뉴는 n                
+                menuFadeIn.Enqueue(seatNum);//메뉴 페이드인 큐에 자리 정보 추가
                 MenuFadeIn();
                 if (SystemManager.instance.GetMainCount() == 2) //서빙 튜토리얼일 경우
                 {
-                    reactionFIn.Enqueue(seatNum); //리액션 페이드인 큐에 자리 정보 추가
-                    //SmallFade.instance.Invoke("VisibleCharacter",0.3f); //캐릭터 다시 보이게 하고
-                                                                        // SystemManager.instance.TutorialUpBox();
+                    reactionFadeIn.Enqueue(seatNum); //리액션 페이드인 큐에 자리 정보 추가
                     UI_Assistant1.instance.Invoke("OpenDialogue2",0.5f);
                     SystemManager.instance.SetCanTouch(true,1.5f);
                     VisitorNote.instance.IncreaseFrinedshipGauge(characterNum);
@@ -321,8 +320,8 @@ public class Menu : MonoBehaviour
                     {
                         SystemManager.instance.CantTouchUI();
                         MenuHint.instance.CantClickMHB();//뒤에 메뉴판이 떠있는 채로 이벤트 시작하는 걸 방지하기 위함
-                        reactionFIn.Enqueue(seatNum); //리액션 페이드인 큐에 자리 정보 추가
-                        goEvent = 1;
+                        reactionFadeIn.Enqueue(seatNum); //리액션 페이드인 큐에 자리 정보 추가
+                        canStartEvent = true;
                     }
                     else if((characterNum == 12 || characterNum == 13) && CharacterAppear.instance.eventOn == 14)//히로디노 이벤트인데 캐릭터가 히로나 디노일 때
                     {
@@ -333,7 +332,7 @@ public class Menu : MonoBehaviour
                     }
                     else // 그 외의 경우
                     {                      
-                        reactionFIn.Enqueue(seatNum); //리액션 페이드인 큐에 자리 정보 추가
+                        reactionFadeIn.Enqueue(seatNum); //리액션 페이드인 큐에 자리 정보 추가
                         //Debug.Log("리액션 페이드인큐에 들어간 자리 012345 => " + seatNum);
                         if (CharacterAppear.instance.eventOn != 5)
                         {
@@ -365,7 +364,7 @@ public class Menu : MonoBehaviour
                         else if (CharacterAppear.instance.eventOn == 14 && dinoOk && heroOk)// 둘 다 서빙완료했을 때, 친밀도 이벤트면 UI클릭 금지
                         {
                             MenuHint.instance.CantClickMHB();//뒤에 메뉴판이 떠있는 채로 이벤트 시작하는 걸 방지하기 위함
-                            goEvent = 1;
+                            canStartEvent = true;
                             SystemManager.instance.CantTouchUI();
                         }
                     }
@@ -389,151 +388,101 @@ public class Menu : MonoBehaviour
         //Debug.Log("함수 SetMenuPosition");
     }
 
-    public void SetTableMenu(int n, int num) //테이블에 올려질 메뉴 이미지 설정
+    public void SetTableMenu(int menuNum, int num) //테이블에 올려질 메뉴 이미지 설정
     {
-        switch(n)
+        Vector2 size = new Vector2();
+        Sprite menuImage = UnlockedMenuItems[0].GetComponent<Image>().sprite;
+
+        if(menuNum <= 8) // 1~8 일반 메뉴
         {
-            case 1: //1일 경우 오렌지 주스 , 사이즈 조정과 이미지 삽입
-                TableMenu[num].GetComponent<RectTransform>().sizeDelta = new Vector2(UnlockedMenuItems[0].GetComponent<RectTransform>().rect.width, UnlockedMenuItems[0].GetComponent<RectTransform>().rect.height); //사이즈 조정
-                TableMenu[num].GetComponent<Image>().sprite = UnlockedMenuItems[0].GetComponent<Image>().sprite;
-                break;
-            case 2: //2일 경우 핫초코 , 사이즈 조정과 이미지 삽입
-                TableMenu[num].GetComponent<RectTransform>().sizeDelta = new Vector2(UnlockedMenuItems[1].GetComponent<RectTransform>().rect.width, UnlockedMenuItems[1].GetComponent<RectTransform>().rect.height); //사이즈 조정
-                TableMenu[num].GetComponent<Image>().sprite = UnlockedMenuItems[1].GetComponent<Image>().sprite;
-                break;
-            case 3: 
-                TableMenu[num].GetComponent<RectTransform>().sizeDelta = new Vector2(UnlockedMenuItems[2].GetComponent<RectTransform>().rect.width, UnlockedMenuItems[2].GetComponent<RectTransform>().rect.height); //사이즈 조정
-                TableMenu[num].GetComponent<Image>().sprite = UnlockedMenuItems[2].GetComponent<Image>().sprite;
-                break;
-            case 4:
-                TableMenu[num].GetComponent<RectTransform>().sizeDelta = new Vector2(UnlockedMenuItems[3].GetComponent<RectTransform>().rect.width, UnlockedMenuItems[3].GetComponent<RectTransform>().rect.height); //사이즈 조정
-                TableMenu[num].GetComponent<Image>().sprite = UnlockedMenuItems[3].GetComponent<Image>().sprite;
-                break;
-            case 5:
-                TableMenu[num].GetComponent<RectTransform>().sizeDelta = new Vector2(UnlockedMenuItems[4].GetComponent<RectTransform>().rect.width, UnlockedMenuItems[4].GetComponent<RectTransform>().rect.height); //사이즈 조정
-                TableMenu[num].GetComponent<Image>().sprite = UnlockedMenuItems[4].GetComponent<Image>().sprite;
-                break;
-            case 6:
-                TableMenu[num].GetComponent<RectTransform>().sizeDelta = new Vector2(UnlockedMenuItems[5].GetComponent<RectTransform>().rect.width, UnlockedMenuItems[5].GetComponent<RectTransform>().rect.height); //사이즈 조정
-                TableMenu[num].GetComponent<Image>().sprite = UnlockedMenuItems[5].GetComponent<Image>().sprite;
-                break;
-            case 7:
-                TableMenu[num].GetComponent<RectTransform>().sizeDelta = new Vector2(UnlockedMenuItems[6].GetComponent<RectTransform>().rect.width, UnlockedMenuItems[6].GetComponent<RectTransform>().rect.height); //사이즈 조정
-                TableMenu[num].GetComponent<Image>().sprite = UnlockedMenuItems[6].GetComponent<Image>().sprite;
-                break;
-            case 8:
-                TableMenu[num].GetComponent<RectTransform>().sizeDelta = new Vector2(UnlockedMenuItems[7].GetComponent<RectTransform>().rect.width, UnlockedMenuItems[7].GetComponent<RectTransform>().rect.height); //사이즈 조정
-                TableMenu[num].GetComponent<Image>().sprite = UnlockedMenuItems[7].GetComponent<Image>().sprite;
-                break;
+            size = new Vector2(UnlockedMenuItems[menuNum-1].GetComponent<RectTransform>().rect.width, UnlockedMenuItems[menuNum-1].GetComponent<RectTransform>().rect.height); //사이즈 조정
+            menuImage = UnlockedMenuItems[menuNum-1].GetComponent<Image>().sprite;
+        }
+        else if(menuNum >= 11 && menuNum <= 14) // 스페셜 메뉴 11도리~14개나리
+        {
+            if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
+            {
+                size = new Vector2(SpecialMenu[menuNum-1].GetComponent<RectTransform>().rect.width, SpecialMenu[menuNum-1].GetComponent<RectTransform>().rect.height); //사이즈 조정
+                menuImage = SpecialMenu[menuNum-1].GetComponent<Image>().sprite;
+            }  
+        }
+        else if(menuNum >= 16 && menuNum <= 19) // 스페셜 메뉴 16도로시~19친구
+        {
+            if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
+            {
+                size = new Vector2(SpecialMenu[menuNum-2].GetComponent<RectTransform>().rect.width, SpecialMenu[menuNum-2].GetComponent<RectTransform>().rect.height); //사이즈 조정
+                menuImage = SpecialMenu[menuNum-2].GetComponent<Image>().sprite;
+            }
+        }
+        else if(menuNum == 22 || menuNum == 23) // 스페셜 메뉴 히로디노
+        {
+            if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
+            {
+                size = new Vector2(SpecialMenu[menuNum-10].GetComponent<RectTransform>().rect.width, SpecialMenu[menuNum-10].GetComponent<RectTransform>().rect.height); //사이즈 조정
+                menuImage = SpecialMenu[menuNum-10].GetComponent<Image>().sprite;
+            }
+        }
+        else if(menuNum == 24 || menuNum == 25) // 스페셜 메뉴 24닥터펭 25롤렝드
+        {
+            if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
+            {
+                size = new Vector2(SpecialMenu[menuNum-14].GetComponent<RectTransform>().rect.width, SpecialMenu[menuNum-14].GetComponent<RectTransform>().rect.height); //사이즈 조정
+                menuImage = SpecialMenu[menuNum-14].GetComponent<Image>().sprite;
+            }
+        }
+
+        switch(menuNum)
+        {      
             case 11://여기서부터는 친밀도 이벤트의 메뉴들, 11은 도리 스페셜 메뉴
-                if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
-                {
-                    TableMenu[num].GetComponent<RectTransform>().sizeDelta = new Vector2(SpecialMenu[0].GetComponent<RectTransform>().rect.width, SpecialMenu[0].GetComponent<RectTransform>().rect.height); //사이즈 조정
-                    TableMenu[num].GetComponent<Image>().sprite = SpecialMenu[0].GetComponent<Image>().sprite;
-                }  
                 Popup.instance.SetPopupMenu(SpecialMenu[0], "도리", 110f);
                 break;
             case 12:
-                if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
-                {
-                    TableMenu[num].GetComponent<RectTransform>().sizeDelta = new Vector2(SpecialMenu[1].GetComponent<RectTransform>().rect.width, SpecialMenu[1].GetComponent<RectTransform>().rect.height); //사이즈 조정
-                    TableMenu[num].GetComponent<Image>().sprite = SpecialMenu[1].GetComponent<Image>().sprite;
-                }
                 Popup.instance.SetPopupMenu(SpecialMenu[1], "붕붕이", 50f);
                 break;
             case 13:
-                if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
-                {
-                    TableMenu[num].GetComponent<RectTransform>().sizeDelta = new Vector2(SpecialMenu[2].GetComponent<RectTransform>().rect.width, SpecialMenu[2].GetComponent<RectTransform>().rect.height); //사이즈 조정
-                    TableMenu[num].GetComponent<Image>().sprite = SpecialMenu[2].GetComponent<Image>().sprite;
-                }
                 Popup.instance.SetPopupMenu(SpecialMenu[2], "빵빵이", 80f);
                 break;
             case 14:
-                if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
-                {
-                    TableMenu[num].GetComponent<RectTransform>().sizeDelta = new Vector2(SpecialMenu[3].GetComponent<RectTransform>().rect.width, SpecialMenu[3].GetComponent<RectTransform>().rect.height); //사이즈 조정
-                    TableMenu[num].GetComponent<Image>().sprite = SpecialMenu[3].GetComponent<Image>().sprite;
-                }
                 Popup.instance.SetPopupMenu(SpecialMenu[3], "개나리", 90f);
                 break;
             case 16:
-                if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
-                {
-                    TableMenu[num].GetComponent<RectTransform>().sizeDelta = new Vector2(SpecialMenu[4].GetComponent<RectTransform>().rect.width, SpecialMenu[4].GetComponent<RectTransform>().rect.height); //사이즈 조정
-                    TableMenu[num].GetComponent<Image>().sprite = SpecialMenu[4].GetComponent<Image>().sprite;
-                }
                 Popup.instance.SetPopupMenu(SpecialMenu[4], "도로시", 70f);
                 break;
             case 17:
-                if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
-                {
-                    TableMenu[num].GetComponent<RectTransform>().sizeDelta = new Vector2(SpecialMenu[5].GetComponent<RectTransform>().rect.width, SpecialMenu[5].GetComponent<RectTransform>().rect.height); //사이즈 조정
-                    TableMenu[num].GetComponent<Image>().sprite = SpecialMenu[5].GetComponent<Image>().sprite;
-                }
                 Popup.instance.SetPopupMenu(SpecialMenu[5], "루루", 90f);
                 break;
             case 18:
-                if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
-                {
-                    TableMenu[num].GetComponent<RectTransform>().sizeDelta = new Vector2(SpecialMenu[6].GetComponent<RectTransform>().rect.width, SpecialMenu[6].GetComponent<RectTransform>().rect.height); //사이즈 조정
-                    TableMenu[num].GetComponent<Image>().sprite = SpecialMenu[6].GetComponent<Image>().sprite;
-                }
                 Popup.instance.SetPopupMenu(SpecialMenu[6], "샌디", 70f);
                 break;
             case 19:
-                if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
-                {
-                    TableMenu[num].GetComponent<RectTransform>().sizeDelta = new Vector2(SpecialMenu[7].GetComponent<RectTransform>().rect.width, SpecialMenu[7].GetComponent<RectTransform>().rect.height); //사이즈 조정
-                    TableMenu[num].GetComponent<Image>().sprite = SpecialMenu[7].GetComponent<Image>().sprite;
-                }
                 Popup.instance.SetPopupMenu(SpecialMenu[7], "친구", 80f);
                 break;
-            case 21:
+            case 21: //무명이
             case 31:
-                if(n == 31)//디저트 이미지 교체
+                if(menuNum == 31)//디저트 이미지 교체
                 {
                     SpecialMenu[8].GetComponent<Image>().sprite = NamelessDessert.sprite;
                 }
                 if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                 {
-                    TableMenu[num].GetComponent<RectTransform>().sizeDelta = new Vector2(SpecialMenu[8].GetComponent<RectTransform>().rect.width, SpecialMenu[8].GetComponent<RectTransform>().rect.height); //사이즈 조정
-                    TableMenu[num].GetComponent<Image>().sprite = SpecialMenu[8].GetComponent<Image>().sprite;
+                    size = new Vector2(SpecialMenu[8].GetComponent<RectTransform>().rect.width, SpecialMenu[8].GetComponent<RectTransform>().rect.height); //사이즈 조정
+                    menuImage = SpecialMenu[8].GetComponent<Image>().sprite;
                 }
                 Popup.instance.SetPopupMenu(SpecialMenu[8], SystemManager.instance.GetNameForNameless() , 80f);
                 break;
             case 22://히로디노는 똑같은 메뉴
-                if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
-                {
-                    TableMenu[num].GetComponent<RectTransform>().sizeDelta = new Vector2(SpecialMenu[12].GetComponent<RectTransform>().rect.width, SpecialMenu[12].GetComponent<RectTransform>().rect.height); //사이즈 조정
-                    TableMenu[num].GetComponent<Image>().sprite = SpecialMenu[12].GetComponent<Image>().sprite;
-                }
                 Popup.instance.SetPopupMenu(SpecialMenu[9], "히로와 디노", 50f);
                 break;
-            case 23:
-                if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
-                {
-                    TableMenu[num].GetComponent<RectTransform>().sizeDelta = new Vector2(SpecialMenu[13].GetComponent<RectTransform>().rect.width, SpecialMenu[13].GetComponent<RectTransform>().rect.height); //사이즈 조정
-                    TableMenu[num].GetComponent<Image>().sprite = SpecialMenu[13].GetComponent<Image>().sprite;
-                }           
-                break;
             case 24:
-                if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
-                {
-                    TableMenu[num].GetComponent<RectTransform>().sizeDelta = new Vector2(SpecialMenu[10].GetComponent<RectTransform>().rect.width, SpecialMenu[10].GetComponent<RectTransform>().rect.height); //사이즈 조정
-                    TableMenu[num].GetComponent<Image>().sprite = SpecialMenu[10].GetComponent<Image>().sprite;
-                }
                 Popup.instance.SetPopupMenu(SpecialMenu[10], "닥터 펭(을)", 50f);
                 break;
             case 25:
-                if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
-                {
-                    TableMenu[num].GetComponent<RectTransform>().sizeDelta = new Vector2(SpecialMenu[11].GetComponent<RectTransform>().rect.width, SpecialMenu[11].GetComponent<RectTransform>().rect.height); //사이즈 조정
-                    TableMenu[num].GetComponent<Image>().sprite = SpecialMenu[11].GetComponent<Image>().sprite;
-                }
                 Popup.instance.SetPopupMenu(SpecialMenu[11], "롤렝드", 90f);
                 break;
         }
+
+        TableMenu[num].GetComponent<RectTransform>().sizeDelta = size;
+        TableMenu[num].GetComponent<Image>().sprite = menuImage;
         //Debug.Log("함수 SetTableMenu");
     }
 
@@ -559,13 +508,13 @@ public class Menu : MonoBehaviour
 
         if(n != 12 && n != 13)
         {
-            reactionFIn.Enqueue(seatNum); //리액션 페이드인 큐에 자리 정보 추가
+            reactionFadeIn.Enqueue(seatNum); //리액션 페이드인 큐에 자리 정보 추가
         }
         if(n == 11 && CharacterAppear.instance.eventOn == 13 && UI_Assistant1.instance.getMenu == 1)//무명이2 이벤트
         {
             tmpNum = seatNum;
         }
-        menuFIn.Enqueue(seatNum);//메뉴 페이드인 큐에 자리 정보 추가
+        menuFadeIn.Enqueue(seatNum);//메뉴 페이드인 큐에 자리 정보 추가
     }
 
     public void SoldierEvent(int s)//찰스2 이벤트, 도로시에게 서빙
@@ -574,8 +523,8 @@ public class Menu : MonoBehaviour
         SetMenuPosition();
         TableMenu[seatNum].SetActive(true);
         SetTableMenu(5, seatNum);//메뉴는 딸기스무디
-        menuFIn.Enqueue(seatNum);//메뉴 페이드인 큐에 자리 정보 추가
-        menuFOut.Enqueue(seatNum);//미리 추가
+        menuFadeIn.Enqueue(seatNum);//메뉴 페이드인 큐에 자리 정보 추가
+        menuFadeOut.Enqueue(seatNum);//미리 추가
     }
 
     public void CorrectMenuReaction(int n) //힌트와 맞는 메뉴일 경우 리액션
@@ -622,7 +571,7 @@ public class Menu : MonoBehaviour
     public IEnumerator RFadeToFullAlpha() // 알파값 0에서 1로 전환, 리액션 페이드인
     {
         rFade = 1;//리액션 페이드인 중
-        int num = reactionFIn.Peek();       
+        int num = reactionFadeIn.Peek();       
         Reaction[num].GetComponent<Image>().color = new Color(Reaction[num].GetComponent<Image>().color.r, Reaction[num].GetComponent<Image>().color.g, Reaction[num].GetComponent<Image>().color.b, 0);
         while (Reaction[num].GetComponent<Image>().color.a < 1.0f)
         {
@@ -630,9 +579,9 @@ public class Menu : MonoBehaviour
             yield return null;
         }
         rFade = 0;//페이드인하는 반복문이 끝남=페이드인이 끝남
-        reactionFIn.Dequeue();
-        reactionFOut.Enqueue(num);//리액션 페이드아웃 큐에 정보 추가
-        if (reactionFIn.Count != 0 && !IsInvoking("ReactionFadeIn"))//리액션 페이드인큐가 아직 있고 페이드인함수가 반복대기중이 아니면
+        reactionFadeIn.Dequeue();
+        reactionFadeOut.Enqueue(num);//리액션 페이드아웃 큐에 정보 추가
+        if (reactionFadeIn.Count != 0 && !IsInvoking("ReactionFadeIn"))//리액션 페이드인큐가 아직 있고 페이드인함수가 반복대기중이 아니면
         {
             ReactionFadeIn();//리액션 페이드인 실ㄴ
         }
@@ -641,7 +590,7 @@ public class Menu : MonoBehaviour
     public IEnumerator RFadeToZero()  // 알파값 1에서 0으로 전환, 리액션 페이드아웃
     {
         rFade2 = 1;//페이드아웃 중
-        int num = reactionFOut.Peek();       
+        int num = reactionFadeOut.Peek();       
         Reaction[num].GetComponent<Image>().color = new Color(Reaction[num].GetComponent<Image>().color.r, Reaction[num].GetComponent<Image>().color.g, Reaction[num].GetComponent<Image>().color.b, 1);
         while (Reaction[num].GetComponent<Image>().color.a > 0.0f)
         {
@@ -649,7 +598,7 @@ public class Menu : MonoBehaviour
             yield return null;
         }
         rFade2 = 0;
-        reactionFOut.Dequeue();//페이드아웃 완료했으니 큐에서 정보 삭제
+        reactionFadeOut.Dequeue();//페이드아웃 완료했으니 큐에서 정보 삭제
         Reaction[num].SetActive(false);
         if(SmallFade.instance.SittingCharacter[num] != null)//현재 앉아있는 캐릭터가 null이 아닐 때
         {
@@ -667,10 +616,10 @@ public class Menu : MonoBehaviour
                 {
                     dinoOk = false;
                     heroOk = false;
-                    menuFOut.Enqueue(together1.Peek());    //메뉴 페이드아웃 큐에 데이터 추가 후           
+                    menuFadeOut.Enqueue(together1.Peek());    //메뉴 페이드아웃 큐에 데이터 추가 후           
                     MenuFadeOut();                        //메뉴 페이드아웃 실행
                     together1.Dequeue();
-                    menuFOut.Enqueue(together1.Peek());
+                    menuFadeOut.Enqueue(together1.Peek());
                     together1.Dequeue();
                 }
             }
@@ -688,16 +637,16 @@ public class Menu : MonoBehaviour
                 {
                     pOk = false;
                     sOk = false;
-                    menuFOut.Enqueue(together2.Peek());    //메뉴 페이드아웃 큐에 데이터 추가 후           
+                    menuFadeOut.Enqueue(together2.Peek());    //메뉴 페이드아웃 큐에 데이터 추가 후           
                     MenuFadeOut();                        //메뉴 페이드아웃 실행
                     together2.Dequeue();
-                    menuFOut.Enqueue(together2.Peek());
+                    menuFadeOut.Enqueue(together2.Peek());
                     together2.Dequeue();
                 }
             }
             else //혼자 온 캐릭터
             {
-                menuFOut.Enqueue(num);
+                menuFadeOut.Enqueue(num);
                 MenuFadeOut();
             }
         }
@@ -731,7 +680,7 @@ public class Menu : MonoBehaviour
 
     public IEnumerator FadeToFullAlpha() // 알파값 0에서 1로 전환, 메뉴 페이드인
     {
-        int n = menuFIn.Peek();
+        int n = menuFadeIn.Peek();
         mFade = true;
         TableMenu[n].GetComponent<Image>().color = new Color(TableMenu[n].GetComponent<Image>().color.r, TableMenu[n].GetComponent<Image>().color.g, TableMenu[n].GetComponent<Image>().color.b, 0);
         while (TableMenu[n].GetComponent<Image>().color.a < 1.0f)
@@ -740,36 +689,36 @@ public class Menu : MonoBehaviour
             yield return null;
         }
         mFade = false;
-        menuFIn.Dequeue();
+        menuFadeIn.Dequeue();
 
-        if((CharacterAppear.instance.eventOn == 9 || CharacterAppear.instance.eventOn == 10)&& UI_Assistant1.instance.getMenu == 0 && goEvent == 1)//친구,찰스1 친밀도 이벤트 처음일 때
+        if((CharacterAppear.instance.eventOn == 9 || CharacterAppear.instance.eventOn == 10)&& UI_Assistant1.instance.getMenu == 0 && canStartEvent)//친구,찰스1 친밀도 이벤트 처음일 때
         {
             SystemManager.instance.BeginDialogue(CharacterAppear.instance.eventOn);//시나리오 시작
-            goEvent = 0;
+            canStartEvent = false;
         }
-        if(CharacterAppear.instance.eventOn == 12 && goEvent == 1)//무명이1 친밀도 이벤트의 경우
+        if(CharacterAppear.instance.eventOn == 12 && canStartEvent)//무명이1 친밀도 이벤트의 경우
         {
             SystemManager.instance.BeginDialogue(11);
-            goEvent = 0;
+            canStartEvent = false;
         }
-        if (CharacterAppear.instance.eventOn == 14 && heroOk && dinoOk && UI_Assistant1.instance.getMenu == 0 && goEvent == 1)//히로디노 친밀도 이벤트의 경우
+        if (CharacterAppear.instance.eventOn == 14 && heroOk && dinoOk && UI_Assistant1.instance.getMenu == 0 && canStartEvent)//히로디노 친밀도 이벤트의 경우
         {
             SystemManager.instance.BeginDialogue(12);
-            goEvent = 0;
+            canStartEvent = false;
         }
-        if(CharacterAppear.instance.eventOn == 16 && UI_Assistant1.instance.getMenu == 0 && goEvent == 1)//롤렝드 친밀도 이벤트의 경우
+        if(CharacterAppear.instance.eventOn == 16 && UI_Assistant1.instance.getMenu == 0 && canStartEvent)//롤렝드 친밀도 이벤트의 경우
         {
             SystemManager.instance.BeginDialogue(14);
             SmallFade.instance.smallFadeIn.Enqueue(17);
             SmallFade.instance.FadeIn();
-            goEvent = 0;
+            canStartEvent = false;
         }
     }
 
     public IEnumerator FadeToZero()  // 알파값 1에서 0으로 전환, 메뉴 페이드아웃
     {
         mFade2 = true;
-        int n = menuFOut.Peek();
+        int n = menuFadeOut.Peek();
 
         TableMenu[n].GetComponent<Image>().color = new Color(TableMenu[n].GetComponent<Image>().color.r, TableMenu[n].GetComponent<Image>().color.g, TableMenu[n].GetComponent<Image>().color.b, 1);
         while (TableMenu[n].GetComponent<Image>().color.a > 0.0f)
@@ -778,24 +727,24 @@ public class Menu : MonoBehaviour
             yield return null;
         }
         mFade2 = false;
-        menuFOut.Dequeue();
+        menuFadeOut.Dequeue();
         TableMenu[n].SetActive(false);
         if((CharacterAppear.instance.eventOn != 9 && CharacterAppear.instance.eventOn != 11 && CharacterAppear.instance.eventOn != 13 && CharacterAppear.instance.eventOn != 14 && CharacterAppear.instance.eventOn != 16)
-            || (SmallFade.instance.SittingCharacter[n].name != "sDog" && CharacterAppear.instance.eventOn == 9)
+            || (SmallFade.instance.SittingCharacter[n].name != "small_9Dog" && CharacterAppear.instance.eventOn == 9)
             || (SmallFade.instance.SittingCharacter[n].name != "small_6Princess" && SmallFade.instance.SittingCharacter[n].name != "small_10Soldier" && CharacterAppear.instance.eventOn == 11)
-            || (SmallFade.instance.SittingCharacter[n].name != "sHero" && SmallFade.instance.SittingCharacter[n].name != "sDinosour" && CharacterAppear.instance.eventOn == 14)
+            || (SmallFade.instance.SittingCharacter[n].name != "small_12Hero" && SmallFade.instance.SittingCharacter[n].name != "small_13Dinosour" && CharacterAppear.instance.eventOn == 14)
             || (SmallFade.instance.SittingCharacter[n].name != "small_15Grandfather" && CharacterAppear.instance.eventOn == 16))
         {//특정 캐릭터 친밀도 이벤트가 아닐 때, 혹은 특정 캐릭터 이벤트여도 해당 이벤트 캐릭터가 아닐 때
-            seatInfo.Enqueue(n);//EachObject의 seatInfo 큐에 자리 정보 저장, 작은 캐릭터 페이드아웃 시 쓰임
+            seatInfo.Enqueue(n);
             //Debug.Log("페이드아웃될 자리 " + n);
             SmallFade.instance.FadeOut(); //작은 캐릭터 페이드아웃   
         }
         else if(CharacterAppear.instance.eventOn == 14 && SmallFade.instance.SittingCharacter[n].name == "sHero" && UI_Assistant1.instance.getMenu == 2)
         {//히로디노 이벤트 중에 페이드아웃하는 캐릭터가 히로이고 디노 페이드아웃 전일 때
-            seatInfo.Enqueue(n);//EachObject의 seatInfo 큐에 자리 정보 저장, 작은 캐릭터 페이드아웃 시 쓰임
+            seatInfo.Enqueue(n);
             SmallFade.instance.FadeOut(); //작은 캐릭터 페이드아웃
         }
-        if (menuFOut.Count != 0)
+        if (menuFadeOut.Count != 0)
         {
             MenuFadeOut();
         }

@@ -472,7 +472,7 @@ public class SystemManager : MonoBehaviour
                     if (Dialogue.instance.CharacterDC[cNum] == 1)//찰스1 이벤트
                     {
                         SmallFade.instance.CanClickCharacter(6);//도로시 클릭 가능하게
-                        Menu.instance.menuFOut.Enqueue(Menu.instance.tmpNum); //메뉴 페이드아웃 큐에 추가
+                        Menu.instance.menuFadeOut.Enqueue(Menu.instance.tmpNum); //메뉴 페이드아웃 큐에 추가
                         Menu.instance.MenuFadeOut();//메뉴 페이드아웃
                     }
                     else if (Dialogue.instance.CharacterDC[cNum] == 2)//찰스2 이벤트
@@ -854,6 +854,7 @@ public class SystemManager : MonoBehaviour
 
     public void TouchTipNoteButton() // 팁 노트 버튼 눌렀을 때
     {
+        if(isUIOpen) return;
         tipNoteButton.interactable = false;
         isUIOpen = true;
         SEManager.instance.PlayUIClickSound(); //효과음  
@@ -1183,7 +1184,6 @@ public class SystemManager : MonoBehaviour
     {
         return needAction;
     }
-
     #endregion
 
     #region 게임 종료 관련 함수

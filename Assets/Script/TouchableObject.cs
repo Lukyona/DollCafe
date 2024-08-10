@@ -62,7 +62,7 @@ public class TouchableObject : MonoBehaviour //터치된 오브젝트 구분, �
 
         Menu.instance.SetCharacterNum(GetNumber(idx, charName));
 
-        Menu.instance.ClickMenuHint();
+        Menu.instance.TouchMenuHint();
     }
 
     public void TouchMenu()
