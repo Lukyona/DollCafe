@@ -109,49 +109,25 @@ public class CharacterAppear : MonoBehaviour
         {
             if (Dialogue.instance.CharacterDC[c - 1] != 0 && Dialogue.instance.CharacterDC[c - 1] != 3)
             {
-                if(c == 14)
+                if (VisitorNote.instance.friendshipGauge[c - 3].GetComponent<Image>().fillAmount == 1)//친밀도 게이지가 꽉 찼을 때
                 {
-                    if (VisitorNote.instance.friendshipGauge[c - 3].GetComponent<Image>().fillAmount == 1)//친밀도 게이지가 꽉 찼을 때
+                    if (CharacterVisit.instance.IsInvoking("RandomVisit"))
                     {
-                        if (CharacterVisit.instance.IsInvoking("RandomVisit"))
-                        {
-                            CharacterVisit.instance.CancelInvoke("RandomVisit");
-                            Debug.Log("랜덤방문 취소");
-                        }
-                        MenuHint.instance.CantClickMHB();
-                        SystemManager.instance.CantTouchUI();
-                        eventOn = 15;//친밀도 이벤트 진행 중
-                        if (SystemManager.instance.IsUIOpen() || UI_Assistant1.instance.talking || VisitorNote.instance.replayOn != 0)//만약 UI가 올라와있다면
-                        {
-                            Invoke("FriendshipEvent", 1f);// 1초마다 이 함수 재실행
-                        }
-                        else
-                        {
-                            SmallFade.instance.SetCharacter(c);//캐릭터를 설정하고 바로 페이드인    
-                        }
+                        CharacterVisit.instance.CancelInvoke("RandomVisit");
+                        Debug.Log("랜덤방문 취소");
                     }
-                }
-                else if(c == 15)
-                {
-                    if (VisitorNote.instance.friendshipGauge[c - 3].GetComponent<Image>().fillAmount == 1)//친밀도 게이지가 꽉 찼을 때
+                    MenuHint.instance.CantClickMHB();
+                    SystemManager.instance.CantTouchUI();
+                    eventOn = c+1;//친밀도 이벤트 진행 중
+                    if (SystemManager.instance.IsUIOpen() || UI_Assistant1.instance.talking || VisitorNote.instance.replayOn != 0)//만약 UI가 올라와있다면
                     {
-                        if (CharacterVisit.instance.IsInvoking("RandomVisit"))
-                        {
-                            CharacterVisit.instance.CancelInvoke("RandomVisit");
-                            Debug.Log("랜덤방문 취소");
-                        }
-                        eventOn = 16;//친밀도 이벤트 진행 중
-                        if (SystemManager.instance.IsUIOpen() || UI_Assistant1.instance.talking || VisitorNote.instance.replayOn != 0)//만약 UI가 올라와있다면
-                        {
-                            Invoke("FriendshipEvent", 1f);// 1초마다 이 함수 재실행
-                        }
-                        else
-                        {                           
-                            SmallFade.instance.SetCharacter(c);//캐릭터를 설정하고 바로 페이드인    
-                        }
+                        Invoke("FriendshipEvent", 1f);// 1초마다 이 함수 재실행
                     }
-                }
-                        
+                    else
+                    {
+                        SmallFade.instance.SetCharacter(c);//캐릭터를 설정하고 바로 페이드인    
+                    }
+                }        
             }
         }
         else
@@ -344,8 +320,6 @@ public class CharacterAppear : MonoBehaviour
                         break;                    
                 }
             }
-        }
-        
-                  
+        }                
     }
 }

@@ -327,14 +327,12 @@ public class SmallFade : MonoBehaviour //작은 캐릭터 스크립트
         StartCoroutine(FadeToZero());//페이드아웃 시작         
     }
 
-    public void FadeOut() //작은 캐릭터 페이드아웃
+    public void FadeOut(int seatNum) //작은 캐릭터 페이드아웃
     {   
-        int n = Menu.instance.seatInfo.Peek();
-        string charName = instance.SittingCharacter[n].name;
+        string charName = SittingCharacter[seatNum].name;
 
         // 캐릭터 오브젝트 이름 예시 : small_1Bear
         int idx = charName.IndexOf("_");
-
         idx = TouchableObject.instance.GetNumber(idx, charName);
 
         switch(idx)
@@ -416,14 +414,14 @@ public class SmallFade : MonoBehaviour //작은 캐릭터 스크립트
         { //히로디노가 아니고
             if(Dialogue.instance.CharacterDC[10] != 3 || (Dialogue.instance.CharacterDC[10] == 3 && charName != "small_6Princess" && charName != "small_10Soldier"))
             {//찰스 이벤트가 다 안 끝났거나 끝났어도 찰스,도로시가 아니면
-                cleanSeat.Enqueue(n); //비워질 자리 큐에 정보 추가
+                cleanSeat.Enqueue(seatNum); //비워질 자리 큐에 정보 추가
                  //Debug.Log(n + "자리 클린시트큐에 추가됨");
             }       
             else if(Dialogue.instance.CharacterDC[10] == 3 && (charName == "small_6Princess" || charName == "small_10Soldier"))
             {//찰스도로시 중 찰스나 도로시일 때
                 if (!x2)//값이 0이어야만 가능
                 {
-                    cleanSeat.Enqueue(n); //비워질 자리 큐에 정보 추가
+                    cleanSeat.Enqueue(seatNum); //비워질 자리 큐에 정보 추가
                 }
             }
         }
@@ -431,12 +429,11 @@ public class SmallFade : MonoBehaviour //작은 캐릭터 스크립트
         {
             if (!x1)//값이 0이어야만 가능
             {
-                cleanSeat.Enqueue(n); //비워질 자리 큐에 정보 추가
+                cleanSeat.Enqueue(seatNum); //비워질 자리 큐에 정보 추가
                 //  Debug.Log(n + "자리 클린시트큐에 추가됨");
             }
         }       
-        Menu.instance.seatInfo.Dequeue();
-        SittingCharacter[n] = null;//버그 대비 페이드아웃 시 null 넣기
+        SittingCharacter[seatNum] = null;//버그 대비 페이드아웃 시 null 넣기
     
         StartCoroutine(FadeToZero());//페이드아웃 시작         
         //Debug.Log("함수 SmallFadeOut");
@@ -574,30 +571,22 @@ public class SmallFade : MonoBehaviour //작은 캐릭터 스크립트
         
         if(CharacterAppear.instance.eventOn == 0 && UI_Assistant1.instance.getMenu == 2)//친밀도 이벤트가 끝났을 때
         {
-            switch(cNum)//해당 캐릭터에 따라서 주인공 아기 이미지 페이드아웃
+            if(cNum % 2 == 1) // 홀수 캐릭터
             {
-                case 1:
-                case 3:
-                case 5:
-                case 7:
-                case 9:
-                case 11:
-                case 15:
+                if(cNum != 13) //디노 제외
+                {
                     smallFOut.Enqueue(17);
-                    break;
-                case 2:
-                case 4:
-                case 6:
-                case 8:
-                case 10:
-                case 14:
-                    smallFOut.Enqueue(16);
-                    break;
-                case 13://디노 페이드아웃하고 서빙 넘버 초기화
-                    Menu.instance.dinoOk = false;
-                    Menu.instance.heroOk = false;
-                    break;
+                }
             }
+
+            if(cNum % 2 == 0) // 짝수 캐릭터
+            {
+                if(cNum != 12) //히로 제외
+                {
+                    smallFOut.Enqueue(16);
+                }
+            }
+
             if(cNum != 12)//히로만 아니면
             {
                 UI_Assistant1.instance.getMenu = 0;

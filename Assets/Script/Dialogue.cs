@@ -58,6 +58,11 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
             characterNum = cNum;
 
         ++CharacterDC[characterNum];
+        if(cNum != 10 && cNum != 11 && CharacterDC[characterNum] == 2) ///찰스, 무명이 제외하고는 친밀도 이벤트가 한 번뿐임
+        {
+            CharacterDC[characterNum] = 3; // 캐릭터 에피소드 끝남
+        }
+
         SaveCharacterDCInfo();
     }
 
@@ -326,7 +331,6 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                 textWriterSingle = TextWriter.AddWriter_Static(UI_Assistant1.instance.characterText, "흐음...");
                 CName.text = "도리";
                 break;
-
         }
     }
 

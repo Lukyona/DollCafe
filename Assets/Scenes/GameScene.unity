@@ -6089,7 +6089,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &176223466
 RectTransform:
   m_ObjectHideFlags: 0
@@ -42745,11 +42745,6 @@ MonoBehaviour:
   reputationText: {fileID: 1534718395}
   NoHPMessege: {fileID: 1433736733}
   NamelessDessert: {fileID: 0}
-  dinoOk: 0
-  heroOk: 0
-  pOk: 0
-  sOk: 0
-  tmpNum: 0
 --- !u!114 &1538706534
 MonoBehaviour:
   m_ObjectHideFlags: 0

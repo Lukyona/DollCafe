@@ -148,8 +148,9 @@ public class SystemManager : MonoBehaviour
 
     public void DebuggingCheat()
     {
-        PlayerPrefs.SetInt("PurchaseCount", 0); //인앱 결제 정보 저장
-        PlayerPrefs.Save(); //세이브
+        //PlayerPrefs.SetInt("PurchaseCount", 0); //인앱 결제 정보 저장
+        //PlayerPrefs.Save(); //세이브
+        Dialogue.instance.CharacterDC[2] = 1;
     }
 
     public int GetMainCount()
@@ -182,7 +183,7 @@ public class SystemManager : MonoBehaviour
                     }
                     TimeManager.instance.StartTimer();
                     Star.instance.Invoke("ActivateStarSystem", 25f);//25초 뒤 별 함수 시작
-                    Debug.Log("스타시스템 25초 뒤 시작");
+                    //Debug.Log("스타시스템 25초 뒤 시작");
                 }
                 if (!CharacterVisit.instance.IsInvoking("RandomVisit") && endingState != 1 && !UI_Assistant1.instance.talking)
                 { // 엔딩이벤트 중이 아니어야 하고 대화 중이 아니어야함
@@ -339,7 +340,7 @@ public class SystemManager : MonoBehaviour
                 CantTouchUI();
                 break;
             case 2: // 서빙 튜토리얼 완료
-                Menu.instance.Invoke("ReactionFadeIn", 1f); // 도리 리액션 말풍선 페이드인
+                Menu.instance.ReactionFadeIn(Menu.instance.GetSeatNum(),1f); // 도리 리액션 말풍선 페이드인
                 UI_Assistant1.instance.panel7.SetActive(false);      
                 SmallFade.instance.SetCharacter(0); // 제제 자리로 돌아가기
                 Dialogue.instance.SetCharacterNum(2); //다음 등장 캐릭터 붕붕
@@ -457,11 +458,7 @@ public class SystemManager : MonoBehaviour
                     {
                         VisitorNote.instance.characterInfo[cNum - 1].GetComponent<Image>().sprite = CharacterManager.instance.CharacterFaceList[cNum].face[1].GetComponent<Image>().sprite;
                         ShowBangBubble();
-                    }
-                    else if(cNum == 12 || cNum == 13)//히로디노, 닥터펭은 1번째 표정으로 바꾸기
-                    {
-                        VisitorNote.instance.characterInfo[cNum - 1].GetComponent<Image>().sprite = CharacterManager.instance.CharacterFaceList[cNum - 2].face[0].GetComponent<Image>().sprite;
-                    }
+                    }              
                     else if(cNum == 14)//롤렝드는 따로
                     {
                         VisitorNote.instance.characterInfo[cNum - 1].GetComponent<Image>().sprite = CharacterManager.instance.GetBigCharacter(17).GetComponent<Image>().sprite;
@@ -472,7 +469,6 @@ public class SystemManager : MonoBehaviour
                     if (Dialogue.instance.CharacterDC[cNum] == 1)//찰스1 이벤트
                     {
                         SmallFade.instance.CanClickCharacter(6);//도로시 클릭 가능하게
-                        Menu.instance.menuFadeOut.Enqueue(Menu.instance.tmpNum); //메뉴 페이드아웃 큐에 추가
                         Menu.instance.MenuFadeOut();//메뉴 페이드아웃
                     }
                     else if (Dialogue.instance.CharacterDC[cNum] == 2)//찰스2 이벤트
@@ -495,6 +491,21 @@ public class SystemManager : MonoBehaviour
                         VisitorNote.instance.RePlayButton[cNum - 1].gameObject.SetActive(true);
                     }
                     Menu.instance.ReactionFadeIn();
+                    break;
+                case 12:
+                case 13:
+                    VisitorNote.instance.characterInfo[cNum - 1].GetComponent<Image>().sprite = CharacterManager.instance.CharacterFaceList[cNum - 2].face[0].GetComponent<Image>().sprite;
+                    if(cNum == 13)
+                    {
+                        if(Menu.instance.GetSeatNum() % 2 == 0) // 짝수(마지막 서빙이 히로)면 
+                        {
+                            Menu.instance.ReactionFadeIn(Menu.instance.GetSeatNum()+1);
+                        }
+                        else //홀수(마지막 서빙이 디노)면 
+                        {
+                            Menu.instance.ReactionFadeIn();
+                        }
+                    }
                     break;
             }
 

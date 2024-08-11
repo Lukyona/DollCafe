@@ -1456,7 +1456,6 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                                 SystemManager.instance.SetCanTouch(false);
                                 SystemManager.instance.SetCanTouch(true,1f);
                                 SmallFade.instance.smallFOut.Enqueue(17);
-                                Menu.instance.menuFadeOut.Enqueue(Menu.instance.tmpNum); //메뉴 페이드아웃 큐에 추가
                                 Menu.instance.MenuFadeOut();//원래 있던 메뉴 페이드아웃
                             }
                             break;
@@ -1681,8 +1680,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             {
                                 SystemManager.instance.SetCanTouch(false);
                                 SystemManager.instance.SetCanTouch(true,1f);
-                                Menu.instance.seatInfo.Enqueue(SmallFade.instance.CharacterSeat[9]);
-                                SmallFade.instance.FadeOut();//찰스 작은 캐릭터 페이드아웃
+                                SmallFade.instance.FadeOut(SmallFade.instance.CharacterSeat[9]);//찰스 작은 캐릭터 페이드아웃
                             }
                             break;
                         case 25:
@@ -2040,7 +2038,6 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             {
                                 SystemManager.instance.SetCanTouch(false);
                                 SystemManager.instance.SetCanTouch(true,1f);
-                                Menu.instance.menuFadeOut.Enqueue(Menu.instance.tmpNum); //메뉴 페이드아웃 큐에 추가
                                 Menu.instance.MenuFadeOut();//원래 있던 메뉴 페이드아웃
                             }
                             break;
@@ -2221,13 +2218,15 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                                 SystemManager.instance.SetCanTouch(false);
                                 SystemManager.instance.SetCanTouch(true,2.3f);
                                 getMenu = 1;
-                                Menu.instance.reactionFadeIn.Enqueue(Menu.instance.tmpNum); //리액션페이드인 큐에 추가
-                                Menu.instance.menuFadeOut.Enqueue(Menu.instance.tmpNum);//메뉴 페이드아웃큐에 자리 추가
-                                Menu.instance.MenuFadeOut();//원래 있던 메뉴 페이드아웃                                
-                                Menu.instance.tmpNum++;
-                                Menu.instance.menuFadeOut.Enqueue(Menu.instance.tmpNum);//메뉴 페이드아웃큐에 자리 추가
-                                Menu.instance.reactionFadeIn.Enqueue(Menu.instance.tmpNum); //리액션페이드인 큐에 추가
-                               // Menu.instance.Invoke("MenuFadeOut", 0.5f);
+                                if(Menu.instance.GetSeatNum() % 2 == 0) // 짝수(마지막 서빙이 히로)면 디노 메뉴 먼저 페이드아웃
+                                {
+                                    Menu.instance.MenuFadeOut(Menu.instance.GetSeatNum()+1);
+                                }
+                                else //홀수(마지막 서빙이 디노)면 히로 메뉴 먼저 페이드아웃
+                                {
+                                    Menu.instance.MenuFadeOut(Menu.instance.GetSeatNum()-1);
+                                }
+                                Menu.instance.MenuFadeOut(-1, false);   
                             }
                             break;
                         case 24:
@@ -2307,7 +2306,14 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                         case 42:
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
-                                Menu.instance.ReactionFadeIn();//히로 리액션 페이드인
+                                if(Menu.instance.GetSeatNum() % 2 == 1) // 홀수(마지막 서빙이 디노)면
+                                {
+                                    Menu.instance.ReactionFadeIn(Menu.instance.GetSeatNum()-1,0);//히로 리액션 페이드인
+                                }
+                                else
+                                {
+                                    Menu.instance.ReactionFadeIn(-1,0);//히로 리액션 페이드인
+                                }
                                 getMenu = 2;
                             }
                             break;
@@ -2680,7 +2686,6 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                                 SystemManager.instance.SetCanTouch(false);
                                 SystemManager.instance.SetCanTouch(true,1f);
                                 SmallFade.instance.smallFOut.Enqueue(17);
-                                Menu.instance.menuFadeOut.Enqueue(Menu.instance.tmpNum); //메뉴 페이드아웃 큐에 추가
                                 Menu.instance.MenuFadeOut();//원래 있던 메뉴 페이드아웃
                             }
                             break;

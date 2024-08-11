@@ -50,26 +50,19 @@ public class Menu : MonoBehaviour
 
     int seatNum = 0; //자리 넘버
 
-    public Queue<int> reactionFadeIn = new Queue<int>();//리액션 페이드인 시 사용
+    Queue<int> reactionFadeIn = new Queue<int>();//리액션 페이드인 시 사용
     Queue<int> reactionFadeOut = new Queue<int>();//리액션 페이드아웃 시 사용
     Queue<int> menuFadeIn = new Queue<int>();//메뉴 페이드인 시 사용
-    public Queue<int> menuFadeOut = new Queue<int>();//메뉴 페이드아웃 시 사용
+    Queue<int> menuFadeOut = new Queue<int>();//메뉴 페이드아웃 시 사용
 
-    public bool dinoOk = false; //디노 히로가 모두 서빙을 받았을 시 페이드아웃 가능
-    public bool heroOk = false;
-    public bool pOk = false; //도로시 서빙, 찰스랑 같이 다닐 때부터 사용
-    public bool sOk = false; //찰스 서빙
-
-    Queue<int> together1 = new Queue<int>();//히로디노 자리 정보 저장
-    Queue<int> together2 = new Queue<int>();//도로시찰스 자리 정보 저장
+    bool isDinoServed = false; //디노 히로가 모두 서빙을 받았을 시 페이드아웃 가능
+    bool isHeroServed = false;
+    bool isPrincessServed = false; //도로시 서빙, 찰스랑 같이 다닐 때부터 사용
+    bool isSoldierServed = false; //찰스 서빙
 
     int characterNum;
 
     bool canStartEvent = false; //메뉴 서빙 후 친밀도 이벤트가 나오는 캐릭터의 경우, 이벤트 캐릭터가 서빙을 받으면 이벤트 시작
-
-    public int tmpNum = 0;//메뉴 서빙 후 이벤트 나오는 캐릭터들 메뉴 위치 임시로 저장
-
-    public Queue<int> seatInfo = new Queue<int>(); //자리 정보 큐, 작은 캐릭터 페이드아웃 시 사용
 
     private void Awake()
     {
@@ -116,16 +109,6 @@ public class Menu : MonoBehaviour
         return boardCloseButton;
     }
 
-    public void SetSeatNum(int value)
-    {
-        seatNum = value;
-    }
-
-    public void SetCharacterNum(int value)
-    {
-        characterNum = value;
-    }
-
     public GameObject GetSpecialMenu(int num)
     {
         return SpecialMenu[num];
@@ -161,10 +144,13 @@ public class Menu : MonoBehaviour
         MenuHint.instance.CanClickMHB();
     }
 
-    public void TouchMenuHint() //캐릭터의 메뉴 힌트 말풍선 눌렀을 때
+    public void TouchMenuHint(int cNum, int sNum) //캐릭터의 메뉴 힌트 말풍선 눌렀을 때
     {
         if (!SystemManager.instance.IsUIOpen())
         {
+            characterNum = cNum;
+            seatNum = sNum;
+
             MenuHint.instance.CantClickMHB();//다른 메뉴힌트버블 터치 불가
             SystemManager.instance.SetUIOpen(true);
             SEManager.instance.PlayUIClickSound2(); //효과음
@@ -214,6 +200,11 @@ public class Menu : MonoBehaviour
         NoHPMessegeAnimator.SetTrigger("NoHPFadeOut");
     }
 
+    public int GetSeatNum()
+    {
+        return seatNum;
+    }
+
     public void SetReputation(int value)
     {
         reputation = value;
@@ -230,6 +221,7 @@ public class Menu : MonoBehaviour
         if (HPManager.instance.GetCurrentHP() <= 0) //체력이 0보다 작거나 같으면
         {
             CantTouchMenu();
+            NoHPMessege.SetActive(true); //체력 없음 메세지 보이게 함
             NoHPMessegeAnimator.SetTrigger("NoHPFadeIn");
             Invoke(nameof(NoHPMessegeFadeOut), 1f); //1초 뒤 메세지 페이드아웃
             Invoke(nameof(CanTouchMenu), 1.5f);           
@@ -244,7 +236,8 @@ public class Menu : MonoBehaviour
 
             HPManager.instance.UseHP(); //체력 소모
 
-            if((characterNum == 9 && CharacterAppear.instance.eventOn == 9) || (characterNum == 10 && CharacterAppear.instance.eventOn == 10) || (characterNum == 15 && CharacterAppear.instance.eventOn == 16))
+            if((characterNum == 9 && CharacterAppear.instance.eventOn == 9) || (characterNum == 10 && CharacterAppear.instance.eventOn == 10)
+                || (characterNum == 15 && CharacterAppear.instance.eventOn == 16))
             {// 친구,찰스1,롤렝드 친밀도 이벤트일 경우 클릭된 캐릭터와 이벤트 캐릭터가 동일하면
                 canStartEvent = true;
                 SystemManager.instance.CantTouchUI();
@@ -255,8 +248,7 @@ public class Menu : MonoBehaviour
                     VisitorNote.instance.GuessMenuRight(characterNum, menuNum);
                     if (CharacterAppear.instance.eventOn == 10)//찰스의 경우 평판 증가
                     {
-                        reputation += 3;
-                        reputationText.text = string.Format("{0}", reputation); //평판 표시
+                        SetReputation(reputation += 3);
                         VisitorNote.instance.IncreaseFrinedshipGauge(characterNum); //서빙받은 캐릭터의 친밀도 증가
                     }
                 }
@@ -265,8 +257,7 @@ public class Menu : MonoBehaviour
                     SEManager.instance.PlayUIClickSound2();
                     if (CharacterAppear.instance.eventOn == 10)
                     {
-                        reputation++;
-                        reputationText.text = string.Format("{0}", reputation); //평판 표시
+                        SetReputation(++reputation);
                         VisitorNote.instance.IncreaseFrinedshipGauge(characterNum); //서빙받은 캐릭터의 친밀도 증가
                     }
                 }
@@ -275,28 +266,28 @@ public class Menu : MonoBehaviour
                 MenuHint.instance.HintFadeOut(seatNum); //메뉴힌트 페이드아웃
                 SetTableMenu(menuNum, seatNum); //테이블에 올려질 메뉴는 n
                 menuFadeIn.Enqueue(seatNum);//메뉴 페이드인 큐에 자리 정보 추가
-                tmpNum = seatNum;//대화 중 메뉴 페이드아웃 큐에 자리 정보 추가하기 위함
+                //tmpNum = seatNum;//대화 중 메뉴 페이드아웃 큐에 자리 정보 추가하기 위함
                 MenuFadeIn();                
             }
             else
             {
-                if (MenuHint.instance.RightMenu[seatNum] == menuNum) //캐릭터가 원하는 메뉴가 n이면, 원하는 메뉴와 플레이어가 고른 메뉴가 일치
+                if (MenuHint.instance.RightMenu[seatNum] == menuNum) //캐릭터가 원하는 메뉴와 원하는 메뉴와 플레이어가 고른 메뉴가 일치
                 {
                     SEManager.instance.PlayUIClickSound3();
                     if(CharacterAppear.instance.eventOn != 14)//히로디노 친밀도 이벤트가 아니면
                     {
                         CorrectMenuReaction(seatNum); //자리에 따라 맞는 메뉴 리액션 이미지 가져오기
-                        reputation += 3; //원하는 메뉴 서빙 시 평판 3 증가
+                        SetReputation(reputation += 3);
                     }                  
                     VisitorNote.instance.GuessMenuRight(characterNum, menuNum);
                 }
-                else //n이 아니면
+                else //메뉴 불일치
                 {
                     SEManager.instance.PlayUIClickSound2();
-                    if (CharacterAppear.instance.eventOn != 14)
+                    if (CharacterAppear.instance.eventOn != 14) // 히로디노 이벤트 아닐 때
                     {
                         WrongMenuReaction(seatNum); //자리에 따라 틀린 메뉴 리액션 이미지 가져오기
-                        reputation++; //원하는 메뉴가 아닌 다른 메뉴 서빙 시 평판 1 증가
+                        SetReputation(++reputation); //원하는 메뉴가 아닌 다른 메뉴 서빙 시 평판 1 증가
                     }                  
                 }
                 TableMenu[seatNum].SetActive(true);
@@ -314,7 +305,7 @@ public class Menu : MonoBehaviour
                     SystemManager.instance.SetCanTouch(true,1.5f);
                     VisitorNote.instance.IncreaseFrinedshipGauge(characterNum);
                 }
-                else
+                else // 튜토리얼 아닌 경우
                 {
                     if(characterNum == 11 && CharacterAppear.instance.eventOn == 12)//무명이1 이벤트이고 무명이 서빙을 했을 때
                     {
@@ -323,20 +314,11 @@ public class Menu : MonoBehaviour
                         reactionFadeIn.Enqueue(seatNum); //리액션 페이드인 큐에 자리 정보 추가
                         canStartEvent = true;
                     }
-                    else if((characterNum == 12 || characterNum == 13) && CharacterAppear.instance.eventOn == 14)//히로디노 이벤트인데 캐릭터가 히로나 디노일 때
-                    {
-                        if(characterNum == 12)
-                        {
-                            tmpNum = seatNum;//대화 중 메뉴 페이드아웃 큐에 자리 정보 추가하기 위함
-                        }                    
-                    }
                     else // 그 외의 경우
                     {                      
-                        reactionFadeIn.Enqueue(seatNum); //리액션 페이드인 큐에 자리 정보 추가
-                        //Debug.Log("리액션 페이드인큐에 들어간 자리 012345 => " + seatNum);
                         if (CharacterAppear.instance.eventOn != 5)
                         {
-                            Invoke("ReactionFadeIn", 1f);
+                            ReactionFadeIn(seatNum,1f);
                         }     
                     }
 
@@ -344,33 +326,24 @@ public class Menu : MonoBehaviour
                     {
                         if (characterNum == 12 && CharacterAppear.instance.eventOn == 14)//이벤트일 때만 히로디노OK 먼저 하기
                         {
-                            heroOk = true;
+                            isHeroServed = true;
                             SmallFade.instance.CanClickCharacter(13);//디노 클릭 가능                           
                         }
                         else if (characterNum == 13 && CharacterAppear.instance.eventOn == 14)
                         {
-                            dinoOk = true;
+                            isDinoServed = true;
                         }
 
                         if (CharacterAppear.instance.eventOn != 14)//이벤트 아닐 때만
                         {
-                            together1.Enqueue(seatNum);//히노디노큐에 자리 저장
-                        }
-
-                        if (CharacterAppear.instance.eventOn != 14)//히로디노 친밀도 이벤트가 아니면 친밀도 증가
-                        {
                             VisitorNote.instance.IncreaseFrinedshipGauge(characterNum);
                         }
-                        else if (CharacterAppear.instance.eventOn == 14 && dinoOk && heroOk)// 둘 다 서빙완료했을 때, 친밀도 이벤트면 UI클릭 금지
+                        else if (CharacterAppear.instance.eventOn == 14 && isDinoServed && isHeroServed)// 둘 다 서빙완료했을 때, 친밀도 이벤트면 UI클릭 금지
                         {
                             MenuHint.instance.CantClickMHB();//뒤에 메뉴판이 떠있는 채로 이벤트 시작하는 걸 방지하기 위함
                             canStartEvent = true;
                             SystemManager.instance.CantTouchUI();
                         }
-                    }
-                    else if(Dialogue.instance.CharacterDC[10] == 3 && (characterNum == 6 || characterNum == 10))//찰스2이벤트가 끝난 후 찰스나 도로시일 경우
-                    {
-                        together2.Enqueue(seatNum);//찰스도로시큐에 자리 저장
                     }
                     else//디노히로, 찰스도로시가 아니면
                     {
@@ -486,33 +459,24 @@ public class Menu : MonoBehaviour
         //Debug.Log("함수 SetTableMenu");
     }
 
-    public void FEventMenu(int n)//스페셜 메뉴 준비
+    public void FEventMenu(int cNum)//스페셜 메뉴 준비
     {
-        seatNum = SmallFade.instance.CharacterSeat[n - 1];//해당 캐릭터 자리 넘버 대입    
+        seatNum = SmallFade.instance.CharacterSeat[cNum - 1];//해당 캐릭터 자리 넘버 대입    
         SetMenuPosition();
         CorrectMenuReaction(seatNum); //하트리액션 
-        if(n != 13)//디노일때는 생략
+        if(cNum != 13)//디노일때는 생략
         {
-            reputation += 5;
+            SetReputation(reputation += 5);
         }
         TableMenu[seatNum].SetActive(true);
         Reaction[seatNum].SetActive(true);
-        if(n == 11 && UI_Assistant1.instance.getMenu == 2)
+        if(cNum == 11 && UI_Assistant1.instance.getMenu == 2)
         {
             SetTableMenu(31, seatNum); //스페셜 메뉴 이미지 설정
         }
         else
         {
-            SetTableMenu(n + 10, seatNum); //스페셜 메뉴 이미지 설정
-        }
-
-        if(n != 12 && n != 13)
-        {
-            reactionFadeIn.Enqueue(seatNum); //리액션 페이드인 큐에 자리 정보 추가
-        }
-        if(n == 11 && CharacterAppear.instance.eventOn == 13 && UI_Assistant1.instance.getMenu == 1)//무명이2 이벤트
-        {
-            tmpNum = seatNum;
+            SetTableMenu(cNum + 10, seatNum); //스페셜 메뉴 이미지 설정
         }
         menuFadeIn.Enqueue(seatNum);//메뉴 페이드인 큐에 자리 정보 추가
     }
@@ -537,132 +501,14 @@ public class Menu : MonoBehaviour
        Reaction[n].GetComponent<Image>().sprite = SmileReaction[n].GetComponent<Image>().sprite;
     }
 
-    int rFade = 0;//리액션 페이드인에 쓰이는 정수 0이면 페이드인 중이 아님, 1이면 페이드인 중인 상태
-    public void ReactionFadeIn() //리액션 페이드인
-    {
-        if(rFade == 1)//리액션 페이드인 진행 중일 시
-        {
-            Invoke("ReactionFadeIn", 0.5f); //0.5초 뒤 이 함수 재실행
-        }
-        else
-        {
-            StartCoroutine(RFadeToFullAlpha()); //페이드인 시작
-            Invoke("ReactionFadeOut", 2f); //2초 후 페이드아웃
-            reputationText.text = string.Format("{0}", reputation); //평판 표시
-            //Debug.Log("함수 ReactionFadeIn");
-        }
-    }
-
-    int rFade2 = 0;//리액션 페이드아웃에 쓰이는 정수 
-    public void ReactionFadeOut() //리액션 페이드아웃
-    {
-        if (rFade2 == 1)
-        {
-            Invoke("ReactionFadeOut", 0.5f);
-        }
-        else
-        {
-            StartCoroutine(RFadeToZero());
-            //Debug.Log("함수 ReactionFadeOut");          
-        }
-        
-    }
-
-    public IEnumerator RFadeToFullAlpha() // 알파값 0에서 1로 전환, 리액션 페이드인
-    {
-        rFade = 1;//리액션 페이드인 중
-        int num = reactionFadeIn.Peek();       
-        Reaction[num].GetComponent<Image>().color = new Color(Reaction[num].GetComponent<Image>().color.r, Reaction[num].GetComponent<Image>().color.g, Reaction[num].GetComponent<Image>().color.b, 0);
-        while (Reaction[num].GetComponent<Image>().color.a < 1.0f)
-        {
-            Reaction[num].GetComponent<Image>().color = new Color(Reaction[num].GetComponent<Image>().color.r, Reaction[num].GetComponent<Image>().color.g, Reaction[num].GetComponent<Image>().color.b, Reaction[num].GetComponent<Image>().color.a + (Time.deltaTime / 0.8f));
-            yield return null;
-        }
-        rFade = 0;//페이드인하는 반복문이 끝남=페이드인이 끝남
-        reactionFadeIn.Dequeue();
-        reactionFadeOut.Enqueue(num);//리액션 페이드아웃 큐에 정보 추가
-        if (reactionFadeIn.Count != 0 && !IsInvoking("ReactionFadeIn"))//리액션 페이드인큐가 아직 있고 페이드인함수가 반복대기중이 아니면
-        {
-            ReactionFadeIn();//리액션 페이드인 실ㄴ
-        }
-    }
-
-    public IEnumerator RFadeToZero()  // 알파값 1에서 0으로 전환, 리액션 페이드아웃
-    {
-        rFade2 = 1;//페이드아웃 중
-        int num = reactionFadeOut.Peek();       
-        Reaction[num].GetComponent<Image>().color = new Color(Reaction[num].GetComponent<Image>().color.r, Reaction[num].GetComponent<Image>().color.g, Reaction[num].GetComponent<Image>().color.b, 1);
-        while (Reaction[num].GetComponent<Image>().color.a > 0.0f)
-        {
-            Reaction[num].GetComponent<Image>().color = new Color(Reaction[num].GetComponent<Image>().color.r, Reaction[num].GetComponent<Image>().color.g, Reaction[num].GetComponent<Image>().color.b, Reaction[num].GetComponent<Image>().color.a - (Time.deltaTime / 1.0f));
-            yield return null;
-        }
-        rFade2 = 0;
-        reactionFadeOut.Dequeue();//페이드아웃 완료했으니 큐에서 정보 삭제
-        Reaction[num].SetActive(false);
-        if(SmallFade.instance.SittingCharacter[num] != null)//현재 앉아있는 캐릭터가 null이 아닐 때
-        {
-            if (((SmallFade.instance.SittingCharacter[num].name == "sHero" || SmallFade.instance.SittingCharacter[num].name == "sDinosour") && UI_Assistant1.instance.getMenu == 0))
-            {//히로디노이고, 이벤트가 아닐 때
-                if(SmallFade.instance.SittingCharacter[num].name == "sHero")
-                {
-                    heroOk = true;
-                }
-                if(SmallFade.instance.SittingCharacter[num].name == "sDinosour")
-                {
-                    dinoOk = true;
-                }
-                if (heroOk && dinoOk)//둘 다 서빙완료했으면
-                {
-                    dinoOk = false;
-                    heroOk = false;
-                    menuFadeOut.Enqueue(together1.Peek());    //메뉴 페이드아웃 큐에 데이터 추가 후           
-                    MenuFadeOut();                        //메뉴 페이드아웃 실행
-                    together1.Dequeue();
-                    menuFadeOut.Enqueue(together1.Peek());
-                    together1.Dequeue();
-                }
-            }
-            else if (Dialogue.instance.CharacterDC[10] == 3 && (SmallFade.instance.SittingCharacter[num].name == "small_6Princess" || SmallFade.instance.SittingCharacter[num].name == "small_10Soldier"))
-            {
-                if (SmallFade.instance.SittingCharacter[num].name == "small_6Princess")
-                {
-                    pOk = true;
-                }
-                if (SmallFade.instance.SittingCharacter[num].name == "small_10Soldier")
-                {
-                    sOk = true;
-                }
-                if (pOk && sOk)//둘 다 서빙완료했으면
-                {
-                    pOk = false;
-                    sOk = false;
-                    menuFadeOut.Enqueue(together2.Peek());    //메뉴 페이드아웃 큐에 데이터 추가 후           
-                    MenuFadeOut();                        //메뉴 페이드아웃 실행
-                    together2.Dequeue();
-                    menuFadeOut.Enqueue(together2.Peek());
-                    together2.Dequeue();
-                }
-            }
-            else //혼자 온 캐릭터
-            {
-                menuFadeOut.Enqueue(num);
-                MenuFadeOut();
-            }
-        }
-        else if(SmallFade.instance.SittingCharacter[num] == null)
-        {
-            Debug.Log("앉아있는 캐릭터 널임!! 자리는" + num);
-        }
-    }
-
-    bool mFade = false;//리액션 페이드 정수와 역할 동일
-    bool mFade2 = false;
+    
+    bool isMenuFadeIn = false;//페이드인 중인지 판별
+    bool isMenuFadeOut = false;
     public void MenuFadeIn() //메뉴 페이드인
     {
-        if(mFade)
+        if(isMenuFadeIn)
         {
-            Invoke("MenuFadeIn", 0.3f);
+            Invoke(nameof(MenuFadeIn), 0.3f);
         }
         else
         {
@@ -670,28 +516,36 @@ public class Menu : MonoBehaviour
         }
     }
 
-    public void MenuFadeOut() //메뉴 페이드아웃
+    public void MenuFadeOut(int sNum = -1, bool doItNow = true) //메뉴 페이드아웃
     {
-        if(!mFade2)
+        if(sNum == -1)
+            menuFadeOut.Enqueue(seatNum);
+        else
+            menuFadeOut.Enqueue(sNum);
+
+        if(doItNow)
         {
-            StartCoroutine(FadeToZero());           
+            if(!isMenuFadeOut)
+            {
+                StartCoroutine(FadeToZero());           
+            }
         }
     }
 
     public IEnumerator FadeToFullAlpha() // 알파값 0에서 1로 전환, 메뉴 페이드인
     {
         int n = menuFadeIn.Peek();
-        mFade = true;
+        isMenuFadeIn = true;
         TableMenu[n].GetComponent<Image>().color = new Color(TableMenu[n].GetComponent<Image>().color.r, TableMenu[n].GetComponent<Image>().color.g, TableMenu[n].GetComponent<Image>().color.b, 0);
         while (TableMenu[n].GetComponent<Image>().color.a < 1.0f)
         {
             TableMenu[n].GetComponent<Image>().color = new Color(TableMenu[n].GetComponent<Image>().color.r, TableMenu[n].GetComponent<Image>().color.g, TableMenu[n].GetComponent<Image>().color.b, TableMenu[n].GetComponent<Image>().color.a + (Time.deltaTime / 0.8f));
             yield return null;
         }
-        mFade = false;
+        isMenuFadeIn = false;
         menuFadeIn.Dequeue();
 
-        if((CharacterAppear.instance.eventOn == 9 || CharacterAppear.instance.eventOn == 10)&& UI_Assistant1.instance.getMenu == 0 && canStartEvent)//친구,찰스1 친밀도 이벤트 처음일 때
+        if((CharacterAppear.instance.eventOn == 9 || CharacterAppear.instance.eventOn == 10) && UI_Assistant1.instance.getMenu == 0 && canStartEvent)//친구,찰스1 친밀도 이벤트 처음일 때
         {
             SystemManager.instance.BeginDialogue(CharacterAppear.instance.eventOn);//시나리오 시작
             canStartEvent = false;
@@ -701,7 +555,7 @@ public class Menu : MonoBehaviour
             SystemManager.instance.BeginDialogue(11);
             canStartEvent = false;
         }
-        if (CharacterAppear.instance.eventOn == 14 && heroOk && dinoOk && UI_Assistant1.instance.getMenu == 0 && canStartEvent)//히로디노 친밀도 이벤트의 경우
+        if (CharacterAppear.instance.eventOn == 14 && isHeroServed && isDinoServed && UI_Assistant1.instance.getMenu == 0 && canStartEvent)//히로디노 친밀도 이벤트의 경우
         {
             SystemManager.instance.BeginDialogue(12);
             canStartEvent = false;
@@ -717,7 +571,7 @@ public class Menu : MonoBehaviour
 
     public IEnumerator FadeToZero()  // 알파값 1에서 0으로 전환, 메뉴 페이드아웃
     {
-        mFade2 = true;
+        isMenuFadeOut = true;
         int n = menuFadeOut.Peek();
 
         TableMenu[n].GetComponent<Image>().color = new Color(TableMenu[n].GetComponent<Image>().color.r, TableMenu[n].GetComponent<Image>().color.g, TableMenu[n].GetComponent<Image>().color.b, 1);
@@ -726,7 +580,7 @@ public class Menu : MonoBehaviour
             TableMenu[n].GetComponent<Image>().color = new Color(TableMenu[n].GetComponent<Image>().color.r, TableMenu[n].GetComponent<Image>().color.g, TableMenu[n].GetComponent<Image>().color.b, TableMenu[n].GetComponent<Image>().color.a - (Time.deltaTime / 1.0f));
             yield return null;
         }
-        mFade2 = false;
+        isMenuFadeOut = false;
         menuFadeOut.Dequeue();
         TableMenu[n].SetActive(false);
         if((CharacterAppear.instance.eventOn != 9 && CharacterAppear.instance.eventOn != 11 && CharacterAppear.instance.eventOn != 13 && CharacterAppear.instance.eventOn != 14 && CharacterAppear.instance.eventOn != 16)
@@ -735,18 +589,140 @@ public class Menu : MonoBehaviour
             || (SmallFade.instance.SittingCharacter[n].name != "small_12Hero" && SmallFade.instance.SittingCharacter[n].name != "small_13Dinosour" && CharacterAppear.instance.eventOn == 14)
             || (SmallFade.instance.SittingCharacter[n].name != "small_15Grandfather" && CharacterAppear.instance.eventOn == 16))
         {//특정 캐릭터 친밀도 이벤트가 아닐 때, 혹은 특정 캐릭터 이벤트여도 해당 이벤트 캐릭터가 아닐 때
-            seatInfo.Enqueue(n);
             //Debug.Log("페이드아웃될 자리 " + n);
-            SmallFade.instance.FadeOut(); //작은 캐릭터 페이드아웃   
+            SmallFade.instance.FadeOut(n); //작은 캐릭터 페이드아웃   
         }
-        else if(CharacterAppear.instance.eventOn == 14 && SmallFade.instance.SittingCharacter[n].name == "sHero" && UI_Assistant1.instance.getMenu == 2)
+        else if(CharacterAppear.instance.eventOn == 14 && SmallFade.instance.SittingCharacter[n].name == "small_12Hero" && UI_Assistant1.instance.getMenu == 2)
         {//히로디노 이벤트 중에 페이드아웃하는 캐릭터가 히로이고 디노 페이드아웃 전일 때
-            seatInfo.Enqueue(n);
-            SmallFade.instance.FadeOut(); //작은 캐릭터 페이드아웃
+            SmallFade.instance.FadeOut(n); //작은 캐릭터 페이드아웃
         }
         if (menuFadeOut.Count != 0)
         {
-            MenuFadeOut();
+            FadeToFullAlpha();
+        }
+    }
+
+    public void ReactionFadeIn(int sNum = -1, float time = 0f) //리액션 페이드인
+    {
+        if(sNum == -1)
+            reactionFadeIn.Enqueue(seatNum);
+        else
+            reactionFadeIn.Enqueue(sNum);
+
+        StartCoroutine(RFadeToFullAlpha(time)); //페이드인 시작
+        Invoke(nameof(ReactionFadeOut), 2f); //2초 후 페이드아웃
+        //Debug.Log("함수 ReactionFadeIn");
+    }
+
+    IEnumerator RFadeToFullAlpha(float time = 0f) // 알파값 0에서 1로 전환, 리액션 페이드인
+    {
+        if(time != 0f)
+            yield return new WaitForSeconds(time);
+
+        int num = reactionFadeIn.Peek();       
+        Reaction[num].GetComponent<Image>().color = new Color(Reaction[num].GetComponent<Image>().color.r, Reaction[num].GetComponent<Image>().color.g, Reaction[num].GetComponent<Image>().color.b, 0);
+        while (Reaction[num].GetComponent<Image>().color.a < 1.0f)
+        {
+            Reaction[num].GetComponent<Image>().color = new Color(Reaction[num].GetComponent<Image>().color.r, Reaction[num].GetComponent<Image>().color.g, Reaction[num].GetComponent<Image>().color.b, Reaction[num].GetComponent<Image>().color.a + (Time.deltaTime / 0.8f));
+            yield return null;
+        }
+        reactionFadeIn.Dequeue();
+        reactionFadeOut.Enqueue(num);//리액션 페이드아웃 큐에 정보 추가
+        if (reactionFadeIn.Count != 0) //페이드인 할 게 남았다면
+        {
+            RFadeToFullAlpha();
+        }
+    }
+
+    bool isReactionFadeOut = false;
+    public void ReactionFadeOut() //리액션 페이드아웃
+    {
+        if (isReactionFadeOut)
+        {
+            Invoke(nameof(ReactionFadeOut), 0.5f);
+        }
+        else
+        {
+            StartCoroutine(RFadeToZero());
+            //Debug.Log("함수 ReactionFadeOut");          
+        }
+    }
+
+    public IEnumerator RFadeToZero()  // 알파값 1에서 0으로 전환, 리액션 페이드아웃
+    {
+        isReactionFadeOut = true;//페이드아웃 중
+        int num = reactionFadeOut.Peek();       
+        Reaction[num].GetComponent<Image>().color = new Color(Reaction[num].GetComponent<Image>().color.r, Reaction[num].GetComponent<Image>().color.g, Reaction[num].GetComponent<Image>().color.b, 1);
+        while (Reaction[num].GetComponent<Image>().color.a > 0.0f)
+        {
+            Reaction[num].GetComponent<Image>().color = new Color(Reaction[num].GetComponent<Image>().color.r, Reaction[num].GetComponent<Image>().color.g, Reaction[num].GetComponent<Image>().color.b, Reaction[num].GetComponent<Image>().color.a - (Time.deltaTime / 1.0f));
+            yield return null;
+        }
+        isReactionFadeOut = false;
+        reactionFadeOut.Dequeue();//페이드아웃 완료했으니 큐에서 정보 삭제
+        Reaction[num].SetActive(false);
+        if(SmallFade.instance.SittingCharacter[num] != null)//현재 앉아있는 캐릭터가 null이 아닐 때
+        {
+            string charName = SmallFade.instance.SittingCharacter[num].name;
+            if ((charName == "small_12Hero" || charName == "small_13Dinosour") && UI_Assistant1.instance.getMenu == 0)
+            {//히로디노이고, 이벤트가 아닐 때
+                if(charName == "small_12Hero")
+                {
+                    isHeroServed = true;
+                }
+                if(charName == "small_13Dinosour")
+                {
+                    isDinoServed = true;
+                }
+                if (isHeroServed && isDinoServed)//둘 다 서빙완료했으면
+                {
+                    isDinoServed = false;
+                    isHeroServed = false;
+                    
+                    if(charName.Contains("Hero")) // 서빙된 캐릭터가 히로면
+                    {
+                        MenuFadeOut(num+1); // 디노 먼저 메뉴 페이드아웃
+                    }
+                    else if(charName.Contains("Dino"))
+                    {
+                        MenuFadeOut(num-1); // 히로 먼저
+                    }
+                    MenuFadeOut(num, false); // 앞의 캐릭터 메뉴 페이드아웃 끝나고 실행
+                }
+            }
+            else if (Dialogue.instance.CharacterDC[10] == 3 && (charName == "small_6Princess" || charName == "small_10Soldier"))
+            {
+                if (charName == "small_6Princess")
+                {
+                    isPrincessServed = true;
+                }
+                if (charName == "small_10Soldier")
+                {
+                    isSoldierServed = true;
+                }
+                if (isPrincessServed && isSoldierServed)//둘 다 서빙완료했으면
+                {
+                    isPrincessServed = false;
+                    isSoldierServed = false;
+                    if(charName.Contains("Princess")) // 서빙된 캐릭터가 도로시면
+                    {
+                        MenuFadeOut(num+1); // 찰스 먼저 메뉴 페이드아웃
+                    }
+                    else if(charName.Contains("Soldier"))
+                    {
+                        MenuFadeOut(num-1); // 도로시 먼저
+                    }
+                    MenuFadeOut(num, false);
+                }
+            }
+            else //혼자 온 캐릭터
+            {
+                MenuFadeOut(num);
+            }
+        }
+        else
+        {
+            Debug.Log("앉아있는 캐릭터 Null! 자리는" + num);
         }
     }
 

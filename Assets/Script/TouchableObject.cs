@@ -55,14 +55,13 @@ public class TouchableObject : MonoBehaviour //터치된 오브젝트 구분, �
     {
         // 메뉴힌트말풍선 오브젝트 이름 예시 : 2MenuHintRight
         sNum = int.Parse(gameObject.name.Substring(0,1)) - 1; // 숫자만 추출해서 - 1
-        Menu.instance.SetSeatNum(sNum); // 0~5
 
         string charName = SmallFade.instance.SittingCharacter[sNum].name;
         int idx = charName.IndexOf("_");
 
-        Menu.instance.SetCharacterNum(GetNumber(idx, charName));
+        int cNum = GetNumber(idx, charName);
 
-        Menu.instance.TouchMenuHint();
+        Menu.instance.TouchMenuHint(cNum, sNum);
     }
 
     public void TouchMenu()
