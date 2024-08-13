@@ -39,13 +39,7 @@ public class Menu : MonoBehaviour
     Vector3[] ReactionPosition = new Vector3[6]; //리액션 위치 배열
 
     List<GameObject> UnlockedMenuItems = new List<GameObject>(); // 현재 잠금 해제된 메뉴 리스트
-
-    bool menu4Open = false; //true면 메뉴가 해제된 것
-    bool menu5Open = false;
-    bool menu6Open = false;
-    bool menu7Open = false;
-    bool menu8Open = false;
-
+    
     int reputation = 0; //평판 
 
     int seatNum = 0; //자리 넘버
@@ -341,7 +335,7 @@ public class Menu : MonoBehaviour
             
             TableMenu[seatNum].SetActive(true);
             SetMenuPosition();//테이블에 올려질 메뉴 위치 설정
-            MenuHint.instance.HintFadeOut(seatNum); //메뉴힌트 페이드아웃
+            MenuHint.instance.MHFadeOut(seatNum); //메뉴힌트 페이드아웃
             SetTableMenu(menuNum, seatNum); //테이블에 올려질 메뉴 세팅
             menuFadeIn.Enqueue(seatNum);//메뉴 페이드인 큐에 자리 정보 추가
             MenuFadeIn();

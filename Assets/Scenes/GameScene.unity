@@ -6023,7 +6023,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1538706533}
         m_TargetAssemblyTypeName: Menu, Assembly-CSharp
-        m_MethodName: UnlockMenuItems8
+        m_MethodName: UnlockMenuItems
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -7898,7 +7898,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1538706533}
         m_TargetAssemblyTypeName: Menu, Assembly-CSharp
-        m_MethodName: UnlockMenuItems5
+        m_MethodName: UnlockMenuItems
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -12076,7 +12076,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1538706533}
         m_TargetAssemblyTypeName: Menu, Assembly-CSharp
-        m_MethodName: UnlockMenuItems6
+        m_MethodName: UnlockMenuItems
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -41085,7 +41085,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1538706533}
         m_TargetAssemblyTypeName: Menu, Assembly-CSharp
-        m_MethodName: UnlockMenuItems4
+        m_MethodName: UnlockMenuItems
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -50220,7 +50220,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1538706533}
         m_TargetAssemblyTypeName: Menu, Assembly-CSharp
-        m_MethodName: UnlockMenuItems7
+        m_MethodName: UnlockMenuItems
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -50989,6 +50989,7 @@ RectTransform:
   - {fileID: 643574689}
   - {fileID: 593335937}
   - {fileID: 1314907056}
+  - {fileID: 1391983188}
   - {fileID: 1296683913}
   - {fileID: 534212647}
   - {fileID: 801581599}
@@ -50997,7 +50998,6 @@ RectTransform:
   - {fileID: 1177577848}
   - {fileID: 2095933828}
   - {fileID: 208103414}
-  - {fileID: 1391983188}
   m_Father: {fileID: 1751023024}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
