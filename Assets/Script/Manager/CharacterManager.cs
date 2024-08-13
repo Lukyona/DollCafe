@@ -133,6 +133,11 @@ public class CharacterManager : MonoBehaviour
         return characterNum;
     }
 
+    public void SetCharacterNum(int value)
+    {
+        characterNum = value;
+    }
+
     public void SetFaceNum(int value)
     {
         faceNum = value;

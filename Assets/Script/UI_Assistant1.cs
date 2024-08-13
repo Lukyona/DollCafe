@@ -439,7 +439,6 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                     }
                 }
                 break;
-
             case 2: //붕붕
                 if (Dialogue.instance.CharacterDC[2] == 0)
                 {
@@ -1256,7 +1255,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                 }
                 break;
 
-                case 8: //샌디
+            case 8: //샌디
                 if (Dialogue.instance.CharacterDC[8] == 0)
                 {
                     switch (count)
@@ -1387,7 +1386,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                 }
                     break;
 
-                case 9: //친구
+            case 9: //친구
                 if (Dialogue.instance.CharacterDC[9] == 0)
                 {
                     switch (count)
@@ -1654,7 +1653,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             {
                                 SystemManager.instance.SetCanTouch(false);
                                 SystemManager.instance.SetCanTouch(true,1.3f);
-                                Menu.instance.SoldierEvent(SmallFade.instance.CharacterSeat[5]);//도로시 자리정보를 매개변수로 넣기
+                                Menu.instance.SoldierEvent_ServeToPrincess(SmallFade.instance.CharacterSeat[5]);//도로시 자리정보를 매개변수로 넣기
                             }
                             break;
                         case 21:
@@ -1893,6 +1892,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
                                 SystemManager.instance.SetCanTouch(false);
+                                SystemManager.instance.SetNeedAction(true);
                                 SystemManager.instance.ShowCharNameSettingWindow();
                             }
                             break;
@@ -1902,6 +1902,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             break;
                         case 22:
                             SystemManager.instance.SetCanTouch(true);
+                            SystemManager.instance.SetNeedAction(false);
                             Dialogue.instance.SetBabyText(false);
                             CName.text = SystemManager.instance.GetNameForNameless();
                             break;
@@ -1917,7 +1918,6 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                                 VisitorNote.instance.OpenNewSentence(11);
                             }
                             break;
-
                     }
                 }
                 else if (Dialogue.instance.CharacterDC[11] == 2)

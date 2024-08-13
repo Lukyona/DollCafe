@@ -57,7 +57,6 @@ public class HPManager : MonoBehaviour
             SetFullHP();
             m_RechargeRemainMin = 0;
             m_RechargeRemainSec = 0;
-            m_RechargeTimerCoroutine = null;
         }
 
         TimeManager.instance.AfterWatchingAds();
@@ -163,6 +162,11 @@ public class HPManager : MonoBehaviour
         HPRechargeSecTimer.gameObject.SetActive(false);
         mid.SetActive(false);
         fullText.SetActive(true);
+        if(m_RechargeTimerCoroutine != null)
+        {
+            StopCoroutine(m_RechargeTimerCoroutine);
+            m_RechargeTimerCoroutine = null;
+        }
     }
 
     public void CalculateTime() //타이머에 표시될 시간 계산 함수
@@ -310,7 +314,6 @@ public class HPManager : MonoBehaviour
             SetFullHP();
             m_RechargeRemainMin = 0;
             m_RechargeRemainSec = 0;
-            m_RechargeTimerCoroutine = null;
         }
         else
         {
@@ -325,7 +328,6 @@ public class HPManager : MonoBehaviour
         if(m_HPAmount != 10)//구매 전 최대체력(10)이 아니었다면
         {
             SetFullHP();
-            m_RechargeTimerCoroutine = null; // 타이머 코루틴 종료
         }
         m_HPAmount = MAX_HP;
         HPAmount.text = string.Format("{0}", m_HPAmount.ToString());

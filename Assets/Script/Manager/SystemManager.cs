@@ -129,13 +129,8 @@ public class SystemManager : MonoBehaviour
 
         if(!bangBubble.gameObject.activeSelf && !jejeBubble.gameObject.activeSelf) // 제제 말풍선 + 느낌표 말풍선이 나타나있지 않을 때
         {
-            if (tipNum == 3 && Menu.instance.IsMenuOpen(8)) // 팁 다 봄 + 마지막 메뉴 잠금 해제 상태
-            {
-                if (Star.instance.GetCurrentStarNum() >= 5 && HPManager.instance.GetCurrentHP() != HPManager.instance.GetMaxHP()) // 별 5개 이상 + 최대 체력 아닐 때
-                {
-                    ShowBangBubble();
-                }
-            }
+            if(!IsInvoking(nameof(SetTipState)) && !IsInvoking(nameof(CheckTipState)))
+                CheckTipState();
         }  
         else if(bangBubble.gameObject.activeSelf && tipNum == 3 && Menu.instance.IsMenuOpen(8)) //느낌표 말풍선 올라와있고 팁넘버 3 + 마지막 메뉴 잠금 해제 완료
         {
@@ -150,7 +145,9 @@ public class SystemManager : MonoBehaviour
     {
         //PlayerPrefs.SetInt("PurchaseCount", 0); //인앱 결제 정보 저장
         //PlayerPrefs.Save(); //세이브
-        Dialogue.instance.CharacterDC[2] = 1;
+        Dialogue.instance.CharacterDC[11] = 1;
+        VisitorNote.instance.FriendshipInfo[9] = 10;
+        Star.instance.SetStarNum(13);
     }
 
     public int GetMainCount()
@@ -274,7 +271,7 @@ public class SystemManager : MonoBehaviour
                 Dialogue.instance.LoadCharacterDCInfo();
                 VisitorNote.instance.LoadVisitorNoteInfo();
                 Menu.instance.LoadUnlockedMenuItemInfo();                 
-                SetTipState();
+                Invoke(nameof(SetTipState), 2f);
                 SmallFade.instance.SetCharacter(0); //제제 작은 캐릭터 페이드인 
 
                 if (endingState != 3) //엔딩이벤트를 본 게 아니라면
@@ -304,7 +301,7 @@ public class SystemManager : MonoBehaviour
                     CharacterVisit.instance.revisit.Enqueue(i);
                     CharacterVisit.instance.CanRevisit();
                 }
-                if(mainCount >= 14)//히로디노 이상 등장했을 경우, 따로 히로디노(닥터펭, 롤렝드) 추가(위에서 추가 안됨)
+                if(mainCount >= 14)//히로디노 이상 등장했을 경우, 따로 히로디노(or 닥터펭, or 롤렝드) 추가(위에서 추가 안됨)
                 {
                     int t = mainCount - 1;
                     CharacterVisit.instance.revisit.Enqueue(t);
@@ -373,11 +370,11 @@ public class SystemManager : MonoBehaviour
 
     void AfterFirstMeet(int mCount)
     {       
-        if (mCount == 9)
+        if (mCount == 9) // 샌디 방문 완료
         {
             Popup.instance.SetPopupCharacter(CharacterManager.instance.GetBigCharacter(15));//샌디 이미지2, 이미지 비율/위치 문제
         }
-        else if(mCount == 15)
+        else if(mCount == 15) //롤렝드 방문 완료
         {
             Popup.instance.SetPopupCharacter(CharacterManager.instance.GetBigCharacter(16));//롤렝드 이미지2
         }
@@ -388,7 +385,13 @@ public class SystemManager : MonoBehaviour
         Popup.instance.OpenPopup();
 
         CharacterAppear.instance.SetNextAppearNum(mCount); //다음 등장 캐릭터 설정 
-        SmallFade.instance.SetCharacter(CharacterManager.instance.GetCharacterNum()); // 작은 캐릭터 설정 후 페이드인까지
+
+        int smallCharNum = CharacterManager.instance.GetCharacterNum();
+        if(mainCount >= 14)
+        {
+            ++smallCharNum;
+        }
+        SmallFade.instance.SetCharacter(smallCharNum); // 작은 캐릭터 설정 후 페이드인까지
         
         if (!CharacterVisit.instance.IsInvoking("RandomVisit"))
         {
@@ -446,24 +449,6 @@ public class SystemManager : MonoBehaviour
 
             switch (cNum)
             {
-                default:   
-                    Menu.instance.ReactionFadeIn();
-                    if(cNum == 1 || cNum == 7 || cNum == 9 || cNum == 13)//도리, 루루, 친구, 닥터펭은 표정 비활성화 필요
-                    {
-                        CharacterManager.instance.SetFaceNum(cNum);
-                    }
-                    VisitorNote.instance.RePlayButton[cNum - 1].gameObject.SetActive(true);//다시보기 버튼 활성화
-
-                    if(cNum == 1)//도리는 손님노트 이미지를 2번째 표정으로 바꿈
-                    {
-                        VisitorNote.instance.characterInfo[cNum - 1].GetComponent<Image>().sprite = CharacterManager.instance.CharacterFaceList[cNum].face[1].GetComponent<Image>().sprite;
-                        ShowBangBubble();
-                    }              
-                    else if(cNum == 14)//롤렝드는 따로
-                    {
-                        VisitorNote.instance.characterInfo[cNum - 1].GetComponent<Image>().sprite = CharacterManager.instance.GetBigCharacter(17).GetComponent<Image>().sprite;
-                    }
-                    break;
                 case 10:
                     CharacterManager.instance.SetFaceNum(cNum);
                     if (Dialogue.instance.CharacterDC[cNum] == 1)//찰스1 이벤트
@@ -480,11 +465,11 @@ public class SystemManager : MonoBehaviour
                     }
                     break;
                 case 11:
-                    if (Dialogue.instance.CharacterDC[cNum] == 1)//무명이1 이벤트
+                    if (Dialogue.instance.CharacterDC[cNum] == 2)//무명이1 이벤트
                     {
                         CharacterManager.instance.SetFaceNum(11);
                     }
-                    else if (Dialogue.instance.CharacterDC[cNum] == 2)//무명이2 이벤트
+                    else if (Dialogue.instance.CharacterDC[cNum] == 3)//무명이2 이벤트
                     {
                         CharacterManager.instance.SetFaceNum(12);
                         VisitorNote.instance.characterInfo[cNum - 1].GetComponent<Image>().sprite = CharacterManager.instance.CharacterFaceList[cNum - 2].face[3].GetComponent<Image>().sprite;
@@ -493,18 +478,31 @@ public class SystemManager : MonoBehaviour
                     Menu.instance.ReactionFadeIn();
                     break;
                 case 12:
-                case 13:
                     VisitorNote.instance.characterInfo[cNum - 1].GetComponent<Image>().sprite = CharacterManager.instance.CharacterFaceList[cNum - 2].face[0].GetComponent<Image>().sprite;
-                    if(cNum == 13)
+                    if(Menu.instance.GetSeatNum() % 2 == 0) // 짝수(마지막 서빙이 히로)면 
                     {
-                        if(Menu.instance.GetSeatNum() % 2 == 0) // 짝수(마지막 서빙이 히로)면 
-                        {
-                            Menu.instance.ReactionFadeIn(Menu.instance.GetSeatNum()+1);
-                        }
-                        else //홀수(마지막 서빙이 디노)면 
-                        {
-                            Menu.instance.ReactionFadeIn();
-                        }
+                        Menu.instance.ReactionFadeIn(Menu.instance.GetSeatNum()+1);
+                    }
+                    else //홀수(마지막 서빙이 디노)면 
+                    {
+                        Menu.instance.ReactionFadeIn();
+                    }
+                    break;
+                default:   
+                    Menu.instance.ReactionFadeIn();
+                    if(cNum == 1 || cNum == 7 || cNum == 9 || cNum == 13)//도리, 루루, 친구, 닥터펭은 표정 비활성화 필요
+                    {
+                        CharacterManager.instance.SetFaceNum(cNum);
+                    }
+                    VisitorNote.instance.RePlayButton[cNum - 1].gameObject.SetActive(true);//다시보기 버튼 활성화
+
+                    if(cNum == 1)//도리는 손님노트 이미지를 2번째 표정으로 바꿈
+                    {
+                        VisitorNote.instance.characterInfo[cNum - 1].GetComponent<Image>().sprite = CharacterManager.instance.CharacterFaceList[cNum].face[1].GetComponent<Image>().sprite;
+                    }              
+                    else if(cNum == 14)//롤렝드는 따로
+                    {
+                        VisitorNote.instance.characterInfo[cNum - 1].GetComponent<Image>().sprite = CharacterManager.instance.GetBigCharacter(17).GetComponent<Image>().sprite;
                     }
                     break;
             }
@@ -539,11 +537,6 @@ public class SystemManager : MonoBehaviour
             PlayerPrefs.SetInt("EndingState", endingState);
             PlayerPrefs.Save();
             SmallFade.instance.SmallCharacter[0].GetComponent<Button>().interactable = false;//제제 클릭 불가
-        }
-        
-        if(sum > 20 && tipNum == 2)
-        {
-            Invoke("TipBubbleOn", 1.5f);
         }
     }
 
@@ -647,9 +640,17 @@ public class SystemManager : MonoBehaviour
         if(mainCount > 2)
         {
             BgmManager.instance.StopBgm();
-            BgmManager.instance.PlayCharacterBGM(cNum);//캐릭터 배경음악 재생 
+            if(cNum != 14) //롤렝드의 경우 처음에 배경음악이 나오지 않음
+                BgmManager.instance.PlayCharacterBGM(cNum);//캐릭터 배경음악 재생 
         }
-        CharacterManager.instance.CharacterIn(cNum); 
+        if(cNum == 14) //롤렝드의 경우 나중에 등장
+        {
+            CharacterManager.instance.SetCharacterNum(14);
+        }
+        else
+        {
+            CharacterManager.instance.CharacterIn(cNum); 
+        }
         panel.SetActive(true); //캐릭터가 들어옴과 동시에 회색 패널 작동
         UpTextBox(); // 대화창 등장
 
@@ -860,7 +861,7 @@ public class SystemManager : MonoBehaviour
         SEManager.instance.PlayUIClickSound(); //효과음           
         tipMessageWindow.gameObject.SetActive(false);
 
-        Invoke(nameof(CheckTipState), 30f);
+        Invoke(nameof(CheckTipState), 60f);
     }
 
     public void TouchTipNoteButton() // 팁 노트 버튼 눌렀을 때
@@ -903,9 +904,17 @@ public class SystemManager : MonoBehaviour
 
     public void CheckTipState()
     {
-        if((mainCount > 6 && tipNum == 0) || (Dialogue.instance.CharacterDC[1] == 3 && tipNum >= 1)) //또롱이 등장 이후 & 팁 넘버 0 or 도리 친밀도 이벤트 후 & 팁 넘버 1이상
-        {   
+        if(tipNum <= 2 && mainCount > 6) //또롱이 등장 이후 & 팁을 다 보지 않았을 때
+        {
             ShowBangBubble();
+        }
+        else if (tipNum == 3 && Menu.instance.IsMenuOpen(8)) // 팁 다 봄 + 마지막 메뉴 잠금 해제 상태
+        {
+            if(exchangeMessageWindow.activeSelf) return;
+            if (Star.instance.GetCurrentStarNum() >= 5 && HPManager.instance.GetCurrentHP() != HPManager.instance.GetMaxHP()) // 별 5개 이상 + 최대 체력 아닐 때
+            {
+                ShowBangBubble();
+            }
         }
     }
 
@@ -968,6 +977,7 @@ public class SystemManager : MonoBehaviour
     {
         SEManager.instance.PlayUICloseSound();
         exchangeMessageWindow.SetActive(false);
+        Invoke(nameof(CheckTipState), 60f);
     }
 
     public bool IsExchanging()

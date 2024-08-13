@@ -102,7 +102,7 @@ public class MenuHint : MonoBehaviour
                 {
                     r = Random.Range(1, 10); // 메세지 2개 중에 랜덤, 1~5까지가 첫번째, 6~10까지가 두번째
                     
-                    if( r >= 5) //두번째 메세지일 경우
+                    if(r >= 5) //두번째 메세지일 경우
                     {
                         RightMenu[num] = 4; //원하는 메뉴는 자몽이므로 4
                         HintText[seatNum].text = MHTextList[0].MHtext[1]; //메뉴 힌트 메세지에 넣기
