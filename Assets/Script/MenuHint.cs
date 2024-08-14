@@ -379,9 +379,6 @@ public class MenuHint : MonoBehaviour
             }
             StartCoroutine(FadeToFullAlpha()); //페이드인 시작
         }
-        else{
-            Debug.Log("yeea");
-        }
     }
 
     bool mhFadeIn = false;//리액션,메뉴 페이드 시에 쓰이는 정수와 역할 동일

@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -292,43 +293,34 @@ public class Menu : MonoBehaviour
                     {
                         SystemManager.instance.CantTouchUI();
                         MenuHint.instance.CantClickMHB();//뒤에 메뉴판이 떠있는 채로 이벤트 시작하는 걸 방지하기 위함
-                        reactionFadeIn.Enqueue(seatNum); //리액션 페이드인 큐에 자리 정보 추가
                         canStartEvent = true;
                     }
                     else // 그 외의 경우
-                    {                      
-                        if (CharacterAppear.instance.eventOn != 5)
-                        {
-                            ReactionFadeIn(seatNum,1f);
-                        }     
-                    }
-
-                    if (characterNum == 12 || characterNum == 13)//디노나 히로 서빙이면
-                    {
-                        if (characterNum == 12 && CharacterAppear.instance.eventOn == 14)
+                    {                   
+                        if (characterNum == 12)
                         {
                             isHeroServed = true;
-                            SmallFade.instance.CanClickCharacter(13);//디노 클릭 가능                           
+                            if(CharacterAppear.instance.eventOn == 14)
+                                SmallFade.instance.CanClickCharacter(13);//디노 클릭 가능                           
                         }
-                        else if (characterNum == 13 && CharacterAppear.instance.eventOn == 14)
+                        else if (characterNum == 13)
                         {
                             isDinoServed = true;
                         }
 
-                        if (CharacterAppear.instance.eventOn != 14)//이벤트 아닐 때만
-                        {
-                            VisitorNote.instance.IncreaseFrinedshipGauge(characterNum);
-                        }
-                        else if (CharacterAppear.instance.eventOn == 14 && isDinoServed && isHeroServed)// 둘 다 서빙완료했을 때, 친밀도 이벤트면 UI클릭 금지
+                        if (CharacterAppear.instance.eventOn == 14 && isDinoServed && isHeroServed)// 둘 다 서빙완료했을 때, 친밀도 이벤트면 UI클릭 금지
                         {
                             MenuHint.instance.CantClickMHB();//뒤에 메뉴판이 떠있는 채로 이벤트 시작하는 걸 방지하기 위함
                             canStartEvent = true;
                             SystemManager.instance.CantTouchUI();
                         }
-                    }
-                    else//디노히로, 찰스도로시가 아니면
-                    {
-                        VisitorNote.instance.IncreaseFrinedshipGauge(characterNum); //서빙받은 캐릭터의 친밀도 증가
+                        
+                            VisitorNote.instance.IncreaseFrinedshipGauge(characterNum); //서빙받은 캐릭터의 친밀도 증가
+                            if (CharacterAppear.instance.eventOn != 5)
+                            {
+                                ReactionFadeIn(seatNum,1f);
+                            }  
+                        
                     }
                 }
             }          
@@ -447,10 +439,11 @@ public class Menu : MonoBehaviour
         //Debug.Log("함수 SetTableMenu");
     }
 
-    public void FEventMenu(int cNum)//스페셜 메뉴 준비
+    public void SetFriendEventMenu(int cNum)//스페셜 메뉴 준비
     {
         seatNum = SmallFade.instance.CharacterSeat[cNum - 1];//해당 캐릭터 자리 넘버 대입    
         SetMenuPosition();
+        Debug.Log("seatNum은" + seatNum);
         CorrectMenuReaction(seatNum); //하트리액션 
         if(cNum != 13)//디노일때는 생략
         {
@@ -476,7 +469,6 @@ public class Menu : MonoBehaviour
         TableMenu[seatNum].SetActive(true);
         SetTableMenu(5, seatNum);//메뉴는 딸기스무디
         menuFadeIn.Enqueue(seatNum);//메뉴 페이드인 큐에 자리 정보 추가
-        menuFadeOut.Enqueue(seatNum);//미리 추가
     }
 
     public void CorrectMenuReaction(int n) //힌트와 맞는 메뉴일 경우 리액션
@@ -517,27 +509,30 @@ public class Menu : MonoBehaviour
         isMenuFadeIn = false;
         menuFadeIn.Dequeue();
 
-        if((CharacterAppear.instance.eventOn == 9 || CharacterAppear.instance.eventOn == 10) && UI_Assistant1.instance.getMenu == 0 && canStartEvent)//친구,찰스1 친밀도 이벤트 처음일 때
+        if(canStartEvent)
         {
-            SystemManager.instance.BeginDialogue(CharacterAppear.instance.eventOn);//시나리오 시작
-            canStartEvent = false;
-        }
-        if(CharacterAppear.instance.eventOn == 12 && canStartEvent)//무명이1 친밀도 이벤트의 경우
-        {
-            SystemManager.instance.BeginDialogue(11);
-            canStartEvent = false;
-        }
-        if (CharacterAppear.instance.eventOn == 14 && isHeroServed && isDinoServed && UI_Assistant1.instance.getMenu == 0 && canStartEvent)//히로디노 친밀도 이벤트의 경우
-        {
-            SystemManager.instance.BeginDialogue(12);
-            canStartEvent = false;
-        }
-        if(CharacterAppear.instance.eventOn == 16 && UI_Assistant1.instance.getMenu == 0 && canStartEvent)//롤렝드 친밀도 이벤트의 경우
-        {
-            SystemManager.instance.BeginDialogue(14);
-            SmallFade.instance.smallFadeIn.Enqueue(17);
-            SmallFade.instance.FadeIn();
-            canStartEvent = false;
+            if((CharacterAppear.instance.eventOn == 9 || CharacterAppear.instance.eventOn == 10) && UI_Assistant1.instance.getMenu == 0)//친구,찰스1 친밀도 이벤트 처음일 때
+            {
+                SystemManager.instance.BeginDialogue(CharacterAppear.instance.eventOn);//시나리오 시작
+                canStartEvent = false;
+            }
+            if(CharacterAppear.instance.eventOn == 12)//무명이1 친밀도 이벤트의 경우
+            {
+                SystemManager.instance.BeginDialogue(11);
+                canStartEvent = false;
+            }
+            if (CharacterAppear.instance.eventOn == 14 && isHeroServed && isDinoServed && UI_Assistant1.instance.getMenu == 0)//히로디노 친밀도 이벤트의 경우
+            {
+                SystemManager.instance.BeginDialogue(12);
+                canStartEvent = false;
+            }
+            if(CharacterAppear.instance.eventOn == 16 && UI_Assistant1.instance.getMenu == 0)//롤렝드 친밀도 이벤트의 경우
+            {
+                SystemManager.instance.BeginDialogue(14);
+                SmallFade.instance.smallFadeIn.Enqueue(17);
+                SmallFade.instance.FadeIn();
+                canStartEvent = false;
+            }
         }
     }
 
@@ -570,6 +565,7 @@ public class Menu : MonoBehaviour
         }
         isMenuFadeOut = false;
         menuFadeOut.Dequeue();
+        Debug.Log("메뉴 페이드아웃" + n);
 
         TableMenu[n].SetActive(false);
         if((CharacterAppear.instance.eventOn != 9 && CharacterAppear.instance.eventOn != 11 && CharacterAppear.instance.eventOn != 13 && CharacterAppear.instance.eventOn != 14 && CharacterAppear.instance.eventOn != 16)
@@ -594,14 +590,21 @@ public class Menu : MonoBehaviour
 
     public void ReactionFadeIn(int sNum = -1, float time = 0f) //리액션 페이드인
     {
+        Debug.Log("함수 ReactionFadeIn" + sNum);
+        //Debug.Log("현재 seatNum" + seatNum);
+        
         if(sNum == -1)
             reactionFadeIn.Enqueue(seatNum);
         else
             reactionFadeIn.Enqueue(sNum);
 
+        Debug.Log("리액션 페이드인 큐 상태11");
+        foreach(int v in reactionFadeIn)
+        {
+            Debug.Log("들어가있는 거11 ->" + v);
+        }
         StartCoroutine(RFadeToFullAlpha(time)); //페이드인 시작
         Invoke(nameof(ReactionFadeOut), 2f); //2초 후 페이드아웃
-        //Debug.Log("함수 ReactionFadeIn");
     }
 
     IEnumerator RFadeToFullAlpha(float time = 0f) // 알파값 0에서 1로 전환, 리액션 페이드인
@@ -610,6 +613,7 @@ public class Menu : MonoBehaviour
             yield return new WaitForSeconds(time);
 
         int num = reactionFadeIn.Peek();       
+
         Reaction[num].GetComponent<Image>().color = new Color(Reaction[num].GetComponent<Image>().color.r, Reaction[num].GetComponent<Image>().color.g, Reaction[num].GetComponent<Image>().color.b, 0);
         while (Reaction[num].GetComponent<Image>().color.a < 1.0f)
         {
@@ -617,6 +621,12 @@ public class Menu : MonoBehaviour
             yield return null;
         }
         reactionFadeIn.Dequeue();
+        Debug.Log("리액션 페이드인 큐 상태22");
+        foreach(int v in reactionFadeIn)
+        {
+            Debug.Log("들어가있는 거22-> " + v);
+        }
+
         reactionFadeOut.Enqueue(num);//리액션 페이드아웃 큐에 정보 추가
         if (reactionFadeIn.Count != 0) //페이드인 할 게 남았다면
         {

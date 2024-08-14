@@ -254,8 +254,9 @@ public class SmallFade : MonoBehaviour //작은 캐릭터 스크립트
         {
             SystemManager.instance.BeginDialogue(CharacterAppear.instance.eventOn);
         }
-        if (CharacterAppear.instance.eventOn != 0 && CharacterAppear.instance.eventOn != 14 && UI_Assistant1.instance.getMenu != 1)//히로디노이벤트가 아니면 주인공 아기 캐릭터 자리 설정, 두번째 조건은 찰스2 이벤트 때문
+        if (CharacterAppear.instance.eventOn != 0 && CharacterAppear.instance.eventOn != 14)//히로디노이벤트가 아니면 주인공 아기 캐릭터 자리 설정, 두번째 조건은 찰스2 이벤트 때문
         {
+            if(CharacterAppear.instance.eventOn == 11 && (cNum == 6 || UI_Assistant1.instance.getMenu == 1)) return; // 찰스2이벤트의 도로시일 때는 아기 자리 세팅X
             SetBabySeat(sn);          
         }
         //Debug.Log("함수 SetSeatPosition");
@@ -307,10 +308,10 @@ public class SmallFade : MonoBehaviour //작은 캐릭터 스크립트
         cleanSeat.Dequeue();
     }
 
-    bool sFade = false;//페이드인 진행 상태 구분에 사용
+    bool isSmallCharFadeIn = false;//페이드인 진행 상태 구분에 사용
     public void FadeIn() //작은 캐릭터 페이드인
     {
-        if(sFade)
+        if(isSmallCharFadeIn)
         {
             Invoke("FadeIn", 0.3f);
         }
@@ -321,127 +322,9 @@ public class SmallFade : MonoBehaviour //작은 캐릭터 스크립트
         }     
     }
 
-    public void FadeOutJeje()
+   public IEnumerator FadeToFullAlpha() // 알파값 0에서 1로 전환
     {
-        smallFOut.Enqueue(0);
-        StartCoroutine(FadeToZero());//페이드아웃 시작         
-    }
-
-    public void FadeOut(int seatNum) //작은 캐릭터 페이드아웃
-    {   
-        string charName = SittingCharacter[seatNum].name;
-
-        // 캐릭터 오브젝트 이름 예시 : small_1Bear
-        int idx = charName.IndexOf("_");
-        idx = TouchableObject.instance.GetNumber(idx, charName);
-
-        switch(idx)
-        {
-            case 6: // princess 도로시
-                smallFOut.Enqueue(6);
-                if(Dialogue.instance.CharacterDC[10] == 3)//이벤트 후면
-                {
-                    if (!x2)
-                    {
-                        x2 = true;
-                    }
-                    else if (x2)
-                    {
-                        x2 = false;
-                    }
-                }
-                //Debug.Log("페이드아웃 될 캐릭터 도로시");
-                break;
-            case 10: // soldier 찰스
-                smallFOut.Enqueue(10);
-                if (CharacterAppear.instance.eventOn != 11)//찰스2 이벤트 중이 아니면
-                {
-                    if (Dialogue.instance.CharacterDC[10] == 3)//찰스2 이벤트 뒤면
-                    {
-                        if (!x2)
-                        {
-                            x2 = true;
-                        }
-                        else if (x2)
-                        {
-                            x2 = false;
-                        }    
-                    }
-                    // Debug.Log("페이드아웃 될 캐릭터 찰스");
-                }
-                break;
-            case 12: // hero 히로
-                if(!x1)//히로가 먼저 가는 거면
-                {
-                    x1 = true;
-                }
-                else if(x1)//디노가 먼저 갔으면
-                {
-                    x1 = false; //값을 0으로 만들고
-                }
-                smallFOut.Enqueue(12);
-                // Debug.Log("페이드아웃 될 캐릭터 히로");
-                break;
-            case 13: // dinosour 디노
-                if (!x1)
-                {
-                    x1 = true;
-                }
-                else if (x1)
-                {
-                    x1 = false;
-                }
-                smallFOut.Enqueue(13); 
-                //  Debug.Log("페이드아웃 될 캐릭터 디노");
-                break;
-            default: // 오브젝트 이름에 _이 들어가지 않아 idx가 -1인 경우 or 별다른 처리가 필요없는 캐릭터일 경우
-                if(charName == "sBabyLeft")
-                {
-                    smallFOut.Enqueue(17);
-                }
-                else if(charName == "sBabyRight")
-                {
-                    smallFOut.Enqueue(16);
-                }
-                else
-                {
-                    smallFOut.Enqueue(idx);
-                }
-                break;
-        }
-
-        if (charName != "small_12Hero" && charName != "small_13Dinosour")
-        { //히로디노가 아니고
-            if(Dialogue.instance.CharacterDC[10] != 3 || (Dialogue.instance.CharacterDC[10] == 3 && charName != "small_6Princess" && charName != "small_10Soldier"))
-            {//찰스 이벤트가 다 안 끝났거나 끝났어도 찰스,도로시가 아니면
-                cleanSeat.Enqueue(seatNum); //비워질 자리 큐에 정보 추가
-                 //Debug.Log(n + "자리 클린시트큐에 추가됨");
-            }       
-            else if(Dialogue.instance.CharacterDC[10] == 3 && (charName == "small_6Princess" || charName == "small_10Soldier"))
-            {//찰스도로시 중 찰스나 도로시일 때
-                if (!x2)//값이 0이어야만 가능
-                {
-                    cleanSeat.Enqueue(seatNum); //비워질 자리 큐에 정보 추가
-                }
-            }
-        }
-        else // 히로 혹은 디노일 경우
-        {
-            if (!x1)//값이 0이어야만 가능
-            {
-                cleanSeat.Enqueue(seatNum); //비워질 자리 큐에 정보 추가
-                //  Debug.Log(n + "자리 클린시트큐에 추가됨");
-            }
-        }       
-        SittingCharacter[seatNum] = null;//버그 대비 페이드아웃 시 null 넣기
-    
-        StartCoroutine(FadeToZero());//페이드아웃 시작         
-        //Debug.Log("함수 SmallFadeOut");
-    }
-
-    public IEnumerator FadeToFullAlpha() // 알파값 0에서 1로 전환
-    {
-        sFade = true;
+        isSmallCharFadeIn = true;
         int v = smallFadeIn.Peek();
        
         //Debug.Log("페이드인 될 캐릭터" + v);
@@ -509,13 +392,138 @@ public class SmallFade : MonoBehaviour //작은 캐릭터 스크립트
                 SystemManager.instance.BeginDialogue(v2);              
             }
         }
-        sFade = false;
+        isSmallCharFadeIn = false;
 
         yield break;
     }
 
+    public void FadeOutJeje()
+    {
+        smallFOut.Enqueue(0);
+        StartCoroutine(FadeToZero());//페이드아웃 시작         
+    }
+
+    public void FadeOut(int seatNum) //작은 캐릭터 페이드아웃
+    {   
+        string charName = SittingCharacter[seatNum].name;
+        Debug.Log("캐릭터 페이드아웃" + charName);
+
+        if(!charName.Contains("Baby")) //주인공이 아닌 캐릭터면
+        { // 캐릭터 오브젝트 이름 예시 : small_1Bear
+            int idx = charName.IndexOf("_");
+            idx = TouchableObject.instance.GetNumber(idx, charName);
+
+            switch(idx)
+            {
+                case 6: // princess 도로시
+                    smallFOut.Enqueue(6);
+                    if(Dialogue.instance.CharacterDC[10] == 3)//이벤트 후면
+                    {
+                        if (!x2)
+                        {
+                            x2 = true;
+                        }
+                        else if (x2)
+                        {
+                            x2 = false;
+                        }
+                    }
+                    //Debug.Log("페이드아웃 될 캐릭터 도로시");
+                    break;
+                case 10: // soldier 찰스
+                    smallFOut.Enqueue(10);
+                    if (CharacterAppear.instance.eventOn != 11)//찰스2 이벤트 중이 아니면
+                    {
+                        if (Dialogue.instance.CharacterDC[10] == 3)//찰스2 이벤트 뒤면
+                        {
+                            if (!x2)
+                            {
+                                x2 = true;
+                            }
+                            else if (x2)
+                            {
+                                x2 = false;
+                            }    
+                        }
+                        // Debug.Log("페이드아웃 될 캐릭터 찰스");
+                    }
+                    break;
+                case 12: // hero 히로
+                    if(!x1)//히로가 먼저 가는 거면
+                    {
+                        x1 = true;
+                    }
+                    else if(x1)//디노가 먼저 갔으면
+                    {
+                        x1 = false; //값을 0으로 만들고
+                    }
+                    smallFOut.Enqueue(12);
+                    // Debug.Log("페이드아웃 될 캐릭터 히로");
+                    break;
+                case 13: // dinosour 디노
+                    if (!x1)
+                    {
+                        x1 = true;
+                    }
+                    else if (x1)
+                    {
+                        x1 = false;
+                    }
+                    smallFOut.Enqueue(13); 
+                    //  Debug.Log("페이드아웃 될 캐릭터 디노");
+                    break;
+                default: // 오브젝트 이름에 _이 들어가지 않아 idx가 -1인 경우 or 별다른 처리가 필요없는 캐릭터일 경우
+                    if(charName == "sBabyLeft")
+                    {
+                        smallFOut.Enqueue(17);
+                    }
+                    else if(charName == "sBabyRight")
+                    {
+                        smallFOut.Enqueue(16);
+                    }
+                    else
+                    {
+                        smallFOut.Enqueue(idx);
+                    }
+                    break;
+            }
+        }
+       
+        if (charName != "small_12Hero" && charName != "small_13Dinosour")
+        { //히로디노가 아니고
+            if(Dialogue.instance.CharacterDC[10] != 3 || (Dialogue.instance.CharacterDC[10] == 3 && charName != "small_6Princess" && charName != "small_10Soldier"))
+            {//찰스 이벤트가 다 안 끝났거나 끝났어도 찰스,도로시가 아니면
+                cleanSeat.Enqueue(seatNum); //비워질 자리 큐에 정보 추가
+                 //Debug.Log(n + "자리 클린시트큐에 추가됨");
+            }       
+            else if(Dialogue.instance.CharacterDC[10] == 3 && (charName == "small_6Princess" || charName == "small_10Soldier"))
+            {//찰스도로시 중 찰스나 도로시일 때
+                if (!x2)//값이 0이어야만 가능
+                {
+                    cleanSeat.Enqueue(seatNum); //비워질 자리 큐에 정보 추가
+                }
+            }
+        }
+        else // 히로 혹은 디노일 경우
+        {
+            if (!x1)//값이 0이어야만 가능
+            {
+                cleanSeat.Enqueue(seatNum); //비워질 자리 큐에 정보 추가
+                //  Debug.Log(n + "자리 클린시트큐에 추가됨");
+            }
+        }       
+    
+        StartCoroutine(FadeToZero());//페이드아웃 시작    
+        SittingCharacter[seatNum] = null;//버그 대비 페이드아웃 시 null 넣기
+
+        //Debug.Log("함수 SmallFadeOut");
+    }
+
+ 
     public IEnumerator FadeToZero()  // 알파값 1에서 0으로 전환
     {
+        if(smallFOut.Count == 0) yield break;
+
         int cNum = smallFOut.Peek();
         SmallCharacter[cNum].GetComponent<Image>().color = new Color(SmallCharacter[cNum].GetComponent<Image>().color.r, SmallCharacter[cNum].GetComponent<Image>().color.g, SmallCharacter[cNum].GetComponent<Image>().color.b, 1);
         while (SmallCharacter[cNum].GetComponent<Image>().color.a > 0.0f)
@@ -523,8 +531,34 @@ public class SmallFade : MonoBehaviour //작은 캐릭터 스크립트
             SmallCharacter[cNum].GetComponent<Image>().color = new Color(SmallCharacter[cNum].GetComponent<Image>().color.r, SmallCharacter[cNum].GetComponent<Image>().color.g, SmallCharacter[cNum].GetComponent<Image>().color.b, SmallCharacter[cNum].GetComponent<Image>().color.a - (Time.deltaTime / 0.8f));
             yield return null;
         }
-        //Debug.Log("페이드아웃 됨" + cNum);
+        Debug.Log("페이드아웃 됨" + cNum);
         smallFOut.Dequeue();
+
+        if(CharacterAppear.instance.eventOn == 0 && UI_Assistant1.instance.getMenu == 2)//친밀도 이벤트가 끝났을 때
+        {
+            if(cNum != 12)//히로만 아니면
+            {
+                UI_Assistant1.instance.getMenu = 0;
+            }   
+
+            if(cNum % 2 == 1) // 홀수 캐릭터
+            {
+                if(cNum != 13) //디노 제외
+                {
+                    smallFOut.Enqueue(17);
+                    FadeOut(CharacterSeat[cNum-1]-1);
+                }
+            }
+
+            if(cNum % 2 == 0) // 짝수 캐릭터
+            {
+                if(cNum != 12) //히로 제외
+                {
+                    smallFOut.Enqueue(16);
+                    FadeOut(CharacterSeat[cNum-1]+1);
+                }
+            }
+        }
 
         if (cNum != 0) //제제가 아닐 경우
         {
@@ -561,40 +595,8 @@ public class SmallFade : MonoBehaviour //작은 캐릭터 스크립트
                 {
                     CleanTable();
                     CharacterVisit.instance.revisit.Enqueue(cNum);
-                }           
+                }        
             }
-            if (smallFOut.Count != 0)
-            {
-                StartCoroutine(FadeToZero());
-            }
-        }
-        
-        if(CharacterAppear.instance.eventOn == 0 && UI_Assistant1.instance.getMenu == 2)//친밀도 이벤트가 끝났을 때
-        {
-            if(cNum % 2 == 1) // 홀수 캐릭터
-            {
-                if(cNum != 13) //디노 제외
-                {
-                    smallFOut.Enqueue(17);
-                }
-            }
-
-            if(cNum % 2 == 0) // 짝수 캐릭터
-            {
-                if(cNum != 12) //히로 제외
-                {
-                    smallFOut.Enqueue(16);
-                }
-            }
-
-            if(cNum != 12)//히로만 아니면
-            {
-                UI_Assistant1.instance.getMenu = 0;
-            }           
-            if(cNum != 12 && cNum != 13)//히로디노만 아니면
-            {
-                StartCoroutine(FadeToZero());//페이드아웃 시작
-            }            
-        }
+        }      
     }
 }

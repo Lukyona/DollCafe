@@ -380,7 +380,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                                 SystemManager.instance.SetCanTouch(false);
                                 SystemManager.instance.SetCanTouch(true,1f);
                                 SmallFade.instance.smallFadeIn.Enqueue(17);//주인공 아기 페이드인 준비
-                                Menu.instance.FEventMenu(1);//스페셜 메뉴 준비
+                                Menu.instance.SetFriendEventMenu(1);//스페셜 메뉴 준비
                             }
                             else //다시보기일 때, 특별 메뉴 팝업 설정
                             {
@@ -572,7 +572,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                                 SystemManager.instance.SetCanTouch(false);
                                 SystemManager.instance.SetCanTouch(true,1f);
                                 SmallFade.instance.smallFadeIn.Enqueue(16);//주인공 아기 페이드인 준비
-                                Menu.instance.FEventMenu(2);//스페셜 메뉴 준비
+                                Menu.instance.SetFriendEventMenu(2);//스페셜 메뉴 준비
                             }
                             else //다시보기일 때, 특별 메뉴 팝업 설정
                             {
@@ -726,7 +726,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                                 SystemManager.instance.SetCanTouch(false);
                                 SystemManager.instance.SetCanTouch(true,1f);
                                 SmallFade.instance.smallFadeIn.Enqueue(17);
-                                Menu.instance.FEventMenu(3);
+                                Menu.instance.SetFriendEventMenu(3);
                             }
                             else //다시보기일 때, 특별 메뉴 팝업 설정
                             {
@@ -829,7 +829,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                                 SystemManager.instance.SetCanTouch(false);
                                 SystemManager.instance.SetCanTouch(true,1f);
                                 SmallFade.instance.smallFadeIn.Enqueue(16);
-                                Menu.instance.FEventMenu(4);
+                                Menu.instance.SetFriendEventMenu(4);
                             }
                             else //다시보기일 때, 특별 메뉴 팝업 설정
                             {
@@ -1032,7 +1032,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                                 SystemManager.instance.SetCanTouch(false);
                                 SystemManager.instance.SetCanTouch(true,1f);
                                 SmallFade.instance.smallFadeIn.Enqueue(16);
-                                Menu.instance.FEventMenu(6);
+                                Menu.instance.SetFriendEventMenu(6);
                             }
                             else //다시보기일 때, 특별 메뉴 팝업 설정
                             {
@@ -1219,7 +1219,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                                 SystemManager.instance.SetCanTouch(false);
                                 SystemManager.instance.SetCanTouch(true,1f);
                                 SmallFade.instance.smallFadeIn.Enqueue(17);
-                                Menu.instance.FEventMenu(7);
+                                Menu.instance.SetFriendEventMenu(7);
                             }
                             else //다시보기일 때, 특별 메뉴 팝업 설정
                             {
@@ -1345,7 +1345,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                                 SystemManager.instance.SetCanTouch(false);
                                 SystemManager.instance.SetCanTouch(true,1f);
                                 SmallFade.instance.smallFadeIn.Enqueue(16);
-                                Menu.instance.FEventMenu(8);
+                                Menu.instance.SetFriendEventMenu(8);
                             }
                             else //다시보기일 때, 특별 메뉴 팝업 설정
                             {
@@ -1472,7 +1472,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                                 SystemManager.instance.SetCanTouch(false);
                                 SystemManager.instance.SetCanTouch(true,1f);
                                 SmallFade.instance.smallFadeIn.Enqueue(17);
-                                Menu.instance.FEventMenu(9);
+                                Menu.instance.SetFriendEventMenu(9);
                             }
                             else //다시보기일 때, 특별 메뉴 팝업 설정
                             {
@@ -1634,16 +1634,13 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             CharacterManager.instance.CharacterFaceList[8].face[0].SetActive(true);
                             Dialogue.instance.SetBabyText(false);                            
                             CharacterManager.instance.SetSoldierEvent(true);
-                            if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
-                            {
-                                SmallFade.instance.smallFOut.Enqueue(16);
-                            }
                             break;
                         case 19:
                             CharacterManager.instance.CharacterFaceList[8].face[0].SetActive(false);
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
-                                SmallFade.instance.StartCoroutine(SmallFade.instance.FadeToZero());
+                                SmallFade.instance.smallFOut.Enqueue(16);//아기 페이드아웃 준비
+                                SmallFade.instance.FadeOut(SmallFade.instance.CharacterSeat[9]+1);
                             }
                             CharacterManager.instance.CharacterOut(10);
                             break;
@@ -1663,15 +1660,16 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             }
                             break;
                         case 22:
-                            CharacterManager.instance.CharacterFaceList[4].face[0].SetActive(true);
-                            CharacterManager.instance.CharacterIn(6);
                             Dialogue.instance.SetBabyText(false);
+                            CharacterManager.instance.CharacterFaceList[4].face[0].SetActive(true);
+                            SystemManager.instance.SetCanTouch(false);
+                            CharacterManager.instance.CharacterIn(6);
                             CName.text = "도로시";
                             break;
                         case 23:
+                            Dialogue.instance.SetBabyText(true);
                             CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(true);
-                            Dialogue.instance.SetBabyText(true);
                             break;
                         case 24:
                             Dialogue.instance.SetBabyText(false);
@@ -1683,17 +1681,17 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             }
                             break;
                         case 25:
+                            Dialogue.instance.SetBabyText(true);
                             CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[2].SetActive(true);
                             SystemManager.instance.SetCanTouch(false);
                             SystemManager.instance.SetCanTouch(true,1f);
-                            Dialogue.instance.SetBabyText(true);
                             break;
                         case 26:
                             SystemManager.instance.SetCanTouch(false);
                             SystemManager.instance.SetCanTouch(true,1.5f);
                             CharacterManager.instance.CharacterFaceList[8].face[2].SetActive(true);
-                            CharacterManager.instance.PrincessIn();//찰스등장을 위해 도로시가 옆으로 이동, 바로 찰스 등장
+                            CharacterManager.instance.MovePrincess();//찰스등장을 위해 도로시가 옆으로 이동, 바로 찰스 등장
                             Dialogue.instance.SetBabyText(false);
                             CName.text = "찰스";
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
@@ -1771,7 +1769,6 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             break;
                         case 51:
                             CharacterManager.instance.CharacterOut(6);
-                            CharacterManager.instance.SetSoldierEvent(false);
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
                                 VisitorNote.instance.OpenNewSentence(10);
@@ -2008,7 +2005,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                                 SystemManager.instance.SetCanTouch(false);
                                 SystemManager.instance.SetCanTouch(true,1f);
                                 SmallFade.instance.smallFadeIn.Enqueue(17);
-                                Menu.instance.FEventMenu(11);
+                                Menu.instance.SetFriendEventMenu(11);
                             }
                             else //다시보기일 때, 특별 메뉴 팝업 설정
                             {
@@ -2047,7 +2044,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                                 getMenu = 2;
                                 SystemManager.instance.SetCanTouch(false);
                                 SystemManager.instance.SetCanTouch(true,0.8f);
-                                Menu.instance.FEventMenu(11);
+                                Menu.instance.SetFriendEventMenu(11);
                             }
                             else //다시보기일 때, 특별 메뉴 팝업 설정
                             {
@@ -2234,8 +2231,8 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             {
                                 SystemManager.instance.SetCanTouch(false);
                                 SystemManager.instance.SetCanTouch(true,0.6f);
-                                Menu.instance.FEventMenu(12);
-                                Menu.instance.FEventMenu(13);
+                                Menu.instance.SetFriendEventMenu(12);
+                                Menu.instance.SetFriendEventMenu(13);
                             }
                             else //다시보기일 때, 특별 메뉴 팝업 설정
                             {
@@ -2306,14 +2303,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                         case 42:
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
-                                if(Menu.instance.GetSeatNum() % 2 == 1) // 홀수(마지막 서빙이 디노)면
-                                {
-                                    Menu.instance.ReactionFadeIn(Menu.instance.GetSeatNum()-1,0);//히로 리액션 페이드인
-                                }
-                                else
-                                {
-                                    Menu.instance.ReactionFadeIn(-1,0);//히로 리액션 페이드인
-                                }
+                                Menu.instance.ReactionFadeIn(Menu.instance.GetSeatNum()-1,0);//히로 리액션 페이드인, 히로 다음 디노에게 마지막으로 서빙함
                                 getMenu = 2;
                             }
                             break;
@@ -2465,7 +2455,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                                 SystemManager.instance.SetCanTouch(false);
                                 SystemManager.instance.SetCanTouch(true,1f);
                                 SmallFade.instance.smallFadeIn.Enqueue(16);
-                                Menu.instance.FEventMenu(14);
+                                Menu.instance.SetFriendEventMenu(14);
                             }
                             else //다시보기일 때, 특별 메뉴 팝업 설정
                             {
@@ -2703,7 +2693,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                                 SystemManager.instance.SetCanTouch(false);
                                 SystemManager.instance.SetCanTouch(true,1f);
                                 SmallFade.instance.smallFadeIn.Enqueue(17);
-                                Menu.instance.FEventMenu(15);
+                                Menu.instance.SetFriendEventMenu(15);
                             }
                             else //다시보기일 때, 특별 메뉴 팝업 설정
                             {

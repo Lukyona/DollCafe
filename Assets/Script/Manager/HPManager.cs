@@ -45,6 +45,7 @@ public class HPManager : MonoBehaviour
             if(!SystemManager.instance.IsExchanging())//별하트 전환 상태가 아닐 때, 즉 광고 본 뒤일 때
             {
                 m_HPAmount += 2; //체력 + 2     
+            TimeManager.instance.AfterWatchingAds();
             }
             else if(SystemManager.instance.IsExchanging())//별하트 전환일 때
             {
@@ -52,6 +53,9 @@ public class HPManager : MonoBehaviour
             }  
             HPAmount.text = string.Format("{0}", m_HPAmount.ToString());
         }
+
+        SaveHPInfo();
+
         if (m_HPAmount >= MAX_HP)
         {
             SetFullHP();
@@ -59,7 +63,6 @@ public class HPManager : MonoBehaviour
             m_RechargeRemainSec = 0;
         }
 
-        TimeManager.instance.AfterWatchingAds();
         SystemManager.instance.CanTouchUI(); // hp버튼 다시 터치 가능
     }
 

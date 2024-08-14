@@ -47,6 +47,15 @@ public class CharacterManager : MonoBehaviour
         if (characteInOutState == 1) //들어오기
         {
             BigCharacter[characterNum].transform.position = Vector3.MoveTowards(BigCharacter[characterNum].transform.position, charInPos, moveSpeed * Time.deltaTime);
+            if(isSoldierEvent)
+            {
+                if(BigCharacter[characterNum].transform.position == charInPos && characterNum == 6)
+                {
+                    characterNum = 10; // 찰스 다이얼로그 이어가기 위함
+                    SystemManager.instance.SetCanTouch(true, 1f); //도로시 등장 완료하면 터치해서 대사 넘기기 가능
+                    DeactivateCharacterMoving();
+                }
+            }
         }
         else if (characteInOutState == 2) // 나가기
         {
@@ -56,6 +65,11 @@ public class CharacterManager : MonoBehaviour
                 if (BigCharacter[characterNum].transform.position == charOutPos) //캐릭터가 완전히 나갔을 때 대사 넘기기 가능
                 {
                     SystemManager.instance.SetCanTouch(true);
+                    if(characterNum == 6) // 도로시까지 완전히 나갔으면
+                    {
+                        characterNum = 10;
+                        SetSoldierEvent(false);
+                    }
                 }
                 else //완전히 나가지 않았으면 대사 못 넘김
                 {
@@ -102,9 +116,10 @@ public class CharacterManager : MonoBehaviour
         characteInOutState = 0;
     }
 
-    public void PrincessIn()
+    public void MovePrincess() 
     {
         characteInOutState = 3;
+        characterNum = 6;
     } 
 
     public void SetSoldierEvent(bool value)

@@ -145,9 +145,15 @@ public class SystemManager : MonoBehaviour
     {
         //PlayerPrefs.SetInt("PurchaseCount", 0); //인앱 결제 정보 저장
         //PlayerPrefs.Save(); //세이브
-        Dialogue.instance.CharacterDC[11] = 1;
-        VisitorNote.instance.FriendshipInfo[9] = 10;
-        Star.instance.SetStarNum(13);
+        Dialogue.instance.CharacterDC[6] = 3;
+        //Dialogue.instance.CharacterDC[12] = 1;
+        //Dialogue.instance.CharacterDC[10] = 2;
+        //VisitorNote.instance.FriendshipInfo[9] = 10;
+        //VisitorNote.instance.FriendshipInfo[10] = 15;
+        //VisitorNote.instance.FriendshipInfo[8] = 10;
+        //Star.instance.SetStarNum(23);
+        for(int i = 0; i < 10; ++i)
+            HPManager.instance.AddHP();
     }
 
     public int GetMainCount()
@@ -268,6 +274,7 @@ public class SystemManager : MonoBehaviour
                 endingState = PlayerPrefs.GetInt("EndingState");       
                 tipNum = PlayerPrefs.GetInt("TipNum");
                 Dialogue.instance.SetBabyName(PlayerPrefs.GetString("BabyName"));
+                nameForNameless = PlayerPrefs.GetString("NameForNameless");
                 Dialogue.instance.LoadCharacterDCInfo();
                 VisitorNote.instance.LoadVisitorNoteInfo();
                 Menu.instance.LoadUnlockedMenuItemInfo();                 
@@ -283,7 +290,7 @@ public class SystemManager : MonoBehaviour
                     SmallFade.instance.SmallCharacter[0].GetComponent<Button>().interactable = true; // 제제 터치 가능
                 }
 
-                for (int i = 1; i <= mainCount - 2; i++)//재방문 캐릭터 설정
+                for (int i = 11; i <= mainCount - 2; i++)//재방문 캐릭터 설정
                 {
                     if(Dialogue.instance.CharacterDC[10] == 3)//찰스2 이벤트를 했을 시에는
                     {
@@ -451,12 +458,12 @@ public class SystemManager : MonoBehaviour
             {
                 case 10:
                     CharacterManager.instance.SetFaceNum(cNum);
-                    if (Dialogue.instance.CharacterDC[cNum] == 1)//찰스1 이벤트
+                    if (Dialogue.instance.CharacterDC[cNum] == 2)//찰스1 이벤트
                     {
                         SmallFade.instance.CanClickCharacter(6);//도로시 클릭 가능하게
                         Menu.instance.MenuFadeOut();//메뉴 페이드아웃
                     }
-                    else if (Dialogue.instance.CharacterDC[cNum] == 2)//찰스2 이벤트
+                    else if (Dialogue.instance.CharacterDC[cNum] == 3)//찰스2 이벤트
                     {
                         UI_Assistant1.instance.getMenu = 0;
                         SmallFade.instance.CanClickCharacter(6);//도로시 클릭 가능하게
@@ -479,14 +486,7 @@ public class SystemManager : MonoBehaviour
                     break;
                 case 12:
                     VisitorNote.instance.characterInfo[cNum - 1].GetComponent<Image>().sprite = CharacterManager.instance.CharacterFaceList[cNum - 2].face[0].GetComponent<Image>().sprite;
-                    if(Menu.instance.GetSeatNum() % 2 == 0) // 짝수(마지막 서빙이 히로)면 
-                    {
-                        Menu.instance.ReactionFadeIn(Menu.instance.GetSeatNum()+1);
-                    }
-                    else //홀수(마지막 서빙이 디노)면 
-                    {
-                        Menu.instance.ReactionFadeIn();
-                    }
+                    Menu.instance.ReactionFadeIn(); // 디노 리액션 페이드인
                     break;
                 default:   
                     Menu.instance.ReactionFadeIn();
