@@ -573,8 +573,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                 CName.text = "개나리";
                 if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                 {
-                    SmallFade.instance.smallFadeIn.Enqueue(16);
-                    SmallFade.instance.FadeIn();
+                    SmallFade.instance.SetCharacter(16);
                 }
                 break;
         }
@@ -641,8 +640,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                 if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                 {
                     SmallFade.instance.SetBabySeat(SmallFade.instance.CharacterSeat[4]);//또롱이 건너편으로  자리 잡기
-                    SmallFade.instance.smallFadeIn.Enqueue(17);
-                    SmallFade.instance.FadeIn();
+                    SmallFade.instance.SetCharacter(17);
                 }
                 break;
         }
@@ -772,8 +770,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                 CName.text = "루루";
                 if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                 {
-                    SmallFade.instance.smallFadeIn.Enqueue(17);
-                    SmallFade.instance.FadeIn();
+                    SmallFade.instance.SetCharacter(17);
                 }
                 break;
         }
@@ -887,8 +884,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                 CName.text = "샌디";
                 if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                 {
-                    SmallFade.instance.smallFadeIn.Enqueue(16);
-                    SmallFade.instance.FadeIn();
+                    SmallFade.instance.SetCharacter(16);
                 }
                 break;
         }
@@ -994,8 +990,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                 CName.text = "친구";
                 if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                 {
-                    SmallFade.instance.smallFadeIn.Enqueue(17);
-                    SmallFade.instance.FadeIn();
+                    SmallFade.instance.SetCharacter(17);
                 }
                 break;
         }
@@ -1071,8 +1066,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                 CName.text = "찰스";
                 if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                 {
-                    SmallFade.instance.smallFadeIn.Enqueue(16);
-                    SmallFade.instance.FadeIn();
+                    SmallFade.instance.SetCharacter(16);
                 }
                 break;
             case 2: //친밀도 15이상, 서빙 전, 공주 친밀도 10이상, 카페에 공주 있을 경우
@@ -1081,8 +1075,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                 CName.text = "찰스";
                 if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                 {
-                    SmallFade.instance.smallFadeIn.Enqueue(16);
-                    SmallFade.instance.FadeIn();
+                    SmallFade.instance.SetCharacter(16);
                 }
                 break;
         }
@@ -1198,8 +1191,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                 CName.text = "??";
                 if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                 {
-                    SmallFade.instance.smallFadeIn.Enqueue(17);
-                    SmallFade.instance.FadeIn();
+                    SmallFade.instance.SetCharacter(17);
                 }
                 break;
             case 2: //친밀도 20이상
@@ -1207,8 +1199,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                 CName.text = SystemManager.instance.GetNameForNameless();
                 if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                 {
-                    SmallFade.instance.smallFadeIn.Enqueue(17);
-                    SmallFade.instance.FadeIn();
+                    SmallFade.instance.SetCharacter(17);
                 }
                 break;
         }
@@ -1446,8 +1437,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                 CName.text = "닥터 펭";
                 if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                 {
-                    SmallFade.instance.smallFadeIn.Enqueue(16);
-                    SmallFade.instance.FadeIn();
+                    SmallFade.instance.SetCharacter(16);
                 }
                 break;
         }
@@ -1628,7 +1618,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                     "그래서 그런지, 그는 그 꼬마에게\n상냥하게 대해주지 않았어.",
                     "그 꼬마를 볼 때마다 마음 한켠이 저려왔을 거야.\n내가 그랬듯이 말이야.",//35
                     "하지만 그 꼬마는 하루도 빠짐없이 그를 찾아왔단다.",
-                    "어떤 날을 자기가 만들었다며 쿠키를 주기도 했고,\n또 어떤 날은 예쁜 꽃을 주기도 했지.",
+                    "어떤 날은 자기가 만들었다며 쿠키를 주기도 했고,\n또 어떤 날은 예쁜 꽃을 주기도 했지.",
                     "그 모습이 어찌나 사랑스럽던지..",//38
                     "그 꼬마를 차갑게 대할 수 있는 사람은\n아마 한 명도 없을 게다.",
                     "그리고 그건 내 주인도 마찬가지였지.\n그는 서서히 마음을 열기 시작했단다.",

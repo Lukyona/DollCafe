@@ -17627,7 +17627,7 @@ GameObject:
   - component: {fileID: 659011835}
   - component: {fileID: 659011834}
   m_Layer: 5
-  m_Name: sBabyLeft
+  m_Name: small_17BabyLeft
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -17702,7 +17702,7 @@ GameObject:
   - component: {fileID: 665003583}
   - component: {fileID: 665003582}
   m_Layer: 5
-  m_Name: sBabyRight
+  m_Name: small_16BabyRight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -42355,8 +42355,6 @@ MonoBehaviour:
   - {fileID: 0}
   TableEmpty: 000000000000000000000000
   CharacterSeat: 000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
-  x1: 0
-  x2: 0
   soldier2: {fileID: 991923546}
   nameless2: {fileID: 194634141}
 --- !u!114 &1538706517
@@ -42444,7 +42442,7 @@ MonoBehaviour:
     - "\uCEE4\uC2A4\uD130\uB4DC \uD30C\uC774\uC758 \uD55C \uC885\uB958\uB77C.."
   - MHtext:
     - "\uB179\uCC28\uD5A5\uC774 \uCC38 \uC88B\uC9C0.."
-    - "\uC2DC\uC6D0\uD558\uACE0 \uC0C8\uCF64\uB2EC\uCF64\uD55C \uAC83\uC774.."
+    - "\uC2DC\uC6D0\uD558\uACE0 \uC0C8\uCF64\uB2EC\uCF64\uD55C.."
   MH:
   - {fileID: 1160201810}
   - {fileID: 1761295704}

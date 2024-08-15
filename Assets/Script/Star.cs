@@ -139,12 +139,17 @@ public class Star : MonoBehaviour
     {
         starNum -= value;
         StarNumText.text = string.Format("{0}", GetCurrentStarNum().ToString());
+        PlayerPrefs.SetInt("StarNum", starNum); //별 개수 저장
+        PlayerPrefs.Save();
     }
 
     public void SetStarNum(int value)
     {
         starNum = value;
         StarNumText.text = string.Format("{0}", GetCurrentStarNum().ToString());
+
+        PlayerPrefs.SetInt("StarNum", starNum); //별 개수 저장
+        PlayerPrefs.Save();
     }
     
     public int GetCurrentStarNum()

@@ -110,7 +110,21 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
     
     private void DialogueEvent() //대화 이벤트
     {
-        switch (CharacterManager.instance.GetCharacterNum())
+        int cNum = CharacterManager.instance.GetCharacterNum();
+        int babyNum; // 친밀도 이벤트 시에 주인공 페이드인/아웃에 사용
+        int babySeatNum;
+        if(cNum % 2 == 0) // 캐릭터가 짝수 (왼쪽에 앉아있음)
+        {
+            babyNum = 16;
+            babySeatNum = SmallFade.instance.CharacterSeat[cNum-1]+1;
+        }
+        else
+        {
+            babyNum = 17;
+            babySeatNum = SmallFade.instance.CharacterSeat[cNum-1]-1;
+        }
+
+        switch (cNum)
         {
             case 0: //제제
                 if (Dialogue.instance.CharacterDC[0] == 0)
@@ -277,8 +291,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             Dialogue.instance.SetBabyText(true);
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
-                                SmallFade.instance.smallFadeIn.Enqueue(17);
-                                SmallFade.instance.FadeIn();//주인공 아기 페이드인
+                                SmallFade.instance.SetCharacter(babyNum);
                             }
                             break;
                         case 1:
@@ -355,12 +368,6 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                         case 25:
                             CharacterManager.instance.CharacterFaceList[1].face[1].SetActive(true);//표정 2
                             break;
-                        case 26:
-                            if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
-                            {
-                                SmallFade.instance.smallFOut.Enqueue(17);//아기 페이드아웃 준비
-                            }                              
-                            break;
                         case 27://여기서 주인공 아기 메뉴 가지러 페이드아웃
                             CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[3].SetActive(true);
@@ -368,7 +375,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
                                 getMenu = 1; //메뉴 가지러 갔음
-                                SmallFade.instance.StartCoroutine(SmallFade.instance.FadeToZero()); //페이드아웃 실행        
+                                SmallFade.instance.FadeOut(babyNum, babySeatNum); //주인공(왼쪽) 페이드아웃
                             }                                                  
                             break;
                         case 28:
@@ -379,7 +386,6 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             {
                                 SystemManager.instance.SetCanTouch(false);
                                 SystemManager.instance.SetCanTouch(true,1f);
-                                SmallFade.instance.smallFadeIn.Enqueue(17);//주인공 아기 페이드인 준비
                                 Menu.instance.SetFriendEventMenu(1);//스페셜 메뉴 준비
                             }
                             else //다시보기일 때, 특별 메뉴 팝업 설정
@@ -394,7 +400,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             Dialogue.instance.SetBabyText(true);
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
-                                SmallFade.instance.FadeIn(); //주인공 아기 페이드인 실행
+                                SmallFade.instance.SetCharacter(babyNum);
                                 Menu.instance.MenuFadeIn();//스페셜 메뉴 페이드인
                             }                                
                             Popup.instance.OpenPopup();//메뉴 팝업, 팝업 닫으면 다음 대사 넘기기 가능
@@ -489,14 +495,13 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
                                 SmallFade.instance.FadeIn();//붕붕 페이드인
-                                SmallFade.instance.smallFadeIn.Enqueue(16); //아기 페이드인 준비
                             }                             
                             break;
                         case 2:
                             Dialogue.instance.SetBabyText(true);
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
-                                SmallFade.instance.FadeIn();//아기 페이드인
+                                SmallFade.instance.SetCharacter(babyNum);
                             }      
                             break;
                         case 3:
@@ -548,10 +553,6 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                         case 25:
                             CharacterManager.instance.CharacterFaceList[2].face[1].SetActive(false);
                             Dialogue.instance.SetBabyText(false);
-                            if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
-                            {
-                                SmallFade.instance.smallFOut.Enqueue(16);//아기 페이드아웃 준비
-                            }
                             break;
                         case 27:
                             CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
@@ -560,7 +561,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
                                 getMenu = 1; //메뉴 가지러 갔음
-                                SmallFade.instance.StartCoroutine(SmallFade.instance.FadeToZero()); //아기 페이드아웃    
+                                SmallFade.instance.FadeOut(babyNum, babySeatNum); //주인공 페이드아웃  //아기 페이드아웃    
                             }                                                                           
                             break;
                         case 28:
@@ -571,7 +572,6 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             {
                                 SystemManager.instance.SetCanTouch(false);
                                 SystemManager.instance.SetCanTouch(true,1f);
-                                SmallFade.instance.smallFadeIn.Enqueue(16);//주인공 아기 페이드인 준비
                                 Menu.instance.SetFriendEventMenu(2);//스페셜 메뉴 준비
                             }
                             else //다시보기일 때, 특별 메뉴 팝업 설정
@@ -586,7 +586,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             Dialogue.instance.SetBabyText(true);
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
-                                SmallFade.instance.FadeIn(); //주인공 아기 페이드인 실행
+                                SmallFade.instance.SetCharacter(babyNum);
                                 Menu.instance.MenuFadeIn();//스페셜 메뉴 페이드인
                                 getMenu = 2;
                             }
@@ -643,8 +643,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             Dialogue.instance.SetBabyText(true);
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
-                                SmallFade.instance.smallFadeIn.Enqueue(17);
-                                SmallFade.instance.FadeIn();
+                                SmallFade.instance.SetCharacter(babyNum);
                             }
                             break;
                         case 1:
@@ -702,10 +701,6 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                         case 31:
                             CharacterManager.instance.CharacterFaceList[3].face[2].SetActive(false);
                             Dialogue.instance.SetBabyText(false);
-                            if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
-                            {
-                                SmallFade.instance.smallFOut.Enqueue(17);
-                            }
                             break;
                         case 32:
                             CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(false);
@@ -714,7 +709,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
                                 getMenu = 1;
-                                SmallFade.instance.StartCoroutine(SmallFade.instance.FadeToZero());
+                                SmallFade.instance.FadeOut(babyNum, babySeatNum); //주인공 페이드아웃 
                             }               
                             break;
                         case 33:
@@ -725,7 +720,6 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             {
                                 SystemManager.instance.SetCanTouch(false);
                                 SystemManager.instance.SetCanTouch(true,1f);
-                                SmallFade.instance.smallFadeIn.Enqueue(17);
                                 Menu.instance.SetFriendEventMenu(3);
                             }
                             else //다시보기일 때, 특별 메뉴 팝업 설정
@@ -738,7 +732,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             Dialogue.instance.SetBabyText(true);
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
-                                SmallFade.instance.FadeIn();
+                                SmallFade.instance.SetCharacter(babyNum);
                                 Menu.instance.MenuFadeIn();
                                 getMenu = 2;
                             }
@@ -807,11 +801,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                         case 10:
                             CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(true);
-                            Dialogue.instance.SetBabyText(true);
-                            if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
-                            {
-                                SmallFade.instance.smallFOut.Enqueue(16);
-                            }              
+                            Dialogue.instance.SetBabyText(true);       
                             break;
                         case 11:
                             CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(false);
@@ -819,7 +809,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
                                 getMenu = 1;
-                                SmallFade.instance.StartCoroutine(SmallFade.instance.FadeToZero());
+                                SmallFade.instance.FadeOut(babyNum, babySeatNum); //주인공 페이드아웃 
                             }
                             break;
                         case 12:
@@ -828,7 +818,6 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             {
                                 SystemManager.instance.SetCanTouch(false);
                                 SystemManager.instance.SetCanTouch(true,1f);
-                                SmallFade.instance.smallFadeIn.Enqueue(16);
                                 Menu.instance.SetFriendEventMenu(4);
                             }
                             else //다시보기일 때, 특별 메뉴 팝업 설정
@@ -841,7 +830,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             Dialogue.instance.SetBabyText(true);                           
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
-                                SmallFade.instance.FadeIn();
+                                SmallFade.instance.SetCharacter(babyNum);
                                 Menu.instance.MenuFadeIn();
                                 getMenu = 2;
                             }
@@ -994,8 +983,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             Dialogue.instance.SetBabyText(true);
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
-                                SmallFade.instance.smallFadeIn.Enqueue(16);
-                                SmallFade.instance.FadeIn();
+                                SmallFade.instance.SetCharacter(babyNum);
                             }
                             break;
                         case 1:
@@ -1013,17 +1001,13 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[4].SetActive(true);
                             Dialogue.instance.SetBabyText(true);
-                            if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
-                            {
-                                SmallFade.instance.smallFOut.Enqueue(16);
-                            }
                             break;
                         case 6:
                             Dialogue.instance.SetBabyText(false);
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
                                 getMenu = 1;
-                                SmallFade.instance.StartCoroutine(SmallFade.instance.FadeToZero());
+                                SmallFade.instance.FadeOut(babyNum, babySeatNum); //주인공 페이드아웃 
                             }
                             break;
                         case 9:
@@ -1031,7 +1015,6 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             {
                                 SystemManager.instance.SetCanTouch(false);
                                 SystemManager.instance.SetCanTouch(true,1f);
-                                SmallFade.instance.smallFadeIn.Enqueue(16);
                                 Menu.instance.SetFriendEventMenu(6);
                             }
                             else //다시보기일 때, 특별 메뉴 팝업 설정
@@ -1046,7 +1029,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             Dialogue.instance.SetBabyText(true);
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
-                                SmallFade.instance.FadeIn();
+                                SmallFade.instance.SetCharacter(babyNum);
                                 Menu.instance.MenuFadeIn();
                                 getMenu = 2;
                             }
@@ -1198,19 +1181,13 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                         case 53:
                             Dialogue.instance.SetBabyText(true);
                             break;
-                        case 54:
-                            if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
-                            {
-                                SmallFade.instance.smallFOut.Enqueue(17);
-                            }
-                            break;
                         case 55:
                             CharacterManager.instance.CharacterFaceList[5].face[1].SetActive(false);
                             Dialogue.instance.SetBabyText(false);
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
                                 getMenu = 1;
-                                SmallFade.instance.StartCoroutine(SmallFade.instance.FadeToZero());
+                                SmallFade.instance.FadeOut(babyNum, babySeatNum); //주인공 페이드아웃 
                             }
                             break;
                         case 58:
@@ -1218,7 +1195,6 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             {
                                 SystemManager.instance.SetCanTouch(false);
                                 SystemManager.instance.SetCanTouch(true,1f);
-                                SmallFade.instance.smallFadeIn.Enqueue(17);
                                 Menu.instance.SetFriendEventMenu(7);
                             }
                             else //다시보기일 때, 특별 메뉴 팝업 설정
@@ -1233,7 +1209,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             Dialogue.instance.SetBabyText(true);
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
-                                SmallFade.instance.FadeIn();
+                                SmallFade.instance.SetCharacter(babyNum);
                                 Menu.instance.MenuFadeIn();
                             }
                             Popup.instance.OpenPopup();//메뉴 팝업, 팝업 닫으면 다음 대사 넘기기 가능
@@ -1326,17 +1302,13 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                         case 46:
                             CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
-                            if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
-                            {
-                                SmallFade.instance.smallFOut.Enqueue(16);
-                            }
                             break;
                         case 47:
                             Dialogue.instance.SetBabyText(false);
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
                                 getMenu = 1;
-                                SmallFade.instance.StartCoroutine(SmallFade.instance.FadeToZero());
+                                SmallFade.instance.FadeOut(babyNum, babySeatNum); //주인공 페이드아웃 
                             }
                             break;
                         case 48:
@@ -1344,7 +1316,6 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             {
                                 SystemManager.instance.SetCanTouch(false);
                                 SystemManager.instance.SetCanTouch(true,1f);
-                                SmallFade.instance.smallFadeIn.Enqueue(16);
                                 Menu.instance.SetFriendEventMenu(8);
                             }
                             else //다시보기일 때, 특별 메뉴 팝업 설정
@@ -1357,7 +1328,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             Dialogue.instance.SetBabyText(true);
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
-                                SmallFade.instance.FadeIn();
+                                SmallFade.instance.SetCharacter(babyNum);
                                 Menu.instance.MenuFadeIn();
                                 getMenu = 2;
                             }
@@ -1454,7 +1425,6 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             {
                                 SystemManager.instance.SetCanTouch(false);
                                 SystemManager.instance.SetCanTouch(true,1f);
-                                SmallFade.instance.smallFOut.Enqueue(17);
                                 Menu.instance.MenuFadeOut();//원래 있던 메뉴 페이드아웃
                             }
                             break;
@@ -1463,7 +1433,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
                                 getMenu = 1;
-                                SmallFade.instance.StartCoroutine(SmallFade.instance.FadeToZero());
+                                SmallFade.instance.FadeOut(babyNum, babySeatNum); //주인공 페이드아웃 
                             }
                             break;
                         case 19:
@@ -1471,7 +1441,6 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             {
                                 SystemManager.instance.SetCanTouch(false);
                                 SystemManager.instance.SetCanTouch(true,1f);
-                                SmallFade.instance.smallFadeIn.Enqueue(17);
                                 Menu.instance.SetFriendEventMenu(9);
                             }
                             else //다시보기일 때, 특별 메뉴 팝업 설정
@@ -1484,7 +1453,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             Dialogue.instance.SetBabyText(true);
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
-                                SmallFade.instance.FadeIn();
+                                SmallFade.instance.SetCharacter(babyNum);
                                 Menu.instance.MenuFadeIn();
                             }
                             Popup.instance.OpenPopup();//메뉴 팝업, 팝업 닫으면 다음 대사 넘기기 가능
@@ -1639,8 +1608,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             CharacterManager.instance.CharacterFaceList[8].face[0].SetActive(false);
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
-                                SmallFade.instance.smallFOut.Enqueue(16);//아기 페이드아웃 준비
-                                SmallFade.instance.FadeOut(SmallFade.instance.CharacterSeat[9]+1);
+                                SmallFade.instance.FadeOut(babyNum, babySeatNum); //주인공 페이드아웃
                             }
                             CharacterManager.instance.CharacterOut(10);
                             break;
@@ -1981,10 +1949,6 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             CharacterManager.instance.CharacterFaceList[9].face[1].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[9].face[2].SetActive(true);
                             Dialogue.instance.SetBabyText(false);
-                            if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
-                            {
-                                SmallFade.instance.smallFOut.Enqueue(17);
-                            }
                             break;
                         case 34:
                             CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
@@ -1993,7 +1957,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
                                 getMenu = 1;
-                                SmallFade.instance.StartCoroutine(SmallFade.instance.FadeToZero());
+                                SmallFade.instance.FadeOut(babyNum, babySeatNum); //주인공 페이드아웃 
                             }
                             break;
                         case 35:
@@ -2004,7 +1968,6 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             {
                                 SystemManager.instance.SetCanTouch(false);
                                 SystemManager.instance.SetCanTouch(true,1f);
-                                SmallFade.instance.smallFadeIn.Enqueue(17);
                                 Menu.instance.SetFriendEventMenu(11);
                             }
                             else //다시보기일 때, 특별 메뉴 팝업 설정
@@ -2019,7 +1982,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             Dialogue.instance.SetBabyText(true);
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
-                                SmallFade.instance.FadeIn();
+                                SmallFade.instance.SetCharacter(babyNum);
                                 Menu.instance.MenuFadeIn();
                             }
                             Popup.instance.OpenPopup();//메뉴 팝업, 팝업 닫으면 다음 대사 넘기기 가능
@@ -2430,10 +2393,6 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             break;
                         case 31:
                             Dialogue.instance.SetBabyText(false);
-                            if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
-                            {
-                                SmallFade.instance.smallFOut.Enqueue(16);
-                            }
                             break;
                         case 33:
                             CharacterManager.instance.CharacterFaceList[11].face[0].SetActive(false);
@@ -2443,7 +2402,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
                                 getMenu = 1;
-                                SmallFade.instance.StartCoroutine(SmallFade.instance.FadeToZero());
+                                SmallFade.instance.FadeOut(babyNum, babySeatNum); //주인공 페이드아웃 
                             }
                             break;
                         case 35:
@@ -2454,7 +2413,6 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             {
                                 SystemManager.instance.SetCanTouch(false);
                                 SystemManager.instance.SetCanTouch(true,1f);
-                                SmallFade.instance.smallFadeIn.Enqueue(16);
                                 Menu.instance.SetFriendEventMenu(14);
                             }
                             else //다시보기일 때, 특별 메뉴 팝업 설정
@@ -2467,7 +2425,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             Dialogue.instance.SetBabyText(true);
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
-                                SmallFade.instance.FadeIn();
+                                SmallFade.instance.SetCharacter(babyNum);
                                 Menu.instance.MenuFadeIn();
                                 getMenu = 2;
                             }
@@ -2675,7 +2633,6 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             {
                                 SystemManager.instance.SetCanTouch(false);
                                 SystemManager.instance.SetCanTouch(true,1f);
-                                SmallFade.instance.smallFOut.Enqueue(17);
                                 Menu.instance.MenuFadeOut();//원래 있던 메뉴 페이드아웃
                             }
                             break;
@@ -2684,7 +2641,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
                                 getMenu = 1;
-                                SmallFade.instance.StartCoroutine(SmallFade.instance.FadeToZero());
+                                SmallFade.instance.FadeOut(babyNum, babySeatNum); //주인공 페이드아웃 
                             }
                             break;
                         case 50:
@@ -2692,7 +2649,6 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             {
                                 SystemManager.instance.SetCanTouch(false);
                                 SystemManager.instance.SetCanTouch(true,1f);
-                                SmallFade.instance.smallFadeIn.Enqueue(17);
                                 Menu.instance.SetFriendEventMenu(15);
                             }
                             else //다시보기일 때, 특별 메뉴 팝업 설정
@@ -2707,7 +2663,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             Dialogue.instance.SetBabyText(true);
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
-                                SmallFade.instance.FadeIn();
+                                SmallFade.instance.SetCharacter(babyNum);
                                 Menu.instance.MenuFadeIn();
                             }
                             Popup.instance.OpenPopup();//메뉴 팝업, 팝업 닫으면 다음 대사 넘기기 가능

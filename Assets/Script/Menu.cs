@@ -568,18 +568,22 @@ public class Menu : MonoBehaviour
         Debug.Log("메뉴 페이드아웃" + n);
 
         TableMenu[n].SetActive(false);
+
+        string charName = SmallFade.instance.SittingCharacter[n].name;
+        int cNum = TouchableObject.instance.GetNumber(charName.IndexOf("_"), charName);
+
         if((CharacterAppear.instance.eventOn != 9 && CharacterAppear.instance.eventOn != 11 && CharacterAppear.instance.eventOn != 13 && CharacterAppear.instance.eventOn != 14 && CharacterAppear.instance.eventOn != 16)
-            || (SmallFade.instance.SittingCharacter[n].name != "small_9Dog" && CharacterAppear.instance.eventOn == 9)
-            || (SmallFade.instance.SittingCharacter[n].name != "small_6Princess" && SmallFade.instance.SittingCharacter[n].name != "small_10Soldier" && CharacterAppear.instance.eventOn == 11)
-            || (SmallFade.instance.SittingCharacter[n].name != "small_12Hero" && SmallFade.instance.SittingCharacter[n].name != "small_13Dinosour" && CharacterAppear.instance.eventOn == 14)
-            || (SmallFade.instance.SittingCharacter[n].name != "small_15Grandfather" && CharacterAppear.instance.eventOn == 16))
+            || (cNum != 9 && CharacterAppear.instance.eventOn == 9)
+            || (cNum != 6 && cNum != 10 && CharacterAppear.instance.eventOn == 11)
+            || (cNum != 12 && cNum != 13 && CharacterAppear.instance.eventOn == 14)
+            || (cNum != 15 && CharacterAppear.instance.eventOn == 16))
         {//특정 캐릭터 친밀도 이벤트가 아닐 때, 혹은 특정 캐릭터 이벤트여도 해당 이벤트 캐릭터가 아닐 때
             //Debug.Log("페이드아웃될 자리 " + n);
-            SmallFade.instance.FadeOut(n); //작은 캐릭터 페이드아웃   
+            SmallFade.instance.FadeOut(cNum); //작은 캐릭터 페이드아웃   
         }
-        else if(CharacterAppear.instance.eventOn == 14 && SmallFade.instance.SittingCharacter[n].name == "small_12Hero" && UI_Assistant1.instance.getMenu == 2)
+        else if(CharacterAppear.instance.eventOn == 14 && cNum == 12 && UI_Assistant1.instance.getMenu == 2)
         {//히로디노 이벤트 중에 페이드아웃하는 캐릭터가 히로이고 디노 페이드아웃 전일 때
-            SmallFade.instance.FadeOut(n); //작은 캐릭터 페이드아웃
+            SmallFade.instance.FadeOut(cNum); //작은 캐릭터 페이드아웃
         }
 
         if (menuFadeOut.Count != 0)

@@ -13,16 +13,16 @@ public class SmallFade : MonoBehaviour //작은 캐릭터 스크립트
 
     public int[] CharacterSeat = new int[15]; // 캐릭터 자리 저장 배열
 
-    public Queue<int> smallFOut = new Queue<int>(); //작은 캐릭터 페이드아웃 시 사용
+    Queue<int> smallFOut = new Queue<int>(); //작은 캐릭터 페이드아웃 시 사용
     public Queue<int> smallFadeIn = new Queue<int>(); //페이드인 시 사용
-
-    public bool x1 = false;//히로, 디노 중 먼저 가는 캐릭터가 true
-    public bool x2 = false; //찰스 도로시용
 
     public Image soldier2;//도로시와 같이 오는 찰스 이미지(오른쪽)
     public Image nameless2;
 
     Vector3[] Seat = new Vector3[6]; //작은 캐릭터가 앉을 자리 배열
+
+    public Queue<int> cleanSeat = new Queue<int>(); //비워질 자리 정보 큐
+
 
     void Awake()
     {        
@@ -61,7 +61,7 @@ public class SmallFade : MonoBehaviour //작은 캐릭터 스크립트
     {
         smallFadeIn.Enqueue(cNum);
 
-        if (cNum == 0) // 제제는 좌석에 앉지 않으므로 페이드인
+        if (cNum == 0 || cNum >= 16) // 제제/주인공은 바로 페이드인
         {
             Invoke(nameof(FadeIn),1f);
             return;
@@ -80,23 +80,23 @@ public class SmallFade : MonoBehaviour //작은 캐릭터 스크립트
         //Debug.Log("함수 SetCharacter");
     }
 
-
-    int sn = 0; //자리 넘버
     public void SetSeatPosition(int cNum) //앉을 자리 설정
     {
+        int seatNum = 0; //자리 넘버
+
         if (SystemManager.instance.GetMainCount() == 2)//서빙 튜토리얼일 경우
         {
-            sn = 1; //2번째 자리, 첫번째 짝수자리, 첫번째 테이블 오른쪽 자리
+            seatNum= 1; //2번째 자리, 첫번째 짝수자리, 첫번째 테이블 오른쪽 자리
         }
         else//튜토리얼 아닐 시 자리 배정
         {
             if(cNum == 13)//캐릭터가 디노면, 히로 자리에 따라서 옆에 배정
             {
-                sn = CharacterSeat[11] + 1;
+                seatNum = CharacterSeat[11] + 1;
             }
             else if(cNum == 10 && (Dialogue.instance.CharacterDC[10] == 3) || (CharacterAppear.instance.eventOn == 11 && UI_Assistant1.instance.getMenu == 1))//찰스2이벤트 중 찰스 중간 페이드인
             {//도로시와 같이 오는 찰스
-                sn = CharacterSeat[5] + 1;
+                seatNum = CharacterSeat[5] + 1;
                 SmallCharacter[10].GetComponent<Image>().sprite = soldier2.sprite;//이미지 변경
             }          
             else // 혼자인 캐릭터 자리 설정
@@ -109,59 +109,59 @@ public class SmallFade : MonoBehaviour //작은 캐릭터 스크립트
                 if (TableEmpty[0] == 0 && TableEmpty[1] == 0 && TableEmpty[2] == 0) //모든 테이블이 빈 상태면
                 {
                     //Debug.Log("테이블이 모두 비었음");
-                    sn = Random.Range(0, 5); // 0~5번 자리 모두 착석 가능
+                    seatNum = Random.Range(0, 5); // 0~5번 자리 모두 착석 가능
                     if (cNum % 2 == 1) //홀수 번호 캐릭터면 오른쪽(1,3,5)에 앉음
                     {
-                        if(sn % 2 == 0) sn += 1; // 짝수가 나오면 1 더해서 홀수 만들기
+                        if(seatNum % 2 == 0) seatNum += 1; // 짝수가 나오면 1 더해서 홀수 만들기
                     }
                     else if (cNum % 2 == 0) //짝수 번호 캐릭터는 왼쪽(0,2,4)에 앉음
                     {
-                        if(sn % 2 == 1) sn -= 1; // 홀수가 나오면 1 빼서 홀수 만들기
+                        if(seatNum % 2 == 1) seatNum -= 1; // 홀수가 나오면 1 빼서 홀수 만들기
                     }
                 }
                 else if (TableEmpty[0] == 0 && TableEmpty[1] == 0) //1,2번 테이블만 빈 상태면
                 {
                     //Debug.Log("1,2테이블이 비었음");
-                    sn = Random.Range(0, 3); //0~3번 자리 착석 가능
+                    seatNum = Random.Range(0, 3); //0~3번 자리 착석 가능
                     if (cNum % 2 == 1) 
                     {
-                        if(sn % 2 == 0) sn += 1;
+                        if(seatNum % 2 == 0) seatNum += 1;
                     }
                     if (cNum % 2 == 0) 
                     {
-                        if(sn % 2 == 1) sn -= 1;
+                        if(seatNum % 2 == 1) seatNum -= 1;
                     }
                 }
                 else if (TableEmpty[0] == 0 && TableEmpty[2] == 0)//1,3번 테이블만 빈 상태면
                 {
                     //Debug.Log("1,3테이블이 비었음");
-                    sn = Random.Range(0, 5); // 2,3번은 착석 불가
+                    seatNum = Random.Range(0, 5); // 2,3번은 착석 불가
                     if (cNum % 2 == 1) 
                     {
-                        if(sn == 2) sn -= 1;
-                        else if(sn == 3) sn += 2;
-                        else if(sn % 2 == 0) sn += 1;
+                        if(seatNum == 2) seatNum -= 1;
+                        else if(seatNum == 3) seatNum += 2;
+                        else if(seatNum % 2 == 0) seatNum += 1;
                     }
                     if (cNum % 2 == 0) 
                     {
-                        if(sn == 2) sn -= 2;
-                        else if(sn == 3) sn += 1;
-                        else if(sn % 2 == 1) sn -= 1;
+                        if(seatNum == 2) seatNum -= 2;
+                        else if(seatNum == 3) seatNum += 1;
+                        else if(seatNum % 2 == 1) seatNum -= 1;
                     }
                 }
                 else if (TableEmpty[1] == 0 && TableEmpty[2] == 0) //2,3번 테이블만 빈 상태면
                 {
                   //  Debug.Log("2,3테이블이 비었음");
-                    sn = Random.Range(2, 5);
+                    seatNum = Random.Range(2, 5);
 
                     if (cNum % 2 == 1) 
                     {
-                        if(sn % 2 == 0) sn += 1;
+                        if(seatNum % 2 == 0) seatNum += 1;
                     }
 
                     if (cNum % 2 == 0) 
                     {
-                        if(sn % 2 == 1) sn -= 1;
+                        if(seatNum % 2 == 1) seatNum -= 1;
                     }
                 }
                 else if (TableEmpty[0] == 0) //1번 테이블만 빈 상태
@@ -169,12 +169,12 @@ public class SmallFade : MonoBehaviour //작은 캐릭터 스크립트
                   //  Debug.Log("1테이블만 비었음");
                     if (cNum % 2 == 1) 
                     {
-                        sn = 1;
+                        seatNum = 1;
                     }
 
                     if (cNum % 2 == 0) 
                     {
-                        sn = 0;
+                        seatNum = 0;
                     }
                 }
                 else if (TableEmpty[1] == 0) //2번 테이블만 빈 상태
@@ -182,12 +182,12 @@ public class SmallFade : MonoBehaviour //작은 캐릭터 스크립트
                    // Debug.Log("2테이블만 비었음");
                     if (cNum % 2 == 1) 
                     {
-                        sn = 3;
+                        seatNum = 3;
                     }
 
                     if (cNum % 2 == 0) 
                     {
-                        sn = 2;
+                        seatNum = 2;
                     }
                 }
                 else if (TableEmpty[2] == 0) //3번 테이블만 비었을 때
@@ -195,24 +195,24 @@ public class SmallFade : MonoBehaviour //작은 캐릭터 스크립트
                     //Debug.Log("3테이블만 비었음");
                     if (cNum % 2 == 1) 
                     {
-                        sn = 5;
+                        seatNum = 5;
                     }
 
                     if (cNum % 2 == 0) 
                     {
-                        sn = 4;
+                        seatNum = 4;
                     }
                 }
             }              
         }
         
-        CharacterSeat[cNum - 1] = sn; //캐릭터 자리 정보 저장, 
+        CharacterSeat[cNum - 1] = seatNum ; //캐릭터 자리 정보 저장, 
         //Debug.Log("캐릭넘버 " + cNum + " 자리: " + sn);
 
         // 앉을 자리로 옮기기
-        SmallCharacter[cNum].transform.position = Seat[sn];
-        SittingCharacter[sn] = SmallCharacter[cNum];
-        switch (sn) // 테이블 착석 여부 갱신, 1은 착석, 0은 비었음
+        SmallCharacter[cNum].transform.position = Seat[seatNum];
+        SittingCharacter[seatNum] = SmallCharacter[cNum];
+        switch (seatNum) // 테이블 착석 여부 갱신, 1은 착석, 0은 비었음
         {
             case 0: 
             case 1:
@@ -254,29 +254,28 @@ public class SmallFade : MonoBehaviour //작은 캐릭터 스크립트
         {
             SystemManager.instance.BeginDialogue(CharacterAppear.instance.eventOn);
         }
-        if (CharacterAppear.instance.eventOn != 0 && CharacterAppear.instance.eventOn != 14)//히로디노이벤트가 아니면 주인공 아기 캐릭터 자리 설정, 두번째 조건은 찰스2 이벤트 때문
+        if (CharacterAppear.instance.eventOn != 0 && CharacterAppear.instance.eventOn != 14)//히로디노이벤트가 아니면 주인공 아기 캐릭터 자리 설정
         {
             if(CharacterAppear.instance.eventOn == 11 && (cNum == 6 || UI_Assistant1.instance.getMenu == 1)) return; // 찰스2이벤트의 도로시일 때는 아기 자리 세팅X
-            SetBabySeat(sn);          
+            SetBabySeat(seatNum);          
         }
         //Debug.Log("함수 SetSeatPosition");
     }
 
-    public void SetBabySeat(int s)
+    public void SetBabySeat(int sNum)
     {
-        if(s % 2 == 0) // 캐릭터 자리가 왼쪽(짝수)면
+        if(sNum % 2 == 0) // 캐릭터 자리가 왼쪽(짝수)면
         {
-            SmallCharacter[16].transform.position = Seat[s+1]; //주인공 아기를 오른쪽 자리로 옮김
-            SittingCharacter[s+1] = SmallCharacter[16];
+            SmallCharacter[16].transform.position = Seat[sNum+1]; //주인공 아기를 오른쪽 자리로 옮김
+            SittingCharacter[sNum+1] = SmallCharacter[16];
         }
         else
         {
-            SmallCharacter[17].transform.position = Seat[s-1];
-            SittingCharacter[s-1] = SmallCharacter[17];
+            SmallCharacter[17].transform.position = Seat[sNum-1];
+            SittingCharacter[sNum-1] = SmallCharacter[17];
         }
     }
 
-    public Queue<int> cleanSeat = new Queue<int>(); //비워질 자리 정보 큐
     public void CleanTable() // 손님이 가고 테이블을 빈 걸로 표시
     {
         int fNum = cleanSeat.Peek();
@@ -308,23 +307,14 @@ public class SmallFade : MonoBehaviour //작은 캐릭터 스크립트
         cleanSeat.Dequeue();
     }
 
-    bool isSmallCharFadeIn = false;//페이드인 진행 상태 구분에 사용
     public void FadeIn() //작은 캐릭터 페이드인
     {
-        if(isSmallCharFadeIn)
-        {
-            Invoke("FadeIn", 0.3f);
-        }
-        else
-        {
-            StartCoroutine(FadeToFullAlpha()); //페이드인 시작
-            //Debug.Log("함수 SmallFadeIn");
-        }     
+        StartCoroutine(FadeToFullAlpha()); //페이드인 시작
+        //Debug.Log("함수 SmallFadeIn");
     }
 
    public IEnumerator FadeToFullAlpha() // 알파값 0에서 1로 전환
     {
-        isSmallCharFadeIn = true;
         int v = smallFadeIn.Peek();
        
         //Debug.Log("페이드인 될 캐릭터" + v);
@@ -392,8 +382,11 @@ public class SmallFade : MonoBehaviour //작은 캐릭터 스크립트
                 SystemManager.instance.BeginDialogue(v2);              
             }
         }
-        isSmallCharFadeIn = false;
 
+        if(smallFadeIn.Count != 0)
+        {
+            StartCoroutine(FadeToFullAlpha());
+        }
         yield break;
     }
 
@@ -403,118 +396,23 @@ public class SmallFade : MonoBehaviour //작은 캐릭터 스크립트
         StartCoroutine(FadeToZero());//페이드아웃 시작         
     }
 
-    public void FadeOut(int seatNum) //작은 캐릭터 페이드아웃
+    public void FadeOut(int cNum, int sNum = -1) //작은 캐릭터 페이드아웃
     {   
-        string charName = SittingCharacter[seatNum].name;
-        Debug.Log("캐릭터 페이드아웃" + charName);
+        //Debug.Log("캐릭터 페이드아웃" + charName);
+        smallFOut.Enqueue(cNum);
 
-        if(!charName.Contains("Baby")) //주인공이 아닌 캐릭터면
-        { // 캐릭터 오브젝트 이름 예시 : small_1Bear
-            int idx = charName.IndexOf("_");
-            idx = TouchableObject.instance.GetNumber(idx, charName);
-
-            switch(idx)
-            {
-                case 6: // princess 도로시
-                    smallFOut.Enqueue(6);
-                    if(Dialogue.instance.CharacterDC[10] == 3)//이벤트 후면
-                    {
-                        if (!x2)
-                        {
-                            x2 = true;
-                        }
-                        else if (x2)
-                        {
-                            x2 = false;
-                        }
-                    }
-                    //Debug.Log("페이드아웃 될 캐릭터 도로시");
-                    break;
-                case 10: // soldier 찰스
-                    smallFOut.Enqueue(10);
-                    if (CharacterAppear.instance.eventOn != 11)//찰스2 이벤트 중이 아니면
-                    {
-                        if (Dialogue.instance.CharacterDC[10] == 3)//찰스2 이벤트 뒤면
-                        {
-                            if (!x2)
-                            {
-                                x2 = true;
-                            }
-                            else if (x2)
-                            {
-                                x2 = false;
-                            }    
-                        }
-                        // Debug.Log("페이드아웃 될 캐릭터 찰스");
-                    }
-                    break;
-                case 12: // hero 히로
-                    if(!x1)//히로가 먼저 가는 거면
-                    {
-                        x1 = true;
-                    }
-                    else if(x1)//디노가 먼저 갔으면
-                    {
-                        x1 = false; //값을 0으로 만들고
-                    }
-                    smallFOut.Enqueue(12);
-                    // Debug.Log("페이드아웃 될 캐릭터 히로");
-                    break;
-                case 13: // dinosour 디노
-                    if (!x1)
-                    {
-                        x1 = true;
-                    }
-                    else if (x1)
-                    {
-                        x1 = false;
-                    }
-                    smallFOut.Enqueue(13); 
-                    //  Debug.Log("페이드아웃 될 캐릭터 디노");
-                    break;
-                default: // 오브젝트 이름에 _이 들어가지 않아 idx가 -1인 경우 or 별다른 처리가 필요없는 캐릭터일 경우
-                    if(charName == "sBabyLeft")
-                    {
-                        smallFOut.Enqueue(17);
-                    }
-                    else if(charName == "sBabyRight")
-                    {
-                        smallFOut.Enqueue(16);
-                    }
-                    else
-                    {
-                        smallFOut.Enqueue(idx);
-                    }
-                    break;
-            }
-        }
-       
-        if (charName != "small_12Hero" && charName != "small_13Dinosour")
-        { //히로디노가 아니고
-            if(Dialogue.instance.CharacterDC[10] != 3 || (Dialogue.instance.CharacterDC[10] == 3 && charName != "small_6Princess" && charName != "small_10Soldier"))
-            {//찰스 이벤트가 다 안 끝났거나 끝났어도 찰스,도로시가 아니면
-                cleanSeat.Enqueue(seatNum); //비워질 자리 큐에 정보 추가
-                 //Debug.Log(n + "자리 클린시트큐에 추가됨");
-            }       
-            else if(Dialogue.instance.CharacterDC[10] == 3 && (charName == "small_6Princess" || charName == "small_10Soldier"))
-            {//찰스도로시 중 찰스나 도로시일 때
-                if (!x2)//값이 0이어야만 가능
-                {
-                    cleanSeat.Enqueue(seatNum); //비워질 자리 큐에 정보 추가
-                }
-            }
-        }
-        else // 히로 혹은 디노일 경우
+        if(cNum != 12 && cNum  < 16) // 히로, 주인공은 패스
         {
-            if (!x1)//값이 0이어야만 가능
-            {
-                cleanSeat.Enqueue(seatNum); //비워질 자리 큐에 정보 추가
-                //  Debug.Log(n + "자리 클린시트큐에 추가됨");
-            }
-        }       
+            //  도로시/찰스 제외 캐릭터거나 찰스2이벤트 전이거나 찰스2이벤트 완료+찰스일 때
+            if((cNum  != 6 && cNum  != 10) || Dialogue.instance.CharacterDC[10] != 3 || (Dialogue.instance.CharacterDC[10] == 3 && cNum  == 10))
+                cleanSeat.Enqueue(CharacterSeat[cNum -1]); //비워질 자리 큐에 정보 추가
+        }
     
         StartCoroutine(FadeToZero());//페이드아웃 시작    
-        SittingCharacter[seatNum] = null;//버그 대비 페이드아웃 시 null 넣기
+        if(sNum == -1)
+            SittingCharacter[CharacterSeat[cNum -1]] = null;//버그 대비 페이드아웃 시 null 넣기
+        else
+            SittingCharacter[sNum] = null;
 
         //Debug.Log("함수 SmallFadeOut");
     }
@@ -541,22 +439,17 @@ public class SmallFade : MonoBehaviour //작은 캐릭터 스크립트
                 UI_Assistant1.instance.getMenu = 0;
             }   
 
-            if(cNum % 2 == 1) // 홀수 캐릭터
+            int sNum;
+            if(cNum % 2 == 1 && cNum != 13) // 홀수 캐릭터(디노 제외)
             {
-                if(cNum != 13) //디노 제외
-                {
-                    smallFOut.Enqueue(17);
-                    FadeOut(CharacterSeat[cNum-1]-1);
-                }
+                sNum = CharacterSeat[cNum-1]-1;
+                FadeOut(17, sNum); //주인공(왼쪽) 페이드아웃
             }
 
-            if(cNum % 2 == 0) // 짝수 캐릭터
+            if(cNum % 2 == 0 && cNum != 12) // 짝수 캐릭터(히로 제외)
             {
-                if(cNum != 12) //히로 제외
-                {
-                    smallFOut.Enqueue(16);
-                    FadeOut(CharacterSeat[cNum-1]+1);
-                }
+                sNum = CharacterSeat[cNum-1]+1;
+                FadeOut(16, sNum);
             }
         }
 
@@ -567,29 +460,27 @@ public class SmallFade : MonoBehaviour //작은 캐릭터 스크립트
             if(cNum != 16 && cNum != 17)//아기 제외
             {
                 CharacterSeat[cNum - 1] = 0;//자리 0으로 초기화
+                
+                if(cNum == 12) yield break; // 히로는 패스, 디노일 때 실행
 
                 if (cNum == 6 || cNum == 10)//도로시나 찰스일 경우
                 {
-                    if (Dialogue.instance.CharacterDC[10] == 3 && !x2)
-                    {//찰스2이벤트 이후면 둘 중에 마지막에 사라지는 캐릭터 때 실행
-                        CleanTable();
+                    if (Dialogue.instance.CharacterDC[10] == 3 && cNum == 10)
+                    {//찰스2이벤트 이후면
+                        Invoke(nameof(CleanTable), 2f);
                         CharacterVisit.instance.revisit.Enqueue(17);
-
                     }
-                    else if (Dialogue.instance.CharacterDC[10] != 3)//찰스2 이벤트 전이면 다른 캐릭터와 똑같이 실행
+                    else if(Dialogue.instance.CharacterDC[10] != 3)//찰스2 이벤트 전이면 다른 캐릭터와 똑같이 실행
                     {
                         CleanTable();
-                        if(CharacterAppear.instance.eventOn != 11)
+                        if(CharacterAppear.instance.eventOn != 11) // 찰스2이벤트 중에는 실행X
                             CharacterVisit.instance.revisit.Enqueue(cNum);
                     }
                 }
-                else if(cNum == 12 || cNum == 13)
+                else if(cNum == 13) // 디노
                 {
-                    if (!x1)//히로디노는 마지막에 나오는 캐릭터 때 실행
-                    {
-                        CleanTable();
-                        CharacterVisit.instance.revisit.Enqueue(13);
-                    }
+                    Invoke(nameof(CleanTable), 2f);
+                    CharacterVisit.instance.revisit.Enqueue(13);
                 }
                 else //혼자인 캐릭터
                 {

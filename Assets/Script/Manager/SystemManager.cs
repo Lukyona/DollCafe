@@ -625,7 +625,7 @@ public class SystemManager : MonoBehaviour
 
         Dialogue.instance.SetCharacterNum(cNum);
         Dialogue.instance.SetBabyText(false);
-        if(cNum == 14 && mainCount == 15)
+        if(cNum == 14)
             Dialogue.instance.SetBabyText(true);
 
         StartCoroutine(DialogueCoroutine(cNum, time));
