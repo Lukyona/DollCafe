@@ -529,8 +529,7 @@ public class Menu : MonoBehaviour
             if(CharacterAppear.instance.eventOn == 16 && UI_Assistant1.instance.getMenu == 0)//롤렝드 친밀도 이벤트의 경우
             {
                 SystemManager.instance.BeginDialogue(14);
-                SmallFade.instance.smallFadeIn.Enqueue(17);
-                SmallFade.instance.FadeIn();
+                SmallFade.instance.SetCharacter(17);
                 canStartEvent = false;
             }
         }

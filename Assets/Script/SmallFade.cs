@@ -8,21 +8,20 @@ public class SmallFade : MonoBehaviour //작은 캐릭터 스크립트
     public static SmallFade instance;
     public GameObject[] SmallCharacter; //작은 캐릭터 이미지 배열
     public GameObject[] SittingCharacter = new GameObject[6];//좌석별 현재 앉아있는 캐릭터, 
-  
+    
+    [SerializeField] Image soldierRightImage;//도로시와 같이 오는 찰스 이미지(오른쪽)
+    [SerializeField] Image namelessSmile;
+
     public int[] TableEmpty = new int[3]; //테이블이 비었는지 확인
 
     public int[] CharacterSeat = new int[15]; // 캐릭터 자리 저장 배열
 
     Queue<int> smallFOut = new Queue<int>(); //작은 캐릭터 페이드아웃 시 사용
-    public Queue<int> smallFadeIn = new Queue<int>(); //페이드인 시 사용
-
-    public Image soldier2;//도로시와 같이 오는 찰스 이미지(오른쪽)
-    public Image nameless2;
+    Queue<int> smallFadeIn = new Queue<int>(); //페이드인 시 사용
 
     Vector3[] Seat = new Vector3[6]; //작은 캐릭터가 앉을 자리 배열
 
-    public Queue<int> cleanSeat = new Queue<int>(); //비워질 자리 정보 큐
-
+    Queue<int> cleanSeat = new Queue<int>(); //비워질 자리 정보 큐
 
     void Awake()
     {        
@@ -97,13 +96,13 @@ public class SmallFade : MonoBehaviour //작은 캐릭터 스크립트
             else if(cNum == 10 && (Dialogue.instance.CharacterDC[10] == 3) || (CharacterAppear.instance.eventOn == 11 && UI_Assistant1.instance.getMenu == 1))//찰스2이벤트 중 찰스 중간 페이드인
             {//도로시와 같이 오는 찰스
                 seatNum = CharacterSeat[5] + 1;
-                SmallCharacter[10].GetComponent<Image>().sprite = soldier2.sprite;//이미지 변경
+                SmallCharacter[10].GetComponent<Image>().sprite = soldierRightImage.sprite;//이미지 변경
             }          
             else // 혼자인 캐릭터 자리 설정
             {
                 if (cNum == 11 && Dialogue.instance.CharacterDC[11] == 3)//무명이, 시나리오 다 봤을 때
                 {
-                    SmallCharacter[11].GetComponent<Image>().sprite = nameless2.sprite;//이미지 변경
+                    SmallCharacter[11].GetComponent<Image>().sprite = namelessSmile.sprite;//이미지 변경
                 }
 
                 if (TableEmpty[0] == 0 && TableEmpty[1] == 0 && TableEmpty[2] == 0) //모든 테이블이 빈 상태면

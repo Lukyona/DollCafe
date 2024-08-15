@@ -145,15 +145,17 @@ public class SystemManager : MonoBehaviour
     {
         //PlayerPrefs.SetInt("PurchaseCount", 0); //인앱 결제 정보 저장
         //PlayerPrefs.Save(); //세이브
-        Dialogue.instance.CharacterDC[6] = 3;
+        Dialogue.instance.CharacterDC[0] = 2;
+        endingState =1;
+        SaveDataInfo();
         //Dialogue.instance.CharacterDC[12] = 1;
         //Dialogue.instance.CharacterDC[10] = 2;
         //VisitorNote.instance.FriendshipInfo[9] = 10;
         //VisitorNote.instance.FriendshipInfo[10] = 15;
         //VisitorNote.instance.FriendshipInfo[8] = 10;
         //Star.instance.SetStarNum(23);
-        for(int i = 0; i < 10; ++i)
-            HPManager.instance.AddHP();
+        //for(int i = 0; i < 10; ++i)
+           // HPManager.instance.AddHP();
     }
 
     public int GetMainCount()
@@ -427,8 +429,9 @@ public class SystemManager : MonoBehaviour
             Menu.instance.SaveUnlockedMenuItemInfo();
             VisitorNote.instance.SaveVisitorNoteInfo();           
             endingState = 2;//엔딩이벤트를 봤음
-            PlayerPrefs.SetInt("EndingState", endingState);
             SaveDataInfo();
+            Debug.Log("endignstat" + PlayerPrefs.GetInt("EndingState"));
+            
             if (Star.instance.IsInvoking("ActivateStarSystem"))
             {
                 Star.instance.CancelInvoke("ActivateStarSystem");//별 활성화 함수 중단
@@ -447,6 +450,7 @@ public class SystemManager : MonoBehaviour
                 }
             }
             SceneChanger.instance.Invoke("GoEndingCreditScene", 1f);//1초 후 엔딩크레딧 화면으로 이동
+            return;
         }
         else
         {
@@ -532,7 +536,7 @@ public class SystemManager : MonoBehaviour
             Debug.Log("엔딩 조건 충족");
 
             //엔딩이벤트 8초 후 시작
-            Invoke("EndingEvent",8f);
+            Invoke(nameof(EndingEvent),6f);
             endingState = 1;
             PlayerPrefs.SetInt("EndingState", endingState);
             PlayerPrefs.Save();

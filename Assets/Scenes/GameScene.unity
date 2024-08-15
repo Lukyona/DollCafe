@@ -42353,10 +42353,10 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+  soldierRightImage: {fileID: 991923546}
+  namelessSmile: {fileID: 194634141}
   TableEmpty: 000000000000000000000000
   CharacterSeat: 000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
-  soldier2: {fileID: 991923546}
-  nameless2: {fileID: 194634141}
 --- !u!114 &1538706517
 MonoBehaviour:
   m_ObjectHideFlags: 0

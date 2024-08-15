@@ -34,28 +34,28 @@ public class SceneChanger : MonoBehaviour //화면 페이드 인아웃
                     PlayerPrefs.SetInt("EndingState", 3);
                 }
                 PlayerPrefs.Save();
-                Invoke("GoStartScene", 4f); //스타트씬으로 넘어감
+                Invoke(nameof(GoStartScene), 4f); //스타트씬으로 넘어감
                 break;
             case "GoodNightScene": //로딩 씬이라면
                 lodingBar.fillAmount = 0;
-                Invoke("LoadCafeScene", 1.3f);
+                Invoke(nameof(LoadCafeScene), 1.3f);
                 break;
             case "EndingCreditScene": //엔딩 크레딧 씬이라면
                 string nName = PlayerPrefs.GetString("NameForNameless"); //플레이어가 설정한 이름들 가져오기
                 string bName = PlayerPrefs.GetString("BabyName");
                 { // 엔딩 크레딧 내용
-                    creditText.text = "\n<Art - Background>\n\n김지수\n\nMomo\n\n< Art - Character >\n\nMomo\n\nNuba\n\nVint"
+                    creditText.text = "<Art - Background>\n\n김지수\n\nMomo\n\n< Art - Character >\n\nMomo\n\nNuba\n\nVint"
                     + "\n\n<Art - Menu>\n\n김지수\n\nMomo\n\nNuba\n\nVint\n\n< Art - UI >\n\nMomo\n\nLukyona\n\n< Character Scenario >\n\nMomo\n\nNuba\n\nLukyona"
-                    + "\n\n<Programming>\n\nLukyona\n\n\n\n<Friends>\n\n도리\n\n\n붕붕\n\n\n빵빵\n\n\n개나리\n\n\n또롱\n\n\n도로시\n\n\n루루\n\n\n샌디\n\n\n친구\n\n\n찰스\n\n\n"
+                    + "\n\n<Programming>\n\nLukyona\n\n\n<Friends>\n\n도리\n\n\n붕붕\n\n\n빵빵\n\n\n개나리\n\n\n또롱\n\n\n도로시\n\n\n루루\n\n\n샌디\n\n\n친구\n\n\n찰스\n\n\n"
                     + nName //무명이
                     + "\n\n\n히로\n\n\n디노\n\n\n닥터 펭\n\n\n롤렝드\n\n\n\n제제\n\n\n\n\n<Special Thanks>\n\n"
                     + bName + "\n\n\nand You"
                     + "\n\n\n\n\n\n\n\n\n지금까지 카페 코스모스를 방문해주셔서 감사합니다.";
                 }
-                Invoke("GoStartScene", 75f); //75초 후 스타트씬으로 넘어감
+                Invoke(nameof(GoStartScene), 75f); //75초 후 스타트씬으로 넘어감
                 break;
             case "PrepareScene": //영업 준비 씬이라면
-                Invoke("GoStartScene", 4f); //4초 후 스타트씬으로 넘어감
+                Invoke(nameof(GoStartScene), 4f); //4초 후 스타트씬으로 넘어감
                 break;
             default:
                 break;
@@ -112,7 +112,7 @@ public class SceneChanger : MonoBehaviour //화면 페이드 인아웃
     IEnumerator LoadAsyncScene(string sceneName)
     {
         yield return null; // 다음 프레임에 실행, ->업데이트 함수가 실행되었다가 돌아옴
-        AsyncOperation asyncScene = SceneManager.LoadSceneAsync("GameScene"); // LoadSceneAsync : 비동기 방식, 일시 중지가 발생하지 않음, 진행 정도를 반환
+        AsyncOperation asyncScene = SceneManager.LoadSceneAsync(sceneName); // LoadSceneAsync : 비동기 방식, 일시 중지가 발생하지 않음, 진행 정도를 반환
 
         asyncScene.allowSceneActivation = false; //장면이 준비된 즉시 활성화되는 것을 비허용, true는 허용
         float time = 0;

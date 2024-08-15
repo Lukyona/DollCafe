@@ -111,17 +111,21 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
     private void DialogueEvent() //대화 이벤트
     {
         int cNum = CharacterManager.instance.GetCharacterNum();
-        int babyNum; // 친밀도 이벤트 시에 주인공 페이드인/아웃에 사용
-        int babySeatNum;
-        if(cNum % 2 == 0) // 캐릭터가 짝수 (왼쪽에 앉아있음)
+        int babyNum = -1; // 친밀도 이벤트 시에 주인공 페이드인/아웃에 사용
+        int babySeatNum = -1;
+
+        if(cNum != 0)
         {
-            babyNum = 16;
-            babySeatNum = SmallFade.instance.CharacterSeat[cNum-1]+1;
-        }
-        else
-        {
-            babyNum = 17;
-            babySeatNum = SmallFade.instance.CharacterSeat[cNum-1]-1;
+            if(cNum % 2 == 0) // 캐릭터가 짝수 (왼쪽에 앉아있음)
+            {
+                babyNum = 16;
+                babySeatNum = SmallFade.instance.CharacterSeat[cNum-1]+1;
+            }
+            else
+            {
+                babyNum = 17;
+                babySeatNum = SmallFade.instance.CharacterSeat[cNum-1]-1;
+            }
         }
 
         switch (cNum)
