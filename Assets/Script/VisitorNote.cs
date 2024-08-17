@@ -7,9 +7,9 @@ public class VisitorNote : MonoBehaviour
 {
     public static VisitorNote instance;
 
-    public Animator VNButtonAnimator;
-    public Animator noteAnimator;
-    public int pageNum = 1; //1페이지가 첫 페이지
+    [SerializeField] Animator VNButtonAnimator;
+    [SerializeField] Animator noteAnimator;
+    int pageNum = 1; //1페이지가 첫 페이지
     public int pageNum2 = 0;
     public GameObject[] characterInfo; //캐릭터 정보 배열
     public GameObject[] page; //페이지 배열
@@ -18,40 +18,43 @@ public class VisitorNote : MonoBehaviour
     public GameObject previousPageButton; //이전 페이지 버튼
     static int bigPageNum = 1; //1-4페이지까지가 1, 5-8까지가 2, 9 - 12가 3, 13 - 14가 4
 
-    public GameObject pageText1; //페이지 텍스트
-    public GameObject pageText2;
+    [SerializeField] GameObject pageText1; //페이지 텍스트
+    [SerializeField] GameObject pageText2;
 
-    public GameObject[] LikeMenu1;//좋아하는 첫번째 메뉴 배열, 0도리~~~11히로, 12디노, 13닥터펭, 14롤렝드
-    public GameObject[] LikeMenu2; //두번째 좋아하는 메뉴 배열, 0도리, 1 빵빵, 2개나리~~10닥터펭 11롤렝드,  붕붕이/히로디노만 없음
+    [SerializeField] GameObject[] favFirstMenu;//좋아하는 첫번째 메뉴 배열, 0도리~~~11히로, 12디노, 13닥터펭, 14롤렝드
+    [SerializeField] GameObject[] favSecondMenu; //두번째 좋아하는 메뉴 배열, 0도리, 1 빵빵, 2개나리~~10닥터펭 11롤렝드,  붕붕이/히로디노만 없음
 
-    public GameObject[] WantToSay;//친밀도 이벤트 달성 시 노트에 새롭게 보일 문장, 0도리 1루루 2친구 3찰스 4무명이1 5무명이2 6롤렝드
+    [SerializeField] GameObject[] HiddenText;//친밀도 이벤트 달성 시 노트에 새롭게 보일 문장, 0도리 1루루 2친구 3찰스 4무명이1 5무명이2 6롤렝드
 
-    public Text Name; //플레이어가 지어준 무명이 이름
+    [SerializeField] Text nameForNameless; //플레이어가 지어준 무명이 이름
 
     public int[] NextPageOpen = new int[10]; // 인덱스 0은  5페이지, 값이 0이면 페이지가 안 열린 거
 
     public int openPage = 1;//열린 페이지, 도리가 기본으로 있으므로 1, 마지막이 14
 
-    int[] LikeMenu1Open = new int[15]; //노트의 좋아하는 첫번째 메뉴 정보가 열렸는지 확인하기 위한 배열
-    int[] LikeMenu2Open = new int[12]; //노트의 좋아하는 두번째 메뉴 정보가 열렸는지 확인하기 위한 배열
+    int[] favFirstMenuOpen = new int[15]; //노트의 좋아하는 첫번째 메뉴 정보가 열렸는지 확인하기 위한 배열
+    int[] favSecondMenuOpen = new int[12]; //노트의 좋아하는 두번째 메뉴 정보가 열렸는지 확인하기 위한 배열
 
     int[] SecondSentence = new int[8]; //노트의 두번째 하고 싶은 말 정보가 열렸는지 확인
 
     public int[] FriendshipInfo = new int[13] { 0, 0, 0, 0, 0, 0,0,0,0,0,0,0,0}; //친밀도 게이지 정보(서빙 횟수) 배열
 
     public Button[] RePlayButton;//다시보기 버튼, 0도리
-    public GameObject[] RePlayView; //어떤 걸 다시 볼 지 고르는 창, 0도리
+    [SerializeField] GameObject[] RePlayView; //어떤 걸 다시 볼 지 고르는 창, 0도리
 
-    public GameObject showSpecialMenu;//스메셜 메뉴 다시보기 창
-    public Image menuImage; // 스페셜 메뉴 이미지
-    public Text menuName; // 메뉴 이름
-    public Text whichCharacter; //어느 캐릭터의 스페셜 메뉴인지
+    [SerializeField] GameObject showSpecialMenu;//스메셜 메뉴 다시보기 창
+    [SerializeField] Image menuImage; // 스페셜 메뉴 이미지
+    [SerializeField] Text menuName; // 메뉴 이름
+    [SerializeField] Text whichCharacter; //어느 캐릭터의 스페셜 메뉴인지
 
     public GameObject rePlayMessage;//첫만남, 이벤트 다시보기 메세지창
     public Text whichStory; //누구의 첫만남/이벤트를 회상할까요? 라고 묻는 텍스트
 
     public int fmRP = 0; //첫만남 캐릭터별로 숫자 들어감
     public int evRP = 0; //이벤트 캐릭터별로 숫자 들어감
+
+    bool isReplayViewOpen = false; //다시보기 버튼 터치되면 true
+
 
     private void Awake()
     {
@@ -61,7 +64,7 @@ public class VisitorNote : MonoBehaviour
         }
     }
 
-    public void ClickVNButton() //손님 노트 버튼 눌렀을 때
+    public void ShowVisitorNote() //손님 노트 버튼 눌렀을 때
     {
         if(!SystemManager.instance.IsUIOpen())
         {
@@ -72,7 +75,7 @@ public class VisitorNote : MonoBehaviour
         }
     }
 
-    public void ClickNoteCloseButton() //노트 닫기 버튼 눌렀을 때
+    public void CloseVisitorNote() //노트 닫기 버튼 눌렀을 때
     {
         SystemManager.instance.SetUIOpen(false);
         SEManager.instance.PlayUICloseSound(); //효과음
@@ -80,14 +83,14 @@ public class VisitorNote : MonoBehaviour
         VNButtonAnimator.SetTrigger("VNButtonIn"); //버튼 내려옴
         if(evRP == 0 && fmRP == 0)//다시보기 아닐 때만 
         {
-            Invoke("NoteInit", 0.5f);//0.5초 뒤 노트 정보 1페이지로 초기화
+            Invoke(nameof(InitNote), 0.5f);//0.5초 뒤 노트 정보 1페이지로 초기화
         }
         
     }
 
-    void NoteInit()
+    void InitNote()
     {
-        if (rpbClick == 1)//다시보기 창이 활성화되어있으면
+        if (isReplayViewOpen)//다시보기 창이 활성화되어있으면
         {
             ShowRePlayView();
         }
@@ -228,7 +231,7 @@ public class VisitorNote : MonoBehaviour
         {
             bigPageNum = 4;
         }
-        if (rpbClick == 1)//다시보기 창이 활성화되어있으면
+        if (isReplayViewOpen)//다시보기 창이 활성화되어있으면
         {
             ShowRePlayView();
         }
@@ -374,214 +377,214 @@ public class VisitorNote : MonoBehaviour
         switch(c)//c는 캐릭터넘버
         {
             case 1://도리
-                if(LikeMenu1[0].activeSelf == false || LikeMenu2[0].activeSelf == false)
+                if(favFirstMenu[0].activeSelf == false || favSecondMenu[0].activeSelf == false)
                 {
                     if (n == 1)
                     {
-                        LikeMenu1[0].SetActive(true);
-                        LikeMenu1Open[0] = 1;
+                        favFirstMenu[0].SetActive(true);
+                        favFirstMenuOpen[0] = 1;
                     }
                     if (n == 4)
                     {
-                        LikeMenu2[0].SetActive(true);
-                        LikeMenu2Open[0] = 1;
+                        favSecondMenu[0].SetActive(true);
+                        favSecondMenuOpen[0] = 1;
                     }
                 }              
                 break;
             case 2:
-                if (LikeMenu1[1].activeSelf == false)
+                if (favFirstMenu[1].activeSelf == false)
                 {
                     if (n == 2)
                     {
-                        LikeMenu1[1].SetActive(true);
-                        LikeMenu1Open[1] = 1;
+                        favFirstMenu[1].SetActive(true);
+                        favFirstMenuOpen[1] = 1;
                     }
                 }
                 break;
             case 3:
-                if (LikeMenu1[c-1].activeSelf == false || LikeMenu2[c-2].activeSelf == false)
+                if (favFirstMenu[c-1].activeSelf == false || favSecondMenu[c-2].activeSelf == false)
                 {
                     if (n == 2)
                     {
-                        LikeMenu1[c - 1].SetActive(true);
-                        LikeMenu1Open[2] = 1;
+                        favFirstMenu[c - 1].SetActive(true);
+                        favFirstMenuOpen[2] = 1;
                     }
                     if (n == 6)
                     {
-                        LikeMenu2[c - 2].SetActive(true);
-                        LikeMenu2Open[1] = 1;
+                        favSecondMenu[c - 2].SetActive(true);
+                        favSecondMenuOpen[1] = 1;
                     }
                 }
                 break;
             case 4:
-                if (LikeMenu1[c - 1].activeSelf == false || LikeMenu2[c - 2].activeSelf == false)
+                if (favFirstMenu[c - 1].activeSelf == false || favSecondMenu[c - 2].activeSelf == false)
                 {
                     if (n == 3)
                     {
-                        LikeMenu1[c - 1].SetActive(true);
-                        LikeMenu1Open[3] = 1;
+                        favFirstMenu[c - 1].SetActive(true);
+                        favFirstMenuOpen[3] = 1;
                     }
                     if (n == 4)
                     {
-                        LikeMenu2[c - 2].SetActive(true);
-                        LikeMenu2Open[2] = 1;
+                        favSecondMenu[c - 2].SetActive(true);
+                        favSecondMenuOpen[2] = 1;
                     }
                 }
                 break;
             case 5:
-                if (LikeMenu1[c - 1].activeSelf == false || LikeMenu2[c - 2].activeSelf == false)
+                if (favFirstMenu[c - 1].activeSelf == false || favSecondMenu[c - 2].activeSelf == false)
                 {
                     if (n == 1)
                     {
-                        LikeMenu1[c - 1].SetActive(true);
-                        LikeMenu1Open[4] = 1;
+                        favFirstMenu[c - 1].SetActive(true);
+                        favFirstMenuOpen[4] = 1;
                     }
-                    if (n == 6 && LikeMenu2[c - 2].activeSelf == false)
+                    if (n == 6 && favSecondMenu[c - 2].activeSelf == false)
                     {
                         SystemManager.instance.BeginDialogue(5);//또롱이 이벤트 시작
                         CharacterAppear.instance.eventOn = 5;
-                        LikeMenu2[c - 2].SetActive(true);
-                        LikeMenu2Open[3] = 1;
+                        favSecondMenu[c - 2].SetActive(true);
+                        favSecondMenuOpen[3] = 1;
                     }
                 }
                 break;
             case 6:
-                if (LikeMenu1[c - 1].activeSelf == false || LikeMenu2[c - 2].activeSelf == false)
+                if (favFirstMenu[c - 1].activeSelf == false || favSecondMenu[c - 2].activeSelf == false)
                 {
                     if (n == 3)
                     {
-                        LikeMenu1[c - 1].SetActive(true);
-                        LikeMenu1Open[5] = 1;
+                        favFirstMenu[c - 1].SetActive(true);
+                        favFirstMenuOpen[5] = 1;
                     }
                     if (n == 8)
                     {
-                        LikeMenu2[c - 2].SetActive(true);
-                        LikeMenu2Open[4] = 1;
+                        favSecondMenu[c - 2].SetActive(true);
+                        favSecondMenuOpen[4] = 1;
                     }
                 }
                 break;
             case 7:
-                if (LikeMenu1[c - 1].activeSelf == false || LikeMenu2[c - 2].activeSelf == false)
+                if (favFirstMenu[c - 1].activeSelf == false || favSecondMenu[c - 2].activeSelf == false)
                 {
                     if (n == 3)
                     {
-                        LikeMenu1[c - 1].SetActive(true);
-                        LikeMenu1Open[6] = 1;
+                        favFirstMenu[c - 1].SetActive(true);
+                        favFirstMenuOpen[6] = 1;
                     }
                     if (n == 7)
                     {
-                        LikeMenu2[c - 2].SetActive(true);
-                        LikeMenu2Open[5] = 1;
+                        favSecondMenu[c - 2].SetActive(true);
+                        favSecondMenuOpen[5] = 1;
                     }
                 }
                 break;
             case 8:
-                if (LikeMenu1[c - 1].activeSelf == false || LikeMenu2[c - 2].activeSelf == false)
+                if (favFirstMenu[c - 1].activeSelf == false || favSecondMenu[c - 2].activeSelf == false)
                 {
                     if (n == 4)
                     {
-                        LikeMenu1[c - 1].SetActive(true);
-                        LikeMenu1Open[7] = 1;
+                        favFirstMenu[c - 1].SetActive(true);
+                        favFirstMenuOpen[7] = 1;
                     }
                     if (n == 7)
                     {
-                        LikeMenu2[c - 2].SetActive(true);
-                        LikeMenu2Open[6] = 1;
+                        favSecondMenu[c - 2].SetActive(true);
+                        favSecondMenuOpen[6] = 1;
                     }
                 }
                 break;
             case 9:
-                if (LikeMenu1[c - 1].activeSelf == false || LikeMenu2[c - 2].activeSelf == false)
+                if (favFirstMenu[c - 1].activeSelf == false || favSecondMenu[c - 2].activeSelf == false)
                 {
                     if (n == 2)
                     {
-                        LikeMenu1[c - 1].SetActive(true);
-                        LikeMenu1Open[8] = 1;
+                        favFirstMenu[c - 1].SetActive(true);
+                        favFirstMenuOpen[8] = 1;
                     }
                     if (n == 8)
                     {
-                        LikeMenu2[c - 2].SetActive(true);
-                        LikeMenu2Open[7] = 1;
+                        favSecondMenu[c - 2].SetActive(true);
+                        favSecondMenuOpen[7] = 1;
                     }
                 }
                 break;
             case 10:
-                if (LikeMenu1[c - 1].activeSelf == false || LikeMenu2[c - 2].activeSelf == false)
+                if (favFirstMenu[c - 1].activeSelf == false || favSecondMenu[c - 2].activeSelf == false)
                 {
                     if (n == 5)
                     {
-                        LikeMenu1[c - 1].SetActive(true);
-                        LikeMenu1Open[9] = 1;
+                        favFirstMenu[c - 1].SetActive(true);
+                        favFirstMenuOpen[9] = 1;
                     }
                     if (n == 6)
                     {
-                        LikeMenu2[c - 2].SetActive(true);
-                        LikeMenu2Open[8] = 1;
+                        favSecondMenu[c - 2].SetActive(true);
+                        favSecondMenuOpen[8] = 1;
                     }
                 }
                 break;
             case 11:
-                if (LikeMenu1[c - 1].activeSelf == false || LikeMenu2[c - 2].activeSelf == false)
+                if (favFirstMenu[c - 1].activeSelf == false || favSecondMenu[c - 2].activeSelf == false)
                 {
                     if (n == 1)
                     {
-                        LikeMenu1[c - 1].SetActive(true);
-                        LikeMenu1Open[10] = 1;
+                        favFirstMenu[c - 1].SetActive(true);
+                        favFirstMenuOpen[10] = 1;
                     }
                     if (n == 5)
                     {
-                        LikeMenu2[c - 2].SetActive(true);
-                        LikeMenu2Open[9] = 1;
+                        favSecondMenu[c - 2].SetActive(true);
+                        favSecondMenuOpen[9] = 1;
                     }
                 }
                 break;
             case 12://히로
-                if (LikeMenu1[c - 1].activeSelf == false)
+                if (favFirstMenu[c - 1].activeSelf == false)
                 {
                     if (n == 5)
                     {
-                        LikeMenu1[c - 1].SetActive(true);
-                        LikeMenu1Open[11] = 1;
+                        favFirstMenu[c - 1].SetActive(true);
+                        favFirstMenuOpen[11] = 1;
                     }
                 }
                 break;
             case 13://디노
-                if (LikeMenu1[c - 1].activeSelf == false)
+                if (favFirstMenu[c - 1].activeSelf == false)
                 {
                     if (n == 6)
                     {
-                        LikeMenu1[c - 1].SetActive(true);
-                        LikeMenu1Open[12] = 1;
+                        favFirstMenu[c - 1].SetActive(true);
+                        favFirstMenuOpen[12] = 1;
                     }
                 }
                 break;
             case 14://닥터 펭
-                if (LikeMenu1[c - 1].activeSelf == false || LikeMenu2[c - 4].activeSelf == false)
+                if (favFirstMenu[c - 1].activeSelf == false || favSecondMenu[c - 4].activeSelf == false)
                 {
                     if (n == 5)
                     {
-                        LikeMenu1[c - 1].SetActive(true);
-                        LikeMenu1Open[13] = 1;
+                        favFirstMenu[c - 1].SetActive(true);
+                        favFirstMenuOpen[13] = 1;
                     }
                     if (n == 8)
                     {
-                        LikeMenu2[c - 4].SetActive(true);
-                        LikeMenu2Open[10] = 1;
+                        favSecondMenu[c - 4].SetActive(true);
+                        favSecondMenuOpen[10] = 1;
                     }
                 }
                 break;
             case 15://롤렝드
-                if (LikeMenu1[c - 1].activeSelf == false || LikeMenu2[c - 4].activeSelf == false)
+                if (favFirstMenu[c - 1].activeSelf == false || favSecondMenu[c - 4].activeSelf == false)
                 {
                     if (n == 3)
                     {
-                        LikeMenu1[c - 1].SetActive(true);
-                        LikeMenu1Open[14] = 1;
+                        favFirstMenu[c - 1].SetActive(true);
+                        favFirstMenuOpen[14] = 1;
                     }
                     if (n == 4)
                     {
-                        LikeMenu2[c - 4].SetActive(true);
-                        LikeMenu2Open[11] = 1;
+                        favSecondMenu[c - 4].SetActive(true);
+                        favSecondMenuOpen[11] = 1;
                     }
                 }
                 break;
@@ -594,35 +597,35 @@ public class VisitorNote : MonoBehaviour
         switch(c) //c는 캐릭터넘버
         {
             case 1:
-                WantToSay[0].SetActive(true);
+                HiddenText[0].SetActive(true);
                 SecondSentence[0] = 1;
                 break;
             case 5:
-                WantToSay[1].SetActive(true);
+                HiddenText[1].SetActive(true);
                 SecondSentence[1] = 1;
                 break;
             case 7:
-                WantToSay[2].SetActive(true);
+                HiddenText[2].SetActive(true);
                 SecondSentence[2] = 1;
                 break;
             case 9:
-                WantToSay[3].SetActive(true);
+                HiddenText[3].SetActive(true);
                 SecondSentence[3] = 1;
                 break;
             case 10:
-                WantToSay[4].SetActive(true);
+                HiddenText[4].SetActive(true);
                 SecondSentence[4] = 1;
                 break;
             case 11://무명이1
-                WantToSay[5].SetActive(true);
+                HiddenText[5].SetActive(true);
                 SecondSentence[5] = 1;
                 break;
             case 12://무명이2
-                WantToSay[6].SetActive(true);
+                HiddenText[6].SetActive(true);
                 SecondSentence[6] = 1;
                 break;
             case 15:
-                WantToSay[7].SetActive(true);
+                HiddenText[7].SetActive(true);
                 SecondSentence[7] = 1;
                 break;
         }
@@ -631,24 +634,23 @@ public class VisitorNote : MonoBehaviour
 
     public void NameInfoOpen(string name)//무명이 이름 정보 활성화
     {
-        Name.text = name;
-        Name.gameObject.SetActive(true);
+        nameForNameless.text = name;
+        nameForNameless.gameObject.SetActive(true);
         SaveVisitorNoteInfo();
     }
 
-    int rpbClick = 0; //다시보기 버튼 클릭되면 1
 
     public void ShowRePlayView()//다시보기 버튼을 눌렀을 때
     {
-        if(rpbClick == 0)//다시보기 버튼을 클릭하지 않은 상태면
+        if(!isReplayViewOpen)//다시보기 버튼을 클릭하지 않은 상태면
         {
-            rpbClick = 1;
+            isReplayViewOpen = true;
             RePlayView[pageNum - 1].SetActive(true);//다시보기 창 활성화
         }
-        else if(rpbClick == 1)//버튼을 클릭한 상태면
+        else if(isReplayViewOpen)//버튼을 클릭한 상태면
         {
             RePlayView[pageNum - 1].SetActive(false);//다시보기 창 비활성화
-            rpbClick = 0;
+            isReplayViewOpen = false;
         }
         
     }
@@ -709,7 +711,7 @@ public class VisitorNote : MonoBehaviour
     {
         replayOn = 1;
         rePlayMessage.SetActive(false);//메세지창 비활성화
-        ClickNoteCloseButton();//노트 내리기, 페이지 정보는 그대로
+        CloseVisitorNote();//노트 내리기, 페이지 정보는 그대로
         Invoke("WhichSenario", 0.2f);//0.2초 후 시나리오 시작, 오디오 페이드아웃 문제 때문
     }  
 
@@ -885,27 +887,27 @@ public class VisitorNote : MonoBehaviour
             PlayerPrefs.SetInt("OpenPage", openPage); //현재까지 오픈된 노트 페이지 수 저장
 
             string strArr = ""; // 문자열 생성
-            for (int i = 0; i < LikeMenu1Open.Length; i++) // 첫번째 좋아하는 메뉴 
+            for (int i = 0; i < favFirstMenuOpen.Length; i++) // 첫번째 좋아하는 메뉴 
             {
-                strArr = strArr + LikeMenu1Open[i];
-                if (i < LikeMenu1Open.Length - 1) // 최대 길이의 -1까지만 ,를 저장
+                strArr = strArr + favFirstMenuOpen[i];
+                if (i < favFirstMenuOpen.Length - 1) // 최대 길이의 -1까지만 ,를 저장
                 {
                     strArr = strArr + ",";
                 }
             }
-            PlayerPrefs.SetString("LikeMenu1Open", strArr); 
+            PlayerPrefs.SetString("favFirstMenuOpen", strArr); 
 
 
             string strArr1 = ""; // 문자열 생성
-            for (int i = 0; i < LikeMenu2Open.Length; i++) // 두번째 좋아하는 메뉴 
+            for (int i = 0; i < favSecondMenuOpen.Length; i++) // 두번째 좋아하는 메뉴 
             {
-                strArr1 = strArr1 + LikeMenu2Open[i];
-                if (i < LikeMenu2Open.Length - 1) // 최대 길이의 -1까지만 ,를 저장
+                strArr1 = strArr1 + favSecondMenuOpen[i];
+                if (i < favSecondMenuOpen.Length - 1) // 최대 길이의 -1까지만 ,를 저장
                 {
                     strArr1 = strArr1 + ",";
                 }
             }
-            PlayerPrefs.SetString("LikeMenu2Open", strArr1); // PlyerPrefs에 문자열 형태로 저장
+            PlayerPrefs.SetString("favSecondMenuOpen", strArr1); // PlyerPrefs에 문자열 형태로 저장
 
 
             string strArr2 = ""; // 문자열 생성
@@ -978,32 +980,32 @@ public class VisitorNote : MonoBehaviour
                 }
             }
 
-            if (PlayerPrefs.HasKey("LikeMenu1Open"))
+            if (PlayerPrefs.HasKey("favFirstMenuOpen"))
             {
-                string[] dataArr = PlayerPrefs.GetString("LikeMenu1Open").Split(','); // PlayerPrefs에서 불러온 값을 Split 함수를 통해 문자열의 ,로 구분하여 배열에 저장
+                string[] dataArr = PlayerPrefs.GetString("favFirstMenuOpen").Split(','); // PlayerPrefs에서 불러온 값을 Split 함수를 통해 문자열의 ,로 구분하여 배열에 저장
 
                 for (int i = 0; i < dataArr.Length; i++)
                 {
-                    LikeMenu1Open[i] = System.Convert.ToInt32(dataArr[i]); // 문자열 형태로 저장된 값을 정수형으로 변환후 저장
+                    favFirstMenuOpen[i] = System.Convert.ToInt32(dataArr[i]); // 문자열 형태로 저장된 값을 정수형으로 변환후 저장
 
-                    if (LikeMenu1Open[i] == 1)
+                    if (favFirstMenuOpen[i] == 1)
                     {
-                        LikeMenu1[i].SetActive(true);
+                        favFirstMenu[i].SetActive(true);
                     }
                 }
             }
 
-            if (PlayerPrefs.HasKey("LikeMenu2Open"))
+            if (PlayerPrefs.HasKey("favSecondMenuOpen"))
             {
-                string[] dataArr1 = PlayerPrefs.GetString("LikeMenu2Open").Split(','); // PlayerPrefs에서 불러온 값을 Split 함수를 통해 문자열의 ,로 구분하여 배열에 저장
+                string[] dataArr1 = PlayerPrefs.GetString("favSecondMenuOpen").Split(','); // PlayerPrefs에서 불러온 값을 Split 함수를 통해 문자열의 ,로 구분하여 배열에 저장
 
                 for (int i = 0; i < dataArr1.Length; i++)
                 {
-                    LikeMenu2Open[i] = System.Convert.ToInt32(dataArr1[i]); // 문자열 형태로 저장된 값을 정수형으로 변환후 저장
+                    favSecondMenuOpen[i] = System.Convert.ToInt32(dataArr1[i]); // 문자열 형태로 저장된 값을 정수형으로 변환후 저장
 
-                    if (LikeMenu2Open[i] == 1)
+                    if (favSecondMenuOpen[i] == 1)
                     {
-                        LikeMenu2[i].SetActive(true);
+                        favSecondMenu[i].SetActive(true);
                     }
                 }
             }
@@ -1018,7 +1020,7 @@ public class VisitorNote : MonoBehaviour
 
                     if (SecondSentence[i] == 1)
                     {
-                        WantToSay[i].SetActive(true);
+                        HiddenText[i].SetActive(true);
                     }
                 }
             }

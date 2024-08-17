@@ -314,6 +314,8 @@ public class SmallFade : MonoBehaviour //작은 캐릭터 스크립트
 
    public IEnumerator FadeToFullAlpha() // 알파값 0에서 1로 전환
     {
+        if(smallFadeIn.Count == 0) yield break;
+
         int v = smallFadeIn.Peek();
        
         //Debug.Log("페이드인 될 캐릭터" + v);
@@ -348,19 +350,6 @@ public class SmallFade : MonoBehaviour //작은 캐릭터 스크립트
             }
         }
 
-        if(v == 12)//히로 페이드인 끝나면 디노 빨리 나타나게끔
-        {
-            if (CharacterAppear.instance.eventOn == 14)//히로디노 친밀도 이벤트 시
-            {
-                CanClickCharacter(v);//히로 먼저 클릭 가능
-            }
-            SetCharacter(13);           
-        }
-        if(Dialogue.instance.CharacterDC[10] == 3 && v == 6)//찰스와 같이 방문한 도로시 페이드인 끝나면 찰스 나타나게끔
-        {
-            SetCharacter(10);
-        }
-
         if(CharacterAppear.instance.eventOn != 0 && CharacterAppear.instance.eventOn != 10 && CharacterAppear.instance.eventOn != 11 && v != 16 && v != 17 && v != 2 && v != 9 
             || (CharacterAppear.instance.eventOn == 11 && v == 10))
         {//친밀도 이벤트가 진행 중이고, 주인공 아기가 아니고, 특정 캐릭터(이벤트)가 아닐때
@@ -382,9 +371,17 @@ public class SmallFade : MonoBehaviour //작은 캐릭터 스크립트
             }
         }
 
-        if(smallFadeIn.Count != 0)
+        if(v == 12)//히로 페이드인 끝나면 디노 빨리 나타나게끔
         {
-            StartCoroutine(FadeToFullAlpha());
+            if (CharacterAppear.instance.eventOn == 14)//히로디노 친밀도 이벤트 시
+            {
+                CanClickCharacter(v);//히로 먼저 클릭 가능
+            }
+            SetCharacter(13);           
+        }
+        if(Dialogue.instance.CharacterDC[10] == 3 && v == 6)//찰스와 같이 방문한 도로시 페이드인 끝나면 찰스 나타나게끔
+        {
+            SetCharacter(10);
         }
         yield break;
     }

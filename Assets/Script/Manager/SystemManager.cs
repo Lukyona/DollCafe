@@ -292,7 +292,7 @@ public class SystemManager : MonoBehaviour
                     SmallFade.instance.SmallCharacter[0].GetComponent<Button>().interactable = true; // 제제 터치 가능
                 }
 
-                for (int i = 11; i <= mainCount - 2; i++)//재방문 캐릭터 설정
+                for (int i = 1; i <= mainCount - 2; i++)//재방문 캐릭터 설정
                 {
                     if(Dialogue.instance.CharacterDC[10] == 3)//찰스2 이벤트를 했을 시에는
                     {
@@ -547,7 +547,7 @@ public class SystemManager : MonoBehaviour
     public void AfterRePlayStroy()//다시보기를 마친 후 실행
     {
         VisitorNote.instance.replayOn = 2;
-        VisitorNote.instance.ClickVNButton(); //노트 올라오기
+        VisitorNote.instance.ShowVisitorNote(); //노트 올라오기
         EndDialogue();
         if (VisitorNote.instance.fmRP != 0)//첫 만남 다시보기 이후면
         {            
