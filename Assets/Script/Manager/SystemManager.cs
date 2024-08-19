@@ -360,7 +360,7 @@ public class SystemManager : MonoBehaviour
                 break;
             case 6: //또롱 등장 후 
                 AfterFirstMeet(mainCount);
-                VisitorNote.instance.nextPageButton.SetActive(true); //5번째 페이지로 넘어가기 위해 다음 페이지 버튼 보이게함   
+                VisitorNote.instance.SetNextPageButtonActive(true); //5번째 페이지로 넘어가기 위해 다음 페이지 버튼 보이게함   
                 SmallFade.instance.SmallCharacter[0].GetComponent<Button>().interactable = true;//제제 터치 가능
                 ShowBangBubble();// 팁 말풍선 등장
                 break;
@@ -409,7 +409,7 @@ public class SystemManager : MonoBehaviour
        
         if(mainCount < 6)
         {
-            VisitorNote.instance.page[mainCount - 2].SetActive(true); //손님 노트 페이지 오픈
+            VisitorNote.instance.OpenPage(mainCount-2); //손님 노트 페이지 오픈
         }
         else if(mainCount >= 6)
         {
@@ -483,13 +483,13 @@ public class SystemManager : MonoBehaviour
                     else if (Dialogue.instance.CharacterDC[cNum] == 3)//무명이2 이벤트
                     {
                         CharacterManager.instance.SetFaceNum(12);
-                        VisitorNote.instance.characterInfo[cNum - 1].GetComponent<Image>().sprite = CharacterManager.instance.CharacterFaceList[cNum - 2].face[3].GetComponent<Image>().sprite;
+                        VisitorNote.instance.SetCharacterImage(cNum, CharacterManager.instance.CharacterFaceList[cNum - 2].face[3].GetComponent<Image>().sprite);
                         VisitorNote.instance.RePlayButton[cNum - 1].gameObject.SetActive(true);
                     }
                     Menu.instance.ReactionFadeIn();
                     break;
                 case 12:
-                    VisitorNote.instance.characterInfo[cNum - 1].GetComponent<Image>().sprite = CharacterManager.instance.CharacterFaceList[cNum - 2].face[0].GetComponent<Image>().sprite;
+                    VisitorNote.instance.SetCharacterImage(cNum, CharacterManager.instance.CharacterFaceList[cNum - 2].face[0].GetComponent<Image>().sprite);
                     Menu.instance.ReactionFadeIn(); // 디노 리액션 페이드인
                     break;
                 default:   
@@ -502,11 +502,11 @@ public class SystemManager : MonoBehaviour
 
                     if(cNum == 1)//도리는 손님노트 이미지를 2번째 표정으로 바꿈
                     {
-                        VisitorNote.instance.characterInfo[cNum - 1].GetComponent<Image>().sprite = CharacterManager.instance.CharacterFaceList[cNum].face[1].GetComponent<Image>().sprite;
+                        VisitorNote.instance.SetCharacterImage(cNum, CharacterManager.instance.CharacterFaceList[cNum].face[1].GetComponent<Image>().sprite);
                     }              
                     else if(cNum == 14)//롤렝드는 따로
                     {
-                        VisitorNote.instance.characterInfo[cNum - 1].GetComponent<Image>().sprite = CharacterManager.instance.GetBigCharacter(17).GetComponent<Image>().sprite;
+                        VisitorNote.instance.SetCharacterImage(cNum, CharacterManager.instance.GetBigCharacter(17).GetComponent<Image>().sprite);
                     }
                     break;
             }

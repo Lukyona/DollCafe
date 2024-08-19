@@ -109,7 +109,7 @@ public class CharacterAppear : MonoBehaviour
         {
             if (Dialogue.instance.CharacterDC[c - 1] != 0 && Dialogue.instance.CharacterDC[c - 1] != 3)
             {
-                if (VisitorNote.instance.friendshipGauge[c - 3].GetComponent<Image>().fillAmount == 1)//친밀도 게이지가 꽉 찼을 때
+                if (VisitorNote.instance.IsFriendshipGaugeFull(c-3))//친밀도 게이지가 꽉 찼을 때
                 {
                     if (CharacterVisit.instance.IsInvoking("RandomVisit"))
                     {
@@ -140,7 +140,7 @@ public class CharacterAppear : MonoBehaviour
                     case 2:
                     case 3:
                     case 4:
-                        if (VisitorNote.instance.friendshipGauge[c - 1].GetComponent<Image>().fillAmount == 1)
+                        if (VisitorNote.instance.IsFriendshipGaugeFull(c-1))
                         {//친밀도 게이지가 꽉 찼을 때
                             if (CharacterVisit.instance.IsInvoking("RandomVisit"))
                             {
@@ -165,7 +165,7 @@ public class CharacterAppear : MonoBehaviour
                     case 7:
                     case 8:
                     case 9:
-                        if (VisitorNote.instance.friendshipGauge[c - 2].GetComponent<Image>().fillAmount == 1)
+                        if (VisitorNote.instance.IsFriendshipGaugeFull(c-2))
                         {//친밀도 게이지가 꽉 찼을 때
                             if (CharacterVisit.instance.IsInvoking("RandomVisit"))
                             {
@@ -224,7 +224,7 @@ public class CharacterAppear : MonoBehaviour
                         }
                         else if (Dialogue.instance.CharacterDC[10] == 2)//찰스2
                         {
-                            if (VisitorNote.instance.friendshipGauge[c - 2].GetComponent<Image>().fillAmount == 1f && VisitorNote.instance.friendshipGauge[4].GetComponent<Image>().fillAmount == 1f)
+                            if (VisitorNote.instance.IsFriendshipGaugeFull(c-2) && VisitorNote.instance.IsFriendshipGaugeFull(4))
                             {// 찰스, 도로시 친밀도 모두 최대일때
                                 if (CharacterVisit.instance.IsInvoking("RandomVisit"))
                                 {
@@ -278,7 +278,7 @@ public class CharacterAppear : MonoBehaviour
                         }
                         else if (Dialogue.instance.CharacterDC[11] == 2)//무명이2
                         {
-                            if (VisitorNote.instance.friendshipGauge[c - 2].GetComponent<Image>().fillAmount == 1f)//친밀도 20일때
+                            if (VisitorNote.instance.IsFriendshipGaugeFull(c-2))//친밀도 20일때
                             {
                                 if (CharacterVisit.instance.IsInvoking("RandomVisit"))
                                 {
@@ -300,7 +300,7 @@ public class CharacterAppear : MonoBehaviour
                         }
                         break;
                     case 12://히로디노
-                        if (VisitorNote.instance.friendshipGauge[c - 2].GetComponent<Image>().fillAmount == 1)//친밀도 게이지가 꽉 찼을 때
+                        if (VisitorNote.instance.IsFriendshipGaugeFull(c-2))//친밀도 게이지가 꽉 찼을 때
                         {
                             if (CharacterVisit.instance.IsInvoking("RandomVisit"))
                             {

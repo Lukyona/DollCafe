@@ -42841,7 +42841,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   VNButtonAnimator: {fileID: 80695392}
   noteAnimator: {fileID: 508771132}
-  pageNum2: 0
   characterInfo:
   - {fileID: 1012204807}
   - {fileID: 786057681}

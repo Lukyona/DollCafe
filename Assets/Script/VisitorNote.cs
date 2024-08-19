@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Unity.Collections.LowLevel.Unsafe;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,24 +10,30 @@ public class VisitorNote : MonoBehaviour
 
     [SerializeField] Animator VNButtonAnimator;
     [SerializeField] Animator noteAnimator;
-    int pageNum = 1; //1페이지가 첫 페이지
-    public int pageNum2 = 0;
-    public GameObject[] characterInfo; //캐릭터 정보 배열
-    public GameObject[] page; //페이지 배열
-    public GameObject[] friendshipGauge; //친밀도 게이지 배열
-    public GameObject nextPageButton; //다음 페이지 버튼
-    public GameObject previousPageButton; //이전 페이지 버튼
-    static int bigPageNum = 1; //1-4페이지까지가 1, 5-8까지가 2, 9 - 12가 3, 13 - 14가 4
-
-    [SerializeField] GameObject pageText1; //페이지 텍스트
-    [SerializeField] GameObject pageText2;
-
+    [SerializeField] GameObject[] characterInfo; //캐릭터 정보 배열
+    [SerializeField] GameObject[] page; //페이지 배열
+    [SerializeField] GameObject nextPageButton; //다음 페이지 버튼
+    [SerializeField] GameObject previousPageButton; //이전 페이지 버튼
+    [SerializeField] GameObject pageText1; // "페이지" 텍스트
+    [SerializeField] GameObject pageText2; // "페이지" 텍스트 (회전한 버전)
+    [SerializeField] GameObject[] friendshipGauge; //친밀도 게이지 배열
     [SerializeField] GameObject[] favFirstMenu;//좋아하는 첫번째 메뉴 배열, 0도리~~~11히로, 12디노, 13닥터펭, 14롤렝드
     [SerializeField] GameObject[] favSecondMenu; //두번째 좋아하는 메뉴 배열, 0도리, 1 빵빵, 2개나리~~10닥터펭 11롤렝드,  붕붕이/히로디노만 없음
-
     [SerializeField] GameObject[] HiddenText;//친밀도 이벤트 달성 시 노트에 새롭게 보일 문장, 0도리 1루루 2친구 3찰스 4무명이1 5무명이2 6롤렝드
-
     [SerializeField] Text nameForNameless; //플레이어가 지어준 무명이 이름
+    public Button[] RePlayButton;//다시보기 버튼, 0도리
+    [SerializeField] GameObject[] RePlayView; //어떤 걸 다시 볼 지 고르는 창, 0도리
+
+    [SerializeField] GameObject showSpecialMenu;//스메셜 메뉴 다시보기 창
+    [SerializeField] Image menuImage; // 스페셜 메뉴 이미지
+    [SerializeField] Text menuName; // 메뉴 이름
+    [SerializeField] Text whichCharacter; //어느 캐릭터의 스페셜 메뉴인지
+
+    public GameObject rePlayMessage;//첫만남, 이벤트 다시보기 메세지창
+    public Text whichStory; //누구의 첫만남/이벤트를 회상할까요? 라고 묻는 텍스트
+
+    int pageNum = 1; //1페이지가 첫 페이지
+    static int bigPageNum = 1; //1-4페이지까지가 1, 5-8까지가 2, 9 - 12가 3, 13 - 14가 4
 
     public int[] NextPageOpen = new int[10]; // 인덱스 0은  5페이지, 값이 0이면 페이지가 안 열린 거
 
@@ -39,17 +46,7 @@ public class VisitorNote : MonoBehaviour
 
     public int[] FriendshipInfo = new int[13] { 0, 0, 0, 0, 0, 0,0,0,0,0,0,0,0}; //친밀도 게이지 정보(서빙 횟수) 배열
 
-    public Button[] RePlayButton;//다시보기 버튼, 0도리
-    [SerializeField] GameObject[] RePlayView; //어떤 걸 다시 볼 지 고르는 창, 0도리
-
-    [SerializeField] GameObject showSpecialMenu;//스메셜 메뉴 다시보기 창
-    [SerializeField] Image menuImage; // 스페셜 메뉴 이미지
-    [SerializeField] Text menuName; // 메뉴 이름
-    [SerializeField] Text whichCharacter; //어느 캐릭터의 스페셜 메뉴인지
-
-    public GameObject rePlayMessage;//첫만남, 이벤트 다시보기 메세지창
-    public Text whichStory; //누구의 첫만남/이벤트를 회상할까요? 라고 묻는 텍스트
-
+    
     public int fmRP = 0; //첫만남 캐릭터별로 숫자 들어감
     public int evRP = 0; //이벤트 캐릭터별로 숫자 들어감
 
@@ -98,7 +95,7 @@ public class VisitorNote : MonoBehaviour
         page[pageNum - 1].GetComponent<Button>().interactable = true; //이전 페이지의 버튼을 터치 가능하게 함
         if (bigPageNum != 1)
         {
-            nextPageButton.SetActive(true); //다음 페이지 버튼 활성화
+            SetNextPageButtonActive(true); //다음 페이지 버튼 활성화
             previousPageButton.SetActive(false);//이전 버튼 비활성화
             pageText2.SetActive(false);
             pageText1.SetActive(true);
@@ -120,6 +117,31 @@ public class VisitorNote : MonoBehaviour
         pageNum = 1; //현재 페이지 넘버      
         characterInfo[pageNum - 1].SetActive(true); //현재 페이지의 캐릭터 정보를 보이게 함
         page[pageNum - 1].GetComponent<Button>().interactable = false; //현재 페이지의 버튼 터치 불가능하게 함      
+    }
+
+    public void SetPageNum(int value)
+    {
+        pageNum = value;
+    }
+
+    public void SetCharacterImage(int cNum, Sprite cSprite)
+    {
+        characterInfo[cNum - 1].GetComponent<Image>().sprite = cSprite;
+    }
+    
+    public void OpenPage(int idx)
+    {
+        page[idx].SetActive(true);
+    }
+
+    public bool IsFriendshipGaugeFull(int idx)
+    {
+        return friendshipGauge[idx].GetComponent<Image>().fillAmount == 1f? true : false;
+    }
+
+    public void SetNextPageButtonActive(bool value)
+    {
+        nextPageButton.SetActive(value);
     }
 
     public void IncreaseFrinedshipGauge(int n) //친밀도 게이지 증가, n은 캐릭터 넘버
@@ -208,26 +230,25 @@ public class VisitorNote : MonoBehaviour
 
     void PageFunction2()
     {
-        characterInfo[pageNum2 - 1].SetActive(true); //현재 페이지의 캐릭터 정보를 보이게 함
-        page[pageNum2 - 1].GetComponent<Button>().interactable = false; //현재 페이지의 버튼 터치 불가능하게 함
-        pageNum = pageNum2;
+        characterInfo[pageNum - 1].SetActive(true); //현재 페이지의 캐릭터 정보를 보이게 함
+        page[pageNum - 1].GetComponent<Button>().interactable = false; //현재 페이지의 버튼 터치 불가능하게 함
     }
 
     public void TurnToPage()
     {              
-        if (1 <= pageNum2 && pageNum2 <= 4)
+        if (1 <= pageNum && pageNum <= 4)
         {
             bigPageNum = 1;
         }
-        else if(5 <= pageNum2 && pageNum2 <= 8)
+        else if(5 <= pageNum && pageNum <= 8)
         {
             bigPageNum = 2;
         }
-        else if(9 <= pageNum2 && pageNum2 <= 12)
+        else if(9 <= pageNum && pageNum <= 12)
         {
             bigPageNum = 3;
         }
-        else if (pageNum2 == 13 || pageNum2 == 14)
+        else if (pageNum == 13 || pageNum == 14)
         {
             bigPageNum = 4;
         }
@@ -261,7 +282,7 @@ public class VisitorNote : MonoBehaviour
             
             if(NextPageOpen[4] == 0) //9페이지가 열려있지 않으면 다음 페이지 버튼 비활성화
             {
-                nextPageButton.SetActive(false);
+                SetNextPageButtonActive(false);
             }
             bigPageNum = 2;
         }
@@ -283,7 +304,7 @@ public class VisitorNote : MonoBehaviour
 
             if (NextPageOpen[8] == 0) //13페이지가 열려있지 않으면
             {
-                nextPageButton.SetActive(false);//다음 페이지 버튼 비활성화
+                SetNextPageButtonActive(false);//다음 페이지 버튼 비활성화
             }
             bigPageNum = 3;
         }
@@ -304,13 +325,13 @@ public class VisitorNote : MonoBehaviour
             }
 
             bigPageNum = 4;
-            nextPageButton.SetActive(false);//다음 페이지 버튼은 비활성화, 노트의 마지막 부분
+            SetNextPageButtonActive(false);//다음 페이지 버튼은 비활성화, 노트의 마지막 부분
         }
     }
    
     public void ClickPreviousPageButton() //이전 페이지 버튼 터치 
     {
-        nextPageButton.SetActive(true); //다음 페이지 버튼 활성화
+        SetNextPageButtonActive(true); //다음 페이지 버튼 활성화
 
         if (bigPageNum == 2)
         {
@@ -971,7 +992,7 @@ public class VisitorNote : MonoBehaviour
                     {
                         page[i].SetActive(true);
                     }
-                    nextPageButton.SetActive(true); //다음페이지 버튼 활성화
+                    SetNextPageButtonActive(true); //다음페이지 버튼 활성화
 
                     for(int z = 0; z < openPage - 4; z++)//5페이지부터 열린 페이지 확인
                     {
@@ -1118,22 +1139,22 @@ public class VisitorNote : MonoBehaviour
             {
                 if (i != 0 && Dialogue.instance.CharacterDC[i] == 3)//제제가 아닌 캐릭터의 DC가 3이면, 시나리오가 끝났으면
                 {
-                    VisitorNote.instance.RePlayButton[i - 1].gameObject.SetActive(true);//다시보기 버튼 활성화
+                    RePlayButton[i - 1].gameObject.SetActive(true);//다시보기 버튼 활성화
                     if (i == 1)//도리는 손님노트 이미지를 2번째 표정으로 바꿈
                     {
-                        VisitorNote.instance.characterInfo[i - 1].GetComponent<Image>().sprite = CharacterManager.instance.CharacterFaceList[i].face[1].GetComponent<Image>().sprite;
+                        SetCharacterImage(i, CharacterManager.instance.CharacterFaceList[i].face[1].GetComponent<Image>().sprite);
                     }
                     if(i == 11)
                     {
-                        VisitorNote.instance.characterInfo[i - 1].GetComponent<Image>().sprite = CharacterManager.instance.CharacterFaceList[i - 2].face[3].GetComponent<Image>().sprite;
+                        SetCharacterImage(i, CharacterManager.instance.CharacterFaceList[i - 2].face[3].GetComponent<Image>().sprite);
                     }
                     if(i == 12 || i == 13)
                     {
-                        VisitorNote.instance.characterInfo[i - 1].GetComponent<Image>().sprite = CharacterManager.instance.CharacterFaceList[i - 2].face[0].GetComponent<Image>().sprite;
+                        SetCharacterImage(i, CharacterManager.instance.CharacterFaceList[i - 2].face[0].GetComponent<Image>().sprite);
                     }
                     if(i == 14)
                     {
-                        VisitorNote.instance.characterInfo[i - 1].GetComponent<Image>().sprite = CharacterManager.instance.GetBigCharacter(17).GetComponent<Image>().sprite;
+                        SetCharacterImage(i, CharacterManager.instance.GetBigCharacter(17).GetComponent<Image>().sprite);
                     }
                 }         
             }

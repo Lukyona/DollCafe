@@ -87,7 +87,7 @@ public class TouchableObject : MonoBehaviour //터치된 오브젝트 구분, �
 
         int pageNum = GetNumber(idx, gameObject.name);
 
-        VisitorNote.instance.pageNum2 = pageNum; //현재 페이지 넘버
+        VisitorNote.instance.SetPageNum(pageNum); //현재 페이지 넘버
         VisitorNote.instance.TurnToPage();
     }
 
