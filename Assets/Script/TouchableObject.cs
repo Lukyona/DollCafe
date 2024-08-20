@@ -96,7 +96,7 @@ public class TouchableObject : MonoBehaviour //터치된 오브젝트 구분, �
         int idx = gameObject.name.IndexOf("t");
         idx = GetNumber(idx, gameObject.name);
 
-        VisitorNote.instance.evRP = idx;
+        VisitorNote.instance.SetFriendEventID(idx);
 
         string name = "";
         switch(idx)

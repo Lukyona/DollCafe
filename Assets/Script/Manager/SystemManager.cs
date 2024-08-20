@@ -544,48 +544,49 @@ public class SystemManager : MonoBehaviour
         VisitorNote.instance.SetReplayState(2);
         VisitorNote.instance.ShowVisitorNote(); //노트 올라오기
         EndDialogue();
-        if (VisitorNote.instance.fmRP != 0)//첫 만남 다시보기 이후면
+        if (VisitorNote.instance.GetFirstMeetID() != 0)//첫 만남 다시보기 이후면
         {            
-            Dialogue.instance.CharacterDC[VisitorNote.instance.fmRP] = 3;// 원래 값으로 돌려놓기
-            VisitorNote.instance.fmRP = 0;
+            Dialogue.instance.CharacterDC[VisitorNote.instance.GetFirstMeetID()] = 3;// 원래 값으로 돌려놓기
+            VisitorNote.instance.SetFirstMeetID(0);
         }
-        if (VisitorNote.instance.evRP != 0)
+        if (VisitorNote.instance.GetFriendEventID() != 0)
         {
-            if(VisitorNote.instance.evRP <= 10)//찰스1 이벤트까지
+            int id = VisitorNote.instance.GetFriendEventID();
+            if(id <= 10)//찰스1 이벤트까지
             {
-                if (VisitorNote.instance.evRP == 1 || VisitorNote.instance.evRP == 7 || VisitorNote.instance.evRP == 10)//도리, 루루, 찰스 표정 비활성화 필요
+                if (id == 1 || id == 7 || id == 10)//도리, 루루, 찰스 표정 비활성화 필요
                 {
-                    CharacterManager.instance.SetFaceNum(VisitorNote.instance.evRP);
+                    CharacterManager.instance.SetFaceNum(id);
                 }
-                Dialogue.instance.CharacterDC[VisitorNote.instance.evRP] = 3;// 원래 값으로 돌려놓기
+                Dialogue.instance.CharacterDC[id] = 3;// 원래 값으로 돌려놓기
             }
-            else if(VisitorNote.instance.evRP == 11)//찰스2 이밴트
+            else if(id == 11)//찰스2 이밴트
             {
                 CharacterManager.instance.SetFaceNum(10);
                 Dialogue.instance.CharacterDC[10] = 3;// 원래 값으로 돌려놓기
             }
-            else if(VisitorNote.instance.evRP == 12 || VisitorNote.instance.evRP == 13)//무명이1,2 이벤트
+            else if(id == 12 || id == 13)//무명이1,2 이벤트
             {
-                if (VisitorNote.instance.evRP == 12)//무명이1 이벤트
+                if (id == 12)//무명이1 이벤트
                 {
                     CharacterManager.instance.SetFaceNum(11);
                 }
-                else if (VisitorNote.instance.evRP == 13)//무명이2 이벤트
+                else if (id == 13)//무명이2 이벤트
                 {
                     CharacterManager.instance.SetFaceNum(12);
                 }
                 Dialogue.instance.CharacterDC[11] = 3;// 원래 값으로 돌려놓기
             }
-            else if(VisitorNote.instance.evRP >= 14)//14이상이면
+            else if(id >= 14)//14이상이면
             {
-                if (VisitorNote.instance.evRP == 15)//닥터펭 이벤트
+                if (id == 15)//닥터펭 이벤트
                 {
                     CharacterManager.instance.SetFaceNum(13);
                 }
-                Dialogue.instance.CharacterDC[VisitorNote.instance.evRP - 2] = 3;// 원래 값으로 돌려놓기
+                Dialogue.instance.CharacterDC[id - 2] = 3;// 원래 값으로 돌려놓기
             }
             
-            VisitorNote.instance.evRP = 0;
+            VisitorNote.instance.SetFriendEventID(0);
         }
         Invoke("EndRePlay", 1.1f);
     }

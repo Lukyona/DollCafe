@@ -109,8 +109,8 @@ public class Setting : MonoBehaviour
             PlayerPrefs.DeleteKey("HiddenTextStates");
             PlayerPrefs.DeleteKey("FriendshipInfo");
             PlayerPrefs.DeleteKey("ReplayState");
-            PlayerPrefs.DeleteKey("FMRP");
-            PlayerPrefs.DeleteKey("EVRP");
+            PlayerPrefs.DeleteKey("FirstMeetID");
+            PlayerPrefs.DeleteKey("FriendEventID");
             PlayerPrefs.DeleteKey("BabyName");
             PlayerPrefs.DeleteKey("NameForNameless");
             PlayerPrefs.DeleteKey("BgmOnOff");

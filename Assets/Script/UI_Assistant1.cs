@@ -86,7 +86,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                 count = 0;
                 characterText.text = ""; //대사창 공백으로 만들고
                 babyText.text = "";
-                if(VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//첫 만남이나 이벤트 다시보기가 아닐 경우
+                if(VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//첫 만남이나 이벤트 다시보기가 아닐 경우
                 {
                     if (Dialogue.instance.CharacterDC[CharacterManager.instance.GetCharacterNum()] == 0 || Dialogue.instance.CharacterDC[0] == 1)//캐릭터들의 첫 방문이거나 제제 튜토리얼 때는 BackToCafe() 실행
                     {
@@ -293,7 +293,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                     {
                         case 0:
                             Dialogue.instance.SetBabyText(true);
-                            if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
+                            if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                             {
                                 SmallFade.instance.SetCharacter(babyNum);
                             }
@@ -376,7 +376,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[3].SetActive(true);
                             Dialogue.instance.SetBabyText(true);
-                            if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
+                            if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                             {
                                 getMenu = 1; //메뉴 가지러 갔음
                                 SmallFade.instance.FadeOut(babyNum, babySeatNum); //주인공(왼쪽) 페이드아웃
@@ -386,7 +386,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             CharacterManager.instance.CharacterFaceList[1].face[1].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[1].face[0].SetActive(true);//표정 1
                             Dialogue.instance.SetBabyText(false);
-                            if(VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
+                            if(VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                             {
                                 SystemManager.instance.SetCanTouch(false);
                                 SystemManager.instance.SetCanTouch(true,1f);
@@ -402,7 +402,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
                             SystemManager.instance.SetCanTouch(false);
                             Dialogue.instance.SetBabyText(true);
-                            if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
+                            if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                             {
                                 SmallFade.instance.SetCharacter(babyNum);
                                 Menu.instance.MenuFadeIn();//스페셜 메뉴 페이드인
@@ -412,7 +412,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                         case 30:
                             CharacterManager.instance.CharacterFaceList[1].face[0].SetActive(false);
                             Dialogue.instance.SetBabyText(false);
-                            if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
+                            if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                             {
                                 getMenu = 2; //메뉴 갖다줬음
                             }     
@@ -439,7 +439,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             break;
                         case 36:
                             Dialogue.instance.SetBabyText(false);
-                            if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
+                            if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                             {
                                 VisitorNote.instance.OpenHiddenText(1);//도리 손님노트 정보 갱신
                             }
@@ -496,14 +496,14 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             break;
                         case 1:
                             Dialogue.instance.SetBabyText(false);
-                            if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
+                            if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                             {
                                 SmallFade.instance.FadeIn();//붕붕 페이드인
                             }                             
                             break;
                         case 2:
                             Dialogue.instance.SetBabyText(true);
-                            if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
+                            if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                             {
                                 SmallFade.instance.SetCharacter(babyNum);
                             }      
@@ -562,7 +562,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(true);
                             Dialogue.instance.SetBabyText(true);
-                            if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
+                            if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                             {
                                 getMenu = 1; //메뉴 가지러 갔음
                                 SmallFade.instance.FadeOut(babyNum, babySeatNum); //주인공 페이드아웃  //아기 페이드아웃    
@@ -572,7 +572,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             Dialogue.instance.SetBabyText(false);
                             break;
                         case 29:
-                            if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
+                            if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                             {
                                 SystemManager.instance.SetCanTouch(false);
                                 SystemManager.instance.SetCanTouch(true,1f);
@@ -588,7 +588,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
                             SystemManager.instance.SetCanTouch(false);
                             Dialogue.instance.SetBabyText(true);
-                            if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
+                            if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                             {
                                 SmallFade.instance.SetCharacter(babyNum);
                                 Menu.instance.MenuFadeIn();//스페셜 메뉴 페이드인
@@ -645,7 +645,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[3].SetActive(true);
                             Dialogue.instance.SetBabyText(true);
-                            if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
+                            if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                             {
                                 SmallFade.instance.SetCharacter(babyNum);
                             }
@@ -710,7 +710,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
                             Dialogue.instance.SetBabyText(true);
-                            if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
+                            if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                             {
                                 getMenu = 1;
                                 SmallFade.instance.FadeOut(babyNum, babySeatNum); //주인공 페이드아웃 
@@ -720,7 +720,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             Dialogue.instance.SetBabyText(false);
                             break;
                         case 35:
-                            if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
+                            if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                             {
                                 SystemManager.instance.SetCanTouch(false);
                                 SystemManager.instance.SetCanTouch(true,1f);
@@ -734,7 +734,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                         case 36:
                             SystemManager.instance.SetCanTouch(false);
                             Dialogue.instance.SetBabyText(true);
-                            if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
+                            if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                             {
                                 SmallFade.instance.SetCharacter(babyNum);
                                 Menu.instance.MenuFadeIn();
@@ -810,7 +810,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                         case 11:
                             CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
-                            if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
+                            if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                             {
                                 getMenu = 1;
                                 SmallFade.instance.FadeOut(babyNum, babySeatNum); //주인공 페이드아웃 
@@ -818,7 +818,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             break;
                         case 12:
                             Dialogue.instance.SetBabyText(false);
-                            if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
+                            if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                             {
                                 SystemManager.instance.SetCanTouch(false);
                                 SystemManager.instance.SetCanTouch(true,1f);
@@ -832,7 +832,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                         case 13:
                             SystemManager.instance.SetCanTouch(false);
                             Dialogue.instance.SetBabyText(true);                           
-                            if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
+                            if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                             {
                                 SmallFade.instance.SetCharacter(babyNum);
                                 Menu.instance.MenuFadeIn();
@@ -934,7 +934,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
                             Dialogue.instance.SetBabyText(false);
-                            if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
+                            if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                             {
                                 VisitorNote.instance.OpenHiddenText(5);//손님노트 정보 갱신
                                 getMenu = 2;
@@ -985,7 +985,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                     {
                         case 0:
                             Dialogue.instance.SetBabyText(true);
-                            if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
+                            if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                             {
                                 SmallFade.instance.SetCharacter(babyNum);
                             }
@@ -1008,14 +1008,14 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             break;
                         case 6:
                             Dialogue.instance.SetBabyText(false);
-                            if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
+                            if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                             {
                                 getMenu = 1;
                                 SmallFade.instance.FadeOut(babyNum, babySeatNum); //주인공 페이드아웃 
                             }
                             break;
                         case 9:
-                            if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
+                            if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                             {
                                 SystemManager.instance.SetCanTouch(false);
                                 SystemManager.instance.SetCanTouch(true,1f);
@@ -1031,7 +1031,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
                             SystemManager.instance.SetCanTouch(false);
                             Dialogue.instance.SetBabyText(true);
-                            if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
+                            if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                             {
                                 SmallFade.instance.SetCharacter(babyNum);
                                 Menu.instance.MenuFadeIn();
@@ -1188,14 +1188,14 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                         case 55:
                             CharacterManager.instance.CharacterFaceList[5].face[1].SetActive(false);
                             Dialogue.instance.SetBabyText(false);
-                            if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
+                            if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                             {
                                 getMenu = 1;
                                 SmallFade.instance.FadeOut(babyNum, babySeatNum); //주인공 페이드아웃 
                             }
                             break;
                         case 58:
-                            if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
+                            if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                             {
                                 SystemManager.instance.SetCanTouch(false);
                                 SystemManager.instance.SetCanTouch(true,1f);
@@ -1211,7 +1211,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             CharacterManager.instance.CharacterFaceList[13].face[2].SetActive(true);
                             SystemManager.instance.SetCanTouch(false);
                             Dialogue.instance.SetBabyText(true);
-                            if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
+                            if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                             {
                                 SmallFade.instance.SetCharacter(babyNum);
                                 Menu.instance.MenuFadeIn();
@@ -1225,7 +1225,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             break;
                         case 61:
                             CharacterManager.instance.CharacterFaceList[5].face[1].SetActive(true);
-                            if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
+                            if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                             {
                                 getMenu = 2;
                                 VisitorNote.instance.OpenHiddenText(7);
@@ -1309,14 +1309,14 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             break;
                         case 47:
                             Dialogue.instance.SetBabyText(false);
-                            if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
+                            if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                             {
                                 getMenu = 1;
                                 SmallFade.instance.FadeOut(babyNum, babySeatNum); //주인공 페이드아웃 
                             }
                             break;
                         case 48:
-                            if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
+                            if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                             {
                                 SystemManager.instance.SetCanTouch(false);
                                 SystemManager.instance.SetCanTouch(true,1f);
@@ -1330,7 +1330,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                         case 49:
                             SystemManager.instance.SetCanTouch(false);
                             Dialogue.instance.SetBabyText(true);
-                            if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
+                            if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                             {
                                 SmallFade.instance.SetCharacter(babyNum);
                                 Menu.instance.MenuFadeIn();
@@ -1425,7 +1425,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             Dialogue.instance.SetBabyText(true);
                             break;
                         case 16:
-                            if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
+                            if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                             {
                                 SystemManager.instance.SetCanTouch(false);
                                 SystemManager.instance.SetCanTouch(true,1f);
@@ -1434,14 +1434,14 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             break;
                         case 17:
                             Dialogue.instance.SetBabyText(false);
-                            if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
+                            if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                             {
                                 getMenu = 1;
                                 SmallFade.instance.FadeOut(babyNum, babySeatNum); //주인공 페이드아웃 
                             }
                             break;
                         case 19:
-                            if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
+                            if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                             {
                                 SystemManager.instance.SetCanTouch(false);
                                 SystemManager.instance.SetCanTouch(true,1f);
@@ -1455,7 +1455,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                         case 20:
                             SystemManager.instance.SetCanTouch(false);
                             Dialogue.instance.SetBabyText(true);
-                            if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
+                            if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                             {
                                 SmallFade.instance.SetCharacter(babyNum);
                                 Menu.instance.MenuFadeIn();
@@ -1470,7 +1470,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             break;
                         case 24:
                             Dialogue.instance.SetBabyText(false);
-                            if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
+                            if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                             {
                                 getMenu = 2;
                                 VisitorNote.instance.OpenHiddenText(9);
@@ -1550,7 +1550,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             CharacterManager.instance.CharacterFaceList[8].face[1].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[8].face[2].SetActive(true);
                             Dialogue.instance.SetBabyText(false);
-                            if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
+                            if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                             {
                                 getMenu = 2;//아기 페이드아웃 위해서 일부러 대입
                             }
@@ -1610,7 +1610,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             break;
                         case 19:
                             CharacterManager.instance.CharacterFaceList[8].face[0].SetActive(false);
-                            if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
+                            if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                             {
                                 SmallFade.instance.FadeOut(babyNum, babySeatNum); //주인공 페이드아웃
                             }
@@ -1618,7 +1618,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             break;
                         case 20:                            
                             Dialogue.instance.SetBabyText(true);
-                            if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
+                            if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                             {
                                 SystemManager.instance.SetCanTouch(false);
                                 SystemManager.instance.SetCanTouch(true,1.3f);
@@ -1626,7 +1626,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             }
                             break;
                         case 21:
-                            if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
+                            if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                             {
                                 Menu.instance.MenuFadeIn();
                             }
@@ -1645,7 +1645,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             break;
                         case 24:
                             Dialogue.instance.SetBabyText(false);
-                            if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
+                            if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                             {
                                 SystemManager.instance.SetCanTouch(false);
                                 SystemManager.instance.SetCanTouch(true,1f);
@@ -1666,7 +1666,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             CharacterManager.instance.MovePrincess();//찰스등장을 위해 도로시가 옆으로 이동, 바로 찰스 등장
                             Dialogue.instance.SetBabyText(false);
                             CName.text = "찰스";
-                            if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
+                            if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                             {
                                 getMenu = 1;//찰스 페이드인을 위한 장치                           
                                 SmallFade.instance.SetCharacter(10);
@@ -1690,7 +1690,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             break;
                         case 33:
                             Dialogue.instance.SetBabyText(true);
-                            if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
+                            if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                             {
                                 Menu.instance.MenuFadeOut();
                             }
@@ -1741,7 +1741,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             break;
                         case 51:
                             CharacterManager.instance.CharacterOut(6);
-                            if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
+                            if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                             {
                                 VisitorNote.instance.OpenHiddenText(10);
                             }
@@ -1858,7 +1858,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             CharacterManager.instance.CharacterFaceList[13].face[3].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[4].SetActive(true);
                             Dialogue.instance.SetBabyText(true);
-                            if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
+                            if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                             {
                                 SystemManager.instance.SetCanTouch(false);
                                 SystemManager.instance.SetNeedAction(true);
@@ -1881,7 +1881,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                         case 24:
                             CharacterManager.instance.CharacterFaceList[9].face[1].SetActive(true);
                             Dialogue.instance.SetBabyText(false);
-                            if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
+                            if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                             {
                                 getMenu = 2;
                                 VisitorNote.instance.OpenHiddenText(11);
@@ -1958,7 +1958,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[2].SetActive(true);
                             Dialogue.instance.SetBabyText(true);
-                            if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
+                            if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                             {
                                 getMenu = 1;
                                 SmallFade.instance.FadeOut(babyNum, babySeatNum); //주인공 페이드아웃 
@@ -1968,7 +1968,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             Dialogue.instance.SetBabyText(false);
                             break;
                         case 36:
-                            if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
+                            if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                             {
                                 SystemManager.instance.SetCanTouch(false);
                                 SystemManager.instance.SetCanTouch(true,1f);
@@ -1984,7 +1984,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
                             SystemManager.instance.SetCanTouch(false);
                             Dialogue.instance.SetBabyText(true);
-                            if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
+                            if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                             {
                                 SmallFade.instance.SetCharacter(babyNum);
                                 Menu.instance.MenuFadeIn();
@@ -1998,7 +1998,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             Dialogue.instance.SetBabyText(true);
                             break;
                         case 41:
-                            if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
+                            if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                             {
                                 SystemManager.instance.SetCanTouch(false);
                                 SystemManager.instance.SetCanTouch(true,1f);
@@ -2006,7 +2006,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             }
                             break;
                         case 42:
-                            if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
+                            if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                             {
                                 getMenu = 2;
                                 SystemManager.instance.SetCanTouch(false);
@@ -2021,7 +2021,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                         case 43:
                             SystemManager.instance.SetCanTouch(false);
                             Dialogue.instance.SetBabyText(true);
-                            if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
+                            if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                             {
                                 Menu.instance.MenuFadeIn();
                             }
@@ -2063,7 +2063,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             break;
                         case 59:
                             CharacterManager.instance.CharacterFaceList[9].face[3].SetActive(true);
-                            if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
+                            if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                             {
                                 VisitorNote.instance.OpenHiddenText(12);
                             }
@@ -2177,7 +2177,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             break;
                         case 23:
                             Dialogue.instance.SetBabyText(true);
-                            if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
+                            if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                             {
                                 SystemManager.instance.SetCanTouch(false);
                                 SystemManager.instance.SetCanTouch(true,2.3f);
@@ -2194,7 +2194,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             }
                             break;
                         case 24:
-                            if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
+                            if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                             {
                                 SystemManager.instance.SetCanTouch(false);
                                 SystemManager.instance.SetCanTouch(true,0.6f);
@@ -2208,7 +2208,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             break;
                         case 25:
                             SystemManager.instance.SetCanTouch(false);
-                            if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
+                            if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                             {
                                 Menu.instance.MenuFadeIn();
                                 Menu.instance.Invoke("MenuFadeIn", 0.8f);
@@ -2268,7 +2268,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             CName.text = "히로";                         
                             break;
                         case 42:
-                            if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
+                            if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                             {
                                 Menu.instance.ReactionFadeIn(Menu.instance.GetSeatNum()-1,0);//히로 리액션 페이드인, 히로 다음 디노에게 마지막으로 서빙함
                                 getMenu = 2;
@@ -2403,7 +2403,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             break;
                         case 34:
                             Dialogue.instance.SetBabyText(true);
-                            if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
+                            if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                             {
                                 getMenu = 1;
                                 SmallFade.instance.FadeOut(babyNum, babySeatNum); //주인공 페이드아웃 
@@ -2413,7 +2413,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             Dialogue.instance.SetBabyText(false);
                             break;
                         case 36:
-                            if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
+                            if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                             {
                                 SystemManager.instance.SetCanTouch(false);
                                 SystemManager.instance.SetCanTouch(true,1f);
@@ -2427,7 +2427,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                         case 37:
                             SystemManager.instance.SetCanTouch(false);
                             Dialogue.instance.SetBabyText(true);
-                            if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
+                            if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                             {
                                 SmallFade.instance.SetCharacter(babyNum);
                                 Menu.instance.MenuFadeIn();
@@ -2633,7 +2633,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[3].SetActive(true);
                             Dialogue.instance.SetBabyText(true);
-                            if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
+                            if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                             {
                                 SystemManager.instance.SetCanTouch(false);
                                 SystemManager.instance.SetCanTouch(true,1f);
@@ -2642,14 +2642,14 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             break;
                         case 48:
                             Dialogue.instance.SetBabyText(false);
-                            if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
+                            if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                             {
                                 getMenu = 1;
                                 SmallFade.instance.FadeOut(babyNum, babySeatNum); //주인공 페이드아웃 
                             }
                             break;
                         case 50:
-                            if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
+                            if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                             {
                                 SystemManager.instance.SetCanTouch(false);
                                 SystemManager.instance.SetCanTouch(true,1f);
@@ -2665,7 +2665,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
                             SystemManager.instance.SetCanTouch(false);
                             Dialogue.instance.SetBabyText(true);
-                            if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
+                            if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                             {
                                 SmallFade.instance.SetCharacter(babyNum);
                                 Menu.instance.MenuFadeIn();
@@ -2701,7 +2701,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             break;
                         case 61:
                             Dialogue.instance.SetBabyText(false);
-                            if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
+                            if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                             {
                                 getMenu = 2;
                                 VisitorNote.instance.OpenHiddenText(15);

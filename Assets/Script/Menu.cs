@@ -315,11 +315,11 @@ public class Menu : MonoBehaviour
                             SystemManager.instance.CantTouchUI();
                         }
                         
-                            VisitorNote.instance.IncreaseFrinedshipGauge(characterNum); //서빙받은 캐릭터의 친밀도 증가
-                            if (CharacterAppear.instance.eventOn != 5)
-                            {
-                                ReactionFadeIn(seatNum,1f);
-                            }  
+                        VisitorNote.instance.IncreaseFrinedshipGauge(characterNum); //서빙받은 캐릭터의 친밀도 증가
+                        if (CharacterAppear.instance.eventOn != 5)
+                        {
+                            ReactionFadeIn(seatNum,1f);
+                        }  
                         
                     }
                 }
@@ -353,7 +353,7 @@ public class Menu : MonoBehaviour
         }
         else if(menuNum >= 11 && menuNum <= 14) // 스페셜 메뉴 11도리~14개나리
         {
-            if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
+            if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
             {
                 size = new Vector2(SpecialMenu[menuNum-11].GetComponent<RectTransform>().rect.width, SpecialMenu[menuNum-11].GetComponent<RectTransform>().rect.height); //사이즈 조정
                 menuImage = SpecialMenu[menuNum-11].GetComponent<Image>().sprite;
@@ -361,7 +361,7 @@ public class Menu : MonoBehaviour
         }
         else if(menuNum >= 16 && menuNum <= 19) // 스페셜 메뉴 16도로시~19친구
         {
-            if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
+            if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
             {
                 size = new Vector2(SpecialMenu[menuNum-12].GetComponent<RectTransform>().rect.width, SpecialMenu[menuNum-12].GetComponent<RectTransform>().rect.height); //사이즈 조정
                 menuImage = SpecialMenu[menuNum-12].GetComponent<Image>().sprite;
@@ -369,7 +369,7 @@ public class Menu : MonoBehaviour
         }
         else if(menuNum == 22 || menuNum == 23) // 스페셜 메뉴 히로디노
         {
-            if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
+            if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
             {
                 size = new Vector2(SpecialMenu[menuNum-10].GetComponent<RectTransform>().rect.width, SpecialMenu[menuNum-10].GetComponent<RectTransform>().rect.height); //사이즈 조정
                 menuImage = SpecialMenu[menuNum-10].GetComponent<Image>().sprite;
@@ -377,7 +377,7 @@ public class Menu : MonoBehaviour
         }
         else if(menuNum == 24 || menuNum == 25) // 스페셜 메뉴 24닥터펭 25롤렝드
         {
-            if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
+            if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
             {
                 size = new Vector2(SpecialMenu[menuNum-14].GetComponent<RectTransform>().rect.width, SpecialMenu[menuNum-14].GetComponent<RectTransform>().rect.height); //사이즈 조정
                 menuImage = SpecialMenu[menuNum-14].GetComponent<Image>().sprite;
@@ -416,7 +416,7 @@ public class Menu : MonoBehaviour
                 {
                     SpecialMenu[8].GetComponent<Image>().sprite = NamelessDessert.sprite;
                 }
-                if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
+                if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                 {
                     size = new Vector2(SpecialMenu[8].GetComponent<RectTransform>().rect.width, SpecialMenu[8].GetComponent<RectTransform>().rect.height); //사이즈 조정
                     menuImage = SpecialMenu[8].GetComponent<Image>().sprite;

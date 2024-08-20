@@ -571,7 +571,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
             case 1: //친밀도 10
                 textWriterSingle = TextWriter.AddWriter_Static(UI_Assistant1.instance.characterText, "있잖아요~ 원래 나는요..");
                 CName.text = "개나리";
-                if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
+                if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                 {
                     SmallFade.instance.SetCharacter(16);
                 }
@@ -637,7 +637,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
             case 1:
                 textWriterSingle = TextWriter.AddWriter_Static(UI_Assistant1.instance.characterText, "이거!! ..콩!!");
                 CName.text = "또롱";
-                if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
+                if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                 {
                     SmallFade.instance.SetBabySeat(SmallFade.instance.CharacterSeat[4]);//또롱이 건너편으로  자리 잡기
                     SmallFade.instance.SetCharacter(17);
@@ -768,7 +768,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
             case 1: //친밀도 15
                 textWriterSingle = TextWriter.AddWriter_Static(UI_Assistant1.instance.characterText, "오늘도 코스모스 카페는 참 따뜻하네요.");
                 CName.text = "루루";
-                if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
+                if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                 {
                     SmallFade.instance.SetCharacter(17);
                 }
@@ -882,7 +882,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
             case 1: //친밀도 15
                 textWriterSingle = TextWriter.AddWriter_Static(UI_Assistant1.instance.characterText, "오늘은 당신에게 특별한 이야기를 해주고 싶어요.");
                 CName.text = "샌디";
-                if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
+                if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                 {
                     SmallFade.instance.SetCharacter(16);
                 }
@@ -988,7 +988,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
             case 1: //친밀도 10, 서빙 후
                 textWriterSingle = TextWriter.AddWriter_Static(UI_Assistant1.instance.characterText, "이걸 뽀삐도 같이 먹을 수 있다면 좋을 텐데..");
                 CName.text = "친구";
-                if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
+                if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                 {
                     SmallFade.instance.SetCharacter(17);
                 }
@@ -1064,7 +1064,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
             case 1: //친밀도 10이상, 서빙 후, 카페에 공주 있을 경우
                 textWriterSingle = TextWriter.AddWriter_Static(UI_Assistant1.instance.characterText, "저... 그런데 말입니다.");
                 CName.text = "찰스";
-                if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
+                if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                 {
                     SmallFade.instance.SetCharacter(16);
                 }
@@ -1073,7 +1073,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                 CharacterManager.instance.CharacterFaceList[8].face[1].SetActive(true);
                 textWriterSingle = TextWriter.AddWriter_Static(UI_Assistant1.instance.characterText, babyName + "님.. 저 좀 도와주십쇼..");
                 CName.text = "찰스";
-                if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
+                if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                 {
                     SmallFade.instance.SetCharacter(16);
                 }
@@ -1189,7 +1189,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
             case 1: //친밀도 10이상
                 textWriterSingle = TextWriter.AddWriter_Static(UI_Assistant1.instance.characterText, "여, 여긴 참 따뜻한 곳이야..\n난 이 곳이 정말 조, 좋아.");
                 CName.text = "??";
-                if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
+                if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                 {
                     SmallFade.instance.SetCharacter(17);
                 }
@@ -1197,7 +1197,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
             case 2: //친밀도 20이상
                 textWriterSingle = TextWriter.AddWriter_Static(UI_Assistant1.instance.characterText, "저, 저기... 있잖아..");
                 CName.text = SystemManager.instance.GetNameForNameless();
-                if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
+                if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                 {
                     SmallFade.instance.SetCharacter(17);
                 }
@@ -1435,7 +1435,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
             case 1: //친밀도 15
                 textWriterSingle = TextWriter.AddWriter_Static(UI_Assistant1.instance.characterText, "반갑네, 오늘도 이 카페는 따뜻하구먼.");
                 CName.text = "닥터 펭";
-                if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
+                if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                 {
                     SmallFade.instance.SetCharacter(16);
                 }

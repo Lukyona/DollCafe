@@ -42,14 +42,14 @@ public class VisitorNote : MonoBehaviour
 
     int[] hiddenTextStates = new int[8]; //노트의 두번째 하고 싶은 말 정보가 열렸는지 확인
 
-    public int[] friendshipInfo = new int[13] { 0, 0, 0, 0, 0, 0,0,0,0,0,0,0,0}; //친밀도 게이지 정보(서빙 횟수) 배열
+    int[] friendshipInfo = new int[13] { 0, 0, 0, 0, 0, 0,0,0,0,0,0,0,0}; //친밀도 게이지 정보(서빙 횟수) 배열
     
-    public int firstMeetID = 0; //첫만남 캐릭터별로 숫자 들어감
-    public int friendEventID = 0; //이벤트 캐릭터별로 숫자 들어감
+    int firstMeetID = 0; //첫만남 캐릭터별로 숫자 들어감
+    int friendEventID = 0; //이벤트 캐릭터별로 숫자 들어감
 
     bool isreplayOptionWindowOpen = false; //다시보기 버튼 터치되면 true
 
-    public int replayState = 0; //다시보기 확정일 때 1, 다시보기 끝나면 2, 끝나고 1초 후 0으로 초기화
+    int replayState = 0; //다시보기 확정일 때 1, 다시보기 끝나면 2, 끝나고 1초 후 0으로 초기화
 
     private void Awake()
     {
@@ -79,8 +79,7 @@ public class VisitorNote : MonoBehaviour
         if(friendEventID == 0 && firstMeetID == 0)//다시보기 아닐 때만 
         {
             Invoke(nameof(InitNote), 0.5f);//0.5초 뒤 노트 정보 1페이지로 초기화
-        }
-        
+        }        
     }
 
     void InitNote()
@@ -127,16 +126,16 @@ public class VisitorNote : MonoBehaviour
         pages[idx].SetActive(true);
     }
 
-    public bool IsFriendshipGaugeFull(int idx)
+    public void UpdateOpenedPages()
     {
-        return friendshipGauges[idx].GetComponent<Image>().fillAmount == 1f? true : false;
+        ++openedPages;
     }
 
     public void SetNextPageButtonActive(bool value)
     {
         nextPageButton.SetActive(value);
     }
-
+    
     public void ActivateReplayButton(int idx)
     {
         replayButtons[idx].gameObject.SetActive(true);
@@ -152,11 +151,6 @@ public class VisitorNote : MonoBehaviour
         replayMessageText.text = text;
     }
 
-    public void UpdateOpenedPages()
-    {
-        ++openedPages;
-    }
-
     public int GetFriendshipInfo(int idx)
     {
         return friendshipInfo[idx];
@@ -170,6 +164,31 @@ public class VisitorNote : MonoBehaviour
     public int GetReplayState()
     {
         return replayState;
+    }
+
+    public int GetFirstMeetID()
+    {
+        return firstMeetID;
+    }
+
+    public void SetFirstMeetID(int value)
+    {
+        firstMeetID = value;
+    }
+
+    public int GetFriendEventID()
+    {
+        return friendEventID;
+    }
+
+    public void SetFriendEventID(int value)
+    {
+        friendEventID = value;
+    }
+
+    public bool IsFriendshipGaugeFull(int idx)
+    {
+        return friendshipGauges[idx].GetComponent<Image>().fillAmount == 1f? true : false;
     }
 
     public void IncreaseFrinedshipGauge(int cNum) //친밀도 게이지 증가, n은 캐릭터 넘버
@@ -213,6 +232,8 @@ public class VisitorNote : MonoBehaviour
                     break;
             }
             
+            if(idx == -1) return;
+            
             if(friendshipGauges[idx].GetComponent<Image>().fillAmount != 1f)//친밀도 맥스가 아닐 경우
             {
                 if(maxNum == 10)
@@ -231,20 +252,19 @@ public class VisitorNote : MonoBehaviour
 
     public void TurnToPage(int pNum)
     {              
-        pageNum = pNum;
-        if (1 <= pageNum && pageNum <= 4)
+        if (1 <= pNum && pNum <= 4)
         {
             pageGroup = 1;
         }
-        else if(5 <= pageNum && pageNum <= 8)
+        else if(5 <= pNum && pNum <= 8)
         {
             pageGroup = 2;
         }
-        else if(9 <= pageNum && pageNum <= 12)
+        else if(9 <= pNum && pNum <= 12)
         {
             pageGroup = 3;
         }
-        else if (pageNum == 13 || pageNum == 14)
+        else if (pNum == 13 || pNum == 14)
         {
             pageGroup = 4;
         }
@@ -255,7 +275,10 @@ public class VisitorNote : MonoBehaviour
 
         SEManager.instance.PlayNextPageSound(); //페이지 넘기는 효과음       
         characterInfos[pageNum - 1].SetActive(false); // 이전 페이지의 캐릭터 정보를 안 보이게 하고
-        pages[pageNum - 1].GetComponent<Button>().interactable = true; //이전 페이지의 버튼을 터치 가능하게 함        
+        pages[pageNum - 1].GetComponent<Button>().interactable = true; //이전 페이지의 버튼을 터치 가능하게 함      
+
+        pageNum = pNum;
+
         characterInfos[pageNum - 1].SetActive(true); //현재 페이지의 캐릭터 정보를 보이게 함
         pages[pageNum - 1].GetComponent<Button>().interactable = false; //현재 페이지의 버튼 터치 불가능하게 함
     }
@@ -945,8 +968,8 @@ public class VisitorNote : MonoBehaviour
             }
             PlayerPrefs.SetString("FriendshipInfo", strArr3); // PlyerPrefs에 문자열 형태로 저장
             PlayerPrefs.SetInt("ReplayState", replayState);//다시보기 정보 저장, 다시보기 중 앱 종료했을 때를 대비
-            PlayerPrefs.SetInt("FMRP", firstMeetID);
-            PlayerPrefs.SetInt("EVRP", friendEventID);
+            PlayerPrefs.SetInt("FirstMeetID", firstMeetID);
+            PlayerPrefs.SetInt("FriendEventID", friendEventID);
 
             PlayerPrefs.Save(); //세이브
         }
@@ -1079,8 +1102,8 @@ public class VisitorNote : MonoBehaviour
             if (PlayerPrefs.HasKey("ReplayState"))//다시 보기 정보 불러오기
             {
                 replayState = PlayerPrefs.GetInt("ReplayState");
-                firstMeetID = PlayerPrefs.GetInt("FMRP");
-                friendEventID = PlayerPrefs.GetInt("EVRP");
+                firstMeetID = PlayerPrefs.GetInt("FirstMeetID");
+                friendEventID = PlayerPrefs.GetInt("FriendEventID");
             }
 
             if(replayState != 0)//다시보기 중일 때 종료한 거면 캐릭터DC 초기화
