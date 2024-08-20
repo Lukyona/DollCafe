@@ -240,7 +240,7 @@ public class Menu : MonoBehaviour
                 if (MenuHint.instance.RightMenu[seatNum] == menuNum) //캐릭터가 원하는 메뉴가 n이면, 원하는 메뉴와 플레이어가 고른 메뉴가 일치
                 {
                     SEManager.instance.PlayUIClickSound3();
-                    VisitorNote.instance.GuessMenuRight(characterNum, menuNum);
+                    VisitorNote.instance.CheckMenuMatch(characterNum, menuNum);
                     if (CharacterAppear.instance.eventOn == 10)//찰스의 경우 평판 증가
                     {
                         SetReputation(reputation += 3);
@@ -267,7 +267,7 @@ public class Menu : MonoBehaviour
                         CorrectMenuReaction(seatNum); //자리에 따라 맞는 메뉴 리액션 이미지 가져오기
                         SetReputation(reputation += 3);
                     }                  
-                    VisitorNote.instance.GuessMenuRight(characterNum, menuNum);
+                    VisitorNote.instance.CheckMenuMatch(characterNum, menuNum);
                 }
                 else //메뉴 불일치
                 {

@@ -441,7 +441,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             Dialogue.instance.SetBabyText(false);
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
-                                VisitorNote.instance.OpenNewSentence(1);//도리 손님노트 정보 갱신
+                                VisitorNote.instance.OpenHiddenText(1);//도리 손님노트 정보 갱신
                             }
                             CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
@@ -936,7 +936,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             Dialogue.instance.SetBabyText(false);
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
-                                VisitorNote.instance.OpenNewSentence(5);//손님노트 정보 갱신
+                                VisitorNote.instance.OpenHiddenText(5);//손님노트 정보 갱신
                                 getMenu = 2;
                             }
                             break;
@@ -1228,7 +1228,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
                                 getMenu = 2;
-                                VisitorNote.instance.OpenNewSentence(7);
+                                VisitorNote.instance.OpenHiddenText(7);
                             }
                             break;
                     }
@@ -1473,7 +1473,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
                                 getMenu = 2;
-                                VisitorNote.instance.OpenNewSentence(9);
+                                VisitorNote.instance.OpenHiddenText(9);
                             }
                             break;
                     }
@@ -1743,7 +1743,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             CharacterManager.instance.CharacterOut(6);
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
-                                VisitorNote.instance.OpenNewSentence(10);
+                                VisitorNote.instance.OpenHiddenText(10);
                             }
                             break;
                         case 52:
@@ -1884,7 +1884,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
                                 getMenu = 2;
-                                VisitorNote.instance.OpenNewSentence(11);
+                                VisitorNote.instance.OpenHiddenText(11);
                             }
                             break;
                     }
@@ -2065,7 +2065,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             CharacterManager.instance.CharacterFaceList[9].face[3].SetActive(true);
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
-                                VisitorNote.instance.OpenNewSentence(12);
+                                VisitorNote.instance.OpenHiddenText(12);
                             }
                             break;
                     }
@@ -2704,7 +2704,7 @@ public class UI_Assistant1 : MonoBehaviour //대사창 관련
                             if (VisitorNote.instance.fmRP == 0 && VisitorNote.instance.evRP == 0)//다시보기가 아닐 때
                             {
                                 getMenu = 2;
-                                VisitorNote.instance.OpenNewSentence(15);
+                                VisitorNote.instance.OpenHiddenText(15);
                             }
                             CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);

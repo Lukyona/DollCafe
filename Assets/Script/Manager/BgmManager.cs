@@ -168,7 +168,7 @@ public class BgmManager : MonoBehaviour
         float start = audioSource.volume;        
         while (currentTime < duration) // 2.5초동안 페이드아웃
         {
-            if(SceneManager.GetActiveScene().name == "GameScene" && VisitorNote.instance.replayOn == 1)//다시보기 시작되면 페이드아웃 바로 종료
+            if(SceneManager.GetActiveScene().name == "GameScene" && VisitorNote.instance.GetReplayState() == 1)//다시보기 시작되면 페이드아웃 바로 종료
             {
                 Debug.Log("오디오페이드아웃 종료");
                 break;

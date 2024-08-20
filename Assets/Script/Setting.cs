@@ -103,12 +103,12 @@ public class Setting : MonoBehaviour
             PlayerPrefs.DeleteKey("RemainSecTimer");
             PlayerPrefs.DeleteKey("CharacterDC");
             PlayerPrefs.DeleteKey("UnlockedMenuItems");
-            PlayerPrefs.DeleteKey("OpenPage");
+            PlayerPrefs.DeleteKey("OpenedPages");
             PlayerPrefs.DeleteKey("LikeMenu1Open");
             PlayerPrefs.DeleteKey("LikeMenu2Open");
-            PlayerPrefs.DeleteKey("SecondSentence");
+            PlayerPrefs.DeleteKey("HiddenTextStates");
             PlayerPrefs.DeleteKey("FriendshipInfo");
-            PlayerPrefs.DeleteKey("RePlayOn");
+            PlayerPrefs.DeleteKey("ReplayState");
             PlayerPrefs.DeleteKey("FMRP");
             PlayerPrefs.DeleteKey("EVRP");
             PlayerPrefs.DeleteKey("BabyName");

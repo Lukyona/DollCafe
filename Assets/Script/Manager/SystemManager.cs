@@ -411,11 +411,7 @@ public class SystemManager : MonoBehaviour
         {
             VisitorNote.instance.OpenPage(mainCount-2); //손님 노트 페이지 오픈
         }
-        else if(mainCount >= 6)
-        {
-            VisitorNote.instance.NextPageOpen[mainCount - 6] = 1; //페이지 열렸음
-        }
-        VisitorNote.instance.openPage++;
+        VisitorNote.instance.UpdateOpenedPages();
     }
 
     public void BackToCafe2(int cNum)//이벤트 대화 종료 후, n은 Dialogue의 캐릭터 넘버
@@ -472,7 +468,7 @@ public class SystemManager : MonoBehaviour
                         UI_Assistant1.instance.getMenu = 0;
                         SmallFade.instance.CanClickCharacter(6);//도로시 클릭 가능하게
                         SmallFade.instance.CanClickCharacter(10);//찰스 클릭 가능하게
-                        VisitorNote.instance.RePlayButton[cNum - 1].gameObject.SetActive(true);         
+                        VisitorNote.instance.ActivateReplayButton(cNum-1);         
                     }
                     break;
                 case 11:
@@ -484,7 +480,7 @@ public class SystemManager : MonoBehaviour
                     {
                         CharacterManager.instance.SetFaceNum(12);
                         VisitorNote.instance.SetCharacterImage(cNum, CharacterManager.instance.CharacterFaceList[cNum - 2].face[3].GetComponent<Image>().sprite);
-                        VisitorNote.instance.RePlayButton[cNum - 1].gameObject.SetActive(true);
+                        VisitorNote.instance.ActivateReplayButton(cNum-1);
                     }
                     Menu.instance.ReactionFadeIn();
                     break;
@@ -498,7 +494,7 @@ public class SystemManager : MonoBehaviour
                     {
                         CharacterManager.instance.SetFaceNum(cNum);
                     }
-                    VisitorNote.instance.RePlayButton[cNum - 1].gameObject.SetActive(true);//다시보기 버튼 활성화
+                    VisitorNote.instance.ActivateReplayButton(cNum-1);//다시보기 버튼 활성화
 
                     if(cNum == 1)//도리는 손님노트 이미지를 2번째 표정으로 바꿈
                     {
@@ -535,7 +531,6 @@ public class SystemManager : MonoBehaviour
         {
             Debug.Log("엔딩 조건 충족");
 
-            //엔딩이벤트 8초 후 시작
             Invoke(nameof(EndingEvent),6f);
             endingState = 1;
             PlayerPrefs.SetInt("EndingState", endingState);
@@ -546,7 +541,7 @@ public class SystemManager : MonoBehaviour
 
     public void AfterRePlayStroy()//다시보기를 마친 후 실행
     {
-        VisitorNote.instance.replayOn = 2;
+        VisitorNote.instance.SetReplayState(2);
         VisitorNote.instance.ShowVisitorNote(); //노트 올라오기
         EndDialogue();
         if (VisitorNote.instance.fmRP != 0)//첫 만남 다시보기 이후면
@@ -597,7 +592,7 @@ public class SystemManager : MonoBehaviour
 
     void EndRePlay()//다시보기가 완전히 끝났음
     {
-        VisitorNote.instance.replayOn = 0;
+        VisitorNote.instance.SetReplayState(0);
     }
 
     void EndingEvent()
@@ -1040,7 +1035,7 @@ public class SystemManager : MonoBehaviour
         {
             nameForNameless = inputName;//입력한 이름 캐릭터 이름에 대입
             PlayerPrefs.SetString("NameForNameless", inputName);//무명이 이름 저장
-            VisitorNote.instance.NameInfoOpen(inputName);//손님노트에 이름 정보 활성화
+            VisitorNote.instance.OpenNameForNameless(inputName);//손님노트에 이름 정보 활성화
             charNameSettingWindow.SetActive(false);//무명이 이름 설정창 비활성화
         }              
 

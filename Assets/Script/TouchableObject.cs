@@ -8,6 +8,10 @@ using UnityEngine.UI;
 public class TouchableObject : MonoBehaviour //터치된 오브젝트 구분, 터치할 수 있는 오브젝트에 컴포넌트로 들어가있음
 {
     public static TouchableObject instance;
+
+    int sNum; //자리 넘버
+    int cNum; //캐릭터 넘버
+    
    
     void Awake()
     {
@@ -17,9 +21,6 @@ public class TouchableObject : MonoBehaviour //터치된 오브젝트 구분, �
         }
     }
 
-    int sNum; //자리 넘버
-    int cNum; //캐릭터 넘버
-    
     public int GetNumber(int idx, string name)
     {
         if(idx+2 == name.Length) // 한 자리 숫자로 문자열이 끝났다면
@@ -84,18 +85,15 @@ public class TouchableObject : MonoBehaviour //터치된 오브젝트 구분, �
     {
         // 손님 노트 페이지 버튼 오브젝트 이름 예시 : Page1, Page11
         int idx = gameObject.name.IndexOf("e");
-
         int pageNum = GetNumber(idx, gameObject.name);
 
-        VisitorNote.instance.SetPageNum(pageNum); //현재 페이지 넘버
-        VisitorNote.instance.TurnToPage();
+        VisitorNote.instance.TurnToPage(pageNum);
     }
 
     public void TouchEventReplayButton() //이벤트 다시보기 버튼 터치 시 실행, 어떤 캐릭터의 이벤트 다시보기 버튼을 눌렀는지
     {
         // 오브젝트 이름 예시 : Event1, Event11
         int idx = gameObject.name.IndexOf("t");
-
         idx = GetNumber(idx, gameObject.name);
 
         VisitorNote.instance.evRP = idx;
@@ -149,8 +147,7 @@ public class TouchableObject : MonoBehaviour //터치된 오브젝트 구분, �
                 break;
         }
 
-        VisitorNote.instance.whichStory.text = name + "의 이벤트를 회상할까요?";
-
-        VisitorNote.instance.rePlayMessage.SetActive(true);
+        VisitorNote.instance.SetReplayMessageText(name + "의 이벤트를 회상할까요?");
+        VisitorNote.instance.ActivateReplayMessageWindow();
     }
 }
