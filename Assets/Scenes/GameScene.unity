@@ -42538,7 +42538,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   menuButtonAnimator: {fileID: 609390004}
   menuBoardAnimator: {fileID: 1751023026}
-  NoHPMessegeAnimator: {fileID: 1433736735}
+  NoHPMessageAnimator: {fileID: 1433736735}
   boardCloseButton: {fileID: 1612797254}
   LockedMenuItems:
   - {fileID: 1391983187}
@@ -42604,7 +42604,7 @@ MonoBehaviour:
   - {fileID: 2008087108}
   - {fileID: 1287802305}
   reputationText: {fileID: 1534718395}
-  NoHPMessege: {fileID: 1433736733}
+  NoHPMessage: {fileID: 1433736733}
   NamelessDessert: {fileID: 2071074933}
 --- !u!114 &1538706534
 MonoBehaviour:

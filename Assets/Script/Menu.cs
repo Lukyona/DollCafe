@@ -10,7 +10,7 @@ public class Menu : MonoBehaviour
 
     [SerializeField] Animator menuButtonAnimator;
     [SerializeField] Animator menuBoardAnimator;
-    [SerializeField] Animator NoHPMessegeAnimator;
+    [SerializeField] Animator NoHPMessageAnimator;
 
     #region 게임 내 오브젝트 변수
     [SerializeField] Button boardCloseButton;
@@ -31,7 +31,7 @@ public class Menu : MonoBehaviour
 
     [SerializeField] Text reputationText; //평판 텍스트
 
-    [SerializeField] GameObject NoHPMessege; //게임 중간이탈, 종료 시 비활성화됨
+    [SerializeField] GameObject NoHPMessage; //게임 중간이탈, 종료 시 비활성화됨
 
     [SerializeField] Image NamelessDessert;//무명이 디저트 2번째 이미지
     #endregion
@@ -173,8 +173,8 @@ public class Menu : MonoBehaviour
 
     public void CanTouchMenu()
     {
-        if(NoHPMessege.activeSelf)
-            NoHPMessege.SetActive(false);
+        if(NoHPMessage.activeSelf)
+            NoHPMessage.SetActive(false);
 
         foreach (GameObject menu in UnlockedMenuItems)
         {
@@ -190,9 +190,9 @@ public class Menu : MonoBehaviour
         }
     }
 
-    private void NoHPMessegeFadeOut() //체력 없음 메세지 페이드아웃
+    private void NoHPMessageFadeOut() //체력 없음 메세지 페이드아웃
     {
-        NoHPMessegeAnimator.SetTrigger("NoHPFadeOut");
+        NoHPMessageAnimator.SetTrigger("NoHPFadeOut");
     }
 
     public int GetSeatNum()
@@ -216,9 +216,9 @@ public class Menu : MonoBehaviour
         if (HPManager.instance.GetCurrentHP() <= 0) //체력이 0보다 작거나 같으면
         {
             CantTouchMenu();
-            NoHPMessege.SetActive(true); //체력 없음 메세지 보이게 함
-            NoHPMessegeAnimator.SetTrigger("NoHPFadeIn");
-            Invoke(nameof(NoHPMessegeFadeOut), 1f); //1초 뒤 메세지 페이드아웃
+            NoHPMessage.SetActive(true); //체력 없음 메세지 보이게 함
+            NoHPMessageAnimator.SetTrigger("NoHPFadeIn");
+            Invoke(nameof(NoHPMessageFadeOut), 1f); //1초 뒤 메세지 페이드아웃
             Invoke(nameof(CanTouchMenu), 1.5f);           
         }
         else //체력이 1이상이면

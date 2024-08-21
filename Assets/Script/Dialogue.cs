@@ -39,7 +39,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
 
     public void SetPanelActive(int panelNum, bool state)
     {
-        panels[panelNum -1].SetActive(state);
+        panels[panelNum].SetActive(state);
     }
 
     public void SetCharacterNum(int num)
@@ -174,28 +174,28 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
             {
                 DialogueEvent(); //대화 이벤트 있으면 실행
                 SelectedNextDialogue(); //다음 대사 가져오기
-                string[] messeges = messageArray;
-                if (count < messeges.Length) //대사 카운트가 대사 갯수와 같아질 때까지 반복
+                string[] messages = messageArray;
+                if (count < messages.Length) //대사 카운트가 대사 갯수와 같아질 때까지 반복
                 {
-                    string messege = messeges[count];
+                    string message = messages[count];
                     if (IsBabayText()) //주인공 대사일 경우
                     {
                         characterText.text = "";
                         SystemManager.instance.ChangeToBabyTB();
-                        textWriterSingle = TextWriter.AddWriter_Static(babyText, messege);
+                        textWriterSingle = TextWriter.AddWriter_Static(babyText, message);
                     }
                     else
                     {
                         babyText.text = "";
                         SystemManager.instance.ChangeToCharacterTB(); //캐릭터 대사창으로 변경
-                        textWriterSingle = TextWriter.AddWriter_Static(characterText, messege);
+                        textWriterSingle = TextWriter.AddWriter_Static(characterText, message);
                     }
 
                     count++;
                 }
-                else if (count == messeges.Length) //대사가 모두 끝났을 때
+                else if (count == messages.Length) //대사가 모두 끝났을 때
                 {
-                    count = 0;
+                    count = -1;
                     characterText.text = ""; //대사창 공백으로 만들고
                     babyText.text = "";
                     if(VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//첫 만남이나 이벤트 다시보기가 아닐 경우

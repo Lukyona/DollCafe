@@ -66,7 +66,7 @@ public class SmallFade : MonoBehaviour //작은 캐릭터 스크립트
             return;
         }
 
-        Debug.Log("셋캐릭터 " + cNum);
+        //Debug.Log("셋캐릭터 " + cNum);
         
         SetSeatPosition(cNum);
 
