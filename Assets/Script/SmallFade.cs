@@ -66,7 +66,7 @@ public class SmallFade : MonoBehaviour //작은 캐릭터 스크립트
             return;
         }
 
-        //Debug.Log("셋캐릭터 " + cNum);
+        Debug.Log("셋캐릭터 " + cNum);
         
         SetSeatPosition(cNum);
 
@@ -93,14 +93,14 @@ public class SmallFade : MonoBehaviour //작은 캐릭터 스크립트
             {
                 seatNum = CharacterSeat[11] + 1;
             }
-            else if(cNum == 10 && (Dialogue.instance.CharacterDC[10] == 3) || (CharacterAppear.instance.eventOn == 11 && UI_Assistant1.instance.getMenu == 1))//찰스2이벤트 중 찰스 중간 페이드인
+            else if(cNum == 10 && (Dialogue.instance.GetCharacterDC(10) == 3) || (CharacterAppear.instance.eventOn == 11 && Dialogue.instance.GetSpecialMenuState() == 1))//찰스2이벤트 중 찰스 중간 페이드인
             {//도로시와 같이 오는 찰스
                 seatNum = CharacterSeat[5] + 1;
                 SmallCharacter[10].GetComponent<Image>().sprite = soldierRightImage.sprite;//이미지 변경
             }          
             else // 혼자인 캐릭터 자리 설정
             {
-                if (cNum == 11 && Dialogue.instance.CharacterDC[11] == 3)//무명이, 시나리오 다 봤을 때
+                if (cNum == 11 && Dialogue.instance.GetCharacterDC(11) == 3)//무명이, 시나리오 다 봤을 때
                 {
                     SmallCharacter[11].GetComponent<Image>().sprite = namelessSmile.sprite;//이미지 변경
                 }
@@ -237,7 +237,7 @@ public class SmallFade : MonoBehaviour //작은 캐릭터 스크립트
             n = cNum;
         }
 
-        if(SystemManager.instance.GetMainCount() > 2 && Dialogue.instance.CharacterDC[n] != 0 && CharacterAppear.instance.eventOn != 2)
+        if(SystemManager.instance.GetMainCount() > 2 && Dialogue.instance.GetCharacterDC(n) != 0 && CharacterAppear.instance.eventOn != 2)
         {//붕붕이 친밀도 이벤트, 캐릭터 첫 등장 제외하고 메인카운트 3이상이면 바로 캐릭터 페이드인
             if(IsInvoking(nameof(FadeIn)))//다른 캐릭터 페이드인이 인보크 중이면
             {
@@ -255,7 +255,7 @@ public class SmallFade : MonoBehaviour //작은 캐릭터 스크립트
         }
         if (CharacterAppear.instance.eventOn != 0 && CharacterAppear.instance.eventOn != 14)//히로디노이벤트가 아니면 주인공 아기 캐릭터 자리 설정
         {
-            if(CharacterAppear.instance.eventOn == 11 && (cNum == 6 || UI_Assistant1.instance.getMenu == 1)) return; // 찰스2이벤트의 도로시일 때는 아기 자리 세팅X
+            if(CharacterAppear.instance.eventOn == 11 && (cNum == 6 || Dialogue.instance.GetSpecialMenuState() == 1)) return; // 찰스2이벤트의 도로시일 때는 아기 자리 세팅X
             SetBabySeat(seatNum);          
         }
         //Debug.Log("함수 SetSeatPosition");
@@ -359,7 +359,7 @@ public class SmallFade : MonoBehaviour //작은 캐릭터 스크립트
             }
             else if (CharacterAppear.instance.eventOn >= 11 && CharacterAppear.instance.eventOn <= 13)//이벤트 넘버 11~13
             {
-                if (UI_Assistant1.instance.getMenu == 0 && CharacterAppear.instance.eventOn != 12)//첫번째 조건은 찰스2 이벤트 때문, 두번째 조건은 무명이1 이벤트때문
+                if (Dialogue.instance.GetSpecialMenuState() == 0 && CharacterAppear.instance.eventOn != 12)//첫번째 조건은 찰스2 이벤트 때문, 두번째 조건은 무명이1 이벤트때문
                 {
                     SystemManager.instance.BeginDialogue(v);
                 }           
@@ -379,7 +379,7 @@ public class SmallFade : MonoBehaviour //작은 캐릭터 스크립트
             }
             SetCharacter(13);           
         }
-        if(Dialogue.instance.CharacterDC[10] == 3 && v == 6)//찰스와 같이 방문한 도로시 페이드인 끝나면 찰스 나타나게끔
+        if(Dialogue.instance.GetCharacterDC(10) == 3 && v == 6)//찰스와 같이 방문한 도로시 페이드인 끝나면 찰스 나타나게끔
         {
             SetCharacter(10);
         }
@@ -400,7 +400,7 @@ public class SmallFade : MonoBehaviour //작은 캐릭터 스크립트
         if(cNum != 12 && cNum  < 16) // 히로, 주인공은 패스
         {
             //  도로시/찰스 제외 캐릭터거나 찰스2이벤트 전이거나 찰스2이벤트 완료+찰스일 때
-            if((cNum  != 6 && cNum  != 10) || Dialogue.instance.CharacterDC[10] != 3 || (Dialogue.instance.CharacterDC[10] == 3 && cNum  == 10))
+            if((cNum  != 6 && cNum  != 10) || Dialogue.instance.GetCharacterDC(10) != 3 || (Dialogue.instance.GetCharacterDC(10) == 3 && cNum  == 10))
                 cleanSeat.Enqueue(CharacterSeat[cNum -1]); //비워질 자리 큐에 정보 추가
         }
     
@@ -428,11 +428,11 @@ public class SmallFade : MonoBehaviour //작은 캐릭터 스크립트
         Debug.Log("페이드아웃 됨" + cNum);
         smallFOut.Dequeue();
 
-        if(CharacterAppear.instance.eventOn == 0 && UI_Assistant1.instance.getMenu == 2)//친밀도 이벤트가 끝났을 때
+        if(CharacterAppear.instance.eventOn == 0 && Dialogue.instance.GetSpecialMenuState() == 2)//친밀도 이벤트가 끝났을 때
         {
             if(cNum != 12)//히로만 아니면
             {
-                UI_Assistant1.instance.getMenu = 0;
+                Dialogue.instance.SetSpecialMenuState(0);
             }   
 
             int sNum;
@@ -461,12 +461,12 @@ public class SmallFade : MonoBehaviour //작은 캐릭터 스크립트
 
                 if (cNum == 6 || cNum == 10)//도로시나 찰스일 경우
                 {
-                    if (Dialogue.instance.CharacterDC[10] == 3 && cNum == 10)
+                    if (Dialogue.instance.GetCharacterDC(10) == 3 && cNum == 10)
                     {//찰스2이벤트 이후면
                         Invoke(nameof(CleanTable), 2f);
                         CharacterVisit.instance.revisit.Enqueue(17);
                     }
-                    else if(Dialogue.instance.CharacterDC[10] != 3)//찰스2 이벤트 전이면 다른 캐릭터와 똑같이 실행
+                    else if(Dialogue.instance.GetCharacterDC(10) != 3)//찰스2 이벤트 전이면 다른 캐릭터와 똑같이 실행
                     {
                         CleanTable();
                         if(CharacterAppear.instance.eventOn != 11) // 찰스2이벤트 중에는 실행X

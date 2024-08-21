@@ -42145,7 +42145,6 @@ GameObject:
   - component: {fileID: 1538706533}
   - component: {fileID: 1538706534}
   - component: {fileID: 1538706537}
-  - component: {fileID: 1538706538}
   - component: {fileID: 1538706539}
   - component: {fileID: 1538706541}
   m_Layer: 0
@@ -42224,9 +42223,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc45cc93886f3ae4997471b3eda60529, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CName: {fileID: 1221228894}
-  messegeArray: []
-  CharacterDC: 000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+  charName: {fileID: 1221228894}
+  panels:
+  - {fileID: 962486055}
+  - {fileID: 297233652}
+  - {fileID: 1755719180}
+  - {fileID: 1683776887}
+  - {fileID: 850878763}
+  - {fileID: 523636010}
+  - {fileID: 1910152972}
+  - {fileID: 1730601525}
+  - {fileID: 1657706121}
+  characterText: {fileID: 1859479566}
+  babyText: {fileID: 1278631721}
 --- !u!114 &1538706519
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -42704,34 +42713,6 @@ MonoBehaviour:
   noResetButton: {fileID: 1978913559}
   creditView: {fileID: 1951395129}
   bar: {fileID: 608015914}
---- !u!114 &1538706538
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1538706512}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7724cc1532203b34bbc3499d6c40524c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  CName: {fileID: 1221228894}
-  panel: {fileID: 962486055}
-  panel1: {fileID: 297233652}
-  panel2: {fileID: 1755719180}
-  panel3: {fileID: 1683776887}
-  panel4: {fileID: 850878763}
-  panel5: {fileID: 523636010}
-  panel6: {fileID: 1910152972}
-  panel7: {fileID: 1730601525}
-  panel8: {fileID: 1657706121}
-  characterText: {fileID: 1859479566}
-  babyText: {fileID: 1278631721}
-  textBoxAnimator: {fileID: 70937688}
-  stop: 0
-  talking: 0
-  getMenu: 0
 --- !u!114 &1538706539
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -42964,10 +42945,6 @@ MonoBehaviour:
   replayMessageWindow: {fileID: 1093499382}
   replayMessageText: {fileID: 237543220}
   openedPages: 1
-  friendshipInfo: 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
-  fmRP: 0
-  evRP: 0
-  replayState: 0
 --- !u!1 &1544820110
 GameObject:
   m_ObjectHideFlags: 0
@@ -50983,7 +50960,6 @@ RectTransform:
   - {fileID: 643574689}
   - {fileID: 593335937}
   - {fileID: 1314907056}
-  - {fileID: 1391983188}
   - {fileID: 1296683913}
   - {fileID: 534212647}
   - {fileID: 801581599}
@@ -50992,6 +50968,7 @@ RectTransform:
   - {fileID: 1177577848}
   - {fileID: 2095933828}
   - {fileID: 208103414}
+  - {fileID: 1391983188}
   m_Father: {fileID: 1751023024}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}

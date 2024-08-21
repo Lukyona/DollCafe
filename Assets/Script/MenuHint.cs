@@ -374,8 +374,8 @@ public class MenuHint : MonoBehaviour
             //Debug.Log("함수 MHFadeIn");
             if (SystemManager.instance.GetMainCount() == 2) //만약 서빙 튜토리얼이면
             {
-                UI_Assistant1.instance.panel5.SetActive(false); //패널 5 닫고 
-                UI_Assistant1.instance.panel6.SetActive(true); //패널 6이 보이게
+                Dialogue.instance.SetPanelActive(5,false); //패널 5 닫고 
+                Dialogue.instance.SetPanelActive(6,true); //패널 6이 보이게
             }
             StartCoroutine(FadeToFullAlpha()); //페이드인 시작
         }

@@ -159,8 +159,8 @@ public class Menu : MonoBehaviour
                 MenuHint.instance.GetHintBubble(1).transform.parent.GetComponent<Canvas>().sortingOrder = 4;
 
                 boardCloseButton.GetComponent<Button>().interactable = false; //닫기 버튼 불가
-                UI_Assistant1.instance.panel6.SetActive(false); //패널 없애고
-                UI_Assistant1.instance.OpenDialogue2(); //다음 대사 나타남
+                Dialogue.instance.SetPanelActive(6,false); //패널 없애고
+                Dialogue.instance.OpenDialogue(); //다음 대사 나타남
                 Invoke(nameof(CanTouchMenu), 1f);
             }
             else
@@ -282,8 +282,7 @@ public class Menu : MonoBehaviour
 
                 if (SystemManager.instance.GetMainCount() == 2) //서빙 튜토리얼일 경우
                 {
-                    reactionFadeIn.Enqueue(seatNum); //리액션 페이드인 큐에 자리 정보 추가
-                    UI_Assistant1.instance.Invoke("OpenDialogue2",0.5f);
+                    Dialogue.instance.Invoke("OpenDialogue",0.5f);
                     SystemManager.instance.SetCanTouch(true,1.5f);
                     VisitorNote.instance.IncreaseFrinedshipGauge(characterNum);
                 }
@@ -451,7 +450,7 @@ public class Menu : MonoBehaviour
         }
         TableMenu[seatNum].SetActive(true);
         Reaction[seatNum].SetActive(true);
-        if(cNum == 11 && UI_Assistant1.instance.getMenu == 2)
+        if(cNum == 11 && Dialogue.instance.GetSpecialMenuState() == 2)
         {
             SetTableMenu(31, seatNum); //스페셜 메뉴 이미지 설정
         }
@@ -511,7 +510,7 @@ public class Menu : MonoBehaviour
 
         if(canStartEvent)
         {
-            if((CharacterAppear.instance.eventOn == 9 || CharacterAppear.instance.eventOn == 10) && UI_Assistant1.instance.getMenu == 0)//친구,찰스1 친밀도 이벤트 처음일 때
+            if((CharacterAppear.instance.eventOn == 9 || CharacterAppear.instance.eventOn == 10) && Dialogue.instance.GetSpecialMenuState() == 0)//친구,찰스1 친밀도 이벤트 처음일 때
             {
                 SystemManager.instance.BeginDialogue(CharacterAppear.instance.eventOn);//시나리오 시작
                 canStartEvent = false;
@@ -521,12 +520,12 @@ public class Menu : MonoBehaviour
                 SystemManager.instance.BeginDialogue(11);
                 canStartEvent = false;
             }
-            if (CharacterAppear.instance.eventOn == 14 && isHeroServed && isDinoServed && UI_Assistant1.instance.getMenu == 0)//히로디노 친밀도 이벤트의 경우
+            if (CharacterAppear.instance.eventOn == 14 && isHeroServed && isDinoServed && Dialogue.instance.GetSpecialMenuState() == 0)//히로디노 친밀도 이벤트의 경우
             {
                 SystemManager.instance.BeginDialogue(12);
                 canStartEvent = false;
             }
-            if(CharacterAppear.instance.eventOn == 16 && UI_Assistant1.instance.getMenu == 0)//롤렝드 친밀도 이벤트의 경우
+            if(CharacterAppear.instance.eventOn == 16 && Dialogue.instance.GetSpecialMenuState() == 0)//롤렝드 친밀도 이벤트의 경우
             {
                 SystemManager.instance.BeginDialogue(14);
                 SmallFade.instance.SetCharacter(17);
@@ -580,7 +579,7 @@ public class Menu : MonoBehaviour
             //Debug.Log("페이드아웃될 자리 " + n);
             SmallFade.instance.FadeOut(cNum); //작은 캐릭터 페이드아웃   
         }
-        else if(CharacterAppear.instance.eventOn == 14 && cNum == 12 && UI_Assistant1.instance.getMenu == 2)
+        else if(CharacterAppear.instance.eventOn == 14 && cNum == 12 && Dialogue.instance.GetSpecialMenuState() == 2)
         {//히로디노 이벤트 중에 페이드아웃하는 캐릭터가 히로이고 디노 페이드아웃 전일 때
             SmallFade.instance.FadeOut(cNum); //작은 캐릭터 페이드아웃
         }
@@ -667,7 +666,7 @@ public class Menu : MonoBehaviour
         if(SmallFade.instance.SittingCharacter[num] != null)//현재 앉아있는 캐릭터가 null이 아닐 때
         {
             string charName = SmallFade.instance.SittingCharacter[num].name;
-            if ((charName == "small_12Hero" || charName == "small_13Dinosour") && UI_Assistant1.instance.getMenu == 0)
+            if ((charName == "small_12Hero" || charName == "small_13Dinosour") && Dialogue.instance.GetSpecialMenuState() == 0)
             {//히로디노이고, 이벤트가 아닐 때
                 if(charName == "small_12Hero")
                 {
@@ -693,7 +692,7 @@ public class Menu : MonoBehaviour
                     MenuFadeOut(num, false); // 앞의 캐릭터 메뉴 페이드아웃 끝나고 실행
                 }
             }
-            else if (Dialogue.instance.CharacterDC[10] == 3 && (charName == "small_6Princess" || charName == "small_10Soldier"))
+            else if (Dialogue.instance.GetCharacterDC(10) == 3 && (charName == "small_6Princess" || charName == "small_10Soldier"))
             {
                 if (charName == "small_6Princess")
                 {

@@ -20,7 +20,7 @@ public class CharacterVisit : MonoBehaviour //캐릭터 등장에 관한 스크�
     public int visitC = 0; //방문할 캐릭터, 친밀도 이벤트 함수에서 사용
     public void RandomVisit()//캐릭터들의 카페 방문, 등장한 캐릭터 중에 랜덤으로 방문
     {
-        if ((VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0 && UI_Assistant1.instance.talking) || PlayerPrefs.GetInt("EndingState") == 1)//캐릭터와 대화 중일 경우 혹은 엔딩이벤트 할 경우 함수 종료
+        if ((VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0 && Dialogue.instance.IsTalking()) || PlayerPrefs.GetInt("EndingState") == 1)//캐릭터와 대화 중일 경우 혹은 엔딩이벤트 할 경우 함수 종료
         {
             return;
         }

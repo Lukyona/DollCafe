@@ -298,7 +298,7 @@ public class VisitorNote : MonoBehaviour
 
             for(int i = 4; i < 8; i++) //5-8페이지 중 열려있는 페이지 활성화
             {
-                if(openedPages - i != 0)//페이지가 열려있으면(해당 캐릭터가 방문했었으면)
+                if(openedPages - i > 0)//페이지가 열려있으면(해당 캐릭터가 방문했었으면)
                 {
                     pages[i].SetActive(true);
                 }
@@ -319,7 +319,7 @@ public class VisitorNote : MonoBehaviour
 
             for (int i = 8; i < 12; i++) //9-12페이지 중
             {
-                if (openedPages - i != 0)//페이지가 열려있으면
+                if (openedPages - i > 0)//페이지가 열려있으면
                 {
                     pages[i].SetActive(true);
                 }
@@ -759,7 +759,7 @@ public class VisitorNote : MonoBehaviour
     {
         if (firstMeetID != 0)//첫 만남 다시보기일 때
         {
-            Dialogue.instance.CharacterDC[firstMeetID] = 0;//캐릭터DC를 0으로 만들고
+            Dialogue.instance.SetCharacterDC(firstMeetID, 0);//캐릭터DC를 0으로 만들고
             if (firstMeetID != 14)
             {
                 SystemManager.instance.BeginDialogue(firstMeetID);
@@ -773,27 +773,27 @@ public class VisitorNote : MonoBehaviour
         {
             if (friendEventID <= 10)//10까지
             {
-                Dialogue.instance.CharacterDC[friendEventID] = 1;//캐릭터DC를 1로 만들고
+                Dialogue.instance.SetCharacterDC(firstMeetID, 1);//캐릭터DC를 1로 만들고
                 SystemManager.instance.BeginDialogue(friendEventID);
             }
             else if (friendEventID == 11)//찰스2 이벤트
             {
-                Dialogue.instance.CharacterDC[10] = 2;
+                Dialogue.instance.SetCharacterDC(10, 2);
                 SystemManager.instance.BeginDialogue(10);
             }
             else if (friendEventID == 12)//무명이1 이벤트
             {
-                Dialogue.instance.CharacterDC[11] = 1;
+                Dialogue.instance.SetCharacterDC(11, 1);
                 SystemManager.instance.BeginDialogue(11);
             }
             else if (friendEventID == 13)//무명이2 이벤트
             {
-                Dialogue.instance.CharacterDC[11] = 2;
+                Dialogue.instance.SetCharacterDC(11, 2);
                 SystemManager.instance.BeginDialogue(11);
             }
             else //14부터
             {
-                Dialogue.instance.CharacterDC[friendEventID - 2] = 1;//캐릭터DC를 1로 만들고
+                Dialogue.instance.SetCharacterDC(friendEventID - 2, 1);//캐릭터DC를 1로 만들고
                 int n = friendEventID - 2;
                 if (friendEventID == 16)
                 {
@@ -1111,30 +1111,26 @@ public class VisitorNote : MonoBehaviour
                 replayState = 0;
                 if (firstMeetID != 0)//첫 만남 다시보기일 때
                 {
-                    Dialogue.instance.CharacterDC[firstMeetID] = 3;
+                    Dialogue.instance.SetCharacterDC(firstMeetID, 3);
                     firstMeetID = 0;
                 }
                 else if (friendEventID != 0) //이벤트 다시보기일 때
                 {
                     if (friendEventID <= 10)//10까지
                     {
-                        Dialogue.instance.CharacterDC[friendEventID] = 3;
+                        Dialogue.instance.SetCharacterDC(friendEventID, 3);
                     }
                     else if (friendEventID == 11)//찰스2 이벤트
                     {
-                        Dialogue.instance.CharacterDC[10] = 3;
+                        Dialogue.instance.SetCharacterDC(10, 3);
                     }
-                    else if (friendEventID == 12)//무명이1 이벤트
+                    else if (friendEventID == 12 || friendEventID == 13)//무명이1 이벤트
                     {
-                        Dialogue.instance.CharacterDC[11] = 3;
-                    }
-                    else if (friendEventID == 13)//무명이2 이벤트
-                    {
-                        Dialogue.instance.CharacterDC[11] = 3;
+                        Dialogue.instance.SetCharacterDC(11, 3);
                     }
                     else //14부터
                     {
-                        Dialogue.instance.CharacterDC[friendEventID - 2] = 3;
+                        Dialogue.instance.SetCharacterDC(friendEventID - 2, 3);
                     }
                     friendEventID = 0;
                 }
@@ -1142,7 +1138,7 @@ public class VisitorNote : MonoBehaviour
             
             for(int i = 1; i <= 14; i++)
             {
-                if (i != 0 && Dialogue.instance.CharacterDC[i] == 3)//제제가 아닌 캐릭터의 DC가 3이면, 시나리오가 끝났으면
+                if (i != 0 && Dialogue.instance.GetCharacterDC(i) == 3)//제제가 아닌 캐릭터의 DC가 3이면, 시나리오가 끝났으면
                 {
                     replayButtons[i - 1].gameObject.SetActive(true);//다시보기 버튼 활성화
                     if (i == 1)//도리는 손님노트 이미지를 2번째 표정으로 바꿈

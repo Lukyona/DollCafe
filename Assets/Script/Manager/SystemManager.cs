@@ -127,12 +127,12 @@ public class SystemManager : MonoBehaviour
             SEManager.instance.PlayTouchSound();
         }
 
-        if(!bangBubble.gameObject.activeSelf && !jejeBubble.gameObject.activeSelf) // 제제 말풍선 + 느낌표 말풍선이 나타나있지 않을 때
-        {
-            if(!IsInvoking(nameof(SetTipState)) && !IsInvoking(nameof(CheckTipState)))
-                CheckTipState();
-        }  
-        else if(bangBubble.gameObject.activeSelf && tipNum == 3 && Menu.instance.IsMenuOpen(8)) //느낌표 말풍선 올라와있고 팁넘버 3 + 마지막 메뉴 잠금 해제 완료
+        // if(!bangBubble.gameObject.activeSelf && !jejeBubble.gameObject.activeSelf) // 제제 말풍선 + 느낌표 말풍선이 나타나있지 않을 때
+        // {
+        //     if(!IsInvoking(nameof(SetTipState)) && !IsInvoking(nameof(CheckTipState)))
+        //         CheckTipState();
+        // }  
+        if(bangBubble.gameObject.activeSelf && tipNum == 3 && Menu.instance.IsMenuOpen(8)) //느낌표 말풍선 올라와있고 팁넘버 3 + 마지막 메뉴 잠금 해제 완료
         {
             if(HPManager.instance.GetCurrentHP() == HPManager.instance.GetMaxHP()) //현재 체력이 최대치면 느낌표 말풍선 없애기, 체력으로 교환할 필요가 없기 때문
             {
@@ -145,9 +145,8 @@ public class SystemManager : MonoBehaviour
     {
         //PlayerPrefs.SetInt("PurchaseCount", 0); //인앱 결제 정보 저장
         //PlayerPrefs.Save(); //세이브
-        Dialogue.instance.CharacterDC[0] = 2;
-        endingState =1;
-        SaveDataInfo();
+        //endingState =1;
+        //SaveDataInfo();
         //Dialogue.instance.CharacterDC[12] = 1;
         //Dialogue.instance.CharacterDC[10] = 2;
         //VisitorNote.instance.FriendshipInfo[9] = 10;
@@ -190,7 +189,7 @@ public class SystemManager : MonoBehaviour
                     Star.instance.Invoke("ActivateStarSystem", 25f);//25초 뒤 별 함수 시작
                     //Debug.Log("스타시스템 25초 뒤 시작");
                 }
-                if (!CharacterVisit.instance.IsInvoking("RandomVisit") && endingState != 1 && !UI_Assistant1.instance.talking)
+                if (!CharacterVisit.instance.IsInvoking("RandomVisit") && endingState != 1 && !Dialogue.instance.IsTalking())
                 { // 엔딩이벤트 중이 아니어야 하고 대화 중이 아니어야함
                     CharacterVisit.instance.Invoke("RandomVisit", 5f); //캐릭터 랜덤 방문
                 }
@@ -294,7 +293,7 @@ public class SystemManager : MonoBehaviour
 
                 for (int i = 1; i <= mainCount - 2; i++)//재방문 캐릭터 설정
                 {
-                    if(Dialogue.instance.CharacterDC[10] == 3)//찰스2 이벤트를 했을 시에는
+                    if(Dialogue.instance.GetCharacterDC(10) == 3)//찰스2 이벤트를 했을 시에는
                     {
                         if (i == 6)//도로시 넘버에서 찰스도로시 추가
                         {
@@ -347,7 +346,7 @@ public class SystemManager : MonoBehaviour
                 break;
             case 2: // 서빙 튜토리얼 완료
                 Menu.instance.ReactionFadeIn(Menu.instance.GetSeatNum(),1f); // 도리 리액션 말풍선 페이드인
-                UI_Assistant1.instance.panel7.SetActive(false);      
+                Dialogue.instance.SetPanelActive(7,false);      
                 SmallFade.instance.SetCharacter(0); // 제제 자리로 돌아가기
                 Dialogue.instance.SetCharacterNum(2); //다음 등장 캐릭터 붕붕
                 Menu.instance.GetBoardCloseButton().interactable = true; //메뉴 닫기 버튼 가능
@@ -458,25 +457,25 @@ public class SystemManager : MonoBehaviour
             {
                 case 10:
                     CharacterManager.instance.SetFaceNum(cNum);
-                    if (Dialogue.instance.CharacterDC[cNum] == 2)//찰스1 이벤트
+                    if (Dialogue.instance.GetCharacterDC(cNum) == 2)//찰스1 이벤트
                     {
                         SmallFade.instance.CanClickCharacter(6);//도로시 클릭 가능하게
                         Menu.instance.MenuFadeOut();//메뉴 페이드아웃
                     }
-                    else if (Dialogue.instance.CharacterDC[cNum] == 3)//찰스2 이벤트
+                    else if (Dialogue.instance.GetCharacterDC(cNum) == 3)//찰스2 이벤트
                     {
-                        UI_Assistant1.instance.getMenu = 0;
+                        Dialogue.instance.SetSpecialMenuState(0);
                         SmallFade.instance.CanClickCharacter(6);//도로시 클릭 가능하게
                         SmallFade.instance.CanClickCharacter(10);//찰스 클릭 가능하게
                         VisitorNote.instance.ActivateReplayButton(cNum-1);         
                     }
                     break;
                 case 11:
-                    if (Dialogue.instance.CharacterDC[cNum] == 2)//무명이1 이벤트
+                    if (Dialogue.instance.GetCharacterDC(cNum) == 2)//무명이1 이벤트
                     {
                         CharacterManager.instance.SetFaceNum(11);
                     }
-                    else if (Dialogue.instance.CharacterDC[cNum] == 3)//무명이2 이벤트
+                    else if (Dialogue.instance.GetCharacterDC(cNum) == 3)//무명이2 이벤트
                     {
                         CharacterManager.instance.SetFaceNum(12);
                         VisitorNote.instance.SetCharacterImage(cNum, CharacterManager.instance.CharacterFaceList[cNum - 2].face[3].GetComponent<Image>().sprite);
@@ -522,9 +521,9 @@ public class SystemManager : MonoBehaviour
     public void CheckEndingCondition() //모든 시나리오를 봤는지 확인
     {
         int sum = 0;
-        for(int i = 1; i < Dialogue.instance.CharacterDC.Length; i++)
+        for(int i = 1; i < 15; i++)
         {
-            sum += Dialogue.instance.CharacterDC[i];
+            sum += Dialogue.instance.GetCharacterDC(i);
         }
 
         if(sum == 42 && Menu.instance.IsMenuOpen(8)) //캐릭터들 시나리오를 모두 봄 & 마지막 메뉴 잠금 해제 완료
@@ -546,7 +545,7 @@ public class SystemManager : MonoBehaviour
         EndDialogue();
         if (VisitorNote.instance.GetFirstMeetID() != 0)//첫 만남 다시보기 이후면
         {            
-            Dialogue.instance.CharacterDC[VisitorNote.instance.GetFirstMeetID()] = 3;// 원래 값으로 돌려놓기
+            Dialogue.instance.SetCharacterDC(VisitorNote.instance.GetFirstMeetID(), 3);// 원래 값으로 돌려놓기
             VisitorNote.instance.SetFirstMeetID(0);
         }
         if (VisitorNote.instance.GetFriendEventID() != 0)
@@ -558,12 +557,12 @@ public class SystemManager : MonoBehaviour
                 {
                     CharacterManager.instance.SetFaceNum(id);
                 }
-                Dialogue.instance.CharacterDC[id] = 3;// 원래 값으로 돌려놓기
+                Dialogue.instance.SetCharacterDC(id, 3);// 원래 값으로 돌려놓기
             }
             else if(id == 11)//찰스2 이밴트
             {
                 CharacterManager.instance.SetFaceNum(10);
-                Dialogue.instance.CharacterDC[10] = 3;// 원래 값으로 돌려놓기
+                Dialogue.instance.SetCharacterDC(10, 3);// 원래 값으로 돌려놓기
             }
             else if(id == 12 || id == 13)//무명이1,2 이벤트
             {
@@ -575,7 +574,7 @@ public class SystemManager : MonoBehaviour
                 {
                     CharacterManager.instance.SetFaceNum(12);
                 }
-                Dialogue.instance.CharacterDC[11] = 3;// 원래 값으로 돌려놓기
+                Dialogue.instance.SetCharacterDC(11, 3);// 원래 값으로 돌려놓기
             }
             else if(id >= 14)//14이상이면
             {
@@ -583,7 +582,7 @@ public class SystemManager : MonoBehaviour
                 {
                     CharacterManager.instance.SetFaceNum(13);
                 }
-                Dialogue.instance.CharacterDC[id - 2] = 3;// 원래 값으로 돌려놓기
+                Dialogue.instance.SetCharacterDC(id - 2, 3);// 원래 값으로 돌려놓기
             }
             
             VisitorNote.instance.SetFriendEventID(0);
@@ -685,10 +684,10 @@ public class SystemManager : MonoBehaviour
         }
 
         TBAnimator.SetTrigger("TextBoxUp");
-        if(mainCount == 2 && UI_Assistant1.instance.GetCurrentDialogueCount() != 0)
-            UI_Assistant1.instance.Invoke("OpenDialogue2", 0.1f); //다음 대사
+        if(mainCount == 2 && Dialogue.instance.GetCurrentDialogueCount() != 0)
+            Dialogue.instance.Invoke("OpenDialogue", 0.1f); //다음 대사
         else
-            UI_Assistant1.instance.OpenDialogue(); //대화 시작, 대사 띄움
+            Dialogue.instance.OpenDialogue(); //대화 시작, 대사 띄움
     }
 
     public void DownTextBox() //서빙 튜토리얼 시 사용
@@ -943,7 +942,7 @@ public class SystemManager : MonoBehaviour
                 {
                     max = 15;
                 }
-                if (Dialogue.instance.CharacterDC[11] == 3)
+                if (Dialogue.instance.GetCharacterDC(11) == 3)
                 {
                     max = 16;
                 }

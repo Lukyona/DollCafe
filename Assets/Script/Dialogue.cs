@@ -4,18 +4,23 @@ using UnityEngine.UI;
 public class Dialogue : MonoBehaviour //캐릭터들 대화
 {
     public static Dialogue instance;
+    [SerializeField] Text charName; //캐릭터 이름
+    [SerializeField] GameObject[] panels = new GameObject[9]; //캐릭터 뒤의 나타날 회색 패널
+    [SerializeField] Text characterText; //캐릭터 대사
+    [SerializeField] Text babyText; //아기 대사
+
+    TextWriter.TextWriterSingle textWriterSingle;
+    string[] messageArray = null;
+
+    int[] characterDC = new int[15]; //캐릭터들 다이얼로그 카운트, 인덱스 0 제제, 1 도리, BackToCafe에서 ++
     int characterNum = 0; //캐릭터 번호, 0은 제제, 1은 도리, 2는 붕붕, …
-    private TextWriter.TextWriterSingle textWriterSingle;
-    public Text CName; //캐릭터 이름
-    public string[] messegeArray = null;
-    public int[] CharacterDC = new int[15]; //캐릭터들 다이얼로그 카운트, 인덱스 0 제제, 1 도리, BackToCafe에서 ++
-
     string babyName; //아기 이름
-
     bool isBabyText = false;
+    int count = -1; //대사 카운트
+    bool isTalking = false; // true면 대화중
+    int specialMenuState = 0; //1이면 주인공 아기가 스페셜 메뉴를 가져오는 중, 친밀도 이벤트 시나리오 중 아기 페이드인에 사용
 
-
-    private void Awake()
+    void Awake()
     {     
         if (instance == null)
         {
@@ -25,11 +30,16 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
 
     void Update() //화면의 아무 곳이나 터치하면 다음 대사 나타남
     {
-        if (UI_Assistant1.instance.talking && SystemManager.instance.CanTouch() 
+        if (IsTalking() && SystemManager.instance.CanTouch() 
             && !SystemManager.instance.IsNeedAction() && Input.GetMouseButtonDown(0))
         {
-            UI_Assistant1.instance.OpenDialogue2();
+            OpenDialogue();
         }
+    }
+
+    public void SetPanelActive(int panelNum, bool state)
+    {
+        panels[panelNum -1].SetActive(state);
     }
 
     public void SetCharacterNum(int num)
@@ -52,15 +62,45 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
         return isBabyText;
     }
 
-    public void UpdateCharacterDC(int cNum = -1)
+    public int GetCurrentDialogueCount()
+    {
+        return count;
+    }
+
+    public int GetCharacterDC(int cNum)
+    {
+        return characterDC[cNum];
+    }
+
+    public void SetCharacterDC(int cNum, int value)
+    {
+        characterDC[cNum] = value;
+    }
+
+    public int GetSpecialMenuState()
+    {
+        return specialMenuState;
+    }
+
+    public void SetSpecialMenuState(int value)
+    {
+        specialMenuState = value;
+    }
+
+    public bool IsTalking()
+    {
+        return isTalking;
+    }
+
+   public void UpdateCharacterDC(int cNum = -1)
     {
         if(cNum != -1)
             characterNum = cNum;
 
-        ++CharacterDC[characterNum];
-        if(cNum != 10 && cNum != 11 && CharacterDC[characterNum] == 2) ///찰스, 무명이 제외하고는 친밀도 이벤트가 한 번뿐임
+        ++characterDC[characterNum];
+        if(cNum != 10 && cNum != 11 && characterDC[characterNum] == 2) ///찰스, 무명이 제외하고는 친밀도 이벤트가 한 번뿐임
         {
-            CharacterDC[characterNum] = 3; // 캐릭터 에피소드 끝남
+            characterDC[characterNum] = 3; // 캐릭터 에피소드 끝남
         }
 
         SaveCharacterDCInfo();
@@ -72,16 +112,16 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
         {
             string strArr = ""; // 문자열 생성
 
-            for (int i = 0; i < CharacterDC.Length; i++) // 배열과 ','를 번갈아가며 tempStr에 저장
+            for (int i = 0; i < characterDC.Length; i++) // 배열과 ','를 번갈아가며 tempStr에 저장
             {
-                strArr = strArr + CharacterDC[i];
-                if (i < CharacterDC.Length - 1) // 최대 길이의 -1까지만 ,를 저장
+                strArr = strArr + characterDC[i];
+                if (i < characterDC.Length - 1) // 최대 길이의 -1까지만 ,를 저장
                 {
                     strArr = strArr + ",";
                 }
             }
 
-            PlayerPrefs.SetString("CharacterDC", strArr); // PlyerPrefs에 문자열 형태로 저장
+            PlayerPrefs.SetString("characterDC", strArr); // PlyerPrefs에 문자열 형태로 저장
             PlayerPrefs.Save(); //세이브
         }
         catch (System.Exception e)
@@ -95,13 +135,13 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
         bool result = false;
         try
         {
-            if (PlayerPrefs.HasKey("CharacterDC"))
+            if (PlayerPrefs.HasKey("characterDC"))
             {
-                string[] dataArr = PlayerPrefs.GetString("CharacterDC").Split(','); // PlayerPrefs에서 불러온 값을 Split 함수를 통해 문자열의 ,로 구분하여 배열에 저장
+                string[] dataArr = PlayerPrefs.GetString("characterDC").Split(','); // PlayerPrefs에서 불러온 값을 Split 함수를 통해 문자열의 ,로 구분하여 배열에 저장
 
                 for (int i = 0; i < dataArr.Length; i++)
                 {
-                    CharacterDC[i] = System.Convert.ToInt32(dataArr[i]); // 문자열 형태로 저장된 값을 정수형으로 변환후 저장                  
+                    characterDC[i] = System.Convert.ToInt32(dataArr[i]); // 문자열 형태로 저장된 값을 정수형으로 변환후 저장                  
                 }
             }
 
@@ -109,9 +149,2674 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
         }
         catch (System.Exception e)
         {
-            Debug.LogError("LoadCharacterDCInfo Failed (" + e.Message + ")");
+            Debug.LogError("LoadcharacterDCInfo Failed (" + e.Message + ")");
         }
         return result;
+    }
+
+    public void OpenDialogue() //대화 시작
+    {
+        if(count == -1) // 첫 대사
+        {
+            isTalking = true;
+            SystemManager.instance.SetCanTouch(false);
+            SelectedFirstDialogue(); //첫 문장 나타남
+            SystemManager.instance.SetCanTouch(true,1.5f); // 1.5초 뒤 터치 가능
+            ++count;
+        }
+        else
+        {
+            if (textWriterSingle != null && textWriterSingle.IsActive()) // 대사 출력 도중 터치했을 경우 출력 스킵, 바로 대사 전부 출력
+            {
+                textWriterSingle.WriteAllAndDestroy();
+            }
+            else
+            {
+                DialogueEvent(); //대화 이벤트 있으면 실행
+                SelectedNextDialogue(); //다음 대사 가져오기
+                string[] messeges = messageArray;
+                if (count < messeges.Length) //대사 카운트가 대사 갯수와 같아질 때까지 반복
+                {
+                    string messege = messeges[count];
+                    if (IsBabayText()) //주인공 대사일 경우
+                    {
+                        characterText.text = "";
+                        SystemManager.instance.ChangeToBabyTB();
+                        textWriterSingle = TextWriter.AddWriter_Static(babyText, messege);
+                    }
+                    else
+                    {
+                        babyText.text = "";
+                        SystemManager.instance.ChangeToCharacterTB(); //캐릭터 대사창으로 변경
+                        textWriterSingle = TextWriter.AddWriter_Static(characterText, messege);
+                    }
+
+                    count++;
+                }
+                else if (count == messeges.Length) //대사가 모두 끝났을 때
+                {
+                    count = 0;
+                    characterText.text = ""; //대사창 공백으로 만들고
+                    babyText.text = "";
+                    if(VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//첫 만남이나 이벤트 다시보기가 아닐 경우
+                    {
+                        if (characterDC[CharacterManager.instance.GetCharacterNum()] == 0 || characterDC[0] == 1)//캐릭터들의 첫 방문이거나 제제 튜토리얼 때는 BackToCafe() 실행
+                        {
+                            SystemManager.instance.BackToCafe(); //카페로 복귀
+                        }
+                        else //그 외에 친밀도 이벤트 대화의 경우는 BackToCafe2() 실행
+                        {
+                            SystemManager.instance.BackToCafe2(CharacterManager.instance.GetCharacterNum());
+                        }
+                    }
+                    else//첫 만남 혹은 이벤트 다시보기일 때
+                    {
+                        SystemManager.instance.AfterRePlayStroy();
+                    }
+                    
+                    isTalking = false;
+                }
+            }
+        }
+    }  
+    
+    private void DialogueEvent() //대화 이벤트
+    {
+        int cNum = CharacterManager.instance.GetCharacterNum();
+        int babyNum = -1; // 친밀도 이벤트 시에 주인공 페이드인/아웃에 사용
+        int babySeatNum = -1;
+
+        if(cNum != 0) // 캐릭터 번호에 따라 주인공 이미지가(왼쪽/오른쪽) 결정됨
+        {
+            if(cNum % 2 == 0) // 캐릭터가 짝수 (왼쪽에 앉아있음)
+            {
+                babyNum = 16;
+                babySeatNum = SmallFade.instance.CharacterSeat[cNum-1]+1;
+            }
+            else
+            {
+                babyNum = 17;
+                babySeatNum = SmallFade.instance.CharacterSeat[cNum-1]-1;
+            }
+        }
+
+        switch (cNum)
+        {
+            case 0: //제제
+                if (characterDC[0] == 0)
+                {
+                    switch (count)
+                    {
+                        case 1:
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(true);
+                            SetBabyText(true);
+                            break;
+                        case 2:
+                            SetBabyText(false);
+                            break;
+                        case 4:
+                            SystemManager.instance.SetCanTouch(false);
+                            SystemManager.instance.SetNeedAction(true);
+                            SystemManager.instance.Invoke("ShowBabyNameSettingWindow", 1.3f);//아기 이름 설정
+                            break;
+                        case 5:
+                            CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
+                            SetBabyText(true);
+                            break;
+                        case 6:
+                            SetBabyText(false);
+                            charName.text = "제제";
+                            break;
+                        case 7:
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[4].SetActive(true);
+                            SetBabyText(true);
+                            break;
+                        case 8:
+                            CharacterManager.instance.CharacterFaceList[0].face[0].SetActive(true);
+                            SetBabyText(false);
+                            break;
+                        case 9:
+                            CharacterManager.instance.CharacterFaceList[0].face[0].SetActive(false);
+                            panels[0].SetActive(false);
+                            panels[1].SetActive(true);
+                            break;
+                        case 12:
+                            panels[1].SetActive(false);
+                            panels[2].SetActive(true);
+                            break;
+                        case 15:
+                            panels[2].SetActive(false);
+                            panels[3].SetActive(true);
+                            break;
+                        case 20:
+                            CharacterManager.instance.CharacterFaceList[13].face[4].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(true);
+                            SetBabyText(true);
+                            break;
+                        case 21:
+                            SetBabyText(false);
+                            break;
+                        case 22:
+                            CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
+                            SetBabyText(true);
+                            break;
+                        case 23:
+                            SetBabyText(false);
+                            panels[3].SetActive(false);
+                            panels[4].SetActive(true);
+                            break;
+                        case 25:
+                            panels[4].SetActive(false);
+                            panels[8].SetActive(true);
+                            break;
+                        case 29:
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(true);
+                            SetBabyText(true);
+                            break;
+                        case 30:
+                            CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
+                            SetBabyText(false);
+                            panels[8].SetActive(false);
+                            panels[0].SetActive(true);
+                            break;
+                    }
+                }
+                else if (characterDC[0] == 1)
+                {
+                    switch (count)
+                    {
+                        case 1:
+                            SmallFade.instance.SetCharacter(1); //도리 작은 캐릭터 설정
+                            break;
+                        case 2: 
+                            SmallFade.instance.FadeIn(); //도리 페이드인
+                            panels[0].SetActive(false);
+                            panels[5].SetActive(true);
+                            SystemManager.instance.SetCanTouch(false);
+                            SystemManager.instance.SetNeedAction(true);
+                            SystemManager.instance.Invoke("DownTextBox", 1.3f);
+                            break;
+                        case 3: //도리 터치 후, 메뉴 힌트 말풍선 등장
+                            SystemManager.instance.SetNeedAction(false);
+                            SystemManager.instance.SetCanTouch(true,1f);
+                            break;
+                        case 5: // 메뉴 힌트 말풍선 터치 활성화
+                            SystemManager.instance.SetNeedAction(true);
+                            SystemManager.instance.SetCanTouch(false);
+                            MenuHint.instance.Invoke("CanClickMHB",1f);
+                            break;
+                        case 7:
+                            SystemManager.instance.SetNeedAction(false);
+                            panels[6].SetActive(false);
+                            panels[7].SetActive(true);
+                            break;
+                    }
+                }
+                else if (characterDC[0] == 1)
+                {
+                    Debug.Log("?????");
+                    if(count == 11)
+                    {
+                        SmallFade.instance.SmallCharacter[0].GetComponent<Button>().interactable = false;//제제 클릭 불가
+                    }
+                }
+                break;
+            case 1: // 도리
+                if (characterDC[1] == 0)
+                {
+                    switch (count)
+                    {
+                        case 0:
+                            SetBabyText(true);
+                            break;
+                        case 1:
+                            SetBabyText(false);
+                            break;
+                        case 4:
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[4].SetActive(true);
+                            SetBabyText(true);
+                            break;
+                        case 5:
+                            SetBabyText(false);
+                            break;
+                        case 6:
+                            CharacterManager.instance.CharacterFaceList[13].face[4].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
+                            SetBabyText(true);
+                            break;
+                        case 7:
+                            SetBabyText(false);
+                            break;
+                        case 8:
+                            charName.text = "도리";
+                            break;
+                    }
+                }
+                else if (characterDC[1] == 1)
+                {
+                    switch (count)
+                    {
+                        case 0:
+                            SetBabyText(true);
+                            if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
+                            {
+                                SmallFade.instance.SetCharacter(babyNum);
+                            }
+                            break;
+                        case 1:
+                            SetBabyText(false);
+                            break;
+                        case 2:
+                            SetBabyText(true);
+                            break;
+                        case 3:
+                            CharacterManager.instance.CharacterFaceList[1].face[0].SetActive(true);//표정 1
+                            SetBabyText(false);
+                            break;
+                        case 4:
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(true);
+                            SetBabyText(true);
+                            break;
+                        case 5:
+                            SetBabyText(false);
+                            break;
+                        case 6:
+                            CharacterManager.instance.CharacterFaceList[1].face[0].SetActive(false);//표정 기본으로
+                            break;
+                        case 10:
+                            CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(true);
+                            SetBabyText(true);
+                            break;
+                        case 11:
+                            SetBabyText(false);
+                            break;
+                        case 12:
+                            CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[4].SetActive(true);
+                            SetBabyText(true);
+                            break;
+                        case 13:
+                            SetBabyText(false);
+                            break;
+                        case 14:
+                            SetBabyText(true);
+                            break;
+                        case 15:
+                            CharacterManager.instance.CharacterFaceList[13].face[4].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(true);
+                            break;
+                        case 16:
+                            SetBabyText(false);
+                            break;
+                        case 17:
+                            CharacterManager.instance.CharacterFaceList[1].face[0].SetActive(true);//표정 1
+                            break;
+                        case 18:
+                            CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[2].SetActive(true);
+                            SetBabyText(true);
+                            break;
+                        case 19:
+                            CharacterManager.instance.CharacterFaceList[1].face[0].SetActive(false);//표정 기본으로
+                            SetBabyText(false);
+                            break;                          
+                        case 21:
+                            CharacterManager.instance.CharacterFaceList[13].face[2].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(true);
+                            SetBabyText(true);
+                            break;
+                        case 22:
+                            CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(true);
+                            break;
+                        case 23:
+                            SetBabyText(false);
+                            break;
+                        case 25:
+                            CharacterManager.instance.CharacterFaceList[1].face[1].SetActive(true);//표정 2
+                            break;
+                        case 27://여기서 주인공 아기 메뉴 가지러 페이드아웃
+                            CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[3].SetActive(true);
+                            SetBabyText(true);
+                            if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
+                            {
+                                specialMenuState = 1; //메뉴 가지러 갔음
+                                SmallFade.instance.FadeOut(babyNum, babySeatNum); //주인공(왼쪽) 페이드아웃
+                            }                                                  
+                            break;
+                        case 28:
+                            CharacterManager.instance.CharacterFaceList[1].face[1].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[1].face[0].SetActive(true);//표정 1
+                            SetBabyText(false);
+                            if(VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
+                            {
+                                SystemManager.instance.SetCanTouch(false);
+                                SystemManager.instance.SetCanTouch(true,1f);
+                                Menu.instance.SetFriendEventMenu(1);//스페셜 메뉴 준비
+                            }
+                            else //다시보기일 때, 특별 메뉴 팝업 설정
+                            {
+                                Menu.instance.SetTableMenu(11, 0);
+                            }
+                            break;
+                        case 29:
+                            CharacterManager.instance.CharacterFaceList[13].face[3].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
+                            SystemManager.instance.SetCanTouch(false);
+                            SetBabyText(true);
+                            if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
+                            {
+                                SmallFade.instance.SetCharacter(babyNum);
+                                Menu.instance.MenuFadeIn();//스페셜 메뉴 페이드인
+                            }                                
+                            Popup.instance.OpenPopup();//메뉴 팝업, 팝업 닫으면 다음 대사 넘기기 가능
+                            break;
+                        case 30:
+                            CharacterManager.instance.CharacterFaceList[1].face[0].SetActive(false);
+                            SetBabyText(false);
+                            if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
+                            {
+                                specialMenuState = 2; //메뉴 갖다줬음
+                            }     
+                            break;
+                        case 31:
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(true);
+                            SetBabyText(true);
+                            break;
+                        case 32:
+                            CharacterManager.instance.CharacterFaceList[1].face[1].SetActive(true);
+                            SetBabyText(false);
+                            break;
+                        case 33:
+                            SetBabyText(true);
+                            break;
+                        case 34:
+                            SetBabyText(false);
+                            break;
+                        case 35:
+                            CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(true);
+                            SetBabyText(true);
+                            break;
+                        case 36:
+                            SetBabyText(false);
+                            if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
+                            {
+                                VisitorNote.instance.OpenHiddenText(1);//도리 손님노트 정보 갱신
+                            }
+                            CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
+                            break;
+                    }
+                }
+                break;
+            case 2: //붕붕
+                if (characterDC[2] == 0)
+                {
+                    switch (count)
+                    {
+                        case 0:
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(true);
+                            SetBabyText(true);
+                            break;
+                        case 1:
+                            CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[3].SetActive(true);
+                            break;
+                        case 2:
+                            SetBabyText(false);
+                            break;
+                        case 4:
+                            SetBabyText(true);
+                            break;
+                        case 5:
+                            SetBabyText(false);
+                            break;
+                        case 7:
+                            CharacterManager.instance.CharacterFaceList[13].face[3].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
+                            SetBabyText(true);
+                            break;
+                        case 8:
+                            SetBabyText(false);
+                            break;
+                        case 10:
+                            charName.text = "붕붕";
+                            break;
+                    }
+                }
+                else if (characterDC[2] == 1)
+                {
+                    switch (count)
+                    {
+                        case 0:
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[2].SetActive(true);
+                            SetBabyText(true);
+                            break;
+                        case 1:
+                            SetBabyText(false);
+                            if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
+                            {
+                                SmallFade.instance.FadeIn();//붕붕 페이드인
+                            }                             
+                            break;
+                        case 2:
+                            SetBabyText(true);
+                            if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
+                            {
+                                SmallFade.instance.SetCharacter(babyNum);
+                            }      
+                            break;
+                        case 3:
+                            SetBabyText(false);
+                            break;
+                        case 8:
+                            CharacterManager.instance.CharacterFaceList[13].face[2].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[3].SetActive(true);
+                            SetBabyText(true);
+                            break;
+                        case 9:
+                            SetBabyText(false);
+                            break;
+                        case 10:
+                            CharacterManager.instance.CharacterFaceList[2].face[0].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[2].face[1].SetActive(true);
+                            break;
+                        case 13:
+                            CharacterManager.instance.CharacterFaceList[2].face[1].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[2].face[0].SetActive(true);
+                            break;
+                        case 14:
+                            CharacterManager.instance.CharacterFaceList[2].face[0].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[2].face[1].SetActive(true);
+                            break;
+                        case 16:
+                            CharacterManager.instance.CharacterFaceList[13].face[3].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[7].SetActive(true);
+                            SetBabyText(true);
+                            break;
+                        case 17:
+                            CharacterManager.instance.CharacterFaceList[13].face[7].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
+                            break;
+                        case 19:
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(true);
+                            break;
+                        case 20:
+                            SetBabyText(false);
+                            break;
+                        case 21:
+                            SetBabyText(true);
+                            break;
+                        case 22:
+                            CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
+                            break;
+                        case 25:
+                            CharacterManager.instance.CharacterFaceList[2].face[1].SetActive(false);
+                            SetBabyText(false);
+                            break;
+                        case 27:
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(true);
+                            SetBabyText(true);
+                            if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
+                            {
+                                specialMenuState = 1; //메뉴 가지러 갔음
+                                SmallFade.instance.FadeOut(babyNum, babySeatNum); //주인공 페이드아웃  //아기 페이드아웃    
+                            }                                                                           
+                            break;
+                        case 28:
+                            SetBabyText(false);
+                            break;
+                        case 29:
+                            if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
+                            {
+                                SystemManager.instance.SetCanTouch(false);
+                                SystemManager.instance.SetCanTouch(true,1f);
+                                Menu.instance.SetFriendEventMenu(2);//스페셜 메뉴 준비
+                            }
+                            else //다시보기일 때, 특별 메뉴 팝업 설정
+                            {
+                                Menu.instance.SetTableMenu(12, 0);
+                            }
+                            break;
+                        case 30:
+                            CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
+                            SystemManager.instance.SetCanTouch(false);
+                            SetBabyText(true);
+                            if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
+                            {
+                                SmallFade.instance.SetCharacter(babyNum);
+                                Menu.instance.MenuFadeIn();//스페셜 메뉴 페이드인
+                                specialMenuState = 2;
+                            }
+                            Popup.instance.OpenPopup();//메뉴 팝업, 팝업 닫으면 다음 대사 넘기기 가능
+                            break;
+                        case 31:
+                            SetBabyText(false);
+                            break;
+                    }
+                }
+                break;
+            case 3: //빵빵
+                if (characterDC[3] == 0)
+                {
+                    switch (count)
+                    {
+                        case 0:
+                            SetBabyText(true);
+                            break;
+                        case 1:
+                            CharacterManager.instance.CharacterFaceList[3].face[2].SetActive(true);
+                            SetBabyText(false);
+                            break;
+                        case 2:
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[3].SetActive(true);
+                            SetBabyText(true);
+                            break;
+                        case 3:
+                            CharacterManager.instance.CharacterFaceList[3].face[2].SetActive(false);
+                            SetBabyText(false);
+                            break;
+                        case 5:
+                            charName.text = "빵빵";
+                            break;
+                        case 6:
+                            CharacterManager.instance.CharacterFaceList[13].face[3].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
+                            SetBabyText(true);
+                            break;
+                        case 7:
+                            SetBabyText(false);
+                            break;
+                    }
+                }
+                else if (characterDC[3] == 1)
+                {
+                    switch (count)
+                    {
+                        case 0:
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[3].SetActive(true);
+                            SetBabyText(true);
+                            if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
+                            {
+                                SmallFade.instance.SetCharacter(babyNum);
+                            }
+                            break;
+                        case 1:
+                            SetBabyText(false);
+                            break;
+                        case 4:
+                            CharacterManager.instance.CharacterFaceList[13].face[3].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[2].SetActive(true);
+                            SetBabyText(true);
+                            break;
+                        case 5:
+                            SetBabyText(false);
+                            break;
+                        case 6:
+                            CharacterManager.instance.CharacterFaceList[3].face[0].SetActive(false);
+                            break;
+                        case 12:
+                            CharacterManager.instance.CharacterFaceList[3].face[0].SetActive(true);
+                            break;
+                        case 15:
+                            CharacterManager.instance.CharacterFaceList[13].face[2].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
+                            SetBabyText(true);
+                            break;
+                        case 16:
+                            CharacterManager.instance.CharacterFaceList[3].face[0].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[3].face[1].SetActive(true);
+                            SetBabyText(false);
+                            break;
+                        case 20:
+                            CharacterManager.instance.CharacterFaceList[3].face[1].SetActive(false);
+                            break;
+                        case 21:
+                            SetBabyText(true);
+                            break;
+                        case 22:
+                            SetBabyText(false);
+                            break;
+                        case 23:
+                            SetBabyText(true);
+                            break;
+                        case 27:
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(true);
+                            break;
+                        case 28:
+                            SetBabyText(false);
+                            break;
+                        case 29:
+                            CharacterManager.instance.CharacterFaceList[3].face[2].SetActive(true);
+                            break;
+                        case 30:
+                            SetBabyText(true);
+                            break;
+                        case 31:
+                            CharacterManager.instance.CharacterFaceList[3].face[2].SetActive(false);
+                            SetBabyText(false);
+                            break;
+                        case 32:
+                            CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
+                            SetBabyText(true);
+                            if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
+                            {
+                                specialMenuState = 1;
+                                SmallFade.instance.FadeOut(babyNum, babySeatNum); //주인공 페이드아웃 
+                            }               
+                            break;
+                        case 33:
+                            SetBabyText(false);
+                            break;
+                        case 35:
+                            if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
+                            {
+                                SystemManager.instance.SetCanTouch(false);
+                                SystemManager.instance.SetCanTouch(true,1f);
+                                Menu.instance.SetFriendEventMenu(3);
+                            }
+                            else //다시보기일 때, 특별 메뉴 팝업 설정
+                            {
+                                Menu.instance.SetTableMenu(13, 0);
+                            }
+                            break;
+                        case 36:
+                            SystemManager.instance.SetCanTouch(false);
+                            SetBabyText(true);
+                            if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
+                            {
+                                SmallFade.instance.SetCharacter(babyNum);
+                                Menu.instance.MenuFadeIn();
+                                specialMenuState = 2;
+                            }
+                            Popup.instance.OpenPopup();//메뉴 팝업, 팝업 닫으면 다음 대사 넘기기 가능
+                            break;
+                        case 37:
+                            CharacterManager.instance.CharacterFaceList[3].face[2].SetActive(true);
+                            SetBabyText(false);                            
+                            break;
+                        case 39:
+                            CharacterManager.instance.CharacterFaceList[3].face[2].SetActive(false);
+                            break;
+                    }
+                }
+                break;
+            case 4: //개나리
+                if (characterDC[4] == 0)
+                {
+                    switch (count)
+                    {
+                        case 0:
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(true);
+                            SetBabyText(true);
+                            break;
+                        case 1:
+                            SetBabyText(false);
+                            charName.text = "개나리";
+                            break;
+                        case 2:
+                            SetBabyText(true);
+                            break;
+                        case 3:
+                            SetBabyText(false);
+                            break;
+                        case 6:
+                            CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[4].SetActive(true);
+                            SetBabyText(true);
+                            break;
+                        case 7:
+                            CharacterManager.instance.CharacterFaceList[13].face[4].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(true);
+                            break;
+                        case 8:
+                            SetBabyText(false);                    
+                            break;
+                        case 11:
+                            CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
+                            SetBabyText(true);
+                            break;
+                    }
+                }
+                else if (characterDC[4] == 1)
+                {
+                    switch (count)
+                    {
+                        case 7:
+                            SetBabyText(true);
+                            break;
+                        case 8:
+                            SetBabyText(false);
+                            break;
+                        case 10:
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(true);
+                            SetBabyText(true);       
+                            break;
+                        case 11:
+                            CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
+                            if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
+                            {
+                                specialMenuState = 1;
+                                SmallFade.instance.FadeOut(babyNum, babySeatNum); //주인공 페이드아웃 
+                            }
+                            break;
+                        case 12:
+                            SetBabyText(false);
+                            if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
+                            {
+                                SystemManager.instance.SetCanTouch(false);
+                                SystemManager.instance.SetCanTouch(true,1f);
+                                Menu.instance.SetFriendEventMenu(4);
+                            }
+                            else //다시보기일 때, 특별 메뉴 팝업 설정
+                            {
+                                Menu.instance.SetTableMenu(14, 0);
+                            }
+                            break;
+                        case 13:
+                            SystemManager.instance.SetCanTouch(false);
+                            SetBabyText(true);                           
+                            if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
+                            {
+                                SmallFade.instance.SetCharacter(babyNum);
+                                Menu.instance.MenuFadeIn();
+                                specialMenuState = 2;
+                            }
+                            Popup.instance.OpenPopup();//메뉴 팝업, 팝업 닫으면 다음 대사 넘기기 가능
+                            break;
+                        case 14:
+                            SetBabyText(false);                        
+                            break;
+                    }
+                }
+                break;
+            case 5: //또롱이
+                if (characterDC[5] == 0)
+                {
+                    switch (count)
+                    {
+                        case 0:
+                            SetBabyText(true);
+                            break;
+                        case 1:
+                            SetBabyText(false);
+                            break;
+                        case 2:
+                            SetBabyText(true);
+                            break;
+                        case 3:
+                            SetBabyText(false);
+                            break;
+                        case 4:
+                            SetBabyText(true);
+                            break;
+                        case 5:
+                            SetBabyText(false);
+                            break;
+                        case 6:
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(true);
+                            SetBabyText(true);
+                            break;
+                        case 7:
+                            SetBabyText(false);
+                            charName.text = "또롱";
+                            break;
+                        case 8:
+                            CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(true);
+                            SetBabyText(true);      
+                            break;
+                        case 9:
+                            CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
+                            break;
+                        case 10:
+                            SetBabyText(false);
+                            break;
+                    }
+                }
+                else if (characterDC[5] == 1)
+                {
+                    switch (count)
+                    {
+                        case 0:
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(true);
+                            SetBabyText(true);
+                            break;
+                        case 1:
+                            SetBabyText(false);
+                            break;
+                        case 2:
+                            CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
+                            SetBabyText(true);
+                            break;
+                        case 3:
+                            SetBabyText(false);
+                            break;
+                        case 5:
+                            SetBabyText(true);
+                            break;
+                        case 6:
+                            SetBabyText(false);
+                            break;
+                        case 12:
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(true);
+                            SetBabyText(true);
+                            break;
+                        case 13:
+                            SetBabyText(false);
+                            break;
+                        case 14:
+                            SetBabyText(true);
+                            break;
+                        case 15:
+                            CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
+                            SetBabyText(false);
+                            if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
+                            {
+                                VisitorNote.instance.OpenHiddenText(5);//손님노트 정보 갱신
+                                specialMenuState = 2;
+                            }
+                            break;
+                    }
+                }
+                break;
+            case 6: //도로시
+                if (characterDC[6] == 0)
+                {
+                    switch (count)
+                    {
+                        case 1:
+                            SetBabyText(true);
+                            break;
+                        case 2:
+                            SetBabyText(false);
+                            break;
+                        case 5:
+                            SetBabyText(true);
+                            break;
+                        case 6:
+                            SetBabyText(false);
+                            break;
+                        case 8:
+                            charName.text = "도로시";
+                            break;
+                        case 9:
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[3].SetActive(true);
+                            SetBabyText(true);
+                            break;
+                        case 10:
+                            SetBabyText(false);
+                            break;
+                        case 12:
+                            CharacterManager.instance.CharacterFaceList[13].face[3].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
+                            SetBabyText(true);
+                            break;
+                    }
+                }
+                else if (characterDC[6] == 1)
+                {
+                    switch (count)
+                    {
+                        case 0:
+                            SetBabyText(true);
+                            if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
+                            {
+                                SmallFade.instance.SetCharacter(babyNum);
+                            }
+                            break;
+                        case 1:
+                            SetBabyText(false);
+                            break;
+                        case 2:
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(true);
+                            SetBabyText(true);
+                            break;
+                        case 3:
+                            SetBabyText(false);
+                            break;
+                        case 5:
+                            CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[4].SetActive(true);
+                            SetBabyText(true);
+                            break;
+                        case 6:
+                            SetBabyText(false);
+                            if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
+                            {
+                                specialMenuState = 1;
+                                SmallFade.instance.FadeOut(babyNum, babySeatNum); //주인공 페이드아웃 
+                            }
+                            break;
+                        case 9:
+                            if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
+                            {
+                                SystemManager.instance.SetCanTouch(false);
+                                SystemManager.instance.SetCanTouch(true,1f);
+                                Menu.instance.SetFriendEventMenu(6);
+                            }
+                            else //다시보기일 때, 특별 메뉴 팝업 설정
+                            {
+                                Menu.instance.SetTableMenu(16, 0);
+                            }
+                            break;
+                        case 10:
+                            CharacterManager.instance.CharacterFaceList[13].face[4].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
+                            SystemManager.instance.SetCanTouch(false);
+                            SetBabyText(true);
+                            if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
+                            {
+                                SmallFade.instance.SetCharacter(babyNum);
+                                Menu.instance.MenuFadeIn();
+                                specialMenuState = 2;
+                            }
+                            Popup.instance.OpenPopup();//메뉴 팝업, 팝업 닫으면 다음 대사 넘기기 가능
+                            break;
+                        case 11:
+                            SetBabyText(false);
+                            break;
+                        case 12:
+                            CharacterManager.instance.CharacterFaceList[4].face[0].SetActive(true);
+                            break;
+                        case 15:
+                            CharacterManager.instance.CharacterFaceList[4].face[0].SetActive(false);
+                            break;
+                        case 17:
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(true);
+                            SetBabyText(true);
+                            break;
+                        case 18:
+                            CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
+                            SetBabyText(false);
+                            break;
+                    }
+                }
+                break;
+            case 7: //루루
+                if (characterDC[7] == 0)
+                {
+                    switch (count)
+                    {
+                        case 0:
+                            SetBabyText(true);
+                            break;
+                        case 1:
+                            SetBabyText(false);
+                            break;
+                        case 2:
+                            SetBabyText(true);
+                            break;
+                        case 3:
+                            SetBabyText(false);
+                            break;
+                        case 4:
+                            SetBabyText(true);
+                            break;
+                        case 5:
+                            SetBabyText(false);
+                            charName.text = "루루";
+                            break;
+                        case 6:
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[3].SetActive(true);
+                            SetBabyText(true);
+                            break;
+                        case 7:
+                            SetBabyText(false);
+                            break;
+                        case 10:
+                            CharacterManager.instance.CharacterFaceList[13].face[3].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
+                            SetBabyText(true);
+                            break;
+                    }
+                }
+                else if (characterDC[7] == 1)
+                {
+                    switch (count)
+                    {
+                        case 0:
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(true);
+                            SetBabyText(true);
+                            break;
+                        case 1:
+                            CharacterManager.instance.CharacterFaceList[5].face[0].SetActive(true);
+                            SetBabyText(false);
+                            break;
+                        case 2:
+                            CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(true);
+                            SetBabyText(true);
+                            break;
+                        case 3:
+                            SetBabyText(false);
+                            break;
+                        case 5:
+                            CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[4].SetActive(true);
+                            SetBabyText(true);
+                            break;
+                        case 6:
+                            SetBabyText(false);
+                            break;
+                        case 7:
+                            CharacterManager.instance.CharacterFaceList[13].face[4].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
+                            SetBabyText(true);
+                            break;
+                        case 8:
+                            CharacterManager.instance.CharacterFaceList[5].face[0].SetActive(false);
+                            SetBabyText(false);
+                            break;
+                        case 9:
+                            SetBabyText(true);
+                            break;
+                        case 11:
+                            SetBabyText(false);
+                            break;
+                        case 20:
+                            SetBabyText(true);
+                            break;
+                        case 21:
+                            SetBabyText(false);
+                            break;
+                        case 28:
+                            SetBabyText(true);
+                            break;
+                        case 29:
+                            SetBabyText(false);
+                            break;
+                        case 36:
+                            CharacterManager.instance.CharacterFaceList[5].face[1].SetActive(true);
+                            break;
+                        case 37:
+                            CharacterManager.instance.CharacterFaceList[5].face[1].SetActive(false);
+                            break;
+                        case 38:
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(true);
+                            SetBabyText(true);
+                            break;
+                        case 39:
+                            SetBabyText(false);
+                            break;
+                        case 41:
+                            CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
+                            SetBabyText(true);
+                            break;
+                        case 42:
+                            SetBabyText(false);
+                            break;
+                        case 52:
+                            CharacterManager.instance.CharacterFaceList[5].face[1].SetActive(true);
+                            break;
+                        case 53:
+                            SetBabyText(true);
+                            break;
+                        case 55:
+                            CharacterManager.instance.CharacterFaceList[5].face[1].SetActive(false);
+                            SetBabyText(false);
+                            if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
+                            {
+                                specialMenuState = 1;
+                                SmallFade.instance.FadeOut(babyNum, babySeatNum); //주인공 페이드아웃 
+                            }
+                            break;
+                        case 58:
+                            if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
+                            {
+                                SystemManager.instance.SetCanTouch(false);
+                                SystemManager.instance.SetCanTouch(true,1f);
+                                Menu.instance.SetFriendEventMenu(7);
+                            }
+                            else //다시보기일 때, 특별 메뉴 팝업 설정
+                            {
+                                Menu.instance.SetTableMenu(17, 0);
+                            }
+                            break;
+                        case 59:
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[2].SetActive(true);
+                            SystemManager.instance.SetCanTouch(false);
+                            SetBabyText(true);
+                            if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
+                            {
+                                SmallFade.instance.SetCharacter(babyNum);
+                                Menu.instance.MenuFadeIn();
+                            }
+                            Popup.instance.OpenPopup();//메뉴 팝업, 팝업 닫으면 다음 대사 넘기기 가능
+                            break;
+                        case 60:
+                            CharacterManager.instance.CharacterFaceList[13].face[2].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
+                            SetBabyText(false);
+                            break;
+                        case 61:
+                            CharacterManager.instance.CharacterFaceList[5].face[1].SetActive(true);
+                            if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
+                            {
+                                specialMenuState = 2;
+                                VisitorNote.instance.OpenHiddenText(7);
+                            }
+                            break;
+                    }
+                }
+                break;
+            case 8: //샌디
+                if (characterDC[8] == 0)
+                {
+                    switch (count)
+                    {
+                        case 0:
+                            SetBabyText(true);
+                            break;
+                        case 1:
+                            SetBabyText(false);
+                            charName.text = "샌디";
+                            break;
+                        case 3:
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(true);
+                            SetBabyText(true);
+                            break;
+                        case 4:
+                            SetBabyText(false);
+                            break;
+                        case 7:
+                            CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(true);
+                            SetBabyText(true);
+                            break;
+                        case 8:
+                            SetBabyText(false);
+                            break;
+                        case 10:
+                            CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
+                            SetBabyText(true);
+                            break;
+                    }
+                }
+                else if (characterDC[8] == 1)
+                {
+                    switch (count)
+                    {
+                        case 0:
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(true);
+                            SetBabyText(true);
+                            break;
+                        case 1:
+                            SetBabyText(false);
+                            break;
+                        case 2:
+                            CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(true);
+                            SetBabyText(true);
+                            break;
+                        case 3:
+                            SetBabyText(false);
+                            break;
+                        case 12:
+                            CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[4].SetActive(true);
+                            SetBabyText(true);
+                            break;
+                        case 13:
+                            SetBabyText(false);
+                            break;
+                        case 44:
+                            CharacterManager.instance.CharacterFaceList[13].face[4].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(true);
+                            SetBabyText(true);
+                            break;
+                        case 46:
+                            CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
+                            break;
+                        case 47:
+                            SetBabyText(false);
+                            if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
+                            {
+                                specialMenuState = 1;
+                                SmallFade.instance.FadeOut(babyNum, babySeatNum); //주인공 페이드아웃 
+                            }
+                            break;
+                        case 48:
+                            if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
+                            {
+                                SystemManager.instance.SetCanTouch(false);
+                                SystemManager.instance.SetCanTouch(true,1f);
+                                Menu.instance.SetFriendEventMenu(8);
+                            }
+                            else //다시보기일 때, 특별 메뉴 팝업 설정
+                            {
+                                Menu.instance.SetTableMenu(18, 0);
+                            }
+                            break;
+                        case 49:
+                            SystemManager.instance.SetCanTouch(false);
+                            SetBabyText(true);
+                            if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
+                            {
+                                SmallFade.instance.SetCharacter(babyNum);
+                                Menu.instance.MenuFadeIn();
+                                specialMenuState = 2;
+                            }
+                            Popup.instance.OpenPopup();//메뉴 팝업, 팝업 닫으면 다음 대사 넘기기 가능
+                            break;
+                        case 50:
+                            SetBabyText(false);
+                            break;
+                        case 51:
+                            CharacterManager.instance.CharacterFaceList[6].face[0].SetActive(true);
+                            break;
+                        case 52:
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[2].SetActive(true);
+                            SetBabyText(true);
+                            break;
+                        case 53:
+                            CharacterManager.instance.CharacterFaceList[13].face[2].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
+                            SetBabyText(false);
+                            break;
+                        case 54:
+                            CharacterManager.instance.CharacterFaceList[6].face[0].SetActive(false);
+                            break;
+                    }
+                }
+                    break;
+            case 9: //친구
+                if (characterDC[9] == 0)
+                {
+                    switch (count)
+                    {
+                        case 1:
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(true);
+                            SetBabyText(true);
+                            break;
+                        case 3:
+                            SetBabyText(false);
+                            charName.text = "친구";
+                            break;
+                        case 6:
+                            CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(true);
+                            SetBabyText(true);
+                            break;
+                        case 7:
+                            SetBabyText(false);
+                            break;
+                        case 9:
+                            CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[3].SetActive(true);
+                            SetBabyText(true);
+                            break;
+                        case 10:
+                            SetBabyText(false);
+                            break;
+                        case 12:
+                            CharacterManager.instance.CharacterFaceList[13].face[3].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
+                            SetBabyText(true);
+                            break;
+                    }
+                }
+                else if (characterDC[9] == 1)
+                {
+                    switch (count)
+                    {
+                        case 0:
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(true);
+                            SetBabyText(true);
+                            break;
+                        case 1:
+                            SetBabyText(false);
+                            break;
+                        case 6:
+                            CharacterManager.instance.CharacterFaceList[7].face[0].SetActive(true);
+                            break;
+                        case 9:
+                            CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
+                            SetBabyText(true);
+                            break;
+                        case 10:
+                            SetBabyText(false);
+                            break;
+                        case 14:
+                            SetBabyText(true);
+                            break;
+                        case 16:
+                            if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
+                            {
+                                SystemManager.instance.SetCanTouch(false);
+                                SystemManager.instance.SetCanTouch(true,1f);
+                                Menu.instance.MenuFadeOut();//원래 있던 메뉴 페이드아웃
+                            }
+                            break;
+                        case 17:
+                            SetBabyText(false);
+                            if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
+                            {
+                                specialMenuState = 1;
+                                SmallFade.instance.FadeOut(babyNum, babySeatNum); //주인공 페이드아웃 
+                            }
+                            break;
+                        case 19:
+                            if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
+                            {
+                                SystemManager.instance.SetCanTouch(false);
+                                SystemManager.instance.SetCanTouch(true,1f);
+                                Menu.instance.SetFriendEventMenu(9);
+                            }
+                            else //다시보기일 때, 특별 메뉴 팝업 설정
+                            {
+                                Menu.instance.SetTableMenu(19, 0);
+                            }
+                            break;
+                        case 20:
+                            SystemManager.instance.SetCanTouch(false);
+                            SetBabyText(true);
+                            if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
+                            {
+                                SmallFade.instance.SetCharacter(babyNum);
+                                Menu.instance.MenuFadeIn();
+                            }
+                            Popup.instance.OpenPopup();//메뉴 팝업, 팝업 닫으면 다음 대사 넘기기 가능
+                            break;
+                        case 21:
+                            SetBabyText(false);
+                            break;
+                        case 23:
+                            SetBabyText(true);
+                            break;
+                        case 24:
+                            SetBabyText(false);
+                            if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
+                            {
+                                specialMenuState = 2;
+                                VisitorNote.instance.OpenHiddenText(9);
+                            }
+                            break;
+                    }
+                }
+                break;          
+            case 10: //찰스
+                if (characterDC[10] == 0)
+                {
+                    switch (count)
+                    {
+                        case 0:
+                            SetBabyText(true);
+                            break;
+                        case 1:
+                            SetBabyText(false);
+                            charName.text = "찰스";
+                            break;
+                        case 3:
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(true);
+                            SetBabyText(true);
+                            break;
+                        case 4:
+                            SetBabyText(false);
+                            break;
+                        case 6:
+                            CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[3].SetActive(true);
+                            SetBabyText(true);
+                            break;
+                        case 7:
+                            CharacterManager.instance.CharacterFaceList[13].face[3].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
+                            break;
+                        case 8:
+                            SetBabyText(false);
+                            break;
+                    }
+                }
+                else if (characterDC[10] == 1)
+                {
+                    switch (count)
+                    {
+                        case 0:
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(true);
+                            SetBabyText(true);
+                            break;
+                        case 1:
+                            SetBabyText(false);
+                            break;
+                        case 3:
+                            CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(true);
+                            SetBabyText(true);
+                            break;
+                        case 4:
+                            CharacterManager.instance.CharacterFaceList[8].face[0].SetActive(true);
+                            SetBabyText(false);
+                            break;
+                        case 5:
+                            CharacterManager.instance.CharacterFaceList[8].face[0].SetActive(false);
+                            break;
+                        case 7:
+                            CharacterManager.instance.CharacterFaceList[8].face[1].SetActive(true);
+                            break;
+                        case 8:
+                            CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[4].SetActive(true);
+                            SetBabyText(true);
+                            break;
+                        case 9:
+                            CharacterManager.instance.CharacterFaceList[8].face[1].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[8].face[2].SetActive(true);
+                            SetBabyText(false);
+                            if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
+                            {
+                                specialMenuState = 2;//아기 페이드아웃 위해서 일부러 대입
+                            }
+                            CharacterManager.instance.CharacterFaceList[13].face[4].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
+                            break;
+                    }
+                }
+                else if (characterDC[10] == 2)
+                {
+                    switch (count)
+                    {
+                        case 0:
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(true);
+                            SetBabyText(true);
+                            break;
+                        case 1:
+                            SetBabyText(false);
+                            break;
+                        case 5:
+                            CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[4].SetActive(true);
+                            SetBabyText(true);
+                            break;
+                        case 6:
+                            SetBabyText(false);
+                            break;
+                        case 8:
+                            SetBabyText(true);
+                            break;
+                        case 9:
+                            CharacterManager.instance.CharacterFaceList[13].face[4].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
+                            break;
+                        case 10:
+                            CharacterManager.instance.CharacterFaceList[8].face[1].SetActive(false);
+                            SetBabyText(false);
+                            break;
+                        case 14:
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[4].SetActive(true);
+                            SetBabyText(true);
+                            break;
+                        case 15:
+                            SetBabyText(false);
+                            break;
+                        case 16:
+                            CharacterManager.instance.CharacterFaceList[13].face[4].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
+                            SetBabyText(true);                           
+                            break;                            
+                        case 18:
+                            CharacterManager.instance.CharacterFaceList[8].face[0].SetActive(true);
+                            SetBabyText(false);                            
+                            CharacterManager.instance.SetSoldierEvent(true);
+                            break;
+                        case 19:
+                            CharacterManager.instance.CharacterFaceList[8].face[0].SetActive(false);
+                            if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
+                            {
+                                SmallFade.instance.FadeOut(babyNum, babySeatNum); //주인공 페이드아웃
+                            }
+                            CharacterManager.instance.CharacterOut(10);
+                            break;
+                        case 20:                            
+                            SetBabyText(true);
+                            if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
+                            {
+                                SystemManager.instance.SetCanTouch(false);
+                                SystemManager.instance.SetCanTouch(true,1.3f);
+                                Menu.instance.SoldierEvent_ServeToPrincess(SmallFade.instance.CharacterSeat[5]);//도로시 자리정보를 매개변수로 넣기
+                            }
+                            break;
+                        case 21:
+                            if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
+                            {
+                                Menu.instance.MenuFadeIn();
+                            }
+                            break;
+                        case 22:
+                            SetBabyText(false);
+                            CharacterManager.instance.CharacterFaceList[4].face[0].SetActive(true);
+                            SystemManager.instance.SetCanTouch(false);
+                            CharacterManager.instance.CharacterIn(6);
+                            charName.text = "도로시";
+                            break;
+                        case 23:
+                            SetBabyText(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(true);
+                            break;
+                        case 24:
+                            SetBabyText(false);
+                            if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
+                            {
+                                SystemManager.instance.SetCanTouch(false);
+                                SystemManager.instance.SetCanTouch(true,1f);
+                                SmallFade.instance.FadeOut(SmallFade.instance.CharacterSeat[9]);//찰스 작은 캐릭터 페이드아웃
+                            }
+                            break;
+                        case 25:
+                            SetBabyText(true);
+                            CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[2].SetActive(true);
+                            SystemManager.instance.SetCanTouch(false);
+                            SystemManager.instance.SetCanTouch(true,1f);
+                            break;
+                        case 26:
+                            SystemManager.instance.SetCanTouch(false);
+                            SystemManager.instance.SetCanTouch(true,1.5f);
+                            CharacterManager.instance.CharacterFaceList[8].face[2].SetActive(true);
+                            CharacterManager.instance.MovePrincess();//찰스등장을 위해 도로시가 옆으로 이동, 바로 찰스 등장
+                            SetBabyText(false);
+                            charName.text = "찰스";
+                            if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
+                            {
+                                specialMenuState = 1;//찰스 페이드인을 위한 장치                           
+                                SmallFade.instance.SetCharacter(10);
+                            }
+                            break;
+                        case 27:
+                            charName.text = "도로시";
+                            break;
+                        case 28:
+                            charName.text = "찰스";
+                            break;
+                        case 30:
+                            CharacterManager.instance.CharacterFaceList[13].face[2].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
+                            SetBabyText(true);
+                            break;
+                        case 31:
+                            CharacterManager.instance.CharacterFaceList[4].face[0].SetActive(false);
+                            SetBabyText(false);
+                            charName.text = "도로시";
+                            break;
+                        case 33:
+                            SetBabyText(true);
+                            if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
+                            {
+                                Menu.instance.MenuFadeOut();
+                            }
+                            break;
+                        case 34:
+                            SetBabyText(false);
+                            charName.text = "찰스";
+                            break;
+                        case 35:
+                            charName.text = "도로시";
+                            break;
+                        case 36:
+                            charName.text = "찰스";
+                            break;
+                        case 39:
+                            charName.text = "도로시";
+                            break;
+                        case 40:
+                            charName.text = "찰스";
+                            break;
+                        case 41:
+                            charName.text = "도로시";
+                            break;
+                        case 43:
+                            CharacterManager.instance.CharacterFaceList[8].face[2].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[8].face[0].SetActive(true);
+                            charName.text = "찰스";
+                            break;
+                        case 44:
+                            charName.text = "도로시";
+                            break;
+                        case 46:
+                            CharacterManager.instance.CharacterFaceList[8].face[0].SetActive(false);
+                            charName.text = "찰스";
+                            break;
+                        case 48:
+                            charName.text = "도로시";
+                            break;
+                        case 49:
+                            CharacterManager.instance.CharacterFaceList[8].face[2].SetActive(true);
+                            charName.text = "찰스";
+                            break;
+                        case 50:
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[4].SetActive(true);
+                            SetBabyText(true);
+                            CharacterManager.instance.CharacterOut(10);//찰스 퇴장
+                            break;
+                        case 51:
+                            CharacterManager.instance.CharacterOut(6);
+                            if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
+                            {
+                                VisitorNote.instance.OpenHiddenText(10);
+                            }
+                            break;
+                        case 52:
+                            CharacterManager.instance.CharacterFaceList[13].face[4].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
+                            break;
+                    }
+                }
+                break;
+            case 11: //무명이
+                if (characterDC[11] == 0)
+                {
+                    switch (count)
+                    {
+                        case 0:
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[4].SetActive(true);
+                            SetBabyText(true);
+                            break;
+                        case 1:
+                            SetBabyText(false);
+                            break;
+                        case 2:
+                            CharacterManager.instance.CharacterFaceList[13].face[4].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(true);
+                            SetBabyText(true);
+                            break;
+                        case 3:
+                            CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
+                            break;
+                        case 5:
+                            CharacterManager.instance.CharacterFaceList[9].face[0].SetActive(true);
+                            SetBabyText(false);
+                            break;
+                        case 6:
+                            SetBabyText(true);
+                            break;
+                        case 8:
+                            SetBabyText(false);
+                            break;
+                        case 9:
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(true);
+                            SetBabyText(true);
+                            break;
+                        case 10:
+                            CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
+                            SetBabyText(false);
+                            break;
+                    }
+                }
+                else if (characterDC[11] == 1)
+                {
+                    switch (count)
+                    {
+                        case 0:
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(true);
+                            SetBabyText(true);
+                            break;
+                        case 2:
+                            CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
+                            break;
+                        case 3:
+                            CharacterManager.instance.CharacterFaceList[9].face[0].SetActive(true);
+                            SetBabyText(false);
+                            break;
+                        case 4:
+                            SetBabyText(true);
+                            break;
+                        case 6:
+                            SetBabyText(false);
+                            break;
+                        case 7:
+                            SetBabyText(true);
+                            break;
+                        case 8:
+                            CharacterManager.instance.CharacterFaceList[9].face[0].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[9].face[1].SetActive(true);
+                            SetBabyText(false);
+                            break;
+                        case 10:
+                            CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[3].SetActive(true);
+                            SetBabyText(true);
+                            break;
+                        case 11:
+                            CharacterManager.instance.CharacterFaceList[13].face[3].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(true);
+                            break;
+                        case 13:
+                            CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
+                            break;
+                        case 14:
+                            CharacterManager.instance.CharacterFaceList[9].face[1].SetActive(false);
+                            SetBabyText(false);
+                            break;
+                        case 18:
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[3].SetActive(true);
+                            SetBabyText(true);
+                            break;
+                        case 19:
+                            SetBabyText(false);
+                            break;
+                        case 20:
+                            CharacterManager.instance.CharacterFaceList[13].face[3].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[4].SetActive(true);
+                            SetBabyText(true);
+                            if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
+                            {
+                                SystemManager.instance.SetCanTouch(false);
+                                SystemManager.instance.SetNeedAction(true);
+                                SystemManager.instance.ShowCharNameSettingWindow();
+                            }
+                            break;
+                        case 21:
+                            CharacterManager.instance.CharacterFaceList[13].face[4].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
+                            break;
+                        case 22:
+                            SystemManager.instance.SetCanTouch(true);
+                            SystemManager.instance.SetNeedAction(false);
+                            SetBabyText(false);
+                            charName.text = SystemManager.instance.GetNameForNameless();
+                            break;
+                        case 23:
+                            SetBabyText(true);
+                            break;
+                        case 24:
+                            CharacterManager.instance.CharacterFaceList[9].face[1].SetActive(true);
+                            SetBabyText(false);
+                            if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
+                            {
+                                specialMenuState = 2;
+                                VisitorNote.instance.OpenHiddenText(11);
+                            }
+                            break;
+                    }
+                }
+                else if (characterDC[11] == 2)
+                {
+                    switch (count)
+                    {
+                        case 0:
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(true);
+                            SetBabyText(true);
+                            break;
+                        case 1:
+                            SetBabyText(false);
+                            break;
+                        case 6:
+                            SetBabyText(true);
+                            break;
+                        case 7:
+                            SetBabyText(false);
+                            break;
+                        case 15:
+                            CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[5].SetActive(true);
+                            SetBabyText(true);
+                            break;
+                        case 16:
+                            CharacterManager.instance.CharacterFaceList[9].face[0].SetActive(true);
+                            SetBabyText(false);
+                            break;
+                        case 18:
+                            CharacterManager.instance.CharacterFaceList[9].face[0].SetActive(false);
+                            SetBabyText(true);
+                            break;
+                        case 19:
+                            CharacterManager.instance.CharacterFaceList[13].face[5].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[7].SetActive(true);
+                            break;
+                        case 22:
+                            CharacterManager.instance.CharacterFaceList[13].face[7].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
+                            break;
+                        case 25:
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(true);
+                            break;
+                        case 28:
+                            CharacterManager.instance.CharacterFaceList[9].face[0].SetActive(true);
+                            SetBabyText(false);
+                            break;
+                        case 29:
+                            SetBabyText(true);
+                            break;
+                        case 30:
+                            CharacterManager.instance.CharacterFaceList[9].face[0].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[9].face[1].SetActive(true);
+                            SetBabyText(false);
+                            break;
+                        case 31:
+                            CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
+                            SetBabyText(true);
+                            break;
+                        case 32:
+                            CharacterManager.instance.CharacterFaceList[9].face[1].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[9].face[2].SetActive(true);
+                            SetBabyText(false);
+                            break;
+                        case 34:
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[2].SetActive(true);
+                            SetBabyText(true);
+                            if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
+                            {
+                                specialMenuState = 1;
+                                SmallFade.instance.FadeOut(babyNum, babySeatNum); //주인공 페이드아웃 
+                            }
+                            break;
+                        case 35:
+                            SetBabyText(false);
+                            break;
+                        case 36:
+                            if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
+                            {
+                                SystemManager.instance.SetCanTouch(false);
+                                SystemManager.instance.SetCanTouch(true,1f);
+                                Menu.instance.SetFriendEventMenu(11);
+                            }
+                            else //다시보기일 때, 특별 메뉴 팝업 설정
+                            {
+                                Menu.instance.SetTableMenu(21, 0);
+                            }
+                            break;
+                        case 37:
+                            CharacterManager.instance.CharacterFaceList[13].face[2].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
+                            SystemManager.instance.SetCanTouch(false);
+                            SetBabyText(true);
+                            if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
+                            {
+                                SmallFade.instance.SetCharacter(babyNum);
+                                Menu.instance.MenuFadeIn();
+                            }
+                            Popup.instance.OpenPopup();//메뉴 팝업, 팝업 닫으면 다음 대사 넘기기 가능
+                            break;
+                        case 38:
+                            SetBabyText(false);
+                            break;
+                        case 39:
+                            SetBabyText(true);
+                            break;
+                        case 41:
+                            if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
+                            {
+                                SystemManager.instance.SetCanTouch(false);
+                                SystemManager.instance.SetCanTouch(true,1f);
+                                Menu.instance.MenuFadeOut();//원래 있던 메뉴 페이드아웃
+                            }
+                            break;
+                        case 42:
+                            if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
+                            {
+                                specialMenuState = 2;
+                                SystemManager.instance.SetCanTouch(false);
+                                SystemManager.instance.SetCanTouch(true,0.8f);
+                                Menu.instance.SetFriendEventMenu(11);
+                            }
+                            else //다시보기일 때, 특별 메뉴 팝업 설정
+                            {
+                                Menu.instance.SetTableMenu(31, 0);
+                            }
+                            break;
+                        case 43:
+                            SystemManager.instance.SetCanTouch(false);
+                            SetBabyText(true);
+                            if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
+                            {
+                                Menu.instance.MenuFadeIn();
+                            }
+                            Popup.instance.OpenPopup();//메뉴 팝업, 팝업 닫으면 다음 대사 넘기기 가능
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(true);
+                            break;
+                        case 44:
+                            CharacterManager.instance.CharacterFaceList[9].face[2].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[9].face[1].SetActive(true);
+                            SetBabyText(false);
+                            break;
+                        case 45:
+                            CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
+                            SetBabyText(true);
+                            break;
+                        case 51:
+                            SetBabyText(false);
+                            break;
+                        case 52:
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(true);
+                            SetBabyText(true);
+                            break;
+                        case 53:
+                            CharacterManager.instance.CharacterFaceList[9].face[1].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[9].face[0].SetActive(true);
+                            SetBabyText(false);
+                            break;
+                        case 54:
+                            SetBabyText(true);
+                            break;
+                        case 55:
+                            CharacterManager.instance.CharacterFaceList[9].face[0].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
+                            SetBabyText(false);
+                            break;
+                        case 59:
+                            CharacterManager.instance.CharacterFaceList[9].face[3].SetActive(true);
+                            if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
+                            {
+                                VisitorNote.instance.OpenHiddenText(12);
+                            }
+                            break;
+                    }
+                }
+                break;
+            case 12: //히로디노
+                if (characterDC[12] == 0)
+                {
+                    switch (count)
+                    {
+                        case 5:
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[2].SetActive(true);
+                            SetBabyText(true);
+                            break;
+                        case 6:
+                            SetBabyText(false);                          
+                            break;
+                        case 7:
+                            SetBabyText(true);
+                            break;
+                        case 8:
+                            SetBabyText(false);
+                            charName.text = "히로";
+                            break;
+                        case 11:
+                            CharacterManager.instance.CharacterFaceList[13].face[2].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
+                            SetBabyText(true);
+                            break;
+                        case 12:
+                            SetBabyText(false);
+                            break;
+                        case 13:
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[3].SetActive(true);
+                            SetBabyText(true);
+                            break;
+                        case 14:
+                            SetBabyText(false);
+                            charName.text = "디노";
+                            break;
+                        case 15:
+                            SetBabyText(true);
+                            break;
+                        case 16:
+                            CharacterManager.instance.CharacterFaceList[13].face[3].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
+                            SetBabyText(false);
+                            charName.text = "히로";
+                            break;
+                    }
+                }
+                else if (characterDC[12] == 1)
+                {
+                    switch (count)
+                    {
+                        case 1:
+                            CharacterManager.instance.CharacterFaceList[10].face[0].SetActive(false);
+                            charName.text = "디노";
+                            break;
+                        case 2:
+                            CharacterManager.instance.CharacterFaceList[10].face[1].SetActive(true);
+                            charName.text = "히로";
+                            break;
+                        case 3:
+                            CharacterManager.instance.CharacterFaceList[10].face[1].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[10].face[2].SetActive(true);
+                            charName.text = "디노";
+                            break;
+                        case 4:
+                            CharacterManager.instance.CharacterFaceList[10].face[2].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[10].face[3].SetActive(true);
+                            charName.text = "히로";
+                            break;
+                        case 5:
+                            charName.text = "디노";
+                            break;
+                        case 6:
+                            CharacterManager.instance.CharacterFaceList[10].face[3].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[10].face[2].SetActive(true);
+                            charName.text = "히로";
+                            break;
+                        case 7:
+                            charName.text = "디노";
+                            break;
+                        case 8:
+                            CharacterManager.instance.CharacterFaceList[10].face[2].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[10].face[3].SetActive(true);
+                            break;
+                        case 12:
+                            charName.text = "히로";
+                            break;
+                        case 13:
+                            charName.text = "디노";
+                            break;
+                        case 15:
+                            charName.text = "히로";
+                            break;
+                        case 20:
+                            charName.text = "디노";
+                            break;
+                        case 21:
+                            charName.text = "히로";
+                            break;
+                        case 22:
+                            charName.text = "디노";
+                            break;
+                        case 23:
+                            SetBabyText(true);
+                            if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
+                            {
+                                SystemManager.instance.SetCanTouch(false);
+                                SystemManager.instance.SetCanTouch(true,2.3f);
+                                specialMenuState = 1;
+                                if(Menu.instance.GetSeatNum() % 2 == 0) // 짝수(마지막 서빙이 히로)면 디노 메뉴 먼저 페이드아웃
+                                {
+                                    Menu.instance.MenuFadeOut(Menu.instance.GetSeatNum()+1);
+                                }
+                                else //홀수(마지막 서빙이 디노)면 히로 메뉴 먼저 페이드아웃
+                                {
+                                    Menu.instance.MenuFadeOut(Menu.instance.GetSeatNum()-1);
+                                }
+                                Menu.instance.MenuFadeOut(-1, false);   
+                            }
+                            break;
+                        case 24:
+                            if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
+                            {
+                                SystemManager.instance.SetCanTouch(false);
+                                SystemManager.instance.SetCanTouch(true,0.6f);
+                                Menu.instance.SetFriendEventMenu(12);
+                                Menu.instance.SetFriendEventMenu(13);
+                            }
+                            else //다시보기일 때, 특별 메뉴 팝업 설정
+                            {
+                                Menu.instance.SetTableMenu(22, 0);
+                            }
+                            break;
+                        case 25:
+                            SystemManager.instance.SetCanTouch(false);
+                            if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
+                            {
+                                Menu.instance.MenuFadeIn();
+                                Menu.instance.Invoke("MenuFadeIn", 0.8f);
+                            }
+                            Popup.instance.OpenPopup();//메뉴 팝업, 팝업 닫으면 다음 대사 넘기기 가능
+                            break;
+                        case 26:
+                            CharacterManager.instance.CharacterFaceList[10].face[3].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[10].face[0].SetActive(true);
+                            SetBabyText(false);
+                            charName.text = "히로";
+                            break;
+                        case 27:
+                            CharacterManager.instance.CharacterFaceList[10].face[0].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[10].face[4].SetActive(true);
+                            charName.text = "디노";
+                            break;
+                        case 28:
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(true);
+                            SetBabyText(true);
+                            break;
+                        case 29:
+                            SetBabyText(false);
+                            charName.text = "디노";
+                            break;
+                        case 30:
+                            charName.text = "히로";
+                            break;
+                        case 31:
+                            CharacterManager.instance.CharacterFaceList[10].face[4].SetActive(false);
+                            charName.text = "디노";
+                            break;
+                        case 33:
+                            CharacterManager.instance.CharacterFaceList[10].face[1].SetActive(true);
+                            charName.text = "히로";
+                            break;
+                        case 34:
+                            CharacterManager.instance.CharacterFaceList[10].face[1].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[10].face[2].SetActive(true);
+                            charName.text = "디노";
+                            break;
+                        case 36:
+                            CharacterManager.instance.CharacterFaceList[10].face[2].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[10].face[3].SetActive(true);
+                            charName.text = "히로";
+                            break;
+                        case 37:
+                            CharacterManager.instance.CharacterFaceList[10].face[3].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[10].face[0].SetActive(true);
+                            break;
+                        case 38:
+                            CharacterManager.instance.CharacterFaceList[10].face[0].SetActive(false);
+                            charName.text = "디노";
+                            break;
+                        case 39:
+                            charName.text = "히로";                         
+                            break;
+                        case 42:
+                            if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
+                            {
+                                Menu.instance.ReactionFadeIn(Menu.instance.GetSeatNum()-1,0);//히로 리액션 페이드인, 히로 다음 디노에게 마지막으로 서빙함
+                                specialMenuState = 2;
+                            }
+                            break;
+                        case 43:
+                            CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
+                            charName.text = "디노";
+                            break;
+                    }
+                }
+                break;
+            case 13: //닥터 펭
+                if (characterDC[13] == 0)
+                {
+                    switch (count)
+                    {
+                        case 0:
+                            SetBabyText(true);
+                            break;
+                        case 1:
+                            SetBabyText(false);
+                            break;
+                        case 3:
+                            SetBabyText(true);                          
+                            break;
+                        case 5:
+                            SetBabyText(false);
+                            break;
+                        case 6:
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(true);
+                            SetBabyText(true);
+                            break;
+                        case 7:
+                            SetBabyText(false);
+                            break;
+                        case 8:
+                            SetBabyText(true);
+                            break;
+                        case 9:
+                            SetBabyText(false);
+                            break;
+                        case 10:
+                            charName.text = "닥터 펭";
+                            break;
+                        case 13:
+                            CharacterManager.instance.CharacterFaceList[11].face[0].SetActive(true);
+                            break;
+                        case 14:
+                            SetBabyText(true);
+                            break;
+                        case 15:
+                            SetBabyText(false);
+                            break;
+                        case 16:
+                            CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
+                            SetBabyText(true);
+                            break;
+                        case 18:
+                            CharacterManager.instance.CharacterFaceList[11].face[0].SetActive(false);
+                            SetBabyText(false);
+                            break;
+                    }
+                }
+                else if (characterDC[13] == 1)
+                {
+                    switch (count)
+                    {
+                        case 0:
+                            SetBabyText(true);
+                            break;
+                        case 1:
+                            SetBabyText(false);
+                            break;
+                        case 3:
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(true);
+                            SetBabyText(true);
+                            break;
+                        case 4:
+                            CharacterManager.instance.CharacterFaceList[11].face[0].SetActive(true);
+                            SetBabyText(false);
+                            break;
+                        case 5:
+                            CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
+                            SetBabyText(true);
+                            break;
+                        case 6:
+                            SetBabyText(false);
+                            break;
+                        case 7:
+                            SetBabyText(true);
+                            break;
+                        case 8:
+                            SetBabyText(false);
+                            break;
+                        case 9:
+                            CharacterManager.instance.CharacterFaceList[11].face[0].SetActive(false);
+                            break;
+                        case 17:
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[3].SetActive(true);
+                            SetBabyText(true);
+                            break;
+                        case 18:
+                            SetBabyText(false);
+                            break;
+                        case 20:
+                            CharacterManager.instance.CharacterFaceList[11].face[1].SetActive(true);
+                            break;
+                        case 23:
+                            CharacterManager.instance.CharacterFaceList[11].face[1].SetActive(false);
+                            break;
+                        case 27:
+                            CharacterManager.instance.CharacterFaceList[11].face[0].SetActive(true);
+                            break;
+                        case 30:
+                            CharacterManager.instance.CharacterFaceList[13].face[3].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
+                            SetBabyText(true);
+                            break;
+                        case 31:
+                            SetBabyText(false);
+                            break;
+                        case 33:
+                            CharacterManager.instance.CharacterFaceList[11].face[0].SetActive(false);
+                            break;
+                        case 34:
+                            SetBabyText(true);
+                            if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
+                            {
+                                specialMenuState = 1;
+                                SmallFade.instance.FadeOut(babyNum, babySeatNum); //주인공 페이드아웃 
+                            }
+                            break;
+                        case 35:
+                            SetBabyText(false);
+                            break;
+                        case 36:
+                            if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
+                            {
+                                SystemManager.instance.SetCanTouch(false);
+                                SystemManager.instance.SetCanTouch(true,1f);
+                                Menu.instance.SetFriendEventMenu(14);
+                            }
+                            else //다시보기일 때, 특별 메뉴 팝업 설정
+                            {
+                                Menu.instance.SetTableMenu(24, 0);
+                            }
+                            break;
+                        case 37:
+                            SystemManager.instance.SetCanTouch(false);
+                            SetBabyText(true);
+                            if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
+                            {
+                                SmallFade.instance.SetCharacter(babyNum);
+                                Menu.instance.MenuFadeIn();
+                                specialMenuState = 2;
+                            }
+                            Popup.instance.OpenPopup();//메뉴 팝업, 팝업 닫으면 다음 대사 넘기기 가능
+                            break;
+                        case 38:
+                            SetBabyText(false);
+                            break;
+                        case 39:
+                            SetBabyText(true);
+                            break;
+                        case 40:
+                            CharacterManager.instance.CharacterFaceList[11].face[0].SetActive(true);
+                            SetBabyText(false);
+                            break;
+                    }
+                }
+                break;
+            case 14: //롤렝드
+                if (characterDC[14] == 0)
+                {
+                    switch (count)
+                    {
+                        case 0:
+                            CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[2].SetActive(true);
+                            break;
+                        case 1:
+                            BgmManager.instance.PlayCharacterBGM(14);//캐릭터 테마 재생
+                            CharacterManager.instance.CharacterIn(14); //이 캐릭터만 특수하게 여기서 등장
+                            SetBabyText(false);
+                            charName.text = "???";
+                            break;
+                        case 2:
+                            SetBabyText(true);
+                            break;
+                        case 3:
+                            SetBabyText(false);
+                            break;
+                        case 5:
+                            SetBabyText(true);
+                            break;
+                        case 6:
+                            SetBabyText(false);
+                            break;
+                        case 8:
+                            SetBabyText(true);
+                            break;
+                        case 9:
+                            SetBabyText(false);
+                            break;
+                        case 10:
+                            CharacterManager.instance.CharacterFaceList[13].face[2].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[7].SetActive(true);
+                            SetBabyText(true);
+                            break;
+                        case 11:
+                            SetBabyText(false);                           
+                            break;
+                        case 13:
+                            CharacterManager.instance.CharacterFaceList[13].face[7].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[3].SetActive(true);
+                            SetBabyText(true);
+                            break;
+                        case 14:
+                            SetBabyText(false);
+                            charName.text = "롤렝드";
+                            break;
+                        case 15:
+                            CharacterManager.instance.CharacterFaceList[13].face[3].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
+                            SetBabyText(true);
+                            break;
+                        case 16:
+                            CharacterManager.instance.CharacterFaceList[12].face[0].SetActive(true);
+                            SetBabyText(false);
+                            break;
+                        case 17:
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[3].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[12].face[0].SetActive(false);
+                            SetBabyText(true);
+                            break;
+                        case 18:
+                            SetBabyText(false);
+                            break;
+                        case 19:
+                            CharacterManager.instance.CharacterFaceList[13].face[3].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(true);
+                            SEManager.instance.PlayBirdSound();
+                            SetBabyText(true);
+                            break;
+                        case 20:
+                            SetBabyText(false);
+                            break;
+                        case 21:
+                            SetBabyText(true);
+                            break;
+                        case 22:
+                            CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
+                            break;
+                        case 24:
+                            SetBabyText(false);
+                            break;
+                    }
+                }
+                else if (characterDC[14] == 1)
+                {
+                    switch (count)
+                    {
+                        case 0:
+                            BgmManager.instance.StopBgm();
+                            BgmManager.instance.PlayCharacterBGM(14);//캐릭터 테마 재생
+                            SetBabyText(false);
+                            charName.text = "롤렝드";
+                            break;
+                        case 4:
+                            CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(true);
+                            SetBabyText(true);
+                            break;
+                        case 5:
+                            CharacterManager.instance.CharacterFaceList[12].face[0].SetActive(true);
+                            SetBabyText(false);
+                            break;
+                        case 6:
+                            CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(true);
+                            CharacterManager.instance.CharacterFaceList[12].face[0].SetActive(false);
+                            SetBabyText(true);
+                            break;
+                        case 7:
+                            SetBabyText(false);
+                            break;
+                        case 10:
+                            CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
+                            SetBabyText(true);
+                            break;
+                        case 11:
+                            SetBabyText(false);
+                            break;
+                        case 12:
+                            CharacterManager.instance.CharacterFaceList[12].face[1].SetActive(true);
+                            break;
+                        case 14:
+                            CharacterManager.instance.CharacterFaceList[12].face[1].SetActive(false);
+                            break;
+                        case 22:
+                            CharacterManager.instance.CharacterFaceList[12].face[0].SetActive(true);
+                            break;
+                        case 23:
+                            CharacterManager.instance.CharacterFaceList[12].face[0].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[12].face[1].SetActive(true);
+                            break;
+                        case 26:
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[7].SetActive(true);
+                            SetBabyText(true);
+                            break;
+                        case 27:
+                            SetBabyText(false);
+                            break;
+                        case 28:
+                            CharacterManager.instance.CharacterFaceList[12].face[1].SetActive(false);
+                            break;
+                        case 29:
+                            SetBabyText(true);
+                            break;
+                        case 30:
+                            SetBabyText(false);
+                            break;
+                        case 35:
+                            CharacterManager.instance.CharacterFaceList[12].face[1].SetActive(true);
+                            break;
+                        case 36:
+                            CharacterManager.instance.CharacterFaceList[12].face[1].SetActive(false);
+                            break;
+                        case 38:
+                            CharacterManager.instance.CharacterFaceList[12].face[0].SetActive(true);
+                            break;
+                        case 39:
+                            CharacterManager.instance.CharacterFaceList[12].face[0].SetActive(false);
+                            break;
+                        case 41:
+                            CharacterManager.instance.CharacterFaceList[12].face[0].SetActive(true);
+                            break;
+                        case 44:
+                            CharacterManager.instance.CharacterFaceList[13].face[7].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
+                            SetBabyText(true);
+                            break;
+                        case 45:
+                            SetBabyText(false);
+                            break;
+                        case 46:
+                            CharacterManager.instance.CharacterFaceList[12].face[0].SetActive(false);
+                            break;
+                        case 47:
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[3].SetActive(true);
+                            SetBabyText(true);
+                            if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
+                            {
+                                SystemManager.instance.SetCanTouch(false);
+                                SystemManager.instance.SetCanTouch(true,1f);
+                                Menu.instance.MenuFadeOut();//원래 있던 메뉴 페이드아웃
+                            }
+                            break;
+                        case 48:
+                            SetBabyText(false);
+                            if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
+                            {
+                                specialMenuState = 1;
+                                SmallFade.instance.FadeOut(babyNum, babySeatNum); //주인공 페이드아웃 
+                            }
+                            break;
+                        case 50:
+                            if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
+                            {
+                                SystemManager.instance.SetCanTouch(false);
+                                SystemManager.instance.SetCanTouch(true,1f);
+                                Menu.instance.SetFriendEventMenu(15);
+                            }
+                            else //다시보기일 때, 특별 메뉴 팝업 설정
+                            {
+                                Menu.instance.SetTableMenu(25, 0);
+                            }
+                            break;
+                        case 51:
+                            CharacterManager.instance.CharacterFaceList[13].face[3].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
+                            SystemManager.instance.SetCanTouch(false);
+                            SetBabyText(true);
+                            if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
+                            {
+                                SmallFade.instance.SetCharacter(babyNum);
+                                Menu.instance.MenuFadeIn();
+                            }
+                            Popup.instance.OpenPopup();//메뉴 팝업, 팝업 닫으면 다음 대사 넘기기 가능
+                            break;
+                        case 52:
+                            SetBabyText(false);
+                            break;
+                        case 53:
+                            SetBabyText(true);
+                            break;
+                        case 54:
+                            SetBabyText(false);
+                            break;
+                        case 55:
+                            CharacterManager.instance.CharacterFaceList[12].face[0].SetActive(true);
+                            break;
+                        case 56:
+                            CharacterManager.instance.CharacterFaceList[12].face[0].SetActive(false);
+                            break;
+                        case 57:
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(true);
+                            SetBabyText(true);
+                            break;
+                        case 59:
+                            CharacterManager.instance.CharacterFaceList[12].face[0].SetActive(true);
+                            SetBabyText(false);
+                            break;
+                        case 60:
+                            SetBabyText(true);                           
+                            break;
+                        case 61:
+                            SetBabyText(false);
+                            if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
+                            {
+                                specialMenuState = 2;
+                                VisitorNote.instance.OpenHiddenText(15);
+                            }
+                            CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(false);
+                            CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
+                            break;
+                        case 62:
+                            CharacterManager.instance.CharacterFaceList[12].face[0].SetActive(false);
+                            break;
+                    }
+                }
+                break;
+        }
     }
 
     public void SelectedFirstDialogue() //대화창이 등장할 때의 첫 문장
@@ -219,22 +2924,21 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
         }
     }
 
-
     private void HelperStartDialogue() //제제 대사 첫 문장
     {
-        switch (CharacterDC[0])
+        switch (characterDC[0])
         {
             case 0://게임 처음 시작
-                textWriterSingle = TextWriter.AddWriter_Static(UI_Assistant1.instance.characterText, "드디어 왔구나!");
-                CName.text = "??";
+                textWriterSingle = TextWriter.AddWriter_Static(characterText, "드디어 왔구나!");
+                charName.text = "??";
                 break;
             case 1://서빙 튜토리얼
-                textWriterSingle = TextWriter.AddWriter_Static(UI_Assistant1.instance.characterText, "자, 이젠 실전이야!");
-                CName.text = "제제";
+                textWriterSingle = TextWriter.AddWriter_Static(characterText, "자, 이젠 실전이야!");
+                charName.text = "제제";
                 break;
             case 2://엔딩 이벤트
-                textWriterSingle = TextWriter.AddWriter_Static(UI_Assistant1.instance.characterText, "우리 카페가 이렇게나 성장하다니!\n정말 놀라운걸?");
-                CName.text = "제제";
+                textWriterSingle = TextWriter.AddWriter_Static(characterText, "우리 카페가 이렇게나 성장하다니!\n정말 놀라운걸?");
+                charName.text = "제제";
                 break;
 
         }
@@ -242,10 +2946,10 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
 
     private void HelperNextDialogue() //제제 첫 문장 제외한 대사 
     {
-        switch (CharacterDC[0])
+        switch (characterDC[0])
         {
             case 0: //게임 처음 시작, 튜토리얼
-                messegeArray = new string[] {
+                messageArray = new string[] {
                 "이제 네가 왔으니 다시 카페를 열 수 있겠다!",
                 "으응..? 카페...?", //baby 1
                 "응? 아아, 기억이 안 난다구?",
@@ -283,7 +2987,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                 break;
 
             case 1://서빙 튜토리얼
-                messegeArray = new string[] {
+                messageArray = new string[] {
                     "서빙은 어떻게 하는 건지 알려줄게!",
                     "먼저 손님을 터치하면 손님이 원하는 메뉴에 대한 힌트를 얻을 수 있어.",
                     "손님을 터치해보자!",//2
@@ -300,7 +3004,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                 };
                 break;
             case 2://엔딩 이벤트
-                messegeArray = new string[] {
+                messageArray = new string[] {
                    "모두 네 덕분이야.",
                    "네가 손님들에게 잘 대해줘서\n단골손님도 많아졌고 말이야.",
                    "너는 이 카페에 있는 동안 어땠니?",
@@ -321,25 +3025,25 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
 
     void BearStartDialogue() //도리 대사 첫 문장
     {
-        switch (CharacterDC[1])
+        switch (characterDC[1])
         {          
             case 0: //카페 첫 방문
-                textWriterSingle = TextWriter.AddWriter_Static(UI_Assistant1.instance.characterText, "어라? 여기는 뭐하는 곳인가요?");
-                CName.text = "??";
+                textWriterSingle = TextWriter.AddWriter_Static(characterText, "어라? 여기는 뭐하는 곳인가요?");
+                charName.text = "??";
                 break;
             case 1: // 친밀도 10
-                textWriterSingle = TextWriter.AddWriter_Static(UI_Assistant1.instance.characterText, "흐음...");
-                CName.text = "도리";
+                textWriterSingle = TextWriter.AddWriter_Static(characterText, "흐음...");
+                charName.text = "도리";
                 break;
         }
     }
 
     void BearNextDialogue() // 도리 첫 문장 제외한 대사
     {
-        switch (CharacterDC[1])
+        switch (characterDC[1])
         {
             case 0://카페 첫 방문
-                messegeArray = new string[]
+                messageArray = new string[]
                 {
                     "앗, 어서와!\n여기는 코스모스 카페야! ",
                     "카페..??",
@@ -354,7 +3058,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                 break;
 
             case 1:
-                messegeArray = new string[]
+                messageArray = new string[]
                 {
                     "도리야~",
                     "으으음...",
@@ -401,26 +3105,26 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
 
     void CarFirstDialogue() //붕붕 첫 문장
     {
-        switch(CharacterDC[2])
+        switch(characterDC[2])
         {
             case 0://카페 첫 방문
-                textWriterSingle = TextWriter.AddWriter_Static(UI_Assistant1.instance.characterText, "어? 여기에 이런 곳이 있었나? 드릉드릉");
-                CName.text = "??";
+                textWriterSingle = TextWriter.AddWriter_Static(characterText, "어? 여기에 이런 곳이 있었나? 드릉드릉");
+                charName.text = "??";
                 break;
             case 1: //친밀도 10
                 CharacterManager.instance.CharacterFaceList[2].face[0].SetActive(true);
-                textWriterSingle = TextWriter.AddWriter_Static(UI_Assistant1.instance.characterText, "드릉!!! 드르응!!!! 드릉드릉드르릉!!!!!!!");
-                CName.text = "붕붕";
+                textWriterSingle = TextWriter.AddWriter_Static(characterText, "드릉!!! 드르응!!!! 드릉드릉드르릉!!!!!!!");
+                charName.text = "붕붕";
                 break;
         }      
     }
 
     void CarNextDialogue() //붕붕 첫 문장 제외한 대사
     {
-        switch (CharacterDC[2])
+        switch (characterDC[2])
         {
             case 0://카페 첫 방문
-                messegeArray = new string[]
+                messageArray = new string[]
                 {
                     "응? 이게 무슨 소리지..?", //baby 
                     "우와아!! 완전 멋진 자동차잖아?!", //baby
@@ -437,7 +3141,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                 break;
 
             case 1:
-                messegeArray = new string[]
+                messageArray = new string[]
                 {
                     "으아, 깜짝이야!! 귀 떨어질 뻔 했네.. 붕붕이니?",
                     "그래, 나다. 드릉드릉",
@@ -479,26 +3183,26 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
 
     void BreadFirstDialogue() //빵빵 첫 문장
     {
-        switch (CharacterDC[3])
+        switch (characterDC[3])
         {
             case 0://카페 첫 방문
-                textWriterSingle = TextWriter.AddWriter_Static(UI_Assistant1.instance.characterText, "오잉? 모야모야? 여기 모야?");
-                CName.text = "??";
+                textWriterSingle = TextWriter.AddWriter_Static(characterText, "오잉? 모야모야? 여기 모야?");
+                charName.text = "??";
                 break;
             case 1: //친밀도 10
                 CharacterManager.instance.CharacterFaceList[3].face[0].SetActive(true);
-                textWriterSingle = TextWriter.AddWriter_Static(UI_Assistant1.instance.characterText, "모야모야, 진짜 짜증나!!");
-                CName.text = "빵빵";
+                textWriterSingle = TextWriter.AddWriter_Static(characterText, "모야모야, 진짜 짜증나!!");
+                charName.text = "빵빵";
                 break;
         }
     }
 
     void BreadNextDialogue() //뻥빵 첫 문장 제외한 대사
     {
-        switch (CharacterDC[3])
+        switch (characterDC[3])
         {
             case 0://카페 첫 방문
-                messegeArray = new string[]
+                messageArray = new string[]
                 {
                     "앗, 새로운 손님이다! 어서와!",
                     "귀여워!! (빵긋)",
@@ -512,7 +3216,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                 break;
 
             case 1:
-                messegeArray = new string[]
+                messageArray = new string[]
                 {
                     "빵빵아, 무슨 일이야?",
                     "아니, 내 얘기 좀 들어봐.\n우리 주인이 이번에 고등학교라는 곳을 갔거든?",
@@ -562,15 +3266,15 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
 
     void RabbitFirstDialogue() //개나리 첫 문장
     {
-        switch (CharacterDC[4])
+        switch (characterDC[4])
         {
             case 0://카페 첫 방문
-                textWriterSingle = TextWriter.AddWriter_Static(UI_Assistant1.instance.characterText, "꺄르르~ 안녕하세요~");
-                CName.text = "???";
+                textWriterSingle = TextWriter.AddWriter_Static(characterText, "꺄르르~ 안녕하세요~");
+                charName.text = "???";
                 break;
             case 1: //친밀도 10
-                textWriterSingle = TextWriter.AddWriter_Static(UI_Assistant1.instance.characterText, "있잖아요~ 원래 나는요..");
-                CName.text = "개나리";
+                textWriterSingle = TextWriter.AddWriter_Static(characterText, "있잖아요~ 원래 나는요..");
+                charName.text = "개나리";
                 if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                 {
                     SmallFade.instance.SetCharacter(16);
@@ -581,10 +3285,10 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
 
     void RabbitNextDialogue() //개나리 첫 문장 제외한 대사
     {
-        switch (CharacterDC[4])
+        switch (characterDC[4])
         {
             case 0://카페 첫 방문
-                messegeArray = new string[]
+                messageArray = new string[]
                 {
                     "와아~ 안녕! 처음 보는 친구네?",
                     "저는 1학년 1반 11번 양말토끼 개나리입니다아~!",
@@ -602,7 +3306,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                 break;
 
             case 1:
-                messegeArray = new string[]
+                messageArray = new string[]
                 {
                     "으음...",
                     "..울 할아부지한테는 귀여운 손녀딸이 있대요!",
@@ -628,15 +3332,15 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
 
     void DdorongFirstDialogue() //또롱이 첫 문장
     {
-        switch (CharacterDC[5])
+        switch (characterDC[5])
         {
             case 0://카페 첫 방문
-                textWriterSingle = TextWriter.AddWriter_Static(UI_Assistant1.instance.characterText, "안냐!!");
-                CName.text = "??";
+                textWriterSingle = TextWriter.AddWriter_Static(characterText, "안냐!!");
+                charName.text = "??";
                 break;
             case 1:
-                textWriterSingle = TextWriter.AddWriter_Static(UI_Assistant1.instance.characterText, "이거!! ..콩!!");
-                CName.text = "또롱";
+                textWriterSingle = TextWriter.AddWriter_Static(characterText, "이거!! ..콩!!");
+                charName.text = "또롱";
                 if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                 {
                     SmallFade.instance.SetBabySeat(SmallFade.instance.CharacterSeat[4]);//또롱이 건너편으로  자리 잡기
@@ -648,10 +3352,10 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
 
     void DdorongNextDialogue() //또롱이 첫 문장 제외한 대사
     {
-        switch (CharacterDC[5])
+        switch (characterDC[5])
         {
             case 0://카페 첫 방문
-                messegeArray = new string[]
+                messageArray = new string[]
                 {
                     "앗, 새로운 친구네? 어서와~",
                     "여기 마씻는 거! 이써!",
@@ -667,7 +3371,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                 };
                 break;
             case 1:
-                messegeArray = new string[]
+                messageArray = new string[]
                 {
                     "엥? 블루베리를 말하는 거야?",
                     "에!! 이거 콩!!",
@@ -692,25 +3396,25 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
 
     void PrincessFirstDialogue() //도로시 첫 문장
     {
-        switch (CharacterDC[6])
+        switch (characterDC[6])
         {
             case 0://카페 첫 방문
-                textWriterSingle = TextWriter.AddWriter_Static(UI_Assistant1.instance.characterText, "정말이지 허름한 곳이로군. 큼큼.");
-                CName.text = "???";
+                textWriterSingle = TextWriter.AddWriter_Static(characterText, "정말이지 허름한 곳이로군. 큼큼.");
+                charName.text = "???";
                 break;
             case 1: //친밀도 10
-                textWriterSingle = TextWriter.AddWriter_Static(UI_Assistant1.instance.characterText, "여봐라, 귀한 분이 오셨는데\n어서 모시지 않고 뭐하느냐~");
-                CName.text = "도로시";
+                textWriterSingle = TextWriter.AddWriter_Static(characterText, "여봐라, 귀한 분이 오셨는데\n어서 모시지 않고 뭐하느냐~");
+                charName.text = "도로시";
                 break;
         }
     }
 
     void PrincessNextDialogue() //도로시 첫 문장 제외한 대사
     {
-        switch (CharacterDC[6])
+        switch (characterDC[6])
         {
             case 0://카페 첫 방문
-                messegeArray = new string[]
+                messageArray = new string[]
                 {
                     "이런 누추한 곳에 귀한 손님이 납셨는데\n어서 받들지 않고 무얼 하는 게지?",
                     "앗, 미안! 못 봤네.\n코스모스 카페에 어서와!",
@@ -729,7 +3433,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                 break;
 
             case 1:
-                messegeArray = new string[]
+                messageArray = new string[]
                 {
                     "어서와, 도로시!",
                     "내 오늘은 친히 부탁을 하나 하고 싶은데..",
@@ -759,15 +3463,15 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
 
     void FamilySeriesFirstDialogue() //루루 첫 문장
     {
-        switch (CharacterDC[7])
+        switch (characterDC[7])
         {
             case 0://카페 첫 방문
-                textWriterSingle = TextWriter.AddWriter_Static(UI_Assistant1.instance.characterText, "안녕하세요..!");
-                CName.text = "??";
+                textWriterSingle = TextWriter.AddWriter_Static(characterText, "안녕하세요..!");
+                charName.text = "??";
                 break;
             case 1: //친밀도 15
-                textWriterSingle = TextWriter.AddWriter_Static(UI_Assistant1.instance.characterText, "오늘도 코스모스 카페는 참 따뜻하네요.");
-                CName.text = "루루";
+                textWriterSingle = TextWriter.AddWriter_Static(characterText, "오늘도 코스모스 카페는 참 따뜻하네요.");
+                charName.text = "루루";
                 if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                 {
                     SmallFade.instance.SetCharacter(17);
@@ -778,10 +3482,10 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
 
     void FamilySeriesNextDialogue() //샌디 첫 문장 제외한 대사
     {
-        switch (CharacterDC[7])
+        switch (characterDC[7])
         {
             case 0://카페 첫 방문
-                messegeArray = new string[]
+                messageArray = new string[]
                 {
                     "어서와!",
                     "여기서 맛있는 음료수와 디저트를 판다는\n이야기를 들었는데, 저도 먹을 수 있을까요?",
@@ -799,7 +3503,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                 break;
 
             case 1:
-                messegeArray = new string[]
+                messageArray = new string[]
                 {
                     "그렇게 말해줘서 고마워~",
                     "제 친구들도 코스모스 카페에 올 수 있다면\n참 좋을텐데...",
@@ -873,15 +3577,15 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
 
     void SunflowerFirstDialogue() //샌디 첫 문장
     {
-        switch (CharacterDC[8])
+        switch (characterDC[8])
         {
             case 0://카페 첫 방문
-                textWriterSingle = TextWriter.AddWriter_Static(UI_Assistant1.instance.characterText, "안녕하세요~\n혹시 여기가 코스모스 카페 맞나요?");
-                CName.text = "??";
+                textWriterSingle = TextWriter.AddWriter_Static(characterText, "안녕하세요~\n혹시 여기가 코스모스 카페 맞나요?");
+                charName.text = "??";
                 break;
             case 1: //친밀도 15
-                textWriterSingle = TextWriter.AddWriter_Static(UI_Assistant1.instance.characterText, "오늘은 당신에게 특별한 이야기를 해주고 싶어요.");
-                CName.text = "샌디";
+                textWriterSingle = TextWriter.AddWriter_Static(characterText, "오늘은 당신에게 특별한 이야기를 해주고 싶어요.");
+                charName.text = "샌디";
                 if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                 {
                     SmallFade.instance.SetCharacter(16);
@@ -892,10 +3596,10 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
 
     void SunflowerNextDialogue() //샌디 첫 문장 제외한 대사
     {
-        switch (CharacterDC[8])
+        switch (characterDC[8])
         {
             case 0://카페 첫 방문
-                messegeArray = new string[]
+                messageArray = new string[]
                 {
                     "응, 맞아! 여기가 코스모스 카페야.",
                     "제가 잘 찾아왔군요!\n전 샌디라고 해요.",
@@ -913,7 +3617,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                 break;
 
             case 1:
-                messegeArray = new string[]
+                messageArray = new string[]
                 {
                    "응? 어떤 이야기인데?",
                    "당신은 여행 다니기를 좋아하나요?",
@@ -979,15 +3683,15 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
 
     void DogFirstDialogue() //친구 첫 문장
     {
-        switch (CharacterDC[9])
+        switch (characterDC[9])
         {
             case 0://카페 첫 방문
-                textWriterSingle = TextWriter.AddWriter_Static(UI_Assistant1.instance.characterText, "여기가 그 카페인가? 왕!");
-                CName.text = "??";
+                textWriterSingle = TextWriter.AddWriter_Static(characterText, "여기가 그 카페인가? 왕!");
+                charName.text = "??";
                 break;
             case 1: //친밀도 10, 서빙 후
-                textWriterSingle = TextWriter.AddWriter_Static(UI_Assistant1.instance.characterText, "이걸 뽀삐도 같이 먹을 수 있다면 좋을 텐데..");
-                CName.text = "친구";
+                textWriterSingle = TextWriter.AddWriter_Static(characterText, "이걸 뽀삐도 같이 먹을 수 있다면 좋을 텐데..");
+                charName.text = "친구";
                 if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                 {
                     SmallFade.instance.SetCharacter(17);
@@ -998,10 +3702,10 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
 
     void DogNextDialogue() //친구 첫 문장 제외한 대사
     {
-        switch (CharacterDC[9])
+        switch (characterDC[9])
         {
             case 0://카페 첫 방문
-                messegeArray = new string[]
+                messageArray = new string[]
                 {
                     "아이, 잘했어!\n잘 찾아온 게 맞네. 왕!",
                     "응? 우와, 스스로 머리 쓰다듬는\n강아지다~ 귀여워~",
@@ -1020,7 +3724,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                 break;
 
             case 1:
-                messegeArray = new string[]
+                messageArray = new string[]
                 {
                     "응? 뽀삐가 너의 주인이니?",
                     "음... 뽀삐는 진짜 강아지야.",
@@ -1055,15 +3759,15 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
 
     void SoldierFirstDialogue() //찰스 첫 문장
     {
-        switch (CharacterDC[10])
+        switch (characterDC[10])
         {
             case 0://카페 첫 방문
-                textWriterSingle = TextWriter.AddWriter_Static(UI_Assistant1.instance.characterText, "실례합니다! 아무도 없으십니까!");
-                CName.text = "??";
+                textWriterSingle = TextWriter.AddWriter_Static(characterText, "실례합니다! 아무도 없으십니까!");
+                charName.text = "??";
                 break;
             case 1: //친밀도 10이상, 서빙 후, 카페에 공주 있을 경우
-                textWriterSingle = TextWriter.AddWriter_Static(UI_Assistant1.instance.characterText, "저... 그런데 말입니다.");
-                CName.text = "찰스";
+                textWriterSingle = TextWriter.AddWriter_Static(characterText, "저... 그런데 말입니다.");
+                charName.text = "찰스";
                 if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                 {
                     SmallFade.instance.SetCharacter(16);
@@ -1071,8 +3775,8 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                 break;
             case 2: //친밀도 15이상, 서빙 전, 공주 친밀도 10이상, 카페에 공주 있을 경우
                 CharacterManager.instance.CharacterFaceList[8].face[1].SetActive(true);
-                textWriterSingle = TextWriter.AddWriter_Static(UI_Assistant1.instance.characterText, babyName + "님.. 저 좀 도와주십쇼..");
-                CName.text = "찰스";
+                textWriterSingle = TextWriter.AddWriter_Static(characterText, babyName + "님.. 저 좀 도와주십쇼..");
+                charName.text = "찰스";
                 if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                 {
                     SmallFade.instance.SetCharacter(16);
@@ -1083,10 +3787,10 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
 
     void SoldierNextDialogue() //찰스 첫 문장 제외한 대사
     {
-        switch (CharacterDC[10])
+        switch (characterDC[10])
         {
             case 0://카페 첫 방문
-                messegeArray = new string[]
+                messageArray = new string[]
                 {
                     "앗, 여기 사람 있어! 어서와~",
                     "충성! 안녕하십니까!\n저는 찰스라고 합니다.",
@@ -1101,7 +3805,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                 break;
 
             case 1:
-                messegeArray = new string[]
+                messageArray = new string[]
                 {
                     "응? 왜 그래?",
                     "혹시 저 분은.. 누구십니까?",
@@ -1118,7 +3822,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                 break;
 
             case 2:
-                messegeArray = new string[]
+                messageArray = new string[]
                 {
                     "뭐야~ 무슨 일인데?",
                     "아무래도.. 도로시 공주님께 제 마음을\n표현하지 않고서는 답답해서 못 살겠습니다..",
@@ -1180,23 +3884,23 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
 
     void NamelessFirstDialogue() //무명이 첫 문장
     {
-        switch (CharacterDC[11])
+        switch (characterDC[11])
         {
             case 0://카페 첫 방문
-                textWriterSingle = TextWriter.AddWriter_Static(UI_Assistant1.instance.characterText, "....");
-                CName.text = "??";
+                textWriterSingle = TextWriter.AddWriter_Static(characterText, "....");
+                charName.text = "??";
                 break;
             case 1: //친밀도 10이상
-                textWriterSingle = TextWriter.AddWriter_Static(UI_Assistant1.instance.characterText, "여, 여긴 참 따뜻한 곳이야..\n난 이 곳이 정말 조, 좋아.");
-                CName.text = "??";
+                textWriterSingle = TextWriter.AddWriter_Static(characterText, "여, 여긴 참 따뜻한 곳이야..\n난 이 곳이 정말 조, 좋아.");
+                charName.text = "??";
                 if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                 {
                     SmallFade.instance.SetCharacter(17);
                 }
                 break;
             case 2: //친밀도 20이상
-                textWriterSingle = TextWriter.AddWriter_Static(UI_Assistant1.instance.characterText, "저, 저기... 있잖아..");
-                CName.text = SystemManager.instance.GetNameForNameless();
+                textWriterSingle = TextWriter.AddWriter_Static(characterText, "저, 저기... 있잖아..");
+                charName.text = SystemManager.instance.GetNameForNameless();
                 if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                 {
                     SmallFade.instance.SetCharacter(17);
@@ -1207,10 +3911,10 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
 
     void NamelessNextDialogue() //무명이 첫 문장 제외한 대사
     {
-        switch (CharacterDC[11])
+        switch (characterDC[11])
         {
             case 0://카페 첫 방문
-                messegeArray = new string[]
+                messageArray = new string[]
                 {
                     "음? 뭐지..\n누군가 쳐다보는 것 같은 느낌이...",
                     ".....",
@@ -1227,7 +3931,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                 break;
 
             case 1:
-                messegeArray = new string[]
+                messageArray = new string[]
                 {
                     "고마워. 나도 여기가 너~무 좋아.",
                     "친구들도 전부 좋고,\n같이 얘기하는 것두 재밌고 말이야.",
@@ -1260,7 +3964,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                 break;
 
             case 2:
-                messegeArray = new string[]
+                messageArray = new string[]
                 {
                     "응? 무슨 일이야, " + SystemManager.instance.GetNameForNameless() + "?",
                     "가, 갑작스러울 수도 있겠지만..\n너한테 꼭 하, 하고 싶은 얘기가 있어!",
@@ -1330,26 +4034,26 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
 
     void HeroDinosourFirstDialogue() //영웅공룡 첫 문장
     {
-        switch (CharacterDC[12])
+        switch (characterDC[12])
         {
             case 0://카페 첫 방문
-                textWriterSingle = TextWriter.AddWriter_Static(UI_Assistant1.instance.characterText, "이 곳이야.");
-                CName.text = "??";
+                textWriterSingle = TextWriter.AddWriter_Static(characterText, "이 곳이야.");
+                charName.text = "??";
                 break;
             case 1: //친밀도 15
                 CharacterManager.instance.CharacterFaceList[12].face[0].SetActive(true);
-                textWriterSingle = TextWriter.AddWriter_Static(UI_Assistant1.instance.characterText, "그러고보니 디노 너..");
-                CName.text = "히로";
+                textWriterSingle = TextWriter.AddWriter_Static(characterText, "그러고보니 디노 너..");
+                charName.text = "히로";
                 break;
         }
     }
 
     void HeroDinosourNextDialogue() //영웅공룡 첫 문장 제외한 대사
     {
-        switch (CharacterDC[12])
+        switch (characterDC[12])
         {
             case 0://카페 첫 방문
-                messegeArray = new string[]
+                messageArray = new string[]
                 {
                     "멍청한 녀석!\n갑자기 나를 이런 곳에 데려오다니 너무 수상하군.", //디노
                     "설마 함정은 아니겠지?",
@@ -1373,7 +4077,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                 break;
 
             case 1:
-                messegeArray = new string[]
+                messageArray = new string[]
                 {
                     "매번 내 주먹에 맞아 날아가면서\n아프지 않았어?",
                     "그걸 말이라고.",//디노
@@ -1426,15 +4130,15 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
 
     void PenguinFirstDialogue() //닥터 펭 첫 문장
     {
-        switch (CharacterDC[13])
+        switch (characterDC[13])
         {
             case 0://카페 첫 방문
-                textWriterSingle = TextWriter.AddWriter_Static(UI_Assistant1.instance.characterText, "흠흠.. 혹시 지금 영업하고 있소?");
-                CName.text = "???";
+                textWriterSingle = TextWriter.AddWriter_Static(characterText, "흠흠.. 혹시 지금 영업하고 있소?");
+                charName.text = "???";
                 break;
             case 1: //친밀도 15
-                textWriterSingle = TextWriter.AddWriter_Static(UI_Assistant1.instance.characterText, "반갑네, 오늘도 이 카페는 따뜻하구먼.");
-                CName.text = "닥터 펭";
+                textWriterSingle = TextWriter.AddWriter_Static(characterText, "반갑네, 오늘도 이 카페는 따뜻하구먼.");
+                charName.text = "닥터 펭";
                 if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                 {
                     SmallFade.instance.SetCharacter(16);
@@ -1445,10 +4149,10 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
 
     void PenguinNextDialogue() //닥터 펭 첫 문장 제외한 대사
     {
-        switch (CharacterDC[13])
+        switch (characterDC[13])
         {
             case 0://카페 첫 방문
-                messegeArray = new string[]
+                messageArray = new string[]
                 {
                     "아! 어서와!\n편하게 들어오면 돼!",
                     "마침 잘 됐군.\n말을 많이해서 목이 말랐던 참이었으니.",
@@ -1475,7 +4179,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                 break;
 
             case 1:
-                messegeArray = new string[]
+                messageArray = new string[]
                 {
                     "어서와, 닥터 펭!\n오늘도 목마를 때까지 이야기하다 온 거야?",
                     "허허, 그렇기도 하지.\n하지만 오늘은 그것이 다가 아니네.",
@@ -1527,17 +4231,17 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
 
     void GrandfatherFirstDialogue() //할아버지 첫 문장
     {
-        switch (CharacterDC[14])
+        switch (characterDC[14])
         {
             case 0://카페 첫 방문
                 CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
                 CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(true);
-                textWriterSingle = TextWriter.AddWriter_Static(UI_Assistant1.instance.babyText, "어라? 참새가 왜 바닥에 누워있지?");
+                textWriterSingle = TextWriter.AddWriter_Static(babyText, "어라? 참새가 왜 바닥에 누워있지?");
                 break;
             case 1: //친밀도 20이상
                 CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
                 CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(true);
-                textWriterSingle = TextWriter.AddWriter_Static(UI_Assistant1.instance.babyText, "로랑드 할아버지! 할아버지 몸에\n달린 그 줄들은 뭐에요?");
+                textWriterSingle = TextWriter.AddWriter_Static(babyText, "로랑드 할아버지! 할아버지 몸에\n달린 그 줄들은 뭐에요?");
                 CharacterManager.instance.CharacterIn(14);//큰 캐릭터 일러스트는 바로 들어오기
                 break;
         }
@@ -1545,10 +4249,10 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
 
     void GrandfatherNextDialogue() //할아버지 첫 문장 제외한 대사
     {
-        switch (CharacterDC[14])
+        switch (characterDC[14])
         {
             case 0://카페 첫 방문
-                messegeArray = new string[]
+                messageArray = new string[]
                 {
                     ".. 헉! 참새야! 참새야!\n정신차려봐!",
                     "얘야, 무슨 일이니?",
@@ -1579,7 +4283,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                 break;
 
             case 1:
-                messegeArray = new string[]
+                messageArray = new string[]
                 {
                     "아, 이거 말이냐?",
                     "이건 내가 혼자 움직이는 것처럼\n보이게 도와주는 것이란다.",
