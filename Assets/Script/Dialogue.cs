@@ -37,6 +37,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
         }
     }
 
+    #region Getter, Setter
     public void SetPanelActive(int panelNum, bool state)
     {
         panels[panelNum].SetActive(state);
@@ -55,11 +56,6 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
     public void SetBabyText(bool value)
     {
         isBabyText = value;
-    }
-
-    public bool IsBabayText()
-    {
-        return isBabyText;
     }
 
     public int GetCurrentDialogueCount()
@@ -86,10 +82,16 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
     {
         specialMenuState = value;
     }
-
+    #endregion
+    
     public bool IsTalking()
     {
         return isTalking;
+    }
+
+    public bool IsBabayText()
+    {
+        return isBabyText;
     }
 
    public void UpdateCharacterDC(int cNum = -1)
@@ -231,12 +233,12 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
             if(cNum % 2 == 0) // 캐릭터가 짝수 (왼쪽에 앉아있음)
             {
                 babyNum = 16;
-                babySeatNum = SmallFade.instance.CharacterSeat[cNum-1]+1;
+                babySeatNum = SmallFade.instance.GetCharacterSeatNum(cNum)+1;
             }
             else
             {
                 babyNum = 17;
-                babySeatNum = SmallFade.instance.CharacterSeat[cNum-1]-1;
+                babySeatNum = SmallFade.instance.GetCharacterSeatNum(cNum)-1;
             }
         }
 
@@ -363,7 +365,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                     Debug.Log("?????");
                     if(count == 11)
                     {
-                        SmallFade.instance.SmallCharacter[0].GetComponent<Button>().interactable = false;//제제 클릭 불가
+                        SmallFade.instance.GetSmallCharacter(0).GetComponent<Button>().interactable = false;//제제 클릭 불가
                     }
                 }
                 break;
@@ -1726,7 +1728,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                             {
                                 SystemManager.instance.SetCanTouch(false);
                                 SystemManager.instance.SetCanTouch(true,1.3f);
-                                Menu.instance.SoldierEvent_ServeToPrincess(SmallFade.instance.CharacterSeat[5]);//도로시 자리정보를 매개변수로 넣기
+                                Menu.instance.SoldierEvent_ServeToPrincess(SmallFade.instance.GetCharacterSeatNum(6));//도로시 자리정보를 매개변수로 넣기
                             }
                             break;
                         case 21:
@@ -1753,7 +1755,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                             {
                                 SystemManager.instance.SetCanTouch(false);
                                 SystemManager.instance.SetCanTouch(true,1f);
-                                SmallFade.instance.FadeOut(SmallFade.instance.CharacterSeat[9]);//찰스 작은 캐릭터 페이드아웃
+                                SmallFade.instance.FadeOut(SmallFade.instance.GetCharacterSeatNum(10));//찰스 작은 캐릭터 페이드아웃
                             }
                             break;
                         case 25:
@@ -2924,6 +2926,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
         }
     }
 
+    #region 캐릭터 시나리오들
     private void HelperStartDialogue() //제제 대사 첫 문장
     {
         switch (characterDC[0])
@@ -3343,7 +3346,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                 charName.text = "또롱";
                 if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                 {
-                    SmallFade.instance.SetBabySeat(SmallFade.instance.CharacterSeat[4]);//또롱이 건너편으로  자리 잡기
+                    SmallFade.instance.SetBabySeat(SmallFade.instance.GetCharacterSeatNum(5));//또롱이 건너편으로  자리 잡기
                     SmallFade.instance.SetCharacter(17);
                 }
                 break;
@@ -4352,4 +4355,5 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                 break;            
         }
     }
+    #endregion
 }

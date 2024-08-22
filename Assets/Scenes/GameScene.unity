@@ -42141,7 +42141,6 @@ GameObject:
   - component: {fileID: 1538706522}
   - component: {fileID: 1538706523}
   - component: {fileID: 1538706531}
-  - component: {fileID: 1538706532}
   - component: {fileID: 1538706533}
   - component: {fileID: 1538706534}
   - component: {fileID: 1538706537}
@@ -42209,7 +42208,6 @@ MonoBehaviour:
   - {fileID: 0}
   soldierRightImage: {fileID: 991923546}
   namelessSmile: {fileID: 194634141}
-  TableEmpty: 000000000000000000000000
   CharacterSeat: 000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
 --- !u!114 &1538706517
 MonoBehaviour:
@@ -42328,7 +42326,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canVisitCharacters: []
-  visitC: 0
 --- !u!114 &1538706523
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -42341,7 +42338,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5fe5f04ab5c4b444b610e7e336e5816, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  eventOn: 0
 --- !u!114 &1538706526
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -42512,18 +42508,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &1538706532
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1538706512}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ecfd5560e4ffc45e9b0498bed9574c34, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1538706533
 MonoBehaviour:
   m_ObjectHideFlags: 0

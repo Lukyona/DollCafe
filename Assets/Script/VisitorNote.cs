@@ -483,7 +483,7 @@ public class VisitorNote : MonoBehaviour
                     if (menuNum == 6 && favSecondMenu[cNum - 2].activeSelf == false)
                     {
                         SystemManager.instance.BeginDialogue(5);//또롱이 이벤트 시작
-                        CharacterAppear.instance.eventOn = 5;
+                        CharacterAppear.instance.SetCurrentEventState(5);
                         favSecondMenu[cNum - 2].SetActive(true);
                         favSecondMenuOpen[3] = 1;
                     }

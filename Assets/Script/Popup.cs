@@ -24,7 +24,7 @@ public class Popup : MonoBehaviour // 새로운 손님 팝업
         SystemManager.instance.SetUIOpen(true);
         SEManager.instance.PlayPopupSound(); //효과음
 
-        if (CharacterAppear.instance.eventOn != 0 || VisitorNote.instance.GetFriendEventID() != 0) // 스페셜 메뉴 팝업인 경우
+        if (CharacterAppear.instance.GetCurrentEventState() != 0 || VisitorNote.instance.GetFriendEventID() != 0) // 스페셜 메뉴 팝업인 경우
         {
             newVisitorPopup.SetActive(false);
             specialMenuPopup.SetActive(true);
@@ -59,7 +59,7 @@ public class Popup : MonoBehaviour // 새로운 손님 팝업
     {
         newVisitorPopup.SetActive(false);
 
-        if (CharacterAppear.instance.eventOn != 0 || VisitorNote.instance.GetFriendEventID() != 0)//친밀도 이벤트 도중이거나 다시보기 도중이면
+        if (CharacterAppear.instance.GetCurrentEventState() != 0 || VisitorNote.instance.GetFriendEventID() != 0)//친밀도 이벤트 도중이거나 다시보기 도중이면
         {
             specialMenuPopup.SetActive(false);
             SystemManager.instance.SetCanTouch(true);

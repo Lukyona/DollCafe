@@ -288,7 +288,7 @@ public class SystemManager : MonoBehaviour
                 } 
                 if(mainCount > 6) // 또롱이 방문 이후면
                 {
-                    SmallFade.instance.SmallCharacter[0].GetComponent<Button>().interactable = true; // 제제 터치 가능
+                    SmallFade.instance.GetSmallCharacter(0) .GetComponent<Button>().interactable = true; // 제제 터치 가능
                 }
 
                 for (int i = 1; i <= mainCount - 2; i++)//재방문 캐릭터 설정
@@ -360,7 +360,7 @@ public class SystemManager : MonoBehaviour
             case 6: //또롱 등장 후 
                 AfterFirstMeet(mainCount);
                 VisitorNote.instance.SetNextPageButtonActive(true); //5번째 페이지로 넘어가기 위해 다음 페이지 버튼 보이게함   
-                SmallFade.instance.SmallCharacter[0].GetComponent<Button>().interactable = true;//제제 터치 가능
+                SmallFade.instance.GetSmallCharacter(0) .GetComponent<Button>().interactable = true;//제제 터치 가능
                 ShowBangBubble();// 팁 말풍선 등장
                 break;
             default:
@@ -450,7 +450,7 @@ public class SystemManager : MonoBehaviour
         else
         {
             CanTouchUI();
-            CharacterAppear.instance.eventOn = 0; //친밀도 이벤트 종료됨 
+            CharacterAppear.instance.SetCurrentEventState(0); //친밀도 이벤트 종료됨 
             MenuHint.instance.CanClickMHB();//메뉴힌트버블 터치 가능
 
             switch (cNum)
@@ -534,7 +534,7 @@ public class SystemManager : MonoBehaviour
             endingState = 1;
             PlayerPrefs.SetInt("EndingState", endingState);
             PlayerPrefs.Save();
-            SmallFade.instance.SmallCharacter[0].GetComponent<Button>().interactable = false;//제제 클릭 불가
+            SmallFade.instance.GetSmallCharacter(0) .GetComponent<Button>().interactable = false;//제제 클릭 불가
         }
     }
 
@@ -597,13 +597,13 @@ public class SystemManager : MonoBehaviour
 
     void EndingEvent()
     {
-        if(!isUIOpen && SmallFade.instance.TableEmpty[0] == 0 && SmallFade.instance.TableEmpty[1] == 0 && SmallFade.instance.TableEmpty[2] == 0)
+        if(!isUIOpen && SmallFade.instance.IsTableEmpty(1) && SmallFade.instance.IsTableEmpty(2) && SmallFade.instance.IsTableEmpty(3))
         { //테이블이 모두 비었고 UI가 올라와있지 않은 상태에서 실행
             CantTouchUI();
             jejeBubble.gameObject.SetActive(false);
             bangBubble.gameObject.SetActive(false);
             SmallFade.instance.FadeOutJeje();
-            SmallFade.instance.SmallCharacter[0].GetComponent<Button>().interactable = false;//제제 클릭 불가
+            SmallFade.instance.GetSmallCharacter(0) .GetComponent<Button>().interactable = false;//제제 클릭 불가
             BeginDialogue(0);
         }
         else

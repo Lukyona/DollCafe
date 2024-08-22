@@ -17,7 +17,6 @@ public class CharacterVisit : MonoBehaviour //캐릭터 등장에 관한 스크�
         }
     }
 
-    public int visitC = 0; //방문할 캐릭터, 친밀도 이벤트 함수에서 사용
     public void RandomVisit()//캐릭터들의 카페 방문, 등장한 캐릭터 중에 랜덤으로 방문
     {
         if ((VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0 && Dialogue.instance.IsTalking()) || PlayerPrefs.GetInt("EndingState") == 1)//캐릭터와 대화 중일 경우 혹은 엔딩이벤트 할 경우 함수 종료
@@ -33,7 +32,7 @@ public class CharacterVisit : MonoBehaviour //캐릭터 등장에 관한 스크�
             }           
             return;
         }
-        if (SmallFade.instance.TableEmpty[0] == 1 && SmallFade.instance.TableEmpty[1] == 1 && SmallFade.instance.TableEmpty[2] == 1) //세 테이블에 모두 손님이 있으면
+        if (!SmallFade.instance.IsTableEmpty(1) && !SmallFade.instance.IsTableEmpty(2) && !SmallFade.instance.IsTableEmpty(3)) //세 테이블에 모두 손님이 있으면
         {
             if (!IsInvoking("RandomVisit"))
             {
@@ -110,10 +109,9 @@ public class CharacterVisit : MonoBehaviour //캐릭터 등장에 관한 스크�
                     canVisitCharacters.Remove("small_6Princess&10Soldier");
                     break;
             }
-            visitC = cNum;
-            CharacterAppear.instance.FriendshipEvent(); //방문할 캐릭터의 친밀도 이벤트가 발생하는지 확인
+            CharacterAppear.instance.FriendshipEvent(cNum); //방문할 캐릭터의 친밀도 이벤트가 발생하는지 확인
             //Debug.Log("방문할 캐릭터 넘버 " + cNum);
-            if (CharacterAppear.instance.eventOn == 0) //이벤트가 발생하지 않으면 일반 방문 진행
+            if (CharacterAppear.instance.GetCurrentEventState() == 0) //이벤트가 발생하지 않으면 일반 방문 진행
             {
                 SmallFade.instance.SetCharacter(cNum); //방문할 캐릭터 세팅
                 Invoke("RandomVisit", 7f);
