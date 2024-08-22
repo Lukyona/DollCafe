@@ -155,7 +155,7 @@ public class Menu : MonoBehaviour
             if (SystemManager.instance.GetMainCount() == 2) //서빙 튜토리얼일 경우
             {
                 // 레이어 순서 원래대로 변경
-                SmallFade.instance.GetSmallCharacter(1).transform.parent.GetComponent<Canvas>().sortingOrder = 2;
+                CharacterManager.instance.GetSmallCharacter(1).transform.parent.GetComponent<Canvas>().sortingOrder = 2;
                 MenuHint.instance.GetHintBubble(1).transform.parent.GetComponent<Canvas>().sortingOrder = 4;
 
                 boardCloseButton.GetComponent<Button>().interactable = false; //닫기 버튼 불가
@@ -231,8 +231,8 @@ public class Menu : MonoBehaviour
 
             HPManager.instance.UseHP(); //체력 소모
 
-            if((characterNum == 9 && CharacterAppear.instance.GetCurrentEventState() == 9) || (characterNum == 10 && CharacterAppear.instance.GetCurrentEventState() == 10)
-                || (characterNum == 15 && CharacterAppear.instance.GetCurrentEventState() == 16))
+            if((characterNum == 9 && CharacterManager.instance.GetCurrentEventState() == 9) || (characterNum == 10 && CharacterManager.instance.GetCurrentEventState() == 10)
+                || (characterNum == 15 && CharacterManager.instance.GetCurrentEventState() == 16))
             {// 친구,찰스1,롤렝드 친밀도 이벤트일 경우 클릭된 캐릭터와 이벤트 캐릭터가 동일하면
                 canStartEvent = true;
                 SystemManager.instance.CantTouchUI();
@@ -241,7 +241,7 @@ public class Menu : MonoBehaviour
                 {
                     SEManager.instance.PlayUIClickSound3();
                     VisitorNote.instance.CheckMenuMatch(characterNum, menuNum);
-                    if (CharacterAppear.instance.GetCurrentEventState() == 10)//찰스의 경우 평판 증가
+                    if (CharacterManager.instance.GetCurrentEventState() == 10)//찰스의 경우 평판 증가
                     {
                         SetReputation(reputation += 3);
                         VisitorNote.instance.IncreaseFrinedshipGauge(characterNum); //서빙받은 캐릭터의 친밀도 증가
@@ -250,7 +250,7 @@ public class Menu : MonoBehaviour
                 else //일치하지 않음
                 {
                     SEManager.instance.PlayUIClickSound2();
-                    if (CharacterAppear.instance.GetCurrentEventState() == 10)
+                    if (CharacterManager.instance.GetCurrentEventState() == 10)
                     {
                         SetReputation(++reputation);
                         VisitorNote.instance.IncreaseFrinedshipGauge(characterNum); //서빙받은 캐릭터의 친밀도 증가
@@ -262,7 +262,7 @@ public class Menu : MonoBehaviour
                 if (MenuHint.instance.RightMenu[seatNum] == menuNum) //캐릭터가 원하는 메뉴와 원하는 메뉴와 플레이어가 고른 메뉴가 일치
                 {
                     SEManager.instance.PlayUIClickSound3();
-                    if(CharacterAppear.instance.GetCurrentEventState() != 14)//히로디노 친밀도 이벤트가 아니면
+                    if(CharacterManager.instance.GetCurrentEventState() != 14)//히로디노 친밀도 이벤트가 아니면
                     {
                         CorrectMenuReaction(seatNum); //자리에 따라 맞는 메뉴 리액션 이미지 가져오기
                         SetReputation(reputation += 3);
@@ -272,7 +272,7 @@ public class Menu : MonoBehaviour
                 else //메뉴 불일치
                 {
                     SEManager.instance.PlayUIClickSound2();
-                    if (CharacterAppear.instance.GetCurrentEventState() != 14) // 히로디노 이벤트 아닐 때
+                    if (CharacterManager.instance.GetCurrentEventState() != 14) // 히로디노 이벤트 아닐 때
                     {
                         WrongMenuReaction(seatNum); //자리에 따라 틀린 메뉴 리액션 이미지 가져오기
                         SetReputation(++reputation); //원하는 메뉴가 아닌 다른 메뉴 서빙 시 평판 1 증가
@@ -288,7 +288,7 @@ public class Menu : MonoBehaviour
                 }
                 else // 튜토리얼 아닌 경우
                 {
-                    if(characterNum == 11 && CharacterAppear.instance.GetCurrentEventState() == 12)//무명이1 이벤트이고 무명이 서빙을 했을 때
+                    if(characterNum == 11 && CharacterManager.instance.GetCurrentEventState() == 12)//무명이1 이벤트이고 무명이 서빙을 했을 때
                     {
                         SystemManager.instance.CantTouchUI();
                         MenuHint.instance.CantClickMHB();//뒤에 메뉴판이 떠있는 채로 이벤트 시작하는 걸 방지하기 위함
@@ -299,15 +299,15 @@ public class Menu : MonoBehaviour
                         if (characterNum == 12)
                         {
                             isHeroServed = true;
-                            if(CharacterAppear.instance.GetCurrentEventState() == 14)
-                                SmallFade.instance.CanClickCharacter(13);//디노 클릭 가능                           
+                            if(CharacterManager.instance.GetCurrentEventState() == 14)
+                                CharacterManager.instance.CanClickCharacter(13);//디노 클릭 가능                           
                         }
                         else if (characterNum == 13)
                         {
                             isDinoServed = true;
                         }
 
-                        if (CharacterAppear.instance.GetCurrentEventState() == 14 && isDinoServed && isHeroServed)// 둘 다 서빙완료했을 때, 친밀도 이벤트면 UI클릭 금지
+                        if (CharacterManager.instance.GetCurrentEventState() == 14 && isDinoServed && isHeroServed)// 둘 다 서빙완료했을 때, 친밀도 이벤트면 UI클릭 금지
                         {
                             MenuHint.instance.CantClickMHB();//뒤에 메뉴판이 떠있는 채로 이벤트 시작하는 걸 방지하기 위함
                             canStartEvent = true;
@@ -315,7 +315,7 @@ public class Menu : MonoBehaviour
                         }
                         
                         VisitorNote.instance.IncreaseFrinedshipGauge(characterNum); //서빙받은 캐릭터의 친밀도 증가
-                        if (CharacterAppear.instance.GetCurrentEventState() != 5)
+                        if (CharacterManager.instance.GetCurrentEventState() != 5)
                         {
                             ReactionFadeIn(seatNum,1f);
                         }  
@@ -440,7 +440,7 @@ public class Menu : MonoBehaviour
 
     public void SetFriendEventMenu(int cNum)//스페셜 메뉴 준비
     {
-        seatNum = SmallFade.instance.GetCharacterSeatNum(cNum);//해당 캐릭터 자리 넘버 대입    
+        seatNum = CharacterManager.instance.GetCharacterSeatNum(cNum);//해당 캐릭터 자리 넘버 대입    
         SetMenuPosition();
         Debug.Log("seatNum은" + seatNum);
         CorrectMenuReaction(seatNum); //하트리액션 
@@ -510,25 +510,25 @@ public class Menu : MonoBehaviour
 
         if(canStartEvent)
         {
-            if((CharacterAppear.instance.GetCurrentEventState() == 9 || CharacterAppear.instance.GetCurrentEventState() == 10) && Dialogue.instance.GetSpecialMenuState() == 0)//친구,찰스1 친밀도 이벤트 처음일 때
+            if((CharacterManager.instance.GetCurrentEventState() == 9 || CharacterManager.instance.GetCurrentEventState() == 10) && Dialogue.instance.GetSpecialMenuState() == 0)//친구,찰스1 친밀도 이벤트 처음일 때
             {
-                SystemManager.instance.BeginDialogue(CharacterAppear.instance.GetCurrentEventState());//시나리오 시작
+                SystemManager.instance.BeginDialogue(CharacterManager.instance.GetCurrentEventState());//시나리오 시작
                 canStartEvent = false;
             }
-            if(CharacterAppear.instance.GetCurrentEventState() == 12)//무명이1 친밀도 이벤트의 경우
+            if(CharacterManager.instance.GetCurrentEventState() == 12)//무명이1 친밀도 이벤트의 경우
             {
                 SystemManager.instance.BeginDialogue(11);
                 canStartEvent = false;
             }
-            if (CharacterAppear.instance.GetCurrentEventState() == 14 && isHeroServed && isDinoServed && Dialogue.instance.GetSpecialMenuState() == 0)//히로디노 친밀도 이벤트의 경우
+            if (CharacterManager.instance.GetCurrentEventState() == 14 && isHeroServed && isDinoServed && Dialogue.instance.GetSpecialMenuState() == 0)//히로디노 친밀도 이벤트의 경우
             {
                 SystemManager.instance.BeginDialogue(12);
                 canStartEvent = false;
             }
-            if(CharacterAppear.instance.GetCurrentEventState() == 16 && Dialogue.instance.GetSpecialMenuState() == 0)//롤렝드 친밀도 이벤트의 경우
+            if(CharacterManager.instance.GetCurrentEventState() == 16 && Dialogue.instance.GetSpecialMenuState() == 0)//롤렝드 친밀도 이벤트의 경우
             {
                 SystemManager.instance.BeginDialogue(14);
-                SmallFade.instance.SetCharacter(17);
+                CharacterManager.instance.SetCharacter(17);
                 canStartEvent = false;
             }
         }
@@ -567,21 +567,21 @@ public class Menu : MonoBehaviour
 
         TableMenu[n].SetActive(false);
 
-        string charName = SmallFade.instance.GetSittingCharacter(n).name;
+        string charName = CharacterManager.instance.GetSittingCharacter(n).name;
         int cNum = TouchableObject.instance.GetNumber(charName.IndexOf("_"), charName);
 
-        if((CharacterAppear.instance.GetCurrentEventState() != 9 && CharacterAppear.instance.GetCurrentEventState() != 11 && CharacterAppear.instance.GetCurrentEventState() != 13 && CharacterAppear.instance.GetCurrentEventState() != 14 && CharacterAppear.instance.GetCurrentEventState() != 16)
-            || (cNum != 9 && CharacterAppear.instance.GetCurrentEventState() == 9)
-            || (cNum != 6 && cNum != 10 && CharacterAppear.instance.GetCurrentEventState() == 11)
-            || (cNum != 12 && cNum != 13 && CharacterAppear.instance.GetCurrentEventState() == 14)
-            || (cNum != 15 && CharacterAppear.instance.GetCurrentEventState() == 16))
+        if((CharacterManager.instance.GetCurrentEventState() != 9 && CharacterManager.instance.GetCurrentEventState() != 11 && CharacterManager.instance.GetCurrentEventState() != 13 && CharacterManager.instance.GetCurrentEventState() != 14 && CharacterManager.instance.GetCurrentEventState() != 16)
+            || (cNum != 9 && CharacterManager.instance.GetCurrentEventState() == 9)
+            || (cNum != 6 && cNum != 10 && CharacterManager.instance.GetCurrentEventState() == 11)
+            || (cNum != 12 && cNum != 13 && CharacterManager.instance.GetCurrentEventState() == 14)
+            || (cNum != 15 && CharacterManager.instance.GetCurrentEventState() == 16))
         {//특정 캐릭터 친밀도 이벤트가 아닐 때, 혹은 특정 캐릭터 이벤트여도 해당 이벤트 캐릭터가 아닐 때
             //Debug.Log("페이드아웃될 자리 " + n);
-            SmallFade.instance.FadeOut(cNum); //작은 캐릭터 페이드아웃   
+            CharacterManager.instance.FadeOut(cNum); //작은 캐릭터 페이드아웃   
         }
-        else if(CharacterAppear.instance.GetCurrentEventState() == 14 && cNum == 12 && Dialogue.instance.GetSpecialMenuState() == 2)
+        else if(CharacterManager.instance.GetCurrentEventState() == 14 && cNum == 12 && Dialogue.instance.GetSpecialMenuState() == 2)
         {//히로디노 이벤트 중에 페이드아웃하는 캐릭터가 히로이고 디노 페이드아웃 전일 때
-            SmallFade.instance.FadeOut(cNum); //작은 캐릭터 페이드아웃
+            CharacterManager.instance.FadeOut(cNum); //작은 캐릭터 페이드아웃
         }
 
         if (menuFadeOut.Count != 0)
@@ -663,9 +663,9 @@ public class Menu : MonoBehaviour
         isReactionFadeOut = false;
         reactionFadeOut.Dequeue();//페이드아웃 완료했으니 큐에서 정보 삭제
         Reaction[num].SetActive(false);
-        if(SmallFade.instance.GetSittingCharacter(num) != null)//현재 앉아있는 캐릭터가 null이 아닐 때
+        if(CharacterManager.instance.GetSittingCharacter(num) != null)//현재 앉아있는 캐릭터가 null이 아닐 때
         {
-            string charName = SmallFade.instance.GetSittingCharacter(num).name;
+            string charName = CharacterManager.instance.GetSittingCharacter(num).name;
             if ((charName == "small_12Hero" || charName == "small_13Dinosour") && Dialogue.instance.GetSpecialMenuState() == 0)
             {//히로디노이고, 이벤트가 아닐 때
                 if(charName == "small_12Hero")

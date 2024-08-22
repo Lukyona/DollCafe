@@ -189,9 +189,9 @@ public class SystemManager : MonoBehaviour
                     Star.instance.Invoke("ActivateStarSystem", 25f);//25초 뒤 별 함수 시작
                     //Debug.Log("스타시스템 25초 뒤 시작");
                 }
-                if (!CharacterVisit.instance.IsInvoking("RandomVisit") && endingState != 1 && !Dialogue.instance.IsTalking())
+                if (!CharacterManager.instance.IsInvoking("RandomVisit") && endingState != 1 && !Dialogue.instance.IsTalking())
                 { // 엔딩이벤트 중이 아니어야 하고 대화 중이 아니어야함
-                    CharacterVisit.instance.Invoke("RandomVisit", 5f); //캐릭터 랜덤 방문
+                    CharacterManager.instance.Invoke("RandomVisit", 5f); //캐릭터 랜덤 방문
                 }
             }
         }
@@ -233,7 +233,7 @@ public class SystemManager : MonoBehaviour
         try
         {
             PlayerPrefs.SetInt("MainCount", mainCount); //현재 메인카운트 저장
-            PlayerPrefs.SetInt("NextAppear", CharacterAppear.instance.GetNextAppearNum()); //다음 캐릭터 등장 번호 저장
+            PlayerPrefs.SetInt("NextAppear", CharacterManager.instance.GetNextAppearNum()); //다음 캐릭터 등장 번호 저장
             PlayerPrefs.SetInt("Reputation", Menu.instance.GetReputation()); //평판 저장
             PlayerPrefs.SetInt("EndingState", endingState); //엔딩 상황 저장
             PlayerPrefs.SetInt("TipNum", tipNum); //팁 넘버 
@@ -260,7 +260,7 @@ public class SystemManager : MonoBehaviour
                 Setting.instance.DeleteUserInfo();
 
                 mainCount = 0;
-                CharacterAppear.instance.SetNextAppearNum(0);
+                CharacterManager.instance.SetNextAppearNum(0);
                 Menu.instance.SetReputation(0);
                 Star.instance.SetStarNum(0);
                 PlayerPrefs.Save();
@@ -269,7 +269,7 @@ public class SystemManager : MonoBehaviour
             }   
             else // 붕붕이 방문 이후, 기존 정보가 정상적으로 저장됨
             {
-                CharacterAppear.instance.SetNextAppearNum(PlayerPrefs.GetInt("NextAppear"));
+                CharacterManager.instance.SetNextAppearNum(PlayerPrefs.GetInt("NextAppear"));
                 Menu.instance.SetReputation(PlayerPrefs.GetInt("Reputation"));
                 Star.instance.SetStarNum(PlayerPrefs.GetInt("StarNum"));
                 endingState = PlayerPrefs.GetInt("EndingState");       
@@ -280,7 +280,7 @@ public class SystemManager : MonoBehaviour
                 VisitorNote.instance.LoadVisitorNoteInfo();
                 Menu.instance.LoadUnlockedMenuItemInfo();                 
                 Invoke(nameof(SetTipState), 2f);
-                SmallFade.instance.SetCharacter(0); //제제 작은 캐릭터 페이드인 
+                CharacterManager.instance.SetCharacter(0); //제제 작은 캐릭터 페이드인 
 
                 if (endingState != 3) //엔딩이벤트를 본 게 아니라면
                 {
@@ -288,7 +288,7 @@ public class SystemManager : MonoBehaviour
                 } 
                 if(mainCount > 6) // 또롱이 방문 이후면
                 {
-                    SmallFade.instance.GetSmallCharacter(0) .GetComponent<Button>().interactable = true; // 제제 터치 가능
+                    CharacterManager.instance.GetSmallCharacter(0) .GetComponent<Button>().interactable = true; // 제제 터치 가능
                 }
 
                 for (int i = 1; i <= mainCount - 2; i++)//재방문 캐릭터 설정
@@ -297,8 +297,8 @@ public class SystemManager : MonoBehaviour
                     {
                         if (i == 6)//도로시 넘버에서 찰스도로시 추가
                         {
-                            CharacterVisit.instance.revisit.Enqueue(17);
-                            CharacterVisit.instance.CanRevisit();
+                            CharacterManager.instance.AddToRevisit(17);
+                            CharacterManager.instance.EnableRevisit();
                             continue;
                         }
                         if(i == 10)//찰스는 넘기기
@@ -306,19 +306,19 @@ public class SystemManager : MonoBehaviour
                             continue;
                         }
                     }                      
-                    CharacterVisit.instance.revisit.Enqueue(i);
-                    CharacterVisit.instance.CanRevisit();
+                    CharacterManager.instance.AddToRevisit(i);
+                    CharacterManager.instance.EnableRevisit();
                 }
                 if(mainCount >= 14)//히로디노 이상 등장했을 경우, 따로 히로디노(or 닥터펭, or 롤렝드) 추가(위에서 추가 안됨)
                 {
                     int t = mainCount - 1;
-                    CharacterVisit.instance.revisit.Enqueue(t);
-                    CharacterVisit.instance.CanRevisit();
+                    CharacterManager.instance.AddToRevisit(t);
+                    CharacterManager.instance.EnableRevisit();
                 }
 
                 Star.instance.Invoke("ActivateStarSystem", 25f);//25초 뒤 별 함수 시작
                 //Debug.Log("스타시스템 25초 뒤 시작");
-                CharacterVisit.instance.Invoke("RandomVisit", 5f); // 5초 뒤 캐릭터 랜덤 방문
+                CharacterManager.instance.Invoke("RandomVisit", 5f); // 5초 뒤 캐릭터 랜덤 방문
             }                               
 
         }
@@ -335,7 +335,7 @@ public class SystemManager : MonoBehaviour
         switch (mainCount)
         {
             case 0: //제제의 튜토리얼 설명이 끝난 상황, 도리 등장 전
-                SmallFade.instance.SetCharacter(0); //제제 작은 캐릭터 설정&페이드인
+                CharacterManager.instance.SetCharacter(0); //제제 작은 캐릭터 설정&페이드인
                 BeginDialogue(1, 2f); // 2초 뒤 도리 등장
                 break;
             case 1: //도리 방문 후
@@ -347,7 +347,7 @@ public class SystemManager : MonoBehaviour
             case 2: // 서빙 튜토리얼 완료
                 Menu.instance.ReactionFadeIn(Menu.instance.GetSeatNum(),1f); // 도리 리액션 말풍선 페이드인
                 Dialogue.instance.SetPanelActive(7,false);      
-                SmallFade.instance.SetCharacter(0); // 제제 자리로 돌아가기
+                CharacterManager.instance.SetCharacter(0); // 제제 자리로 돌아가기
                 Dialogue.instance.SetCharacterNum(2); //다음 등장 캐릭터 붕붕
                 Menu.instance.GetBoardCloseButton().interactable = true; //메뉴 닫기 버튼 가능
                 BeginDialogue(2, 7f); // 7초 후 붕붕 등장
@@ -360,7 +360,7 @@ public class SystemManager : MonoBehaviour
             case 6: //또롱 등장 후 
                 AfterFirstMeet(mainCount);
                 VisitorNote.instance.SetNextPageButtonActive(true); //5번째 페이지로 넘어가기 위해 다음 페이지 버튼 보이게함   
-                SmallFade.instance.GetSmallCharacter(0) .GetComponent<Button>().interactable = true;//제제 터치 가능
+                CharacterManager.instance.GetSmallCharacter(0) .GetComponent<Button>().interactable = true;//제제 터치 가능
                 ShowBangBubble();// 팁 말풍선 등장
                 break;
             default:
@@ -370,7 +370,7 @@ public class SystemManager : MonoBehaviour
         mainCount++; //메인 카운트 증가
 
         PlayerPrefs.SetInt("MainCount", mainCount); //현재 메인카운트 저장
-        PlayerPrefs.SetInt("NextAppear", CharacterAppear.instance.GetNextAppearNum()); //다음 캐릭터 등장 번호 저장
+        PlayerPrefs.SetInt("NextAppear", CharacterManager.instance.GetNextAppearNum()); //다음 캐릭터 등장 번호 저장
         PlayerPrefs.Save(); //세이브
         Dialogue.instance.SaveCharacterDCInfo();
         VisitorNote.instance.SaveVisitorNoteInfo();
@@ -392,18 +392,18 @@ public class SystemManager : MonoBehaviour
         }
         Popup.instance.OpenPopup();
 
-        CharacterAppear.instance.SetNextAppearNum(mCount); //다음 등장 캐릭터 설정 
+        CharacterManager.instance.SetNextAppearNum(mCount); //다음 등장 캐릭터 설정 
 
         int smallCharNum = CharacterManager.instance.GetCharacterNum();
         if(mainCount >= 14)
         {
             ++smallCharNum;
         }
-        SmallFade.instance.SetCharacter(smallCharNum); // 작은 캐릭터 설정 후 페이드인까지
+        CharacterManager.instance.SetCharacter(smallCharNum); // 작은 캐릭터 설정 후 페이드인까지
         
-        if (!CharacterVisit.instance.IsInvoking("RandomVisit"))
+        if (!CharacterManager.instance.IsInvoking("RandomVisit"))
         {
-            CharacterVisit.instance.Invoke("RandomVisit", 10f); //캐릭터 랜덤 방문
+            CharacterManager.instance.Invoke("RandomVisit", 10f); //캐릭터 랜덤 방문
         }
        
         if(mainCount < 6)
@@ -450,7 +450,7 @@ public class SystemManager : MonoBehaviour
         else
         {
             CanTouchUI();
-            CharacterAppear.instance.SetCurrentEventState(0); //친밀도 이벤트 종료됨 
+            CharacterManager.instance.SetCurrentEventState(0); //친밀도 이벤트 종료됨 
             MenuHint.instance.CanClickMHB();//메뉴힌트버블 터치 가능
 
             switch (cNum)
@@ -459,14 +459,14 @@ public class SystemManager : MonoBehaviour
                     CharacterManager.instance.SetFaceNum(cNum);
                     if (Dialogue.instance.GetCharacterDC(cNum) == 2)//찰스1 이벤트
                     {
-                        SmallFade.instance.CanClickCharacter(6);//도로시 클릭 가능하게
+                        CharacterManager.instance.CanClickCharacter(6);//도로시 클릭 가능하게
                         Menu.instance.MenuFadeOut();//메뉴 페이드아웃
                     }
                     else if (Dialogue.instance.GetCharacterDC(cNum) == 3)//찰스2 이벤트
                     {
                         Dialogue.instance.SetSpecialMenuState(0);
-                        SmallFade.instance.CanClickCharacter(6);//도로시 클릭 가능하게
-                        SmallFade.instance.CanClickCharacter(10);//찰스 클릭 가능하게
+                        CharacterManager.instance.CanClickCharacter(6);//도로시 클릭 가능하게
+                        CharacterManager.instance.CanClickCharacter(10);//찰스 클릭 가능하게
                         VisitorNote.instance.ActivateReplayButton(cNum-1);         
                     }
                     break;
@@ -508,9 +508,9 @@ public class SystemManager : MonoBehaviour
 
             CheckEndingCondition();
 
-            if (!CharacterVisit.instance.IsInvoking("RandomVisit"))
+            if (!CharacterManager.instance.IsInvoking("RandomVisit"))
             {
-                CharacterVisit.instance.Invoke("RandomVisit", 12f); //캐릭터 랜덤 방문
+                CharacterManager.instance.Invoke("RandomVisit", 12f); //캐릭터 랜덤 방문
                // Debug.Log("랜덤방문 10초 뒤");
             }
         }
@@ -534,7 +534,7 @@ public class SystemManager : MonoBehaviour
             endingState = 1;
             PlayerPrefs.SetInt("EndingState", endingState);
             PlayerPrefs.Save();
-            SmallFade.instance.GetSmallCharacter(0) .GetComponent<Button>().interactable = false;//제제 클릭 불가
+            CharacterManager.instance.GetSmallCharacter(0) .GetComponent<Button>().interactable = false;//제제 클릭 불가
         }
     }
 
@@ -597,13 +597,13 @@ public class SystemManager : MonoBehaviour
 
     void EndingEvent()
     {
-        if(!isUIOpen && SmallFade.instance.IsTableEmpty(1) && SmallFade.instance.IsTableEmpty(2) && SmallFade.instance.IsTableEmpty(3))
+        if(!isUIOpen && CharacterManager.instance.IsTableEmpty(1) && CharacterManager.instance.IsTableEmpty(2) && CharacterManager.instance.IsTableEmpty(3))
         { //테이블이 모두 비었고 UI가 올라와있지 않은 상태에서 실행
             CantTouchUI();
             jejeBubble.gameObject.SetActive(false);
             bangBubble.gameObject.SetActive(false);
-            SmallFade.instance.FadeOutJeje();
-            SmallFade.instance.GetSmallCharacter(0) .GetComponent<Button>().interactable = false;//제제 클릭 불가
+            CharacterManager.instance.FadeOutJeje();
+            CharacterManager.instance.GetSmallCharacter(0) .GetComponent<Button>().interactable = false;//제제 클릭 불가
             BeginDialogue(0);
         }
         else

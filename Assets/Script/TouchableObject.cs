@@ -45,8 +45,8 @@ public class TouchableObject : MonoBehaviour //터치된 오브젝트 구분, �
 
         cNum = GetNumber(idx, gameObject.name); // 캐릭터 오브젝트의 숫자 추출
 
-        sNum = SmallFade.instance.GetCharacterSeatNum(cNum);
-        SmallFade.instance.CantTouchCharacter(cNum); //캐릭터 터치 불가, 중복 터치 방지
+        sNum = CharacterManager.instance.GetCharacterSeatNum(cNum);
+        CharacterManager.instance.CantTouchCharacter(cNum); //캐릭터 터치 불가, 중복 터치 방지
 
         MenuHint.instance.SetMHB(sNum);
         MenuHint.instance.SetMHText(cNum, sNum);
@@ -57,7 +57,7 @@ public class TouchableObject : MonoBehaviour //터치된 오브젝트 구분, �
         // 메뉴힌트말풍선 오브젝트 이름 예시 : 2MenuHintRight
         sNum = int.Parse(gameObject.name.Substring(0,1)) - 1; // 숫자만 추출해서 - 1
 
-        string charName = SmallFade.instance.GetSittingCharacter(sNum).name;
+        string charName = CharacterManager.instance.GetSittingCharacter(sNum).name;
         int idx = charName.IndexOf("_");
 
         int cNum = GetNumber(idx, charName);

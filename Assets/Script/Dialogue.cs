@@ -233,12 +233,12 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
             if(cNum % 2 == 0) // 캐릭터가 짝수 (왼쪽에 앉아있음)
             {
                 babyNum = 16;
-                babySeatNum = SmallFade.instance.GetCharacterSeatNum(cNum)+1;
+                babySeatNum = CharacterManager.instance.GetCharacterSeatNum(cNum)+1;
             }
             else
             {
                 babyNum = 17;
-                babySeatNum = SmallFade.instance.GetCharacterSeatNum(cNum)-1;
+                babySeatNum = CharacterManager.instance.GetCharacterSeatNum(cNum)-1;
             }
         }
 
@@ -334,10 +334,10 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                     switch (count)
                     {
                         case 1:
-                            SmallFade.instance.SetCharacter(1); //도리 작은 캐릭터 설정
+                            CharacterManager.instance.SetCharacter(1); //도리 작은 캐릭터 설정
                             break;
                         case 2: 
-                            SmallFade.instance.FadeIn(); //도리 페이드인
+                            CharacterManager.instance.FadeIn(); //도리 페이드인
                             panels[0].SetActive(false);
                             panels[5].SetActive(true);
                             SystemManager.instance.SetCanTouch(false);
@@ -365,7 +365,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                     Debug.Log("?????");
                     if(count == 11)
                     {
-                        SmallFade.instance.GetSmallCharacter(0).GetComponent<Button>().interactable = false;//제제 클릭 불가
+                        CharacterManager.instance.GetSmallCharacter(0).GetComponent<Button>().interactable = false;//제제 클릭 불가
                     }
                 }
                 break;
@@ -409,7 +409,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                             SetBabyText(true);
                             if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                             {
-                                SmallFade.instance.SetCharacter(babyNum);
+                                CharacterManager.instance.SetCharacter(babyNum);
                             }
                             break;
                         case 1:
@@ -493,7 +493,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                             if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                             {
                                 specialMenuState = 1; //메뉴 가지러 갔음
-                                SmallFade.instance.FadeOut(babyNum, babySeatNum); //주인공(왼쪽) 페이드아웃
+                                CharacterManager.instance.FadeOut(babyNum, babySeatNum); //주인공(왼쪽) 페이드아웃
                             }                                                  
                             break;
                         case 28:
@@ -518,7 +518,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                             SetBabyText(true);
                             if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                             {
-                                SmallFade.instance.SetCharacter(babyNum);
+                                CharacterManager.instance.SetCharacter(babyNum);
                                 Menu.instance.MenuFadeIn();//스페셜 메뉴 페이드인
                             }                                
                             Popup.instance.OpenPopup();//메뉴 팝업, 팝업 닫으면 다음 대사 넘기기 가능
@@ -612,14 +612,14 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                             SetBabyText(false);
                             if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                             {
-                                SmallFade.instance.FadeIn();//붕붕 페이드인
+                                CharacterManager.instance.FadeIn();//붕붕 페이드인
                             }                             
                             break;
                         case 2:
                             SetBabyText(true);
                             if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                             {
-                                SmallFade.instance.SetCharacter(babyNum);
+                                CharacterManager.instance.SetCharacter(babyNum);
                             }      
                             break;
                         case 3:
@@ -679,7 +679,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                             if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                             {
                                 specialMenuState = 1; //메뉴 가지러 갔음
-                                SmallFade.instance.FadeOut(babyNum, babySeatNum); //주인공 페이드아웃  //아기 페이드아웃    
+                                CharacterManager.instance.FadeOut(babyNum, babySeatNum); //주인공 페이드아웃  //아기 페이드아웃    
                             }                                                                           
                             break;
                         case 28:
@@ -704,7 +704,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                             SetBabyText(true);
                             if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                             {
-                                SmallFade.instance.SetCharacter(babyNum);
+                                CharacterManager.instance.SetCharacter(babyNum);
                                 Menu.instance.MenuFadeIn();//스페셜 메뉴 페이드인
                                 specialMenuState = 2;
                             }
@@ -760,7 +760,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                             SetBabyText(true);
                             if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                             {
-                                SmallFade.instance.SetCharacter(babyNum);
+                                CharacterManager.instance.SetCharacter(babyNum);
                             }
                             break;
                         case 1:
@@ -826,7 +826,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                             if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                             {
                                 specialMenuState = 1;
-                                SmallFade.instance.FadeOut(babyNum, babySeatNum); //주인공 페이드아웃 
+                                CharacterManager.instance.FadeOut(babyNum, babySeatNum); //주인공 페이드아웃 
                             }               
                             break;
                         case 33:
@@ -849,7 +849,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                             SetBabyText(true);
                             if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                             {
-                                SmallFade.instance.SetCharacter(babyNum);
+                                CharacterManager.instance.SetCharacter(babyNum);
                                 Menu.instance.MenuFadeIn();
                                 specialMenuState = 2;
                             }
@@ -925,7 +925,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                             if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                             {
                                 specialMenuState = 1;
-                                SmallFade.instance.FadeOut(babyNum, babySeatNum); //주인공 페이드아웃 
+                                CharacterManager.instance.FadeOut(babyNum, babySeatNum); //주인공 페이드아웃 
                             }
                             break;
                         case 12:
@@ -946,7 +946,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                             SetBabyText(true);                           
                             if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                             {
-                                SmallFade.instance.SetCharacter(babyNum);
+                                CharacterManager.instance.SetCharacter(babyNum);
                                 Menu.instance.MenuFadeIn();
                                 specialMenuState = 2;
                             }
@@ -1097,7 +1097,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                             SetBabyText(true);
                             if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                             {
-                                SmallFade.instance.SetCharacter(babyNum);
+                                CharacterManager.instance.SetCharacter(babyNum);
                             }
                             break;
                         case 1:
@@ -1121,7 +1121,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                             if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                             {
                                 specialMenuState = 1;
-                                SmallFade.instance.FadeOut(babyNum, babySeatNum); //주인공 페이드아웃 
+                                CharacterManager.instance.FadeOut(babyNum, babySeatNum); //주인공 페이드아웃 
                             }
                             break;
                         case 9:
@@ -1143,7 +1143,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                             SetBabyText(true);
                             if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                             {
-                                SmallFade.instance.SetCharacter(babyNum);
+                                CharacterManager.instance.SetCharacter(babyNum);
                                 Menu.instance.MenuFadeIn();
                                 specialMenuState = 2;
                             }
@@ -1300,7 +1300,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                             if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                             {
                                 specialMenuState = 1;
-                                SmallFade.instance.FadeOut(babyNum, babySeatNum); //주인공 페이드아웃 
+                                CharacterManager.instance.FadeOut(babyNum, babySeatNum); //주인공 페이드아웃 
                             }
                             break;
                         case 58:
@@ -1322,7 +1322,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                             SetBabyText(true);
                             if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                             {
-                                SmallFade.instance.SetCharacter(babyNum);
+                                CharacterManager.instance.SetCharacter(babyNum);
                                 Menu.instance.MenuFadeIn();
                             }
                             Popup.instance.OpenPopup();//메뉴 팝업, 팝업 닫으면 다음 대사 넘기기 가능
@@ -1420,7 +1420,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                             if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                             {
                                 specialMenuState = 1;
-                                SmallFade.instance.FadeOut(babyNum, babySeatNum); //주인공 페이드아웃 
+                                CharacterManager.instance.FadeOut(babyNum, babySeatNum); //주인공 페이드아웃 
                             }
                             break;
                         case 48:
@@ -1440,7 +1440,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                             SetBabyText(true);
                             if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                             {
-                                SmallFade.instance.SetCharacter(babyNum);
+                                CharacterManager.instance.SetCharacter(babyNum);
                                 Menu.instance.MenuFadeIn();
                                 specialMenuState = 2;
                             }
@@ -1544,7 +1544,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                             if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                             {
                                 specialMenuState = 1;
-                                SmallFade.instance.FadeOut(babyNum, babySeatNum); //주인공 페이드아웃 
+                                CharacterManager.instance.FadeOut(babyNum, babySeatNum); //주인공 페이드아웃 
                             }
                             break;
                         case 19:
@@ -1564,7 +1564,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                             SetBabyText(true);
                             if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                             {
-                                SmallFade.instance.SetCharacter(babyNum);
+                                CharacterManager.instance.SetCharacter(babyNum);
                                 Menu.instance.MenuFadeIn();
                             }
                             Popup.instance.OpenPopup();//메뉴 팝업, 팝업 닫으면 다음 대사 넘기기 가능
@@ -1718,7 +1718,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                             CharacterManager.instance.CharacterFaceList[8].face[0].SetActive(false);
                             if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                             {
-                                SmallFade.instance.FadeOut(babyNum, babySeatNum); //주인공 페이드아웃
+                                CharacterManager.instance.FadeOut(babyNum, babySeatNum); //주인공 페이드아웃
                             }
                             CharacterManager.instance.CharacterOut(10);
                             break;
@@ -1728,7 +1728,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                             {
                                 SystemManager.instance.SetCanTouch(false);
                                 SystemManager.instance.SetCanTouch(true,1.3f);
-                                Menu.instance.SoldierEvent_ServeToPrincess(SmallFade.instance.GetCharacterSeatNum(6));//도로시 자리정보를 매개변수로 넣기
+                                Menu.instance.SoldierEvent_ServeToPrincess(CharacterManager.instance.GetCharacterSeatNum(6));//도로시 자리정보를 매개변수로 넣기
                             }
                             break;
                         case 21:
@@ -1755,7 +1755,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                             {
                                 SystemManager.instance.SetCanTouch(false);
                                 SystemManager.instance.SetCanTouch(true,1f);
-                                SmallFade.instance.FadeOut(SmallFade.instance.GetCharacterSeatNum(10));//찰스 작은 캐릭터 페이드아웃
+                                CharacterManager.instance.FadeOut(CharacterManager.instance.GetCharacterSeatNum(10));//찰스 작은 캐릭터 페이드아웃
                             }
                             break;
                         case 25:
@@ -1775,7 +1775,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                             if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                             {
                                 specialMenuState = 1;//찰스 페이드인을 위한 장치                           
-                                SmallFade.instance.SetCharacter(10);
+                                CharacterManager.instance.SetCharacter(10);
                             }
                             break;
                         case 27:
@@ -2066,7 +2066,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                             if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                             {
                                 specialMenuState = 1;
-                                SmallFade.instance.FadeOut(babyNum, babySeatNum); //주인공 페이드아웃 
+                                CharacterManager.instance.FadeOut(babyNum, babySeatNum); //주인공 페이드아웃 
                             }
                             break;
                         case 35:
@@ -2091,7 +2091,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                             SetBabyText(true);
                             if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                             {
-                                SmallFade.instance.SetCharacter(babyNum);
+                                CharacterManager.instance.SetCharacter(babyNum);
                                 Menu.instance.MenuFadeIn();
                             }
                             Popup.instance.OpenPopup();//메뉴 팝업, 팝업 닫으면 다음 대사 넘기기 가능
@@ -2509,7 +2509,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                             if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                             {
                                 specialMenuState = 1;
-                                SmallFade.instance.FadeOut(babyNum, babySeatNum); //주인공 페이드아웃 
+                                CharacterManager.instance.FadeOut(babyNum, babySeatNum); //주인공 페이드아웃 
                             }
                             break;
                         case 35:
@@ -2532,7 +2532,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                             SetBabyText(true);
                             if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                             {
-                                SmallFade.instance.SetCharacter(babyNum);
+                                CharacterManager.instance.SetCharacter(babyNum);
                                 Menu.instance.MenuFadeIn();
                                 specialMenuState = 2;
                             }
@@ -2748,7 +2748,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                             if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                             {
                                 specialMenuState = 1;
-                                SmallFade.instance.FadeOut(babyNum, babySeatNum); //주인공 페이드아웃 
+                                CharacterManager.instance.FadeOut(babyNum, babySeatNum); //주인공 페이드아웃 
                             }
                             break;
                         case 50:
@@ -2770,7 +2770,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                             SetBabyText(true);
                             if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                             {
-                                SmallFade.instance.SetCharacter(babyNum);
+                                CharacterManager.instance.SetCharacter(babyNum);
                                 Menu.instance.MenuFadeIn();
                             }
                             Popup.instance.OpenPopup();//메뉴 팝업, 팝업 닫으면 다음 대사 넘기기 가능
@@ -3280,7 +3280,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                 charName.text = "개나리";
                 if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                 {
-                    SmallFade.instance.SetCharacter(16);
+                    CharacterManager.instance.SetCharacter(16);
                 }
                 break;
         }
@@ -3346,8 +3346,8 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                 charName.text = "또롱";
                 if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                 {
-                    SmallFade.instance.SetBabySeat(SmallFade.instance.GetCharacterSeatNum(5));//또롱이 건너편으로  자리 잡기
-                    SmallFade.instance.SetCharacter(17);
+                    CharacterManager.instance.SetBabySeat(CharacterManager.instance.GetCharacterSeatNum(5));//또롱이 건너편으로  자리 잡기
+                    CharacterManager.instance.SetCharacter(17);
                 }
                 break;
         }
@@ -3477,7 +3477,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                 charName.text = "루루";
                 if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                 {
-                    SmallFade.instance.SetCharacter(17);
+                    CharacterManager.instance.SetCharacter(17);
                 }
                 break;
         }
@@ -3591,7 +3591,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                 charName.text = "샌디";
                 if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                 {
-                    SmallFade.instance.SetCharacter(16);
+                    CharacterManager.instance.SetCharacter(16);
                 }
                 break;
         }
@@ -3697,7 +3697,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                 charName.text = "친구";
                 if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                 {
-                    SmallFade.instance.SetCharacter(17);
+                    CharacterManager.instance.SetCharacter(17);
                 }
                 break;
         }
@@ -3773,7 +3773,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                 charName.text = "찰스";
                 if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                 {
-                    SmallFade.instance.SetCharacter(16);
+                    CharacterManager.instance.SetCharacter(16);
                 }
                 break;
             case 2: //친밀도 15이상, 서빙 전, 공주 친밀도 10이상, 카페에 공주 있을 경우
@@ -3782,7 +3782,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                 charName.text = "찰스";
                 if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                 {
-                    SmallFade.instance.SetCharacter(16);
+                    CharacterManager.instance.SetCharacter(16);
                 }
                 break;
         }
@@ -3898,7 +3898,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                 charName.text = "??";
                 if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                 {
-                    SmallFade.instance.SetCharacter(17);
+                    CharacterManager.instance.SetCharacter(17);
                 }
                 break;
             case 2: //친밀도 20이상
@@ -3906,7 +3906,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                 charName.text = SystemManager.instance.GetNameForNameless();
                 if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                 {
-                    SmallFade.instance.SetCharacter(17);
+                    CharacterManager.instance.SetCharacter(17);
                 }
                 break;
         }
@@ -4144,7 +4144,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                 charName.text = "닥터 펭";
                 if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                 {
-                    SmallFade.instance.SetCharacter(16);
+                    CharacterManager.instance.SetCharacter(16);
                 }
                 break;
         }

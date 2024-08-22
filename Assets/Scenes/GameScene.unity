@@ -42134,12 +42134,9 @@ GameObject:
   - component: {fileID: 1538706526}
   - component: {fileID: 1538706536}
   - component: {fileID: 1538706528}
-  - component: {fileID: 1538706516}
   - component: {fileID: 1538706517}
   - component: {fileID: 1538706519}
   - component: {fileID: 1538706520}
-  - component: {fileID: 1538706522}
-  - component: {fileID: 1538706523}
   - component: {fileID: 1538706531}
   - component: {fileID: 1538706533}
   - component: {fileID: 1538706534}
@@ -42168,47 +42165,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1538706516
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1538706512}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 462877af93d0f0241a43f9cff0128b4b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  SmallCharacter:
-  - {fileID: 1975678587}
-  - {fileID: 124675994}
-  - {fileID: 1293331637}
-  - {fileID: 1786350712}
-  - {fileID: 1738172634}
-  - {fileID: 1617326701}
-  - {fileID: 1770705331}
-  - {fileID: 1340572939}
-  - {fileID: 2066703723}
-  - {fileID: 1573176423}
-  - {fileID: 1585521602}
-  - {fileID: 194912742}
-  - {fileID: 179511829}
-  - {fileID: 1230642717}
-  - {fileID: 724502216}
-  - {fileID: 448931918}
-  - {fileID: 665003578}
-  - {fileID: 659011830}
-  SittingCharacter:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  soldierRightImage: {fileID: 991923546}
-  namelessSmile: {fileID: 194634141}
-  CharacterSeat: 000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
 --- !u!114 &1538706517
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -42313,31 +42269,6 @@ MonoBehaviour:
   - {fileID: 1408397779}
   - {fileID: 556369391}
   RightMenu: 000000000000000000000000000000000000000000000000
---- !u!114 &1538706522
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1538706512}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4fe41d0756b783f4fa88802cd0831029, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  canVisitCharacters: []
---- !u!114 &1538706523
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1538706512}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a5fe5f04ab5c4b444b610e7e336e5816, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1538706526
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -42721,7 +42652,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 143b15283fa00084eac2c59cb7222b9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BigCharacter:
+  bigCharacters:
   - {fileID: 54237565}
   - {fileID: 613698859}
   - {fileID: 1579231344}
@@ -42792,6 +42723,36 @@ MonoBehaviour:
     - {fileID: 1156888005}
     - {fileID: 1201421946}
     - {fileID: 1260665209}
+  smallCharacters:
+  - {fileID: 1975678587}
+  - {fileID: 124675994}
+  - {fileID: 1293331637}
+  - {fileID: 1786350712}
+  - {fileID: 1738172634}
+  - {fileID: 1617326701}
+  - {fileID: 1770705331}
+  - {fileID: 1340572939}
+  - {fileID: 2066703723}
+  - {fileID: 1573176423}
+  - {fileID: 1585521602}
+  - {fileID: 194912742}
+  - {fileID: 179511829}
+  - {fileID: 1230642717}
+  - {fileID: 724502216}
+  - {fileID: 448931918}
+  - {fileID: 665003578}
+  - {fileID: 659011830}
+  sittingCharacter:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  soldierRightImage: {fileID: 0}
+  namelessSmile: {fileID: 0}
+  isTableEmpty: 000000
+  characterSeat: 000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
 --- !u!114 &1538706541
 MonoBehaviour:
   m_ObjectHideFlags: 0
