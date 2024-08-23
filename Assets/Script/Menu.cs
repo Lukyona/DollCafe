@@ -118,9 +118,9 @@ public class Menu : MonoBehaviour
     {
         if(!SystemManager.instance.IsUIOpen()) //다른 ui가 열려있지 않다면
         {
-            MenuHint.instance.CantClickMHB();//다른 메뉴힌트버블 터치 불가
+            MenuHint.instance.CantTouchMHB();//다른 메뉴힌트버블 터치 불가
             SystemManager.instance.SetUIOpen(true);
-            SEManager.instance.PlayUIClickSound(); //효과음
+            SEManager.instance.PlayUITouchSound(); //효과음
             menuButtonAnimator.SetTrigger("MenuButtonOut"); //메뉴 버튼 위로 올라가고
             menuBoardAnimator.SetTrigger("MenuBoardUp"); //메뉴판이 아래에서 올라옴
             for (int i = 0; i < UnlockedMenuItems.Count; i++) //메뉴 터치 불가, 서빙이 아닌 그냥 메뉴판 버튼 클릭 시에는 메뉴 클릭 못함
@@ -136,7 +136,7 @@ public class Menu : MonoBehaviour
         SEManager.instance.PlayUICloseSound(); //효과음
         menuBoardAnimator.SetTrigger("MenuBoardDown"); //메뉴판 아래로 내려가고
         menuButtonAnimator.SetTrigger("MenuButtonIn"); //메뉴버튼 위에서 내려옴
-        MenuHint.instance.CanClickMHB();
+        MenuHint.instance.CanTouchMHB();
     }
 
     public void TouchMenuHint(int cNum, int sNum) //캐릭터의 메뉴 힌트 말풍선 눌렀을 때
@@ -146,9 +146,9 @@ public class Menu : MonoBehaviour
             characterNum = cNum;
             seatNum = sNum;
 
-            MenuHint.instance.CantClickMHB();//다른 메뉴힌트버블 터치 불가
+            MenuHint.instance.CantTouchMHB();//다른 메뉴힌트버블 터치 불가
             SystemManager.instance.SetUIOpen(true);
-            SEManager.instance.PlayUIClickSound2(); //효과음
+            SEManager.instance.PlayUITouchSound2(); //효과음
             menuButtonAnimator.SetTrigger("MenuButtonOut"); //메뉴 버튼 위로 올라가고
             menuBoardAnimator.SetTrigger("MenuBoardUp"); //메뉴판 올라옴
 
@@ -227,7 +227,7 @@ public class Menu : MonoBehaviour
             SystemManager.instance.SetUIOpen(false);
             menuBoardAnimator.SetTrigger("MenuBoardDown"); //메뉴판 아래로 내려가고
             menuButtonAnimator.SetTrigger("MenuButtonIn"); //메뉴버튼 위에서 내려옴
-            MenuHint.instance.CanClickMHB();//다른 메뉴힌트버블 터치 가능
+            MenuHint.instance.CanTouchMHB();//다른 메뉴힌트버블 터치 가능
 
             HPManager.instance.UseHP(); //체력 소모
 
@@ -236,10 +236,10 @@ public class Menu : MonoBehaviour
             {// 친구,찰스1,롤렝드 친밀도 이벤트일 경우 클릭된 캐릭터와 이벤트 캐릭터가 동일하면
                 canStartEvent = true;
                 SystemManager.instance.CantTouchUI();
-                MenuHint.instance.CantClickMHB();//뒤에 메뉴판이 떠있는 채로 이벤트 시작하는 걸 방지하기 위함
+                MenuHint.instance.CantTouchMHB();//뒤에 메뉴판이 떠있는 채로 이벤트 시작하는 걸 방지하기 위함
                 if (MenuHint.instance.RightMenu[seatNum] == menuNum) //캐릭터가 원하는 메뉴가 n이면, 원하는 메뉴와 플레이어가 고른 메뉴가 일치
                 {
-                    SEManager.instance.PlayUIClickSound3();
+                    SEManager.instance.PlayUITouchSound3();
                     VisitorNote.instance.CheckMenuMatch(characterNum, menuNum);
                     if (CharacterManager.instance.GetCurrentEventState() == 10)//찰스의 경우 평판 증가
                     {
@@ -249,7 +249,7 @@ public class Menu : MonoBehaviour
                 }
                 else //일치하지 않음
                 {
-                    SEManager.instance.PlayUIClickSound2();
+                    SEManager.instance.PlayUITouchSound2();
                     if (CharacterManager.instance.GetCurrentEventState() == 10)
                     {
                         SetReputation(++reputation);
@@ -261,7 +261,7 @@ public class Menu : MonoBehaviour
             {
                 if (MenuHint.instance.RightMenu[seatNum] == menuNum) //캐릭터가 원하는 메뉴와 원하는 메뉴와 플레이어가 고른 메뉴가 일치
                 {
-                    SEManager.instance.PlayUIClickSound3();
+                    SEManager.instance.PlayUITouchSound3();
                     if(CharacterManager.instance.GetCurrentEventState() != 14)//히로디노 친밀도 이벤트가 아니면
                     {
                         CorrectMenuReaction(seatNum); //자리에 따라 맞는 메뉴 리액션 이미지 가져오기
@@ -271,7 +271,7 @@ public class Menu : MonoBehaviour
                 }
                 else //메뉴 불일치
                 {
-                    SEManager.instance.PlayUIClickSound2();
+                    SEManager.instance.PlayUITouchSound2();
                     if (CharacterManager.instance.GetCurrentEventState() != 14) // 히로디노 이벤트 아닐 때
                     {
                         WrongMenuReaction(seatNum); //자리에 따라 틀린 메뉴 리액션 이미지 가져오기
@@ -291,18 +291,18 @@ public class Menu : MonoBehaviour
                     if(characterNum == 11 && CharacterManager.instance.GetCurrentEventState() == 12)//무명이1 이벤트이고 무명이 서빙을 했을 때
                     {
                         SystemManager.instance.CantTouchUI();
-                        MenuHint.instance.CantClickMHB();//뒤에 메뉴판이 떠있는 채로 이벤트 시작하는 걸 방지하기 위함
+                        MenuHint.instance.CantTouchMHB();//뒤에 메뉴판이 떠있는 채로 이벤트 시작하는 걸 방지하기 위함
                         canStartEvent = true;
                     }
                     else // 그 외의 경우
                     {                   
-                        if(CharacterManager.instance.GetCurrentEventState() == 14)  //히로디노 이벤트
+                        if(CharacterManager.instance.GetCurrentEventState() == 14 && (characterNum == 12 || characterNum == 13))  //히로디노 이벤트
                         {
                             if (characterNum == 12)
                             {
                                 isHeroServed = true;
                                 if(CharacterManager.instance.GetCurrentEventState() == 14)
-                                    CharacterManager.instance.CanClickCharacter(13);//디노 클릭 가능                           
+                                    CharacterManager.instance.CanTouchCharacter(13);//디노 클릭 가능                           
                             }
                             else if (characterNum == 13)
                             {
@@ -311,18 +311,19 @@ public class Menu : MonoBehaviour
 
                             if (isDinoServed && isHeroServed)// 둘 다 서빙완료했을 때, 친밀도 이벤트면 UI클릭 금지
                             {
-                                MenuHint.instance.CantClickMHB();//뒤에 메뉴판이 떠있는 채로 이벤트 시작하는 걸 방지하기 위함
+                                MenuHint.instance.CantTouchMHB();//뒤에 메뉴판이 떠있는 채로 이벤트 시작하는 걸 방지하기 위함
                                 canStartEvent = true;
                                 SystemManager.instance.CantTouchUI();
                             }
                         }
-                        
-                        VisitorNote.instance.IncreaseFrinedshipGauge(characterNum); //서빙받은 캐릭터의 친밀도 증가
-                        if (CharacterManager.instance.GetCurrentEventState() != 5)
+                        else
                         {
-                            ReactionFadeIn(seatNum,1f);
-                        }  
-                        
+                            if (CharacterManager.instance.GetCurrentEventState() != 5)
+                            {
+                                ReactionFadeIn(seatNum,1f);
+                            }  
+                        }
+                        VisitorNote.instance.IncreaseFrinedshipGauge(characterNum); //서빙받은 캐릭터의 친밀도 증가                        
                     }
                 }
             }          
@@ -445,7 +446,6 @@ public class Menu : MonoBehaviour
     {
         seatNum = CharacterManager.instance.GetCharacterSeatNum(cNum);//해당 캐릭터 자리 넘버 대입    
         SetMenuPosition();
-        Debug.Log("seatNum은" + seatNum);
         CorrectMenuReaction(seatNum); //하트리액션 
         if(cNum != 13)//디노일때는 생략
         {
@@ -510,7 +510,7 @@ public class Menu : MonoBehaviour
         }
         isMenuFadeIn = false;
         menuFadeIn.Dequeue();
-
+        
         if(canStartEvent)
         {
             if((CharacterManager.instance.GetCurrentEventState() == 9 || CharacterManager.instance.GetCurrentEventState() == 10) && Dialogue.instance.GetSpecialMenuState() == 0)//친구,찰스1 친밀도 이벤트 처음일 때
@@ -566,7 +566,7 @@ public class Menu : MonoBehaviour
         }
         isMenuFadeOut = false;
         menuFadeOut.Dequeue();
-        Debug.Log("메뉴 페이드아웃" + n);
+        //Debug.Log("메뉴 페이드아웃" + n);
 
         TableMenu[n].SetActive(false);
 
@@ -595,25 +595,28 @@ public class Menu : MonoBehaviour
 
     public void ReactionFadeIn(int sNum = -1, float time = 0f) //리액션 페이드인
     {
-        Debug.Log("함수 ReactionFadeIn" + sNum);
-        //Debug.Log("현재 seatNum" + seatNum);
-        
         if(sNum == -1)
             reactionFadeIn.Enqueue(seatNum);
         else
             reactionFadeIn.Enqueue(sNum);
 
-        Debug.Log("리액션 페이드인 큐 상태11");
-        foreach(int v in reactionFadeIn)
+        if (isReactionFadeIn && time == 0f)
         {
-            Debug.Log("들어가있는 거11 ->" + v);
+            time = 1.5f;
+            StartCoroutine(RFadeToFullAlpha(time)); //페이드인 시작
         }
-        StartCoroutine(RFadeToFullAlpha(time)); //페이드인 시작
+        else
+        {
+            StartCoroutine(RFadeToFullAlpha(time)); //페이드인 시작
+        }
         Invoke(nameof(ReactionFadeOut), 2f); //2초 후 페이드아웃
     }
 
+    bool isReactionFadeIn = false;
     IEnumerator RFadeToFullAlpha(float time = 0f) // 알파값 0에서 1로 전환, 리액션 페이드인
     {
+        isReactionFadeIn = true;
+
         if(time != 0f)
             yield return new WaitForSeconds(time);
 
@@ -626,11 +629,7 @@ public class Menu : MonoBehaviour
             yield return null;
         }
         reactionFadeIn.Dequeue();
-        Debug.Log("리액션 페이드인 큐 상태22");
-        foreach(int v in reactionFadeIn)
-        {
-            Debug.Log("들어가있는 거22-> " + v);
-        }
+        isReactionFadeIn = false;
 
         reactionFadeOut.Enqueue(num);//리액션 페이드아웃 큐에 정보 추가
         if (reactionFadeIn.Count != 0) //페이드인 할 게 남았다면
@@ -657,6 +656,7 @@ public class Menu : MonoBehaviour
     {
         isReactionFadeOut = true;//페이드아웃 중
         int num = reactionFadeOut.Peek();       
+
         Reaction[num].GetComponent<Image>().color = new Color(Reaction[num].GetComponent<Image>().color.r, Reaction[num].GetComponent<Image>().color.g, Reaction[num].GetComponent<Image>().color.b, 1);
         while (Reaction[num].GetComponent<Image>().color.a > 0.0f)
         {
@@ -666,6 +666,7 @@ public class Menu : MonoBehaviour
         isReactionFadeOut = false;
         reactionFadeOut.Dequeue();//페이드아웃 완료했으니 큐에서 정보 삭제
         Reaction[num].SetActive(false);
+
         if(CharacterManager.instance.GetSittingCharacter(num) != null)//현재 앉아있는 캐릭터가 null이 아닐 때
         {
             string charName = CharacterManager.instance.GetSittingCharacter(num).name;
@@ -753,7 +754,9 @@ public class Menu : MonoBehaviour
             UnlockedMenuItems.Add(MenuObject[lastMenu]); //UnlockedMenuItems리스트에 메뉴4 추가
 
             LockedMenuItems[lastMenu - 3].SetActive(false); //실루엣 이미지 없애고
-            LockedMenuButtons[lastMenu - 3].gameObject.SetActive(true);//다음 메뉴 해제 버튼 활성화
+            if(UnlockedMenuItems.Count != 8)
+                LockedMenuButtons[lastMenu - 3].gameObject.SetActive(true);//다음 메뉴 해제 버튼 활성화
+
             SaveUnlockedMenuItemInfo();
         }
 

@@ -42,7 +42,7 @@ public class VisitorNote : MonoBehaviour
 
     int[] hiddenTextStates = new int[8]; //노트의 두번째 하고 싶은 말 정보가 열렸는지 확인
 
-    int[] friendshipInfo = new int[13] { 0, 0, 0, 0, 0, 0,0,0,0,0,0,0,0}; //친밀도 게이지 정보(서빙 횟수) 배열
+    public int[] friendshipInfo = new int[13] { 0, 0, 0, 0, 0, 0,0,0,0,0,0,0,0}; //친밀도 게이지 정보(서빙 횟수) 배열
     
     int firstMeetID = 0; //첫만남 캐릭터별로 숫자 들어감
     int friendEventID = 0; //이벤트 캐릭터별로 숫자 들어감
@@ -64,7 +64,7 @@ public class VisitorNote : MonoBehaviour
         if(!SystemManager.instance.IsUIOpen())
         {
             SystemManager.instance.SetUIOpen(true);
-            SEManager.instance.PlayUIClickSound(); //효과음
+            SEManager.instance.PlayUITouchSound(); //효과음
             buttonAnimator.SetTrigger("VNButtonOut"); //버튼 위로 올라감       
             noteAnimator.SetTrigger("NoteUp"); //노트 올라옴
         }
@@ -337,7 +337,7 @@ public class VisitorNote : MonoBehaviour
             {
                 pages[i].SetActive(false);
             }
-            if(openedPages == 13) //13페이지 열려있으면 페이지 활성화
+            if(openedPages >= 13) //13페이지 열려있으면 페이지 활성화
             {
                 pages[12].SetActive(true);
             }

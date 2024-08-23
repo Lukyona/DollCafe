@@ -31,7 +31,7 @@ public class CharacterManager : MonoBehaviour
 
     int nextAppear = 0;
     bool checkingTrigger = true;
-    int currentEventState = 0;//0은 친밀도 이벤트 중이 아님을 뜻함, 이벤트 발생하는 캐릭터 번호 들어감, 1도리 2붕붕 3빵빵 4개나리 6도로시 7루루 8샌디 9친구 10찰스1 11찰스2 ,12무명이1, 13무명이2, 14히로디노, 15닥터펭, 16롤렝드
+    public int currentEventState = 0;//0은 친밀도 이벤트 중이 아님을 뜻함, 이벤트 발생하는 캐릭터 번호 들어감, 1도리 2붕붕 3빵빵 4개나리 6도로시 7루루 8샌디 9친구 10찰스1 11찰스2 ,12무명이1, 13무명이2, 14히로디노, 15닥터펭, 16롤렝드
 
     List<string> availableCharacters = new List<string> (); //랜덤 방문 가능한 캐릭터들 리스트
     Queue<int> revisitCharacters = new Queue<int>(); //재방문할 수 있는 캐릭터 큐
@@ -45,7 +45,7 @@ public class CharacterManager : MonoBehaviour
 
     [SerializeField] bool[] isTableEmpty = new bool[3]; //테이블이 비었는지 확인
 
-    [SerializeField] int[] characterSeat = new int[15]; // 캐릭터 자리 저장 배열
+    [SerializeField] int[] characterSeat = new int[15]; // 캐릭터 자리 저장 배열, 히로/디노 따로
 
     Queue<int> smallFOut = new Queue<int>(); //작은 캐릭터 페이드아웃 시 사용
     Queue<int> smallFadeIn = new Queue<int>(); //페이드인 시 사용
@@ -133,7 +133,7 @@ public class CharacterManager : MonoBehaviour
         }
         #endregion
 
-        if (checkingTrigger && !SystemManager.instance.IsUIOpen() && !Dialogue.instance.IsTalking() && currentEventState == 0
+        if (checkingTrigger && nextAppear <= 14 && !SystemManager.instance.IsUIOpen() && !Dialogue.instance.IsTalking() && currentEventState == 0
             && VisitorNote.instance.GetReplayState() == 0 && SystemManager.instance.GetMainCount() > 3)
         {// UI가 올라와있지 않고 대화 중이 아닐 때
             if (IsTableEmpty(1) || IsTableEmpty(2) || IsTableEmpty(3)) //테이블이 하나라도 비었다면
@@ -312,9 +312,11 @@ public class CharacterManager : MonoBehaviour
             SystemManager.instance.BeginDialogue(nextAppear);
         }
     }
-                                                                                                                    
-    public void FriendshipEvent(int cNum)//친밀도 이벤트 확인
+
+    IEnumerator FriendshipEvent(int cNum, float time = 0f)//친밀도 이벤트 확인
     {
+        yield return new WaitForSeconds(time);
+
         int idx1 = -1;
         int idx2 = -1;
         if (cNum == 14 || cNum == 15)//닥터펭, 롤렝드의 경우
@@ -345,7 +347,7 @@ public class CharacterManager : MonoBehaviour
                     {
                         if (VisitorNote.instance.GetFriendshipInfo(8) == 10)
                         {//친밀도 10일 때, 서빙횟수가 10번일 때
-                            if (IsInvoking("RandomVisit"))
+                            if (IsInvoking(nameof(RandomVisit)))
                             {
                                 CancelInvoke(nameof(RandomVisit));
                                 Debug.Log("랜덤방문 취소");
@@ -353,7 +355,7 @@ public class CharacterManager : MonoBehaviour
                             currentEventState = cNum; //두 개 이상의 테이블이 비었고 도로시가 방문가능캐릭터일 때 실행, 도로시까지 필요하기 때문
                             if (SystemManager.instance.IsUIOpen() || Dialogue.instance.IsTalking() || VisitorNote.instance.GetReplayState() != 0)//만약 UI가 올라와있다면
                             {
-                                Invoke(nameof(FriendshipEvent), 1f);// 1초마다 이 함수 재실행
+                                StartCoroutine(FriendshipEvent(cNum, 1f));
                             }
                             else
                             {
@@ -368,16 +370,17 @@ public class CharacterManager : MonoBehaviour
                                 }
                                 else //두 개 이상의 테이블이 비지 않았다면
                                 {
-                                    Invoke(nameof(FriendshipEvent), 1f);// 1초마다 이 함수 재실행
+                                    StartCoroutine(FriendshipEvent(cNum, 1f));
                                 }
                             }
+                            yield break;
                         }
                     }
                     else if (Dialogue.instance.GetCharacterDC(10) == 2)//찰스2
                     {
                         if (VisitorNote.instance.IsFriendshipGaugeFull(cNum-2) && VisitorNote.instance.IsFriendshipGaugeFull(4))
                         {// 찰스, 도로시 친밀도 모두 최대일때
-                            if (IsInvoking("RandomVisit"))
+                            if (IsInvoking(nameof(RandomVisit)))
                             {
                                 CancelInvoke(nameof(RandomVisit));
                                 Debug.Log("랜덤방문 취소");
@@ -385,7 +388,7 @@ public class CharacterManager : MonoBehaviour
                             currentEventState = 11; 
                             if (SystemManager.instance.IsUIOpen() || Dialogue.instance.IsTalking() || VisitorNote.instance.GetReplayState() != 0)//만약 UI가 올라와있다면
                             {
-                                Invoke(nameof(FriendshipEvent), 1f);// 1초마다 이 함수 재실행
+                                StartCoroutine(FriendshipEvent(cNum, 1f));
                             }
                             else
                             {
@@ -393,7 +396,7 @@ public class CharacterManager : MonoBehaviour
                                 (IsTableEmpty(1) && IsTableEmpty(3)) ||
                                 (IsTableEmpty(2) && IsTableEmpty(3)))
                                 {//두 개 이상의 테이블이 비었을 때 실행, 도로시까지 필요하기 때문
-                                    MenuHint.instance.CantClickMHB();
+                                    MenuHint.instance.CantTouchMHB();
                                     SystemManager.instance.CantTouchUI();
                                     checkingTrigger = false;
                                     SetCharacter(6);//도로시 페이드인
@@ -401,18 +404,19 @@ public class CharacterManager : MonoBehaviour
                                 }
                                 else //두 개 이상의 테이블이 비지 않았다면
                                 {
-                                    Invoke(nameof(FriendshipEvent), 1f);// 1초마다 이 함수 재실행
+                                    StartCoroutine(FriendshipEvent(cNum, 1f));
                                 }
                             }
+                            yield break;
                         }
                     }
-                    return;
+                    break;
                 case 11:
                     if (Dialogue.instance.GetCharacterDC(11) == 1)//무명이1
                     {
                         if (VisitorNote.instance.GetFriendshipInfo(9) == 10)//친밀도 10일때
                         {
-                            if (IsInvoking("RandomVisit"))
+                            if (IsInvoking(nameof(RandomVisit)))
                             {
                                 CancelInvoke(nameof(RandomVisit));
                                 Debug.Log("랜덤방문 취소");
@@ -420,55 +424,56 @@ public class CharacterManager : MonoBehaviour
                             currentEventState = 12;//친밀도 이벤트 진행 중
                             if (SystemManager.instance.IsUIOpen() || Dialogue.instance.IsTalking() || VisitorNote.instance.GetReplayState() != 0)//만약 UI가 올라와있다면
                             {
-                                Invoke(nameof(FriendshipEvent), 1f);// 1초마다 이 함수 재실행
+                                StartCoroutine(FriendshipEvent(cNum, 1f));
                             }
                             else
                             {
                                 checkingTrigger = false;
                                 SetCharacter(11);//캐릭터를 설정하고 바로 페이드인    
                             }
+                            yield break;
                         }
                     }
                     else if (Dialogue.instance.GetCharacterDC(11) == 2)//무명이2
                     {
                         if (VisitorNote.instance.IsFriendshipGaugeFull(cNum-2))//친밀도 20일때
                         {
-                            if (IsInvoking("RandomVisit"))
+                            if (IsInvoking(nameof(RandomVisit)))
                             {
                                 CancelInvoke(nameof(RandomVisit));
                                 Debug.Log("랜덤방문 취소");
                             }
-                            MenuHint.instance.CantClickMHB();
+                            MenuHint.instance.CantTouchMHB();
                             SystemManager.instance.CantTouchUI();
                             currentEventState = 13;//친밀도 이벤트 진행 중
                             if (SystemManager.instance.IsUIOpen() || Dialogue.instance.IsTalking() || VisitorNote.instance.GetReplayState() != 0)//만약 UI가 올라와있다면
                             {
-                                Invoke(nameof(FriendshipEvent), 1f);// 1초마다 이 함수 재실행
+                                StartCoroutine(FriendshipEvent(cNum, 1f));
                             }
                             else
                             {
                                 checkingTrigger = false;
                                 SetCharacter(11);//캐릭터를 설정하고 바로 페이드인    
                             }
+                            yield break;
                         }
                     }
-                    return;
+                break;
             }
         }     
 
-        if (Dialogue.instance.GetCharacterDC(idx1) != 0 && Dialogue.instance.GetCharacterDC(idx1) != 3)
-        {
+        if (cNum != 5 && cNum != 10 && cNum != 11 && Dialogue.instance.GetCharacterDC(idx1) != 0 && Dialogue.instance.GetCharacterDC(idx1) != 3)
+        {//또롱, 찰스, 무명이 제외
             if (VisitorNote.instance.IsFriendshipGaugeFull(idx2))//친밀도 게이지가 꽉 찼을 때
             {
-                if (IsInvoking("RandomVisit"))
+                if (IsInvoking(nameof(RandomVisit)))
                 {
                     CancelInvoke(nameof(RandomVisit));
-                    Debug.Log("랜덤방문 취소");
                 }
 
-                if (cNum != 9)
+                if (cNum != 9 && cNum != 15) 
                 {
-                    MenuHint.instance.CantClickMHB();
+                    MenuHint.instance.CantTouchMHB();
                     SystemManager.instance.CantTouchUI();
                 }
 
@@ -481,7 +486,7 @@ public class CharacterManager : MonoBehaviour
 
                 if (SystemManager.instance.IsUIOpen() || Dialogue.instance.IsTalking() || VisitorNote.instance.GetReplayState() != 0)//만약 UI가 올라와있다면
                 {
-                    Invoke(nameof(FriendshipEvent), 1f);// 1초마다 이 함수 재실행
+                    StartCoroutine(FriendshipEvent(cNum, 1f));
                 }
                 else
                 {
@@ -490,6 +495,14 @@ public class CharacterManager : MonoBehaviour
                 }
             }        
         }
+        
+        if (GetCurrentEventState() == 0) //이벤트가 발생하지 않으면 일반 방문 진행
+        {
+            SetCharacter(cNum); //방문할 캐릭터 세팅
+            Invoke(nameof(RandomVisit), 7f);
+            //Debug.Log("랜덤방문 7초뒤");
+        }
+        yield break;
     }
     #endregion
 
@@ -498,23 +511,29 @@ public class CharacterManager : MonoBehaviour
     {
         if ((VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0 && Dialogue.instance.IsTalking()) || PlayerPrefs.GetInt("EndingState") == 1)//캐릭터와 대화 중일 경우 혹은 엔딩이벤트 할 경우 함수 종료
         {
+            if(!IsInvoking(nameof(RandomVisit)))
+            {
+                Invoke(nameof(RandomVisit), 3f);
+                //Debug.Log("랜덤방문 3초뒤");
+
+            }      
             return;
         }
         if(availableCharacters.Count == 0) //현재 방문 가능한 캐릭터가 없을 시 3초 뒤 이 함수 재실행
         {
-            if(!IsInvoking("RandomVisit"))
+            if(!IsInvoking(nameof(RandomVisit)))
             {
                 Invoke(nameof(RandomVisit), 3f);
-              //  Debug.Log("수동 방문 가능 캐릭터 없음, 3초 뒤");
+                //Debug.Log("수동 방문 가능 캐릭터 없음, 3초 뒤");
             }           
             return;
         }
         if (!IsTableEmpty(1) && !IsTableEmpty(2) && !IsTableEmpty(3)) //세 테이블에 모두 손님이 있으면
         {
-            if (!IsInvoking("RandomVisit"))
+            if (!IsInvoking(nameof(RandomVisit)))
             {
                 Invoke(nameof(RandomVisit), 5f);
-              //  Debug.Log("수동 빈 테이블 없음, 5초 뒤");
+                //Debug.Log("수동 빈 테이블 없음, 5초 뒤");
             }
             return;
         }
@@ -586,14 +605,8 @@ public class CharacterManager : MonoBehaviour
                     availableCharacters.Remove("small_6Princess&10Soldier");
                     break;
             }
-            if(cNum != 5) // 또롱 제외
-                FriendshipEvent(cNum); //방문할 캐릭터의 친밀도 이벤트가 발생하는지 확인
-            //Debug.Log("방문할 캐릭터 넘버 " + cNum);
-            if (GetCurrentEventState() == 0) //이벤트가 발생하지 않으면 일반 방문 진행
-            {
-                SetCharacter(cNum); //방문할 캐릭터 세팅
-                Invoke(nameof(RandomVisit), 7f);
-            }
+            
+            StartCoroutine(FriendshipEvent(cNum)); //방문할 캐릭터의 친밀도 이벤트가 발생하는지 확인
         }
         
     }
@@ -697,7 +710,7 @@ public class CharacterManager : MonoBehaviour
         smallCharacters[n].GetComponent<Button>().interactable = false;
     }
 
-    public void CanClickCharacter(int n) //캐릭터 클릭 가능하게, 페이드인하고 가능
+    public void CanTouchCharacter(int n) //캐릭터 클릭 가능하게, 페이드인하고 가능
     {
         smallCharacters[n].GetComponent<Button>().interactable = true;
     }
@@ -705,14 +718,13 @@ public class CharacterManager : MonoBehaviour
     public void SetCharacter(int cNum) //작은 캐릭터 설정, cNum은 캐릭터 넘버
     {
         smallFadeIn.Enqueue(cNum);
-       // Debug.Log("셋캐릭터 " + cNum);
+        //Debug.Log("셋캐릭터 " + cNum);
 
         if (cNum == 0 || cNum >= 16) // 제제/주인공은 바로 페이드인
         {
             Invoke(nameof(FadeIn),1f);
             return;
         }
-
         
         SetSeatPosition(cNum);
 
@@ -721,7 +733,6 @@ public class CharacterManager : MonoBehaviour
             //회색 패널보다 레이어가 뒤에 위치해있어서 터치가 안되므로 일시적으로 순서를 패널보다 앞쪽으로 배치한다
             smallCharacters[1].transform.parent.GetComponent<Canvas>().sortingOrder = 7;
         }
-
         //Debug.Log("함수 SetCharacter");
     }
 
@@ -739,8 +750,8 @@ public class CharacterManager : MonoBehaviour
             {
                 seatNum = characterSeat[11] + 1;
             }
-            else if(cNum == 10 && (Dialogue.instance.GetCharacterDC(10) == 3) || (GetCurrentEventState() == 11 && Dialogue.instance.GetSpecialMenuState() == 1))//찰스2이벤트 중 찰스 중간 페이드인
-            {//도로시와 같이 오는 찰스
+            else if(cNum == 10 && (Dialogue.instance.GetCharacterDC(10) == 3) || (GetCurrentEventState() == 11 && Dialogue.instance.GetSpecialMenuState() == 1))
+            {//도로시와 같이 오는 찰스, 찰스2이벤트 중 찰스 중간 페이드인
                 seatNum = characterSeat[5] + 1;
                 smallCharacters[10].GetComponent<Image>().sprite = soldierRightImage.sprite;//이미지 변경
             }          
@@ -852,7 +863,7 @@ public class CharacterManager : MonoBehaviour
         }
         
         characterSeat[cNum - 1] = seatNum ; //캐릭터 자리 정보 저장, 
-       // Debug.Log("캐릭넘버 " + cNum + " 자리: " + seatNum);
+        //Debug.Log("캐릭넘버 " + cNum + " 자리: " + seatNum);
 
         // 앉을 자리로 옮기기
         smallCharacters[cNum].transform.position = seatPos[seatNum];
@@ -901,7 +912,8 @@ public class CharacterManager : MonoBehaviour
         }
         if (GetCurrentEventState() != 0 && GetCurrentEventState() != 14)//히로디노이벤트가 아니면 주인공 아기 캐릭터 자리 설정
         {
-            if(GetCurrentEventState() == 11 && (cNum == 6 || Dialogue.instance.GetSpecialMenuState() == 1)) return; // 찰스2이벤트의 도로시일 때는 아기 자리 세팅X
+            if(GetCurrentEventState() == 11 && (cNum == 6 || Dialogue.instance.GetSpecialMenuState() == 1)
+            || GetCurrentEventState() == 10 && (cNum == 6)) return; // 찰스1이벤트, 찰스2이벤트의 도로시일 때는 아기 자리 세팅X
             SetBabySeat(seatNum);          
         }
         //Debug.Log("함수 SetSeatPosition");
@@ -969,7 +981,7 @@ public class CharacterManager : MonoBehaviour
 
         int v = smallFadeIn.Peek();
        
-        Debug.Log("페이드인 될 캐릭터" + v);
+       // Debug.Log("페이드인 될 캐릭터" + v);
 
         smallCharacters[v].SetActive(true); //작은 캐릭터 활성화      
 
@@ -981,13 +993,13 @@ public class CharacterManager : MonoBehaviour
         }
         
         smallFadeIn.Dequeue();
-        Debug.Log("페이드인 됨" + v);
+        //Debug.Log("페이드인 됨" + v);
 
 
         if ((GetCurrentEventState() == 0 || GetCurrentEventState() == 9 || GetCurrentEventState() == 12 || GetCurrentEventState() == 16) 
             && v != 0 && v != 17 && v != 16)
         {//친밀도 이벤트가 아니고 제제가 아니고, 주인공 아기가 아닐 때만 캐릭터 클릭 가능, 친구,무명이1,롤렝드 친밀도 이벤트시에는 가능,
-            CanClickCharacter(v);
+            CanTouchCharacter(v);
         }
         
         if(GetCurrentEventState() == 10 || GetCurrentEventState() == 11)//찰스1,2 이벤트일 경우
@@ -998,7 +1010,7 @@ public class CharacterManager : MonoBehaviour
             }
             if(GetCurrentEventState() == 10 && v == 10)//찰스만 클릭가능
             {
-                CanClickCharacter(10);
+                CanTouchCharacter(10);
             }
         }
 
@@ -1027,7 +1039,7 @@ public class CharacterManager : MonoBehaviour
         {
             if (GetCurrentEventState() == 14)//히로디노 친밀도 이벤트 시
             {
-                CanClickCharacter(v);//히로 먼저 클릭 가능
+                CanTouchCharacter(v);//히로 먼저 클릭 가능
             }
             SetCharacter(13);           
         }
@@ -1046,7 +1058,7 @@ public class CharacterManager : MonoBehaviour
 
     public void FadeOut(int cNum, int sNum = -1) //작은 캐릭터 페이드아웃
     {   
-        Debug.Log("캐릭터 페이드아웃" + cNum);
+        //Debug.Log("캐릭터 페이드아웃" + cNum);
         smallFOut.Enqueue(cNum);
 
         if(cNum != 12 && cNum  < 16) // 히로, 주인공은 패스
@@ -1076,7 +1088,7 @@ public class CharacterManager : MonoBehaviour
             smallCharacters[cNum].GetComponent<Image>().color = new Color(smallCharacters[cNum].GetComponent<Image>().color.r, smallCharacters[cNum].GetComponent<Image>().color.g, smallCharacters[cNum].GetComponent<Image>().color.b, smallCharacters[cNum].GetComponent<Image>().color.a - (Time.deltaTime / 0.8f));
             yield return null;
         }
-        Debug.Log("페이드아웃 됨" + cNum);
+//        Debug.Log("페이드아웃 됨" + cNum);
         smallFOut.Dequeue();
 
         if(GetCurrentEventState() == 0 && Dialogue.instance.GetSpecialMenuState() == 2)//친밀도 이벤트가 끝났을 때

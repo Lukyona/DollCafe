@@ -147,9 +147,9 @@ public class SystemManager : MonoBehaviour
         //PlayerPrefs.Save(); //세이브
         //endingState =1;
         //SaveDataInfo();
-        //Dialogue.instance.CharacterDC[12] = 1;
-        //Dialogue.instance.CharacterDC[10] = 2;
-        //VisitorNote.instance.FriendshipInfo[9] = 10;
+        Dialogue.instance.characterDC[13] = 1;
+        Dialogue.instance.characterDC[10] = 2;
+        //VisitorNote.instance.friendshipInfo[8] = 10;
         //VisitorNote.instance.FriendshipInfo[10] = 15;
         //VisitorNote.instance.FriendshipInfo[8] = 10;
         //Star.instance.SetStarNum(23);
@@ -192,6 +192,8 @@ public class SystemManager : MonoBehaviour
                 if (!CharacterManager.instance.IsInvoking("RandomVisit") && endingState != 1 && !Dialogue.instance.IsTalking())
                 { // 엔딩이벤트 중이 아니어야 하고 대화 중이 아니어야함
                     CharacterManager.instance.Invoke("RandomVisit", 5f); //캐릭터 랜덤 방문
+                    //Debug.Log("랜덤방문 5초뒤");
+
                 }
             }
         }
@@ -291,7 +293,7 @@ public class SystemManager : MonoBehaviour
                     CharacterManager.instance.GetSmallCharacter(0) .GetComponent<Button>().interactable = true; // 제제 터치 가능
                 }
 
-                for (int i = 1; i <= mainCount - 2; i++)//재방문 캐릭터 설정
+                for (int i = 6; i <= mainCount - 2; i++)//재방문 캐릭터 설정
                 {
                     if(Dialogue.instance.GetCharacterDC(10) == 3)//찰스2 이벤트를 했을 시에는
                     {
@@ -317,8 +319,8 @@ public class SystemManager : MonoBehaviour
                 }
 
                 Star.instance.Invoke("ActivateStarSystem", 25f);//25초 뒤 별 함수 시작
-                //Debug.Log("스타시스템 25초 뒤 시작");
                 CharacterManager.instance.Invoke("RandomVisit", 5f); // 5초 뒤 캐릭터 랜덤 방문
+                //Debug.Log("5초 뒤 랜덤방문");
             }                               
 
         }
@@ -404,6 +406,7 @@ public class SystemManager : MonoBehaviour
         if (!CharacterManager.instance.IsInvoking("RandomVisit"))
         {
             CharacterManager.instance.Invoke("RandomVisit", 10f); //캐릭터 랜덤 방문
+            Debug.Log("랜덤방문 10초뒤");
         }
        
         if(mainCount < 6)
@@ -425,8 +428,6 @@ public class SystemManager : MonoBehaviour
             VisitorNote.instance.SaveVisitorNoteInfo();           
             endingState = 2;//엔딩이벤트를 봤음
             SaveDataInfo();
-            Debug.Log("endignstat" + PlayerPrefs.GetInt("EndingState"));
-            
             if (Star.instance.IsInvoking("ActivateStarSystem"))
             {
                 Star.instance.CancelInvoke("ActivateStarSystem");//별 활성화 함수 중단
@@ -451,7 +452,7 @@ public class SystemManager : MonoBehaviour
         {
             CanTouchUI();
             CharacterManager.instance.SetCurrentEventState(0); //친밀도 이벤트 종료됨 
-            MenuHint.instance.CanClickMHB();//메뉴힌트버블 터치 가능
+            MenuHint.instance.CanTouchMHB();//메뉴힌트버블 터치 가능
 
             switch (cNum)
             {
@@ -459,14 +460,13 @@ public class SystemManager : MonoBehaviour
                     CharacterManager.instance.SetFaceNum(cNum);
                     if (Dialogue.instance.GetCharacterDC(cNum) == 2)//찰스1 이벤트
                     {
-                        CharacterManager.instance.CanClickCharacter(6);//도로시 클릭 가능하게
+                        CharacterManager.instance.CanTouchCharacter(6);//도로시 클릭 가능하게
                         Menu.instance.MenuFadeOut();//메뉴 페이드아웃
                     }
                     else if (Dialogue.instance.GetCharacterDC(cNum) == 3)//찰스2 이벤트
                     {
-                        Dialogue.instance.SetSpecialMenuState(0);
-                        CharacterManager.instance.CanClickCharacter(6);//도로시 클릭 가능하게
-                        CharacterManager.instance.CanClickCharacter(10);//찰스 클릭 가능하게
+                        CharacterManager.instance.CanTouchCharacter(6);//도로시 클릭 가능하게
+                        CharacterManager.instance.CanTouchCharacter(10);//찰스 클릭 가능하게
                         VisitorNote.instance.ActivateReplayButton(cNum-1);         
                     }
                     break;
@@ -486,6 +486,7 @@ public class SystemManager : MonoBehaviour
                 case 12:
                     VisitorNote.instance.SetCharacterImage(cNum, CharacterManager.instance.CharacterFaceList[cNum - 2].face[0].GetComponent<Image>().sprite);
                     Menu.instance.ReactionFadeIn(); // 디노 리액션 페이드인
+                    VisitorNote.instance.ActivateReplayButton(cNum-1);//다시보기 버튼 활성화
                     break;
                 default:   
                     Menu.instance.ReactionFadeIn();
@@ -510,8 +511,8 @@ public class SystemManager : MonoBehaviour
 
             if (!CharacterManager.instance.IsInvoking("RandomVisit"))
             {
-                CharacterManager.instance.Invoke("RandomVisit", 12f); //캐릭터 랜덤 방문
-               // Debug.Log("랜덤방문 10초 뒤");
+                CharacterManager.instance.Invoke("RandomVisit", 10f); //캐릭터 랜덤 방문
+                //Debug.Log("랜덤방문 10초 뒤");
             }
         }
         Dialogue.instance.SaveCharacterDCInfo();
@@ -529,7 +530,7 @@ public class SystemManager : MonoBehaviour
         if(sum == 42 && Menu.instance.IsMenuOpen(8)) //캐릭터들 시나리오를 모두 봄 & 마지막 메뉴 잠금 해제 완료
         {
             Debug.Log("엔딩 조건 충족");
-
+            if(CharacterManager.instance.IsInvoking("RandomVisit")) CharacterManager.instance.CancelInvoke("RandomVisit");
             Invoke(nameof(EndingEvent),6f);
             endingState = 1;
             PlayerPrefs.SetInt("EndingState", endingState);
@@ -843,7 +844,7 @@ public class SystemManager : MonoBehaviour
 
     public void ShowTip() // 별을 소모해 팁 보기, 팁 메세지창에서 '네' 터치 시 실행
     {
-        SEManager.instance.PlayUIClickSound(); //효과음           
+        SEManager.instance.PlayUITouchSound(); //효과음           
         tipMessageWindow.gameObject.SetActive(false);
 
         if(Star.instance.GetCurrentStarNum() >= 3) // 현재 별이 3개 이상
@@ -856,7 +857,7 @@ public class SystemManager : MonoBehaviour
 
     public void RejectTip() // 팁 보기를 원치 않음, 팁 메세지창에서 '아니오' 터치 시 실행
     {
-        SEManager.instance.PlayUIClickSound(); //효과음           
+        SEManager.instance.PlayUITouchSound(); //효과음           
         tipMessageWindow.gameObject.SetActive(false);
 
         Invoke(nameof(CheckTipState), 60f);
@@ -867,7 +868,7 @@ public class SystemManager : MonoBehaviour
         if(isUIOpen) return;
         tipNoteButton.interactable = false;
         isUIOpen = true;
-        SEManager.instance.PlayUIClickSound(); //효과음  
+        SEManager.instance.PlayUITouchSound(); //효과음  
         tipNoteButtonAnimator.SetTrigger("TipButton_Up");
         tipNoteAnimator.SetTrigger("TipNote_Up");
     }
@@ -1067,7 +1068,7 @@ public class SystemManager : MonoBehaviour
     #region 결제 관련 함수
     public void TouchHPButton()
     {
-        SEManager.instance.PlayUIClickSound();
+        SEManager.instance.PlayUITouchSound();
         plusHPButton.interactable = false;
         AdsManager.instance.SetAdsMessageWindowActive(true);
     }
@@ -1081,7 +1082,7 @@ public class SystemManager : MonoBehaviour
     
     public void TouchPurchasingButton() //붕어빵 버튼(결제 버튼) 눌렀을 때 
     {
-        SEManager.instance.PlayUIClickSound();
+        SEManager.instance.PlayUITouchSound();
         purchasingWindow.SetActive(true);
         if(PlayerPrefs.GetInt("PurchaseCount") == 0) return;
 
@@ -1092,7 +1093,7 @@ public class SystemManager : MonoBehaviour
 
     public void PurchasingSuccess()
     {
-        SEManager.instance.PlayUIClickSound3();
+        SEManager.instance.PlayUITouchSound3();
 
         int pCount = PlayerPrefs.GetInt("PurchaseCount");
         if(pCount == 0)

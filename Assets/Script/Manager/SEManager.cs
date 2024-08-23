@@ -39,16 +39,16 @@ public class SEManager : MonoBehaviour //효과음 매니저
         myAudio.PlayOneShot(bird);
     }  
 
-    public void PlayUIClickSound()
+    public void PlayUITouchSound()
     {
         myAudio.PlayOneShot(click);
     } 
 
-    public void PlayUIClickSound2()
+    public void PlayUITouchSound2()
     {
         myAudio.PlayOneShot(click2);
     }
-    public void PlayUIClickSound3()
+    public void PlayUITouchSound3()
     {
         myAudio.PlayOneShot(click3);
     }

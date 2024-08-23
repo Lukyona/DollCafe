@@ -39,7 +39,7 @@ public class Setting : MonoBehaviour
         if (!SystemManager.instance.IsUIOpen())//UI가 올라오지 않았을 때
         {
             SystemManager.instance.SetUIOpen(true);
-            SEManager.instance.PlayUIClickSound(); //효과음           
+            SEManager.instance.PlayUITouchSound(); //효과음           
 
             settingWindowAnimator.SetTrigger("SettingUp"); //설정창 올라옴
             settingButton.GetComponent<Button>().interactable = false; // 설정 버튼 중복 터치 방지
@@ -64,7 +64,7 @@ public class Setting : MonoBehaviour
 
     public void CheckResetGame() //게임 초기화 버튼 눌렀을 때
     {
-        SEManager.instance.PlayUIClickSound2();
+        SEManager.instance.PlayUITouchSound2();
         settingClose.interactable = false;//설정 닫기 버튼 안 되게 하고
         resetButton.interactable = false;
         creditButton.interactable = false;
@@ -73,7 +73,7 @@ public class Setting : MonoBehaviour
 
     public void ResetGame() //정말로 게임 초기화
     {
-        SEManager.instance.PlayUIClickSound2();
+        SEManager.instance.PlayUITouchSound2();
         yesResetButton.interactable = false;
         noResetButton.interactable = false;        
         isReset = true;
@@ -119,7 +119,7 @@ public class Setting : MonoBehaviour
     }
     public void CancelReset() //초기화 취소버튼 눌렀을 때
     {
-        SEManager.instance.PlayUIClickSound2();
+        SEManager.instance.PlayUITouchSound2();
         resetCheck.SetActive(false);
         resetButton.interactable = true;
         settingClose.interactable = true;
@@ -133,7 +133,7 @@ public class Setting : MonoBehaviour
 
     public void ShowCredit()//크레딧버튼 눌렀을 때
     {
-        SEManager.instance.PlayUIClickSound2();
+        SEManager.instance.PlayUITouchSound2();
         resetButton.interactable = false;
         creditButton.interactable = false;
         creditView.SetActive(true);
@@ -142,7 +142,7 @@ public class Setting : MonoBehaviour
 
     public void CloseCredit()
     {
-        SEManager.instance.PlayUIClickSound2();
+        SEManager.instance.PlayUITouchSound2();
         creditView.SetActive(false);
         resetButton.interactable = true;
         creditButton.interactable = true;       

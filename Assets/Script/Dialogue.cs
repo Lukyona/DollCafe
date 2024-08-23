@@ -12,7 +12,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
     TextWriter.TextWriterSingle textWriterSingle;
     string[] messageArray = null;
 
-    [SerializeField] int[] characterDC = new int[15]; //캐릭터들 다이얼로그 카운트, 인덱스 0 제제, 1 도리, BackToCafe에서 ++
+    [SerializeField] public int[] characterDC = new int[15]; //캐릭터들 다이얼로그 카운트, 인덱스 0 제제, 1 도리, BackToCafe에서 ++
     int characterNum = 0; //캐릭터 번호, 0은 제제, 1은 도리, 2는 붕붕, …
     string babyName; //아기 이름
     bool isBabyText = false;
@@ -235,7 +235,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                 babyNum = 16;
                 babySeatNum = CharacterManager.instance.GetCharacterSeatNum(cNum)+1;
             }
-            else
+            else if(cNum % 2 == 1)
             {
                 babyNum = 17;
                 babySeatNum = CharacterManager.instance.GetCharacterSeatNum(cNum)-1;
@@ -351,7 +351,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                         case 5: // 메뉴 힌트 말풍선 터치 활성화
                             SystemManager.instance.SetNeedAction(true);
                             SystemManager.instance.SetCanTouch(false);
-                            MenuHint.instance.Invoke("CanClickMHB",1f);
+                            MenuHint.instance.Invoke("CanTouchMHB",1f);
                             break;
                         case 7:
                             SystemManager.instance.SetNeedAction(false);
@@ -1755,7 +1755,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                             {
                                 SystemManager.instance.SetCanTouch(false);
                                 SystemManager.instance.SetCanTouch(true,1f);
-                                CharacterManager.instance.FadeOut(CharacterManager.instance.GetCharacterSeatNum(10));//찰스 작은 캐릭터 페이드아웃
+                                CharacterManager.instance.FadeOut(10, CharacterManager.instance.GetCharacterSeatNum(10));//찰스 작은 캐릭터 페이드아웃
                             }
                             break;
                         case 25:
@@ -2442,6 +2442,8 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                 }
                 else if (characterDC[13] == 1)
                 {
+                    babyNum = 16; // 주인공이 오른쪽임
+                    babySeatNum = CharacterManager.instance.GetCharacterSeatNum(cNum+1)+1; 
                     switch (count)
                     {
                         case 0:
@@ -2642,6 +2644,8 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                 }
                 else if (characterDC[14] == 1)
                 {
+                    babyNum = 17; // 주인공이 왼쪽임
+                    babySeatNum = CharacterManager.instance.GetCharacterSeatNum(cNum+1)-1;
                     switch (count)
                     {
                         case 0:
@@ -2748,6 +2752,8 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                             if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                             {
                                 specialMenuState = 1;
+                            Debug.Log("여기" + babyNum + babySeatNum);
+
                                 CharacterManager.instance.FadeOut(babyNum, babySeatNum); //주인공 페이드아웃 
                             }
                             break;

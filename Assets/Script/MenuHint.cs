@@ -51,7 +51,7 @@ public class MenuHint : MonoBehaviour
         HintBubble[num] .SetActive(false);
     }
 
-    public void CantClickMHB()//메뉴힌트버블 터치 불가, 캐릭터 이벤트 시 실행
+    public void CantTouchMHB()//메뉴힌트버블 터치 불가, 캐릭터 이벤트 시 실행
     {
         for(int i = 0; i < 6; i++)
         {
@@ -62,7 +62,7 @@ public class MenuHint : MonoBehaviour
         }
     }
 
-    public void CanClickMHB()//메뉴힌트버블 터치 가능, 캐릭터 이벤트 끝나고 실행
+    public void CanTouchMHB()//메뉴힌트버블 터치 가능, 캐릭터 이벤트 끝나고 실행
     {
         for (int i = 0; i < 6; i++)
         {
@@ -390,7 +390,7 @@ public class MenuHint : MonoBehaviour
         if (SystemManager.instance.GetMainCount() == 2) //튜토리얼이면
         {
             SystemManager.instance.UpTextBox();
-            CantClickMHB();
+            CantTouchMHB();
             HintBubble[idx].transform.parent.GetComponent<Canvas>().sortingOrder = 7;
         }
 
