@@ -80,7 +80,7 @@ public class Star : MonoBehaviour
     {
         if(isFadingOut) // 페이드 아웃 중이면
         {
-            Invoke("ActivateStarFadeOut", 0.5f);
+            Invoke(nameof(ActivateStarFadeOut), 0.5f);
         }
         else
         {
@@ -102,7 +102,7 @@ public class Star : MonoBehaviour
             readyToFadeOut.Dequeue();
             waitingLine.Enqueue(idx+1); // 대기 별 큐에 추가
 
-            Invoke("ReAppearStar", 40f);//40초 뒤 다시 나타나기 가능
+            Invoke(nameof(ReAppearStar), 40f);//40초 뒤 다시 나타나기 가능
             
             PlayerPrefs.SetInt("StarNum", starNum); //별 개수 저장
             PlayerPrefs.Save();
@@ -118,7 +118,7 @@ public class Star : MonoBehaviour
     {
         if (StarList.Count == 0)//리스트 크기가 0이면
         {
-            Invoke("ActivateStarSystem", 25f);//25초 뒤에 별 생성
+            Invoke(nameof(ActivateStarSystem), 25f);//25초 뒤에 별 생성
             //Debug.Log("스타 시스템 25초 뒤 시작");
         }
 

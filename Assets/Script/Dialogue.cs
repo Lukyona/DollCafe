@@ -12,7 +12,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
     TextWriter.TextWriterSingle textWriterSingle;
     string[] messageArray = null;
 
-    int[] characterDC = new int[15]; //캐릭터들 다이얼로그 카운트, 인덱스 0 제제, 1 도리, BackToCafe에서 ++
+    [SerializeField] int[] characterDC = new int[15]; //캐릭터들 다이얼로그 카운트, 인덱스 0 제제, 1 도리, BackToCafe에서 ++
     int characterNum = 0; //캐릭터 번호, 0은 제제, 1은 도리, 2는 붕붕, …
     string babyName; //아기 이름
     bool isBabyText = false;
@@ -100,7 +100,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
             characterNum = cNum;
 
         ++characterDC[characterNum];
-        if(cNum != 10 && cNum != 11 && characterDC[characterNum] == 2) ///찰스, 무명이 제외하고는 친밀도 이벤트가 한 번뿐임
+        if(characterNum != 0 && characterNum != 10 && characterNum != 11 && characterDC[characterNum] == 2) ///찰스, 무명이 제외하고는 친밀도 이벤트가 한 번뿐임
         {
             characterDC[characterNum] = 3; // 캐릭터 에피소드 끝남
         }

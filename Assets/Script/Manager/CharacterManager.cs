@@ -30,6 +30,7 @@ public class CharacterManager : MonoBehaviour
     int faceNum = -1;//표정 비활성화에 쓰임
 
     int nextAppear = 0;
+    bool checkingTrigger = true;
     int currentEventState = 0;//0은 친밀도 이벤트 중이 아님을 뜻함, 이벤트 발생하는 캐릭터 번호 들어감, 1도리 2붕붕 3빵빵 4개나리 6도로시 7루루 8샌디 9친구 10찰스1 11찰스2 ,12무명이1, 13무명이2, 14히로디노, 15닥터펭, 16롤렝드
 
     List<string> availableCharacters = new List<string> (); //랜덤 방문 가능한 캐릭터들 리스트
@@ -118,7 +119,6 @@ public class CharacterManager : MonoBehaviour
             {
                 if (bigCharacters[characterNum].transform.position == charOutPos) // 캐릭터가 완전히 화면 밖으로 나갔다면 비활성화
                     DeactivatebigCharacters();
-
             }
         }
         else if (characteInOutState == 3)//군인 대화 이벤트, 공주 이동
@@ -133,8 +133,9 @@ public class CharacterManager : MonoBehaviour
         }
         #endregion
 
-        if (!SystemManager.instance.IsUIOpen() && !Dialogue.instance.IsTalking() && currentEventState == 0 && VisitorNote.instance.GetReplayState() == 0) // UI가 올라와있지 않고 대화 중이 아닐 때
-        {
+        if (checkingTrigger && !SystemManager.instance.IsUIOpen() && !Dialogue.instance.IsTalking() && currentEventState == 0
+            && VisitorNote.instance.GetReplayState() == 0 && SystemManager.instance.GetMainCount() > 3)
+        {// UI가 올라와있지 않고 대화 중이 아닐 때
             if (IsTableEmpty(1) || IsTableEmpty(2) || IsTableEmpty(3)) //테이블이 하나라도 비었다면
             {
                 CheckCharacterTrigger();
@@ -251,6 +252,11 @@ public class CharacterManager : MonoBehaviour
         return nextAppear;
     }
 
+    public void CanCheckTrigger()
+    {
+        checkingTrigger = true;
+    }
+
     void CheckCharacterTrigger()
     {
         int minReputation = 0; // 필요한 최소 평판
@@ -302,6 +308,7 @@ public class CharacterManager : MonoBehaviour
        
         if(Menu.instance.GetReputation() >= minReputation && isMenuOpen)
         {
+            checkingTrigger = false;
             SystemManager.instance.BeginDialogue(nextAppear);
         }
     }
@@ -340,13 +347,13 @@ public class CharacterManager : MonoBehaviour
                         {//친밀도 10일 때, 서빙횟수가 10번일 때
                             if (IsInvoking("RandomVisit"))
                             {
-                                CancelInvoke("RandomVisit");
+                                CancelInvoke(nameof(RandomVisit));
                                 Debug.Log("랜덤방문 취소");
                             }
                             currentEventState = cNum; //두 개 이상의 테이블이 비었고 도로시가 방문가능캐릭터일 때 실행, 도로시까지 필요하기 때문
                             if (SystemManager.instance.IsUIOpen() || Dialogue.instance.IsTalking() || VisitorNote.instance.GetReplayState() != 0)//만약 UI가 올라와있다면
                             {
-                                Invoke("FriendshipEvent", 1f);// 1초마다 이 함수 재실행
+                                Invoke(nameof(FriendshipEvent), 1f);// 1초마다 이 함수 재실행
                             }
                             else
                             {
@@ -355,6 +362,7 @@ public class CharacterManager : MonoBehaviour
                                 (IsTableEmpty(2) && IsTableEmpty(3)))
                                 && availableCharacters.Contains("small_6Princess")) //2개 이상의 테이블이 비었을 때 시작 가능
                                 {
+                                    checkingTrigger = false;
                                     SetCharacter(6);//도로시 페이드인
                                     availableCharacters.Remove("small_6Princess");//도로시는 이 이벤트에서 카페를 방문함
                                 }
@@ -371,7 +379,7 @@ public class CharacterManager : MonoBehaviour
                         {// 찰스, 도로시 친밀도 모두 최대일때
                             if (IsInvoking("RandomVisit"))
                             {
-                                CancelInvoke("RandomVisit");
+                                CancelInvoke(nameof(RandomVisit));
                                 Debug.Log("랜덤방문 취소");
                             }
                             currentEventState = 11; 
@@ -387,6 +395,7 @@ public class CharacterManager : MonoBehaviour
                                 {//두 개 이상의 테이블이 비었을 때 실행, 도로시까지 필요하기 때문
                                     MenuHint.instance.CantClickMHB();
                                     SystemManager.instance.CantTouchUI();
+                                    checkingTrigger = false;
                                     SetCharacter(6);//도로시 페이드인
                                     availableCharacters.Remove("small_6Princess");//도로시는 이 이벤트에서 카페를 방문함
                                 }
@@ -405,7 +414,7 @@ public class CharacterManager : MonoBehaviour
                         {
                             if (IsInvoking("RandomVisit"))
                             {
-                                CancelInvoke("RandomVisit");
+                                CancelInvoke(nameof(RandomVisit));
                                 Debug.Log("랜덤방문 취소");
                             }
                             currentEventState = 12;//친밀도 이벤트 진행 중
@@ -415,6 +424,7 @@ public class CharacterManager : MonoBehaviour
                             }
                             else
                             {
+                                checkingTrigger = false;
                                 SetCharacter(11);//캐릭터를 설정하고 바로 페이드인    
                             }
                         }
@@ -425,7 +435,7 @@ public class CharacterManager : MonoBehaviour
                         {
                             if (IsInvoking("RandomVisit"))
                             {
-                                CancelInvoke("RandomVisit");
+                                CancelInvoke(nameof(RandomVisit));
                                 Debug.Log("랜덤방문 취소");
                             }
                             MenuHint.instance.CantClickMHB();
@@ -437,6 +447,7 @@ public class CharacterManager : MonoBehaviour
                             }
                             else
                             {
+                                checkingTrigger = false;
                                 SetCharacter(11);//캐릭터를 설정하고 바로 페이드인    
                             }
                         }
@@ -451,7 +462,7 @@ public class CharacterManager : MonoBehaviour
             {
                 if (IsInvoking("RandomVisit"))
                 {
-                    CancelInvoke("RandomVisit");
+                    CancelInvoke(nameof(RandomVisit));
                     Debug.Log("랜덤방문 취소");
                 }
 
@@ -474,6 +485,7 @@ public class CharacterManager : MonoBehaviour
                 }
                 else
                 {
+                    checkingTrigger = false;
                     SetCharacter(cNum);//캐릭터를 설정하고 바로 페이드인    
                 }
             }        
@@ -492,7 +504,7 @@ public class CharacterManager : MonoBehaviour
         {
             if(!IsInvoking("RandomVisit"))
             {
-                Invoke("RandomVisit", 3f);
+                Invoke(nameof(RandomVisit), 3f);
               //  Debug.Log("수동 방문 가능 캐릭터 없음, 3초 뒤");
             }           
             return;
@@ -501,7 +513,7 @@ public class CharacterManager : MonoBehaviour
         {
             if (!IsInvoking("RandomVisit"))
             {
-                Invoke("RandomVisit", 5f);
+                Invoke(nameof(RandomVisit), 5f);
               //  Debug.Log("수동 빈 테이블 없음, 5초 뒤");
             }
             return;
@@ -580,7 +592,7 @@ public class CharacterManager : MonoBehaviour
             if (GetCurrentEventState() == 0) //이벤트가 발생하지 않으면 일반 방문 진행
             {
                 SetCharacter(cNum); //방문할 캐릭터 세팅
-                Invoke("RandomVisit", 7f);
+                Invoke(nameof(RandomVisit), 7f);
             }
         }
         
@@ -936,11 +948,11 @@ public class CharacterManager : MonoBehaviour
         //Debug.Log(fNum + "자리 비워짐");
         if(SystemManager.instance.GetMainCount() > 7)//메인카운트가 7이상이면
         {
-            Invoke("EnableRevisit", 8f);//8초 뒤 재방문 가능
+            Invoke(nameof(EnableRevisit), 8f);//8초 뒤 재방문 가능
         }
         else
         {
-            Invoke("EnableRevisit", 3f);
+            Invoke(nameof(EnableRevisit), 3f);
         }
         //Debug.Log("함수 CleanTable");       
     }
@@ -1034,7 +1046,7 @@ public class CharacterManager : MonoBehaviour
 
     public void FadeOut(int cNum, int sNum = -1) //작은 캐릭터 페이드아웃
     {   
-        //Debug.Log("캐릭터 페이드아웃" + charName);
+        Debug.Log("캐릭터 페이드아웃" + cNum);
         smallFOut.Enqueue(cNum);
 
         if(cNum != 12 && cNum  < 16) // 히로, 주인공은 패스

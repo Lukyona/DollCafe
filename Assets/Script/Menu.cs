@@ -296,22 +296,25 @@ public class Menu : MonoBehaviour
                     }
                     else // 그 외의 경우
                     {                   
-                        if (characterNum == 12)
+                        if(CharacterManager.instance.GetCurrentEventState() == 14)  //히로디노 이벤트
                         {
-                            isHeroServed = true;
-                            if(CharacterManager.instance.GetCurrentEventState() == 14)
-                                CharacterManager.instance.CanClickCharacter(13);//디노 클릭 가능                           
-                        }
-                        else if (characterNum == 13)
-                        {
-                            isDinoServed = true;
-                        }
+                            if (characterNum == 12)
+                            {
+                                isHeroServed = true;
+                                if(CharacterManager.instance.GetCurrentEventState() == 14)
+                                    CharacterManager.instance.CanClickCharacter(13);//디노 클릭 가능                           
+                            }
+                            else if (characterNum == 13)
+                            {
+                                isDinoServed = true;
+                            }
 
-                        if (CharacterManager.instance.GetCurrentEventState() == 14 && isDinoServed && isHeroServed)// 둘 다 서빙완료했을 때, 친밀도 이벤트면 UI클릭 금지
-                        {
-                            MenuHint.instance.CantClickMHB();//뒤에 메뉴판이 떠있는 채로 이벤트 시작하는 걸 방지하기 위함
-                            canStartEvent = true;
-                            SystemManager.instance.CantTouchUI();
+                            if (isDinoServed && isHeroServed)// 둘 다 서빙완료했을 때, 친밀도 이벤트면 UI클릭 금지
+                            {
+                                MenuHint.instance.CantClickMHB();//뒤에 메뉴판이 떠있는 채로 이벤트 시작하는 걸 방지하기 위함
+                                canStartEvent = true;
+                                SystemManager.instance.CantTouchUI();
+                            }
                         }
                         
                         VisitorNote.instance.IncreaseFrinedshipGauge(characterNum); //서빙받은 캐릭터의 친밀도 증가
@@ -668,14 +671,15 @@ public class Menu : MonoBehaviour
             string charName = CharacterManager.instance.GetSittingCharacter(num).name;
             if ((charName == "small_12Hero" || charName == "small_13Dinosour") && Dialogue.instance.GetSpecialMenuState() == 0)
             {//히로디노이고, 이벤트가 아닐 때
-                if(charName == "small_12Hero")
+                if (charName == "small_12Hero")
                 {
                     isHeroServed = true;
                 }
-                if(charName == "small_13Dinosour")
+                if (charName == "small_13Dinosour")
                 {
                     isDinoServed = true;
                 }
+
                 if (isHeroServed && isDinoServed)//둘 다 서빙완료했으면
                 {
                     isDinoServed = false;
@@ -688,6 +692,7 @@ public class Menu : MonoBehaviour
                     else if(charName.Contains("Dino"))
                     {
                         MenuFadeOut(num-1); // 히로 먼저
+
                     }
                     MenuFadeOut(num, false); // 앞의 캐릭터 메뉴 페이드아웃 끝나고 실행
                 }
@@ -736,6 +741,7 @@ public class Menu : MonoBehaviour
     public void UnlockMenuItems() // 잠금된 메뉴 해제
     {
         int lastMenu = PlayerPrefs.GetInt("UnlockedMenuItems"); // 개수이므로 다음 메뉴의 인덱스가 됨
+        if(lastMenu == 0) lastMenu = 3;
 
         int requiredStar = (lastMenu-2) * 5;
 

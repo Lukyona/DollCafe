@@ -45,7 +45,7 @@ public class Popup : MonoBehaviour // 새로운 손님 팝업
         SystemManager.instance.SetUIOpen(false);
         SEManager.instance.PlayUICloseSound(); //효과음
         popupAnimator.SetTrigger("PopupClose"); //닫히는 애니메이션 작동
-        Invoke("PopupNotActive", 0.3f); //팝업 비활성화
+        Invoke(nameof(PopupNotActive), 0.3f); //팝업 비활성화
 
         if(SystemManager.instance.GetMainCount() == 2) //도리 방문, 첫 손님
         {

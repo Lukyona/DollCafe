@@ -42190,6 +42190,7 @@ MonoBehaviour:
   - {fileID: 1657706121}
   characterText: {fileID: 1859479566}
   babyText: {fileID: 1278631721}
+  characterDC: 000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
 --- !u!114 &1538706519
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -42749,8 +42750,8 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  soldierRightImage: {fileID: 0}
-  namelessSmile: {fileID: 0}
+  soldierRightImage: {fileID: 991923546}
+  namelessSmile: {fileID: 194634141}
   isTableEmpty: 000000
   characterSeat: 000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
 --- !u!114 &1538706541
@@ -42846,6 +42847,7 @@ MonoBehaviour:
   - {fileID: 221260334}
   hiddenText:
   - {fileID: 74110901}
+  - {fileID: 1054319733}
   - {fileID: 1135170677}
   - {fileID: 18387857}
   - {fileID: 1102270606}

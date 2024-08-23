@@ -239,9 +239,9 @@ public class VisitorNote : MonoBehaviour
                 if(maxNum == 10)
                     friendshipGauges[idx].GetComponent<Image>().fillAmount += 0.1f;
                 else if(maxNum == 15)
-                    friendshipGauges[cNum - 2].GetComponent<Image>().fillAmount += 0.067f;
+                    friendshipGauges[idx].GetComponent<Image>().fillAmount += 0.067f;
                 else if(maxNum == 20)
-                    friendshipGauges[cNum - 3].GetComponent<Image>().fillAmount += 0.05f;
+                    friendshipGauges[idx].GetComponent<Image>().fillAmount += 0.05f;
 
                 ++friendshipInfo[idx];
             }
@@ -773,7 +773,7 @@ public class VisitorNote : MonoBehaviour
         {
             if (friendEventID <= 10)//10까지
             {
-                Dialogue.instance.SetCharacterDC(firstMeetID, 1);//캐릭터DC를 1로 만들고
+                Dialogue.instance.SetCharacterDC(friendEventID, 1);//캐릭터DC를 1로 만들고
                 SystemManager.instance.BeginDialogue(friendEventID);
             }
             else if (friendEventID == 11)//찰스2 이벤트

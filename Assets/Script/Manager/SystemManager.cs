@@ -153,8 +153,8 @@ public class SystemManager : MonoBehaviour
         //VisitorNote.instance.FriendshipInfo[10] = 15;
         //VisitorNote.instance.FriendshipInfo[8] = 10;
         //Star.instance.SetStarNum(23);
-        //for(int i = 0; i < 10; ++i)
-           // HPManager.instance.AddHP();
+        for(int i = 0; i < 9; ++i)
+           HPManager.instance.AddHP();
     }
 
     public int GetMainCount()
@@ -336,7 +336,7 @@ public class SystemManager : MonoBehaviour
         {
             case 0: //제제의 튜토리얼 설명이 끝난 상황, 도리 등장 전
                 CharacterManager.instance.SetCharacter(0); //제제 작은 캐릭터 설정&페이드인
-                BeginDialogue(1, 2f); // 2초 뒤 도리 등장
+                BeginDialogue(1, 3f); // 3초 뒤 도리 등장
                 break;
             case 1: //도리 방문 후
                 Popup.instance.SetPopupCharacter(CharacterManager.instance.GetBigCharacter(1)); //새 캐릭터 도리 팝업 세팅
@@ -587,7 +587,7 @@ public class SystemManager : MonoBehaviour
             
             VisitorNote.instance.SetFriendEventID(0);
         }
-        Invoke("EndRePlay", 1.1f);
+        Invoke(nameof(EndRePlay), 1.1f);
     }
 
     void EndRePlay()//다시보기가 완전히 끝났음
@@ -608,7 +608,7 @@ public class SystemManager : MonoBehaviour
         }
         else
         {
-            Invoke("EndingEvent", 2f);
+            Invoke(nameof(EndingEvent), 2f);
         }
     }
 
@@ -632,10 +632,8 @@ public class SystemManager : MonoBehaviour
 
     IEnumerator DialogueCoroutine(int cNum, float time)
     {
-        if(time != 0f)
-        {
-            yield return new WaitForSeconds(time);
-        }
+        yield return new WaitForSeconds(time);
+
         if(mainCount > 2)
         {
             BgmManager.instance.StopBgm();
@@ -663,6 +661,7 @@ public class SystemManager : MonoBehaviour
         Dialogue.instance.UpdateCharacterDC(cNum);
         panel.SetActive(false); //회색 패널 해제
         Invoke(nameof(DeactivateTextBox), 0.4f);
+        CharacterManager.instance.Invoke("CanCheckTrigger", 5f);
 
         if(mainCount > 2)
         {
