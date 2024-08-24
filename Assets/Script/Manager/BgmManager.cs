@@ -8,23 +8,23 @@ public class BgmManager : MonoBehaviour
     public static BgmManager instance;
 
     #region BGMList 
-    [SerializeField] AudioSource startBgm;
-    [SerializeField] AudioSource cafeBgm;
-    [SerializeField] AudioSource princessSound;
-    [SerializeField] AudioSource carSound;
-    [SerializeField] AudioSource breadSound;
-    [SerializeField] AudioSource familySeriesSound;
-    [SerializeField] AudioSource soldierSound;
-    [SerializeField] AudioSource heroDinosourSound;
-    [SerializeField] AudioSource penguinSound;
-    [SerializeField] AudioSource bearSound;
-    [SerializeField] AudioSource rabbitSound;
-    [SerializeField] AudioSource ddorongSound;
-    [SerializeField] AudioSource sunFlowerSound;
-    [SerializeField] AudioSource dogSound;
-    [SerializeField] AudioSource grandFatherSound;
-    [SerializeField] AudioSource namelessSound;
-    [SerializeField] AudioSource endingSound;
+    [SerializeField] AudioClip startBgm;
+    [SerializeField] AudioClip cafeBgm;
+    [SerializeField] AudioClip bearSound;
+    [SerializeField] AudioClip carSound;
+    [SerializeField] AudioClip breadSound;
+    [SerializeField] AudioClip rabbitSound;
+    [SerializeField] AudioClip ddorongSound;
+    [SerializeField] AudioClip princessSound;
+    [SerializeField] AudioClip familySeriesSound;
+    [SerializeField] AudioClip sunFlowerSound;
+    [SerializeField] AudioClip dogSound;
+    [SerializeField] AudioClip soldierSound;
+    [SerializeField] AudioClip namelessSound;
+    [SerializeField] AudioClip heroDinosourSound;
+    [SerializeField] AudioClip penguinSound;
+    [SerializeField] AudioClip grandFatherSound;
+    [SerializeField] AudioClip endingSound;
     #endregion
 
     private AudioSource myAudio;
@@ -44,93 +44,95 @@ public class BgmManager : MonoBehaviour
         if (stop == 1)//브금 off 상태면
             return;
 
-        myAudio = startBgm;
+        myAudio.clip = startBgm;
+        myAudio.loop = true;
         myAudio.Play();
     }
 
     public void PlayCafeBgm() //카페 브금
     {
-        myAudio = cafeBgm;
         int stop = PlayerPrefs.GetInt("BgmOnOff");
         if (stop == 1)//브금 off 상태면
         {
             OffBgm();
         }
-
+        myAudio.clip = cafeBgm;
         myAudio.volume = 1f;
+        myAudio.loop = true;
         myAudio.Play();
     }
 
-    public void PlayCharacterBGM(int n)
+    public void PlayCharacterBGM(int cNum)
     {        
-        switch (n)
+        switch (cNum)
         {
             case 0://엔딩의 제제
                 if(SystemManager.instance.GetMainCount() < 3) return;
-                myAudio = endingSound;
+                myAudio.clip = endingSound;
                 myAudio.volume = 1f;
                 break;
             case 1:
-                myAudio = bearSound;
+                myAudio.clip = bearSound;
                 myAudio.volume = 1f;
                 break;
             case 2:
-                myAudio = carSound;
+                myAudio.clip = carSound;
                 myAudio.volume = 0.5f;
                 break;
             case 3:
-                myAudio = breadSound;
+                myAudio.clip = breadSound;
                 myAudio.volume = 0.7f;
                 break;
             case 4:
-                myAudio = rabbitSound;
+                myAudio.clip = rabbitSound;
                 myAudio.volume = 0.8f;
                 break;
             case 5:
-                myAudio = ddorongSound;
+                myAudio.clip = ddorongSound;
                 myAudio.volume = 1f;
                 break;
             case 6://도로시
-                myAudio = princessSound;
+                myAudio.clip = princessSound;
                 myAudio.volume = 0.9f;
                 break;
             case 7://루루
-                myAudio = familySeriesSound;
+                myAudio.clip = familySeriesSound;
                 myAudio.volume = 1f;
                 break;
             case 8://샌디
-                myAudio = sunFlowerSound;
+                myAudio.clip = sunFlowerSound;
                 myAudio.volume = 0.7f;
                 break;
             case 9://친구
-                myAudio = dogSound;
+                myAudio.clip = dogSound;
                 myAudio.volume = 0.7f;
                 break;
             case 10://찰스
-                myAudio = soldierSound;
+                myAudio.clip = soldierSound;
                 myAudio.volume = 1f;
                 break;
             case 11://무명이
-                myAudio = namelessSound;
+                myAudio.clip = namelessSound;
                 myAudio.volume = 0.6f;
                 break;
             case 12://히로디노
-                myAudio = heroDinosourSound;
+                myAudio.clip = heroDinosourSound;
                 myAudio.volume = 1f;
                 break;
             case 13://닥터 펭
-                myAudio = penguinSound;
+                myAudio.clip = penguinSound;
                 myAudio.volume = 1f;
                 break;
             case 14://롤렝드
-                myAudio = grandFatherSound;
+                myAudio.clip = grandFatherSound;
                 myAudio.volume = 0.7f;
                 break;
         }
+        myAudio.loop = true;
         myAudio.Play();
         
-        int s = PlayerPrefs.GetInt("BgmOnOff");
-        if (s == 1)//브금 off 상태면
+        int stop = PlayerPrefs.GetInt("BgmOnOff");
+        if (stop == 1)//브금 off 상태면
         {
             OffBgm();
         }

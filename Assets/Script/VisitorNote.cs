@@ -35,14 +35,14 @@ public class VisitorNote : MonoBehaviour
     int pageNum = 1; //1페이지가 첫 페이지
     static int pageGroup = 1; //1-4페이지까지가 1, 5-8까지가 2, 9 - 12가 3, 13 - 14가 4
 
-    public int openedPages = 1;//열린 페이지, 도리가 기본으로 있으므로 1, 마지막이 14
+    int openedPages = 1;//열린 페이지, 도리가 기본으로 있으므로 1, 마지막이 14
 
     int[] favFirstMenuOpen = new int[15]; //노트의 좋아하는 첫번째 메뉴 정보가 열렸는지 확인하기 위한 배열
     int[] favSecondMenuOpen = new int[12]; //노트의 좋아하는 두번째 메뉴 정보가 열렸는지 확인하기 위한 배열
 
     int[] hiddenTextStates = new int[8]; //노트의 두번째 하고 싶은 말 정보가 열렸는지 확인
 
-    public int[] friendshipInfo = new int[13] { 0, 0, 0, 0, 0, 0,0,0,0,0,0,0,0}; //친밀도 게이지 정보(서빙 횟수) 배열
+    int[] friendshipInfo = new int[13] { 0, 0, 0, 0, 0, 0,0,0,0,0,0,0,0}; //친밀도 게이지 정보(서빙 횟수) 배열
     
     int firstMeetID = 0; //첫만남 캐릭터별로 숫자 들어감
     int friendEventID = 0; //이벤트 캐릭터별로 숫자 들어감

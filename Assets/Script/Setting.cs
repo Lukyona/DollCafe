@@ -7,16 +7,16 @@ public class Setting : MonoBehaviour
 {
     public static Setting instance;
 
-    public Animator settingWindowAnimator;
-    public Button settingButton;
-    public GameObject resetCheck;
-    public Button settingClose;
-    public Button resetButton;
-    public Button creditButton;
-    public Button yesResetButton;
-    public Button noResetButton;
-    public GameObject creditView;
-    public Scrollbar bar;
+    [SerializeField] Animator settingWindowAnimator;
+    [SerializeField] Button settingButton;
+    [SerializeField] GameObject resetCheck;
+    [SerializeField] Button settingClose;
+    [SerializeField] Button resetButton;
+    [SerializeField] Button creditButton;
+    [SerializeField] Button yesResetButton;
+    [SerializeField] Button noResetButton;
+    [SerializeField] GameObject creditView;
+    [SerializeField] Scrollbar bar;
 
     bool isReset = false;
 

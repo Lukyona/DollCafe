@@ -3,18 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ToggleController : MonoBehaviour //설정의 브금 효과음 on off토글
+[SerializeField] class ToggleController : MonoBehaviour //설정의 브금 효과음 on off토글
 {
-	public Color onColor;
-	public Color offColor;
+	[SerializeField] Color onColor;
+	[SerializeField] Color offColor;
 
-	public GameObject onText;
-	public GameObject offText;
+	[SerializeField] GameObject onText;
+	[SerializeField] GameObject offText;
 
-	public Image toggleBgImage;
-	public RectTransform toggle; // 토글 오브젝트
+	[SerializeField] Image toggleBgImage;
+	[SerializeField] RectTransform toggle; // 토글 오브젝트
 
-	public GameObject handle; // 하얀색 타원 도형, 토글할 때 좌우로 이동
+	[SerializeField] GameObject handle; // 하얀색 타원 도형, 토글할 때 좌우로 이동
 	private RectTransform handleTransform;
 
 	private float handleSize;
@@ -53,7 +53,7 @@ public class ToggleController : MonoBehaviour //설정의 브금 효과음 on of
 		}
 	}
 
-	public void Switching() // 토글 터치했을 때, 토글 작동 끝났을 때 실행
+	[SerializeField] void Switching() // 토글 터치했을 때, 토글 작동 끝났을 때 실행
 	{
 		if(switching == true)
 		{
@@ -74,7 +74,7 @@ public class ToggleController : MonoBehaviour //설정의 브금 효과음 on of
 		}
 	}
 
-    public void Toggle(int toggleStatus)
+    [SerializeField] void Toggle(int toggleStatus)
 	{
 		if(toggleStatus == 0) // On -> Off
 		{
@@ -131,7 +131,7 @@ public class ToggleController : MonoBehaviour //설정의 브금 효과음 on of
 		alphaVal.alpha = Mathf.Lerp(startAlpha, endAlpha, time += speed * Time.deltaTime);
 	}
 
-	public void LoadVolumeSetting()
+	[SerializeField] void LoadVolumeSetting()
     {
 		try
 		{
@@ -173,7 +173,7 @@ public class ToggleController : MonoBehaviour //설정의 브금 효과음 on of
 		}
     }
 
-	public void SaveVolumeSetting()
+	[SerializeField] void SaveVolumeSetting()
     {
 		try
 		{

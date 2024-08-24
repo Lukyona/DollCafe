@@ -8,11 +8,11 @@ public class SystemManager : MonoBehaviour
 {
    public static SystemManager instance;
 
-    public GameObject gameClosingWindow;
+    [SerializeField] GameObject gameClosingWindow;
 
-    public Button menuButton;
-    public Button visitorNoteButton;
-    public Button plusHPButton;
+    [SerializeField] Button menuButton;
+    [SerializeField] Button visitorNoteButton;
+    [SerializeField] Button plusHPButton;
 
     bool completeSave = false;
 
@@ -23,19 +23,19 @@ public class SystemManager : MonoBehaviour
     bool isUIOpen = false; // 메뉴판, 손님노트, 팁 노트, 설정창, 팝업창 등이 올라온 상태인지 구분
 
     #region 팁 관련 변수 
-    public GameObject bangBubble;
-    public GameObject tipMessageWindow;
-    public Button tipNoteButton;
-    public Animator tipNoteButtonAnimator;
-    public GameObject tipNote;
-    public Animator tipNoteAnimator;
-    public Text tip2;
-    public Text tip3;
+    [SerializeField] GameObject bangBubble;
+    [SerializeField] GameObject tipMessageWindow;
+    [SerializeField] Button tipNoteButton;
+    [SerializeField] Animator tipNoteButtonAnimator;
+    [SerializeField] GameObject tipNote;
+    [SerializeField] Animator tipNoteAnimator;
+    [SerializeField] Text tip2;
+    [SerializeField] Text tip3;
 
     int tipNum = 0; // 1 =  팁 1개 봄, 2 = 2개 봄, 3 = 팁 3개 전부 봄, 별-체력 전환 가능
 
-    public Image starLackMessage; // 별 부족 알림 메세지
-    public Animator starLackAnimator;
+    [SerializeField] Image starLackMessage; // 별 부족 알림 메세지
+    [SerializeField] Animator starLackAnimator;
     #endregion
 
     public Image jejeBubble;
@@ -47,37 +47,36 @@ public class SystemManager : MonoBehaviour
 
     #region 이름 설정 관련 변수
     string inputName = ""; //입력한 이름
-    public GameObject charNameSettingWindow;
-    public GameObject babyNameSettingWindow;
-    public GameObject inputField; // 입력창 (무명)
-    public GameObject babyInputField; // 입력창 (주인공)
-    public GameObject nameCheckingWindow; //이름 확인창
-    public Button charNameCheckButton;  //확인버튼
-    public Button babyNameCheckButton;
+    [SerializeField] GameObject charNameSettingWindow;
+    [SerializeField] GameObject babyNameSettingWindow;
+    [SerializeField] GameObject inputField; // 입력창 (무명)
+    [SerializeField] GameObject babyInputField; // 입력창 (주인공)
+    [SerializeField] GameObject nameCheckingWindow; //이름 확인창
+    [SerializeField] Button charNameCheckButton;  //확인버튼
+    [SerializeField] Button babyNameCheckButton;
 
     string nameForNameless; //플레이어가 붙여준 무명이의 이름
     #endregion
 
     #region 결제 관련 변수  
-    public Button fishBreadButton;//붕어빵 버튼
-    public GameObject purchasingWindow; //붕어빵 버튼 눌렀을 때 나오는 창
-    public Text purchasingText; //창 메세지
+    [SerializeField] Button fishBreadButton;//붕어빵 버튼
+    [SerializeField] GameObject purchasingWindow; //붕어빵 버튼 눌렀을 때 나오는 창
+    [SerializeField] Text purchasingText; //창 메세지
 
-    public GameObject completePurchasingWindow;//결제 후 메세지 창
-    public Text completePurchasingText;//메세지 내용
-    public Text littleFishBreadText;
+    [SerializeField] GameObject completePurchasingWindow;//결제 후 메세지 창
+    [SerializeField] Text completePurchasingText;//메세지 내용
+    [SerializeField] Text littleFishBreadText;
     #endregion  
 
     int mainCount = 0; 
     int endingState = 0; // 1 = 엔딩 이벤트 중, 2 = 엔딩 이벤트 완료
 
     #region 대화 관련 변수
-    public GameObject panel; //대화할 때 쓰는 회색 반투명 패널
+    [SerializeField] GameObject panel; //대화할 때 쓰는 회색 반투명 패널
 
-    public GameObject babyTextBox;
-    public GameObject characterTextBox;
-    public Animator TBAnimator; //텍스트박스 애니메이터
-
+    [SerializeField] GameObject babyTextBox;
+    [SerializeField] GameObject characterTextBox;
+    [SerializeField] Animator TBAnimator; //텍스트박스 애니메이터
     #endregion
 
    void Awake()
@@ -147,8 +146,8 @@ public class SystemManager : MonoBehaviour
         //PlayerPrefs.Save(); //세이브
         //endingState =1;
         //SaveDataInfo();
-        Dialogue.instance.characterDC[13] = 1;
-        Dialogue.instance.characterDC[10] = 2;
+        //Dialogue.instance.characterDC[13] = 1;
+        //Dialogue.instance.characterDC[10] = 2;
         //VisitorNote.instance.friendshipInfo[8] = 10;
         //VisitorNote.instance.FriendshipInfo[10] = 15;
         //VisitorNote.instance.FriendshipInfo[8] = 10;
@@ -293,7 +292,7 @@ public class SystemManager : MonoBehaviour
                     CharacterManager.instance.GetSmallCharacter(0) .GetComponent<Button>().interactable = true; // 제제 터치 가능
                 }
 
-                for (int i = 6; i <= mainCount - 2; i++)//재방문 캐릭터 설정
+                for (int i = 1; i <= mainCount - 2; i++)//재방문 캐릭터 설정
                 {
                     if(Dialogue.instance.GetCharacterDC(10) == 3)//찰스2 이벤트를 했을 시에는
                     {
@@ -406,7 +405,7 @@ public class SystemManager : MonoBehaviour
         if (!CharacterManager.instance.IsInvoking("RandomVisit"))
         {
             CharacterManager.instance.Invoke("RandomVisit", 10f); //캐릭터 랜덤 방문
-            Debug.Log("랜덤방문 10초뒤");
+            //Debug.Log("랜덤방문 10초뒤");
         }
        
         if(mainCount < 6)

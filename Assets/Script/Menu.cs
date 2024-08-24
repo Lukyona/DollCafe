@@ -237,7 +237,7 @@ public class Menu : MonoBehaviour
                 canStartEvent = true;
                 SystemManager.instance.CantTouchUI();
                 MenuHint.instance.CantTouchMHB();//뒤에 메뉴판이 떠있는 채로 이벤트 시작하는 걸 방지하기 위함
-                if (MenuHint.instance.RightMenu[seatNum] == menuNum) //캐릭터가 원하는 메뉴가 n이면, 원하는 메뉴와 플레이어가 고른 메뉴가 일치
+                if (MenuHint.instance.GetWantedMenuNum(seatNum) == menuNum) //캐릭터가 원하는 메뉴가 n이면, 원하는 메뉴와 플레이어가 고른 메뉴가 일치
                 {
                     SEManager.instance.PlayUITouchSound3();
                     VisitorNote.instance.CheckMenuMatch(characterNum, menuNum);
@@ -259,7 +259,7 @@ public class Menu : MonoBehaviour
             }
             else // 대부분의 경우
             {
-                if (MenuHint.instance.RightMenu[seatNum] == menuNum) //캐릭터가 원하는 메뉴와 원하는 메뉴와 플레이어가 고른 메뉴가 일치
+                if (MenuHint.instance.GetWantedMenuNum(seatNum) == menuNum) //캐릭터가 원하는 메뉴와 원하는 메뉴와 플레이어가 고른 메뉴가 일치
                 {
                     SEManager.instance.PlayUITouchSound3();
                     if(CharacterManager.instance.GetCurrentEventState() != 14)//히로디노 친밀도 이벤트가 아니면

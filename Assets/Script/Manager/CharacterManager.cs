@@ -31,7 +31,7 @@ public class CharacterManager : MonoBehaviour
 
     int nextAppear = 0;
     bool checkingTrigger = true;
-    public int currentEventState = 0;//0은 친밀도 이벤트 중이 아님을 뜻함, 이벤트 발생하는 캐릭터 번호 들어감, 1도리 2붕붕 3빵빵 4개나리 6도로시 7루루 8샌디 9친구 10찰스1 11찰스2 ,12무명이1, 13무명이2, 14히로디노, 15닥터펭, 16롤렝드
+    int currentEventState = 0;//0은 친밀도 이벤트 중이 아님을 뜻함, 이벤트 발생하는 캐릭터 번호 들어감, 1도리 2붕붕 3빵빵 4개나리 6도로시 7루루 8샌디 9친구 10찰스1 11찰스2 ,12무명이1, 13무명이2, 14히로디노, 15닥터펭, 16롤렝드
 
     List<string> availableCharacters = new List<string> (); //랜덤 방문 가능한 캐릭터들 리스트
     Queue<int> revisitCharacters = new Queue<int>(); //재방문할 수 있는 캐릭터 큐
@@ -43,9 +43,9 @@ public class CharacterManager : MonoBehaviour
     [SerializeField] Image soldierRightImage;//도로시와 같이 오는 찰스 이미지(오른쪽)
     [SerializeField] Image namelessSmile;
 
-    [SerializeField] bool[] isTableEmpty = new bool[3]; //테이블이 비었는지 확인
+    bool[] isTableEmpty = new bool[3]; //테이블이 비었는지 확인
 
-    [SerializeField] int[] characterSeat = new int[15]; // 캐릭터 자리 저장 배열, 히로/디노 따로
+    int[] characterSeat = new int[15]; // 캐릭터 자리 저장 배열, 히로/디노 따로
 
     Queue<int> smallFOut = new Queue<int>(); //작은 캐릭터 페이드아웃 시 사용
     Queue<int> smallFadeIn = new Queue<int>(); //페이드인 시 사용
@@ -1058,7 +1058,7 @@ public class CharacterManager : MonoBehaviour
 
     public void FadeOut(int cNum, int sNum = -1) //작은 캐릭터 페이드아웃
     {   
-        //Debug.Log("캐릭터 페이드아웃" + cNum);
+        Debug.Log("캐릭터 페이드아웃" + cNum);
         smallFOut.Enqueue(cNum);
 
         if(cNum != 12 && cNum  < 16) // 히로, 주인공은 패스

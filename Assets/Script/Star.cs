@@ -7,7 +7,7 @@ public class Star : MonoBehaviour
 {
     public static Star instance;
 
-    public Text StarNumText;//별 개수 표시 텍스트
+    [SerializeField] Text StarNumText;//별 개수 표시 텍스트
 
     int starNum = 0; // 현재 보유한 별 개수
 

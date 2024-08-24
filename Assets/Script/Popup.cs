@@ -6,10 +6,10 @@ public class Popup : MonoBehaviour // 새로운 손님 팝업
 {
     public static Popup instance;
 
-    public Animator popupAnimator;
-    public GameObject newVisitorPopup; //팝업창
-    public GameObject character; //팝업 알림에 보여질 캐릭터 이미지
-    public GameObject specialMenuPopup;
+    [SerializeField] Animator popupAnimator;
+    [SerializeField] GameObject newVisitorPopup; //팝업창
+    [SerializeField] GameObject character; //팝업 알림에 보여질 캐릭터 이미지
+    [SerializeField] GameObject specialMenuPopup;
 
     private void Awake()
     {

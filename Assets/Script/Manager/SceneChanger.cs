@@ -6,12 +6,12 @@ using System.Collections;
 public class SceneChanger : MonoBehaviour //화면 페이드 인아웃
 {
     public static SceneChanger instance;
-    public Animator animator;
+    [SerializeField] Animator animator;
 
     [SerializeField] //private 직렬화
     Image lodingBar;
 
-    public Text creditText;//엔딩 크레딧 텍스트
+    [SerializeField] Text creditText;//엔딩 크레딧 텍스트
 
     private int sceneToLoad;
 

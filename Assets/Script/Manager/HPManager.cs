@@ -11,13 +11,12 @@ public class HPManager : MonoBehaviour
     public static HPManager instance;
 
     #region InGameObject
-    public Text HPRechargeMinTimer = null;  //재충전까지 남은 분, 게임 내에서 보임
-    public Text HPRechargeSecTimer = null; //재충전까지 남은 초, 게임 내에서 보임
-    public GameObject mid; // 분과 초 사이의 콜론
-    public GameObject fullText; // 체력이 맥스일 때 나타나는 텍스트
+    [SerializeField] Text HPRechargeMinTimer = null;  //재충전까지 남은 분, 게임 내에서 보임
+    [SerializeField] Text HPRechargeSecTimer = null; //재충전까지 남은 초, 게임 내에서 보임
+    [SerializeField] GameObject mid; // 분과 초 사이의 콜론
+    [SerializeField] GameObject fullText; // 체력이 맥스일 때 나타나는 텍스트
 
-    public Text HPAmount = null; // 체력 양, 게임 내에서 보임
-
+    [SerializeField] Text HPAmount = null; // 체력 양, 게임 내에서 보임
     #endregion
 
     int m_HPAmount = 0; //현재 보유 체력

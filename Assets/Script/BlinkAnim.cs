@@ -5,14 +5,15 @@ using UnityEngine.UI;
 
 public class BlinkAnim : MonoBehaviour //터치투 스타트 메세지를 깜빡거리게
 {
+    [SerializeField] Image image;
+
+    float time;
+
     void Start()
     {
         BgmManager.instance.PlayMainBgm(); //시작화면 브금 재생
     }
-    public Image image;
-
-    float time;
-
+    
     // Update is called once per frame
     void Update()
     {

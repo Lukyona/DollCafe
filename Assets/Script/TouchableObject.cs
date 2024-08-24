@@ -11,7 +11,6 @@ public class TouchableObject : MonoBehaviour //터치된 오브젝트 구분, �
 
     int sNum; //자리 넘버
     int cNum; //캐릭터 넘버
-    
    
     void Awake()
     {
