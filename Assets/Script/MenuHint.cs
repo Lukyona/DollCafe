@@ -12,18 +12,18 @@ public class MenuHint : MonoBehaviour
     {
         public string[] MHtext;
     }   
-    [SerializeField] TextList[] MHTextList; //문자열 배열을 가지고 있는 배열
+    [SerializeField] private TextList[] MHTextList; //문자열 배열을 가지고 있는 배열
 
-    [SerializeField] GameObject[] MH; //메뉴힌트 말풍선
+    [SerializeField] private GameObject[] MH; //메뉴힌트 말풍선
 
     private GameObject[] HintBubble = new GameObject[6]; // 메뉴 힌트 말풍선
     private Text[] HintText = new Text[6]; // 메뉴 힌트 말풍선 메세지
     
-    int[] wantedMenu = new int[6]; //그 자리의 캐릭터가 원하는 메뉴 넘버 
+    private int[] wantedMenu = new int[6]; //그 자리의 캐릭터가 원하는 메뉴 넘버 
 
-    Queue<int> mhFade = new Queue<int>();//페이드인 시 사용
+    private Queue<int> mhFade = new Queue<int>();//페이드인 시 사용
 
-    void Awake()
+    private void Awake()
     {
         if (instance == null)
         {
@@ -80,7 +80,6 @@ public class MenuHint : MonoBehaviour
     {       
         HintBubble[sNum] = MH[sNum]; //말풍선1로 설정
         HintText[sNum] = MH[sNum].GetComponentInChildren<Text>(); //말풍선1의 메세지로 설정
-           // Debug.Log("함수 SetMHB");
     }
 
     public void SetMHText(int cNum,int sNum) //메뉴 힌트 메세지 설정
@@ -363,7 +362,6 @@ public class MenuHint : MonoBehaviour
                 } 
                 break;
         }
-        //Debug.Log("함수 SetMHText");
         mhFade.Enqueue(sNum);
         MHFadeIn();
     }
@@ -372,7 +370,6 @@ public class MenuHint : MonoBehaviour
     {
         if(!mhFadeIn)
         {
-            //Debug.Log("함수 MHFadeIn");
             if (SystemManager.instance.GetMainCount() == 2) //만약 서빙 튜토리얼이면
             {
                 Dialogue.instance.SetPanelActive(5,false); //패널 5 닫고 
@@ -382,8 +379,8 @@ public class MenuHint : MonoBehaviour
         }
     }
 
-    bool mhFadeIn = false;//리액션,메뉴 페이드 시에 쓰이는 정수와 역할 동일
-    IEnumerator FadeToFullAlpha() // 알파값 0에서 1로 전환
+    private bool mhFadeIn = false;//리액션,메뉴 페이드 시에 쓰이는 정수와 역할 동일
+    private IEnumerator FadeToFullAlpha() // 알파값 0에서 1로 전환
     {
         mhFadeIn = true;
         int idx = mhFade.Peek();
@@ -419,7 +416,7 @@ public class MenuHint : MonoBehaviour
         InActiveMH(num); //페이드아웃된 메뉴 힌트 비활성화
     }
 
-    IEnumerator FadeToZero(int num)  // 알파값 1에서 0으로 전환
+    private IEnumerator FadeToZero(int num)  // 알파값 1에서 0으로 전환
     {
         HintBubble[num].GetComponent<Image>().color = new Color(HintBubble[num].GetComponent<Image>().color.r, HintBubble[num].GetComponent<Image>().color.g, HintBubble[num].GetComponent<Image>().color.b, 1);
         HintText[num].GetComponent<Text>().color = new Color(HintText[num].GetComponent<Text>().color.r, HintText[num].GetComponent<Text>().color.g, HintText[num].GetComponent<Text>().color.b, 1);

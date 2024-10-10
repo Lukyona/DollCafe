@@ -4,23 +4,23 @@ using UnityEngine.UI;
 public class Dialogue : MonoBehaviour //캐릭터들 대화
 {
     public static Dialogue instance;
-    [SerializeField] Text charName; //캐릭터 이름
-    [SerializeField] GameObject[] panels = new GameObject[9]; //캐릭터 뒤의 나타날 회색 패널
-    [SerializeField] Text characterText; //캐릭터 대사
-    [SerializeField] Text babyText; //아기 대사
+    [SerializeField] private Text charName; //캐릭터 이름
+    [SerializeField] private GameObject[] panels = new GameObject[9]; //캐릭터 뒤의 나타날 회색 패널
+    [SerializeField] private Text characterText; //캐릭터 대사
+    [SerializeField] private Text babyText; //아기 대사
 
-    TextWriter.TextWriterSingle textWriterSingle;
-    string[] messageArray = null;
+    private TextWriter.TextWriterSingle textWriterSingle;
+    private string[] messageArray = null;
 
-    [SerializeField] public int[] characterDC = new int[15]; //캐릭터들 다이얼로그 카운트, 인덱스 0 제제, 1 도리, BackToCafe에서 ++
-    int characterNum = 0; //캐릭터 번호, 0은 제제, 1은 도리, 2는 붕붕, …
-    string babyName; //아기 이름
-    bool isBabyText = false;
-    int count = -1; //대사 카운트
-    bool isTalking = false; // true면 대화중
-    int specialMenuState = 0; //1이면 주인공 아기가 스페셜 메뉴를 가져오는 중, 친밀도 이벤트 시나리오 중 아기 페이드인에 사용
+    [SerializeField] int[] characterDC = new int[15]; //캐릭터들 다이얼로그 카운트, 인덱스 0 제제, 1 도리, BackToCafe에서 ++
+    private int characterNum = 0; //캐릭터 번호, 0은 제제, 1은 도리, 2는 붕붕, …
+    private string babyName; //아기 이름
+    private bool isBabyText = false;
+    private int count = -1; //대사 카운트
+    private bool isTalking = false; // true면 대화중
+    private int specialMenuState = 0; //1이면 주인공 아기가 스페셜 메뉴를 가져오는 중, 친밀도 이벤트 시나리오 중 아기 페이드인에 사용
 
-    void Awake()
+    private void Awake()
     {     
         if (instance == null)
         {
@@ -28,7 +28,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
         }
     }
 
-    void Update() //화면의 아무 곳이나 터치하면 다음 대사 나타남
+    private void Update() //화면의 아무 곳이나 터치하면 다음 대사 나타남
     {
         if (IsTalking() && SystemManager.instance.CanTouch() 
             && !SystemManager.instance.IsNeedAction() && Input.GetMouseButtonDown(0))
@@ -362,7 +362,6 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                 }
                 else if (characterDC[0] == 1)
                 {
-                    Debug.Log("?????");
                     if(count == 11)
                     {
                         CharacterManager.instance.GetSmallCharacter(0).GetComponent<Button>().interactable = false;//제제 클릭 불가
@@ -2752,7 +2751,6 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                             if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                             {
                                 specialMenuState = 1;
-                            Debug.Log("여기" + babyNum + babySeatNum);
 
                                 CharacterManager.instance.FadeOut(babyNum, babySeatNum); //주인공 페이드아웃 
                             }
@@ -3032,7 +3030,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
 
     }
 
-    void BearStartDialogue() //도리 대사 첫 문장
+    private void BearStartDialogue() //도리 대사 첫 문장
     {
         switch (characterDC[1])
         {          
@@ -3047,7 +3045,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
         }
     }
 
-    void BearNextDialogue() // 도리 첫 문장 제외한 대사
+    private void BearNextDialogue() // 도리 첫 문장 제외한 대사
     {
         switch (characterDC[1])
         {
@@ -3112,7 +3110,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
         }
     }
 
-    void CarFirstDialogue() //붕붕 첫 문장
+    private void CarFirstDialogue() //붕붕 첫 문장
     {
         switch(characterDC[2])
         {
@@ -3128,7 +3126,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
         }      
     }
 
-    void CarNextDialogue() //붕붕 첫 문장 제외한 대사
+    private void CarNextDialogue() //붕붕 첫 문장 제외한 대사
     {
         switch (characterDC[2])
         {
@@ -3190,7 +3188,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
         }
     }
 
-    void BreadFirstDialogue() //빵빵 첫 문장
+    private void BreadFirstDialogue() //빵빵 첫 문장
     {
         switch (characterDC[3])
         {
@@ -3206,7 +3204,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
         }
     }
 
-    void BreadNextDialogue() //뻥빵 첫 문장 제외한 대사
+    private void BreadNextDialogue() //뻥빵 첫 문장 제외한 대사
     {
         switch (characterDC[3])
         {
@@ -3273,7 +3271,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
         }
     }
 
-    void RabbitFirstDialogue() //개나리 첫 문장
+    private void RabbitFirstDialogue() //개나리 첫 문장
     {
         switch (characterDC[4])
         {
@@ -3292,7 +3290,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
         }
     }
 
-    void RabbitNextDialogue() //개나리 첫 문장 제외한 대사
+    private void RabbitNextDialogue() //개나리 첫 문장 제외한 대사
     {
         switch (characterDC[4])
         {
@@ -3339,7 +3337,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
         }
     }
 
-    void DdorongFirstDialogue() //또롱이 첫 문장
+    private void DdorongFirstDialogue() //또롱이 첫 문장
     {
         switch (characterDC[5])
         {
@@ -3359,7 +3357,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
         }
     }
 
-    void DdorongNextDialogue() //또롱이 첫 문장 제외한 대사
+    private void DdorongNextDialogue() //또롱이 첫 문장 제외한 대사
     {
         switch (characterDC[5])
         {
@@ -3403,7 +3401,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
         }
     }
 
-    void PrincessFirstDialogue() //도로시 첫 문장
+    private void PrincessFirstDialogue() //도로시 첫 문장
     {
         switch (characterDC[6])
         {
@@ -3418,7 +3416,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
         }
     }
 
-    void PrincessNextDialogue() //도로시 첫 문장 제외한 대사
+    private void PrincessNextDialogue() //도로시 첫 문장 제외한 대사
     {
         switch (characterDC[6])
         {
@@ -3470,7 +3468,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
         }
     }
 
-    void FamilySeriesFirstDialogue() //루루 첫 문장
+    private void FamilySeriesFirstDialogue() //루루 첫 문장
     {
         switch (characterDC[7])
         {
@@ -3489,7 +3487,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
         }
     }
 
-    void FamilySeriesNextDialogue() //샌디 첫 문장 제외한 대사
+    private void FamilySeriesNextDialogue() //샌디 첫 문장 제외한 대사
     {
         switch (characterDC[7])
         {
@@ -3584,7 +3582,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
         }
     }
 
-    void SunflowerFirstDialogue() //샌디 첫 문장
+    private void SunflowerFirstDialogue() //샌디 첫 문장
     {
         switch (characterDC[8])
         {
@@ -3603,7 +3601,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
         }
     }
 
-    void SunflowerNextDialogue() //샌디 첫 문장 제외한 대사
+    private void SunflowerNextDialogue() //샌디 첫 문장 제외한 대사
     {
         switch (characterDC[8])
         {
@@ -3690,7 +3688,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
         }
     }
 
-    void DogFirstDialogue() //친구 첫 문장
+    private void DogFirstDialogue() //친구 첫 문장
     {
         switch (characterDC[9])
         {
@@ -3709,7 +3707,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
         }
     }
 
-    void DogNextDialogue() //친구 첫 문장 제외한 대사
+    private void DogNextDialogue() //친구 첫 문장 제외한 대사
     {
         switch (characterDC[9])
         {
@@ -3766,7 +3764,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
         }
     }
 
-    void SoldierFirstDialogue() //찰스 첫 문장
+    private void SoldierFirstDialogue() //찰스 첫 문장
     {
         switch (characterDC[10])
         {
@@ -3794,7 +3792,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
         }
     }
 
-    void SoldierNextDialogue() //찰스 첫 문장 제외한 대사
+    private void SoldierNextDialogue() //찰스 첫 문장 제외한 대사
     {
         switch (characterDC[10])
         {
@@ -3891,7 +3889,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
         }
     }
 
-    void NamelessFirstDialogue() //무명이 첫 문장
+    private void NamelessFirstDialogue() //무명이 첫 문장
     {
         switch (characterDC[11])
         {
@@ -3918,7 +3916,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
         }
     }
 
-    void NamelessNextDialogue() //무명이 첫 문장 제외한 대사
+    private void NamelessNextDialogue() //무명이 첫 문장 제외한 대사
     {
         switch (characterDC[11])
         {
@@ -4041,7 +4039,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
         }
     }
 
-    void HeroDinosourFirstDialogue() //영웅공룡 첫 문장
+    private void HeroDinosourFirstDialogue() //영웅공룡 첫 문장
     {
         switch (characterDC[12])
         {
@@ -4057,7 +4055,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
         }
     }
 
-    void HeroDinosourNextDialogue() //영웅공룡 첫 문장 제외한 대사
+    private void HeroDinosourNextDialogue() //영웅공룡 첫 문장 제외한 대사
     {
         switch (characterDC[12])
         {
@@ -4137,7 +4135,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
         }
     }
 
-    void PenguinFirstDialogue() //닥터 펭 첫 문장
+    private void PenguinFirstDialogue() //닥터 펭 첫 문장
     {
         switch (characterDC[13])
         {
@@ -4156,7 +4154,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
         }
     }
 
-    void PenguinNextDialogue() //닥터 펭 첫 문장 제외한 대사
+    private void PenguinNextDialogue() //닥터 펭 첫 문장 제외한 대사
     {
         switch (characterDC[13])
         {
@@ -4238,7 +4236,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
         }
     }
 
-    void GrandfatherFirstDialogue() //할아버지 첫 문장
+    private void GrandfatherFirstDialogue() //할아버지 첫 문장
     {
         switch (characterDC[14])
         {
@@ -4256,7 +4254,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
         }
     }
 
-    void GrandfatherNextDialogue() //할아버지 첫 문장 제외한 대사
+    private void GrandfatherNextDialogue() //할아버지 첫 문장 제외한 대사
     {
         switch (characterDC[14])
         {

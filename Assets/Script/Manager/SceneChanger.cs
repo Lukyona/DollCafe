@@ -6,16 +6,16 @@ using System.Collections;
 public class SceneChanger : MonoBehaviour //화면 페이드 인아웃
 {
     public static SceneChanger instance;
-    [SerializeField] Animator animator;
+    [SerializeField] private Animator animator;
 
-    [SerializeField] //private 직렬화
+    [SerializeField] private //private 직렬화
     Image lodingBar;
 
-    [SerializeField] Text creditText;//엔딩 크레딧 텍스트
+    [SerializeField] private Text creditText;//엔딩 크레딧 텍스트
 
     private int sceneToLoad;
 
-    void Awake()
+    private void Awake()
     {
         if(instance == null)
         {
@@ -23,7 +23,7 @@ public class SceneChanger : MonoBehaviour //화면 페이드 인아웃
         }
     }
 
- void Start() // 다른 스크립트들의 Awake가 종료되면 실행
+    private void Start() // 다른 스크립트들의 Awake가 종료되면 실행
     {
         switch (SceneManager.GetActiveScene().name) // 현재 씬이 무엇인지 파악하기
         {
@@ -85,7 +85,7 @@ public class SceneChanger : MonoBehaviour //화면 페이드 인아웃
         SceneManager.LoadScene(sceneToLoad); //씬 로드
     }
 
-     public void GoStartScene()//스타트 씬으로 이동
+    public void GoStartScene()//스타트 씬으로 이동
     {
         FadeToScene(1);
     }
@@ -95,7 +95,7 @@ public class SceneChanger : MonoBehaviour //화면 페이드 인아웃
         FadeToScene(4);
     }
 
-    void LoadCafeScene()
+    private void LoadCafeScene()
     {
         string sceneName = "";
         if (PlayerPrefs.GetInt("EndingState") == 2)//엔딩 이벤트 보고 종료하지 않은 채 다시 들어온 경우
@@ -109,7 +109,7 @@ public class SceneChanger : MonoBehaviour //화면 페이드 인아웃
         StartCoroutine(LoadAsyncScene(sceneName));
     }
 
-    IEnumerator LoadAsyncScene(string sceneName)
+    private IEnumerator LoadAsyncScene(string sceneName)
     {
         yield return null; // 다음 프레임에 실행, ->업데이트 함수가 실행되었다가 돌아옴
         AsyncOperation asyncScene = SceneManager.LoadSceneAsync(sceneName); // LoadSceneAsync : 비동기 방식, 일시 중지가 발생하지 않음, 진행 정도를 반환

@@ -6,10 +6,10 @@ public class Popup : MonoBehaviour // 새로운 손님 팝업
 {
     public static Popup instance;
 
-    [SerializeField] Animator popupAnimator;
-    [SerializeField] GameObject newVisitorPopup; //팝업창
-    [SerializeField] GameObject character; //팝업 알림에 보여질 캐릭터 이미지
-    [SerializeField] GameObject specialMenuPopup;
+    [SerializeField] private Animator popupAnimator;
+    [SerializeField] private GameObject newVisitorPopup; //팝업창
+    [SerializeField] private GameObject character; //팝업 알림에 보여질 캐릭터 이미지
+    [SerializeField] private GameObject specialMenuPopup;
 
     private void Awake()
     {
@@ -28,13 +28,11 @@ public class Popup : MonoBehaviour // 새로운 손님 팝업
         {
             newVisitorPopup.SetActive(false);
             specialMenuPopup.SetActive(true);
-            //Debug.Log("팝업 이벤트 중");  
         }
         else // 새로운 손님 팝업
         {
             specialMenuPopup.SetActive(false);
             newVisitorPopup.SetActive(true); //팝업 보이게
-            //Debug.Log("팝업 이벤트 중 아님");
         }       
 
         popupAnimator.SetTrigger("PopupOpen"); //팝업 오픈 애니메이션 작동
@@ -55,7 +53,7 @@ public class Popup : MonoBehaviour // 새로운 손님 팝업
         }
     }
 
-    void PopupNotActive()
+    private void PopupNotActive()
     {
         newVisitorPopup.SetActive(false);
 

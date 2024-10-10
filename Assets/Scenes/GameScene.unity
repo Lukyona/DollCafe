@@ -40766,7 +40766,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2cd031928533df469b3a20b92d92ee1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AdsMessageWindow: {fileID: 691662787}
+  adsConsentWindow: {fileID: 691662787}
 --- !u!114 &1538706529
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -40801,21 +40801,38 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   startBgm: {fileID: 8300000, guid: d3ee2502c718534459828b34ea3b9042, type: 3}
   cafeBgm: {fileID: 8300000, guid: 9ea02c220f232ba4f8a2a90704da15ff, type: 3}
-  bearSound: {fileID: 8300000, guid: bb5fae7ba65f51a4580f44cb37edb546, type: 3}
-  carSound: {fileID: 8300000, guid: 70027252f4fe2004ab834e9a3f878100, type: 3}
-  breadSound: {fileID: 8300000, guid: a8ee3fd00786f744aa139adf8cdac603, type: 3}
-  rabbitSound: {fileID: 8300000, guid: cf23e0d4ea7c06343be02f0ef2bc588d, type: 3}
-  ddorongSound: {fileID: 8300000, guid: cf92c2c632ff46d4d9af564bda401145, type: 3}
-  princessSound: {fileID: 8300000, guid: 8f99c234da5ee414490203d5111d828e, type: 3}
-  familySeriesSound: {fileID: 8300000, guid: 090dd7fc29a644d4cbe3dbec71555a77, type: 3}
-  sunFlowerSound: {fileID: 8300000, guid: 3f2274519420fb043ac5cdb72318e98c, type: 3}
-  dogSound: {fileID: 8300000, guid: 75ab3cd59101be34289d1c2a5e8ee172, type: 3}
-  soldierSound: {fileID: 8300000, guid: dc84fce0598c9b742a986ae85e08b8ac, type: 3}
-  namelessSound: {fileID: 8300000, guid: 38f454faa71562b45b34e536992cd62a, type: 3}
-  heroDinosourSound: {fileID: 8300000, guid: 042eef9862908e74bb07c3e59cd66520, type: 3}
-  penguinSound: {fileID: 8300000, guid: 39305b9fff3b79444b47f1e1830fbcac, type: 3}
-  grandFatherSound: {fileID: 8300000, guid: 82d261a00fd0cb2419e9b45bc9313a65, type: 3}
-  endingSound: {fileID: 8300000, guid: b905e4716b1c62c479daf44c693e1a74, type: 3}
+  characterBgmList:
+  - {fileID: 8300000, guid: b905e4716b1c62c479daf44c693e1a74, type: 3}
+  - {fileID: 8300000, guid: bb5fae7ba65f51a4580f44cb37edb546, type: 3}
+  - {fileID: 8300000, guid: 70027252f4fe2004ab834e9a3f878100, type: 3}
+  - {fileID: 8300000, guid: a8ee3fd00786f744aa139adf8cdac603, type: 3}
+  - {fileID: 8300000, guid: cf23e0d4ea7c06343be02f0ef2bc588d, type: 3}
+  - {fileID: 8300000, guid: cf92c2c632ff46d4d9af564bda401145, type: 3}
+  - {fileID: 8300000, guid: 8f99c234da5ee414490203d5111d828e, type: 3}
+  - {fileID: 8300000, guid: 090dd7fc29a644d4cbe3dbec71555a77, type: 3}
+  - {fileID: 8300000, guid: 3f2274519420fb043ac5cdb72318e98c, type: 3}
+  - {fileID: 8300000, guid: 75ab3cd59101be34289d1c2a5e8ee172, type: 3}
+  - {fileID: 8300000, guid: dc84fce0598c9b742a986ae85e08b8ac, type: 3}
+  - {fileID: 8300000, guid: 38f454faa71562b45b34e536992cd62a, type: 3}
+  - {fileID: 8300000, guid: 042eef9862908e74bb07c3e59cd66520, type: 3}
+  - {fileID: 8300000, guid: 39305b9fff3b79444b47f1e1830fbcac, type: 3}
+  - {fileID: 8300000, guid: 82d261a00fd0cb2419e9b45bc9313a65, type: 3}
+  characterVolumeList:
+  - 1
+  - 1
+  - 0.5
+  - 0.7
+  - 0.8
+  - 1
+  - 0.9
+  - 1
+  - 0.7
+  - 0.7
+  - 1
+  - 0.6
+  - 1
+  - 1
+  - 0.7
 --- !u!82 &1538706531
 AudioSource:
   m_ObjectHideFlags: 0
@@ -40830,7 +40847,7 @@ AudioSource:
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0

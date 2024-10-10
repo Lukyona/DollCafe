@@ -3,39 +3,41 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Globalization;
+using System.Text.RegularExpressions;
+
 
 public class SystemManager : MonoBehaviour
 {
    public static SystemManager instance;
 
-    [SerializeField] GameObject gameClosingWindow;
+    [SerializeField] private GameObject gameClosingWindow;
 
-    [SerializeField] Button menuButton;
-    [SerializeField] Button visitorNoteButton;
-    [SerializeField] Button plusHPButton;
+    [SerializeField] private Button menuButton;
+    [SerializeField] private Button visitorNoteButton;
+    [SerializeField] private Button plusHPButton;
 
-    bool completeSave = false;
+    private bool completeSave = false;
 
-    bool canTouch = true;
+    private bool canTouch = true;
 
-    bool needAction = false;
+    private bool needAction = false;
 
-    bool isUIOpen = false; // 메뉴판, 손님노트, 팁 노트, 설정창, 팝업창 등이 올라온 상태인지 구분
+    private bool isUIOpen = false; // 메뉴판, 손님노트, 팁 노트, 설정창, 팝업창 등이 올라온 상태인지 구분
 
     #region 팁 관련 변수 
-    [SerializeField] GameObject bangBubble;
-    [SerializeField] GameObject tipMessageWindow;
-    [SerializeField] Button tipNoteButton;
-    [SerializeField] Animator tipNoteButtonAnimator;
-    [SerializeField] GameObject tipNote;
-    [SerializeField] Animator tipNoteAnimator;
-    [SerializeField] Text tip2;
-    [SerializeField] Text tip3;
+    [SerializeField] private GameObject bangBubble;
+    [SerializeField] private GameObject tipMessageWindow;
+    [SerializeField] private Button tipNoteButton;
+    [SerializeField] private Animator tipNoteButtonAnimator;
+    [SerializeField] private GameObject tipNote;
+    [SerializeField] private Animator tipNoteAnimator;
+    [SerializeField] private Text tip2;
+    [SerializeField] private Text tip3;
 
-    int tipNum = 0; // 1 =  팁 1개 봄, 2 = 2개 봄, 3 = 팁 3개 전부 봄, 별-체력 전환 가능
+    private int tipNum = 0; // 1 =  팁 1개 봄, 2 = 2개 봄, 3 = 팁 3개 전부 봄, 별-체력 전환 가능
 
-    [SerializeField] Image starLackMessage; // 별 부족 알림 메세지
-    [SerializeField] Animator starLackAnimator;
+    [SerializeField] private Image starLackMessage; // 별 부족 알림 메세지
+    [SerializeField] private Animator starLackAnimator;
     #endregion
 
     public Image jejeBubble;
@@ -43,43 +45,43 @@ public class SystemManager : MonoBehaviour
     public Text jejeText;
 
     public GameObject exchangeMessageWindow;
-    bool exchanging = false; //별->하트 간 전환 상태
+    private bool exchanging = false; //별->하트 간 전환 상태
 
     #region 이름 설정 관련 변수
     string inputName = ""; //입력한 이름
-    [SerializeField] GameObject charNameSettingWindow;
-    [SerializeField] GameObject babyNameSettingWindow;
-    [SerializeField] GameObject inputField; // 입력창 (무명)
-    [SerializeField] GameObject babyInputField; // 입력창 (주인공)
-    [SerializeField] GameObject nameCheckingWindow; //이름 확인창
-    [SerializeField] Button charNameCheckButton;  //확인버튼
-    [SerializeField] Button babyNameCheckButton;
+    [SerializeField] private GameObject charNameSettingWindow;
+    [SerializeField] private GameObject babyNameSettingWindow;
+    [SerializeField] private GameObject inputField; // 입력창 (무명)
+    [SerializeField] private GameObject babyInputField; // 입력창 (주인공)
+    [SerializeField] private GameObject nameCheckingWindow; //이름 확인창
+    [SerializeField] private Button charNameCheckButton;  //확인버튼
+    [SerializeField] private Button babyNameCheckButton;
 
     string nameForNameless; //플레이어가 붙여준 무명이의 이름
     #endregion
 
     #region 결제 관련 변수  
-    [SerializeField] Button fishBreadButton;//붕어빵 버튼
-    [SerializeField] GameObject purchasingWindow; //붕어빵 버튼 눌렀을 때 나오는 창
-    [SerializeField] Text purchasingText; //창 메세지
+    [SerializeField] private Button fishBreadButton;//붕어빵 버튼
+    [SerializeField] private GameObject purchasingWindow; //붕어빵 버튼 눌렀을 때 나오는 창
+    [SerializeField] private Text purchasingText; //창 메세지
 
-    [SerializeField] GameObject completePurchasingWindow;//결제 후 메세지 창
-    [SerializeField] Text completePurchasingText;//메세지 내용
-    [SerializeField] Text littleFishBreadText;
+    [SerializeField] private GameObject completePurchasingWindow;//결제 후 메세지 창
+    [SerializeField] private Text completePurchasingText;//메세지 내용
+    [SerializeField] private Text littleFishBreadText;
     #endregion  
 
-    int mainCount = 0; 
-    int endingState = 0; // 1 = 엔딩 이벤트 중, 2 = 엔딩 이벤트 완료
+    private int mainCount = 0; 
+    private int endingState = 0; // 1 = 엔딩 이벤트 중, 2 = 엔딩 이벤트 완료
 
     #region 대화 관련 변수
-    [SerializeField] GameObject panel; //대화할 때 쓰는 회색 반투명 패널
+    [SerializeField] private GameObject panel; //대화할 때 쓰는 회색 반투명 패널
 
-    [SerializeField] GameObject babyTextBox;
-    [SerializeField] GameObject characterTextBox;
-    [SerializeField] Animator TBAnimator; //텍스트박스 애니메이터
+    [SerializeField] private GameObject babyTextBox;
+    [SerializeField] private GameObject characterTextBox;
+    [SerializeField] private Animator TBAnimator; //텍스트박스 애니메이터
     #endregion
 
-   void Awake()
+    private void Awake()
     {
         if(instance == null)
         {
@@ -87,14 +89,14 @@ public class SystemManager : MonoBehaviour
         }
     }
 
-    void Start()
+    private void Start()
     {
         BgmManager.instance.PlayCafeBgm(); //카페 브금 재생
 
         LoadDataInfo();//저장된 데이터 불러옴, 체력 및 시간은 타임매니저에서 실행
     }
 
-    void Update()
+    private void Update()
     {
         if (Application.platform == RuntimePlatform.Android)
         {
@@ -177,7 +179,7 @@ public class SystemManager : MonoBehaviour
         {            
             if (mainCount > 3)//붕붕이 등장 이후면
             {
-                if(!AdsManager.instance.IsWatchingAds())//광고보고 온 경우가 아닐 때
+                if(!AdsManager.instance.IsWatchingAds)//광고보고 온 경우가 아닐 때
                 {
                     TimeManager.instance.SetLoadingState(true);
                     if (TimeManager.instance.IsTimerNotNull())
@@ -186,12 +188,10 @@ public class SystemManager : MonoBehaviour
                     }
                     TimeManager.instance.StartTimer();
                     Star.instance.Invoke("ActivateStarSystem", 25f);//25초 뒤 별 함수 시작
-                    //Debug.Log("스타시스템 25초 뒤 시작");
                 }
                 if (!CharacterManager.instance.IsInvoking("RandomVisit") && endingState != 1 && !Dialogue.instance.IsTalking())
                 { // 엔딩이벤트 중이 아니어야 하고 대화 중이 아니어야함
                     CharacterManager.instance.Invoke("RandomVisit", 5f); //캐릭터 랜덤 방문
-                    //Debug.Log("랜덤방문 5초뒤");
 
                 }
             }
@@ -211,18 +211,15 @@ public class SystemManager : MonoBehaviour
                     if (Star.instance.IsInvoking("ActivateStarSystem"))
                     {
                         Star.instance.CancelInvoke("ActivateStarSystem");//별 활성화 함수 중단
-                        //Debug.Log("스타 인보크 중 종료1");
                     }
                     else
                     {
                         if (Star.instance.IsStarSystemRunning())
                         {
                             Star.instance.DeactivateStarSystem();
-                            //Debug.Log("스타 종료2");
                         }
                     }
                     completeSave = true;
-                   // Debug.Log("모든 세이브 완료");
                 }  
             }
         }
@@ -230,7 +227,6 @@ public class SystemManager : MonoBehaviour
 
     public void SaveDataInfo() //게임 데이터 정보 저장
     {
-        //Debug.Log("SaveDataInfo");
         try
         {
             PlayerPrefs.SetInt("MainCount", mainCount); //현재 메인카운트 저장
@@ -248,7 +244,6 @@ public class SystemManager : MonoBehaviour
 
     public void LoadDataInfo() //게임 데이터 정보 불러옴
     {
-        //Debug.Log("LoadDataInfo");
         try
         {
             if (PlayerPrefs.HasKey("MainCount"))
@@ -319,7 +314,6 @@ public class SystemManager : MonoBehaviour
 
                 Star.instance.Invoke("ActivateStarSystem", 25f);//25초 뒤 별 함수 시작
                 CharacterManager.instance.Invoke("RandomVisit", 5f); // 5초 뒤 캐릭터 랜덤 방문
-                //Debug.Log("5초 뒤 랜덤방문");
             }                               
 
         }
@@ -377,7 +371,7 @@ public class SystemManager : MonoBehaviour
         VisitorNote.instance.SaveVisitorNoteInfo();
     }
 
-    void AfterFirstMeet(int mCount)
+    private void AfterFirstMeet(int mCount)
     {       
         if (mCount == 9) // 샌디 방문 완료
         {
@@ -405,7 +399,6 @@ public class SystemManager : MonoBehaviour
         if (!CharacterManager.instance.IsInvoking("RandomVisit"))
         {
             CharacterManager.instance.Invoke("RandomVisit", 10f); //캐릭터 랜덤 방문
-            //Debug.Log("랜덤방문 10초뒤");
         }
        
         if(mainCount < 6)
@@ -434,14 +427,12 @@ public class SystemManager : MonoBehaviour
                 {
                     Star.instance.DeactivateStarSystem();
                 }
-                //Debug.Log("스타 인보크 중 종료1");
             }
             else
             {
                 if (Star.instance.IsStarSystemRunning())
                 {
                     Star.instance.DeactivateStarSystem();
-                    //Debug.Log("스타 종료2");
                 }
             }
             SceneChanger.instance.Invoke("GoEndingCreditScene", 1f);//1초 후 엔딩크레딧 화면으로 이동
@@ -511,7 +502,6 @@ public class SystemManager : MonoBehaviour
             if (!CharacterManager.instance.IsInvoking("RandomVisit"))
             {
                 CharacterManager.instance.Invoke("RandomVisit", 10f); //캐릭터 랜덤 방문
-                //Debug.Log("랜덤방문 10초 뒤");
             }
         }
         Dialogue.instance.SaveCharacterDCInfo();
@@ -528,7 +518,6 @@ public class SystemManager : MonoBehaviour
 
         if(sum == 42 && Menu.instance.IsMenuOpen(8)) //캐릭터들 시나리오를 모두 봄 & 마지막 메뉴 잠금 해제 완료
         {
-            Debug.Log("엔딩 조건 충족");
             if(CharacterManager.instance.IsInvoking("RandomVisit")) CharacterManager.instance.CancelInvoke("RandomVisit");
             Invoke(nameof(EndingEvent),6f);
             endingState = 1;
@@ -590,12 +579,12 @@ public class SystemManager : MonoBehaviour
         Invoke(nameof(EndRePlay), 1.1f);
     }
 
-    void EndRePlay()//다시보기가 완전히 끝났음
+    private void EndRePlay()//다시보기가 완전히 끝났음
     {
         VisitorNote.instance.SetReplayState(0);
     }
 
-    void EndingEvent()
+    private void EndingEvent()
     {
         if(!isUIOpen && CharacterManager.instance.IsTableEmpty(1) && CharacterManager.instance.IsTableEmpty(2) && CharacterManager.instance.IsTableEmpty(3))
         { //테이블이 모두 비었고 UI가 올라와있지 않은 상태에서 실행
@@ -630,7 +619,7 @@ public class SystemManager : MonoBehaviour
         StartCoroutine(DialogueCoroutine(cNum, time));
     }
 
-    IEnumerator DialogueCoroutine(int cNum, float time)
+    private IEnumerator DialogueCoroutine(int cNum, float time)
     {
         yield return new WaitForSeconds(time);
 
@@ -665,7 +654,7 @@ public class SystemManager : MonoBehaviour
 
         if(mainCount > 2)
         {
-            BgmManager.instance.BGMFadeOut();
+            BgmManager.instance.BgmFadeOut();
             if(endingState != 1)
                 BgmManager.instance.Invoke("PlayCafeBgm", 3f);
         }
@@ -706,7 +695,7 @@ public class SystemManager : MonoBehaviour
         characterTextBox.SetActive(true);   
     }
 
-    void DeactivateTextBox()
+    private void DeactivateTextBox()
     {
         if (characterTextBox.activeSelf == true)
         {
@@ -744,7 +733,7 @@ public class SystemManager : MonoBehaviour
         }
     }
 
-    void ShowJejeMessage(int n)
+    private void ShowJejeMessage(int n)
     {
         jejeBubble.gameObject.SetActive(true);
         switch (n)
@@ -830,13 +819,13 @@ public class SystemManager : MonoBehaviour
         }
     }
 
-    void JejeBubbleFadeOut()
+    private void JejeBubbleFadeOut()
     {
         jejeBubbleAnimator.SetTrigger("JejeBubbleOut");
         Invoke(nameof(DeactiveJejeBubble), 1f);
     }
 
-    void DeactiveJejeBubble()
+    private void DeactiveJejeBubble()
     {
         jejeBubble.gameObject.SetActive(false);
     }
@@ -881,7 +870,7 @@ public class SystemManager : MonoBehaviour
         tipNoteAnimator.SetTrigger("TipNote_Down");
     }
 
-    void SetTipState()
+    private void SetTipState()
     {
         if(tipNum != 0)
         {
@@ -916,7 +905,7 @@ public class SystemManager : MonoBehaviour
         }
     }
 
-    bool isFirstSpeaking = true;
+    private bool isFirstSpeaking = true;
     public void JejeTextMessage() //제제 터치 시 실행
     {
         if (jejeBubble.gameObject.activeSelf == false && bangBubble.gameObject.activeSelf == false) //말풍선 오브젝트가 비활성화일 때만
@@ -1069,14 +1058,14 @@ public class SystemManager : MonoBehaviour
     {
         SEManager.instance.PlayUITouchSound();
         plusHPButton.interactable = false;
-        AdsManager.instance.SetAdsMessageWindowActive(true);
+        AdsManager.instance.SetAdsConsentWindowActive(true);
     }
 
     public void RejectAds() // 광고 시청 메세지창에서 '아니오' 터치 시 실행
     {
         SEManager.instance.PlayUICloseSound();
         plusHPButton.interactable = true;
-        AdsManager.instance.SetAdsMessageWindowActive(false);
+        AdsManager.instance.SetAdsConsentWindowActive(false);
     }
     
     public void TouchPurchasingButton() //붕어빵 버튼(결제 버튼) 눌렀을 때 
@@ -1107,10 +1096,10 @@ public class SystemManager : MonoBehaviour
         UpdatePurchasingState(pCount);
     }
 
-    void DeactivatePurchasingWindow()
+    private void DeactivatePurchasingWindow()
     {
         purchasingWindow.SetActive(false);
-        AdsManager.instance.SetAdsMessageWindowActive(false);
+        AdsManager.instance.SetAdsConsentWindowActive(false);
         completePurchasingWindow.SetActive(true);
         plusHPButton.interactable = true;
     }
@@ -1168,7 +1157,7 @@ public class SystemManager : MonoBehaviour
         }
     }
 
-    IEnumerator UpdateTouchState(bool value, float time)
+    private IEnumerator UpdateTouchState(bool value, float time)
     {
         yield return new WaitForSeconds(time);
         canTouch = value;
@@ -1230,4 +1219,9 @@ public class SystemManager : MonoBehaviour
         gameClosingWindow.SetActive(false);
     }
     #endregion
+
+    public int GetNumber(string name)
+    {                   // Regex.Match : 정규 표현식을 사용, 문자열에서 특정 패턴을 찾아주는 기능
+        return int.Parse(Regex.Match(name, @"\d+").Value); // \d+ : 하나 이상의 숫자를 의미 
+    }
 }

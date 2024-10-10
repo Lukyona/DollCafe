@@ -11,24 +11,24 @@ public class HPManager : MonoBehaviour
     public static HPManager instance;
 
     #region InGameObject
-    [SerializeField] Text HPRechargeMinTimer = null;  //재충전까지 남은 분, 게임 내에서 보임
-    [SerializeField] Text HPRechargeSecTimer = null; //재충전까지 남은 초, 게임 내에서 보임
-    [SerializeField] GameObject mid; // 분과 초 사이의 콜론
-    [SerializeField] GameObject fullText; // 체력이 맥스일 때 나타나는 텍스트
+    [SerializeField] private Text HPRechargeMinTimer = null;  //재충전까지 남은 분, 게임 내에서 보임
+    [SerializeField] private Text HPRechargeSecTimer = null; //재충전까지 남은 초, 게임 내에서 보임
+    [SerializeField] private GameObject mid; // 분과 초 사이의 콜론
+    [SerializeField] private GameObject fullText; // 체력이 맥스일 때 나타나는 텍스트
 
-    [SerializeField] Text HPAmount = null; // 체력 양, 게임 내에서 보임
+    [SerializeField] private Text HPAmount = null; // 체력 양, 게임 내에서 보임
     #endregion
 
-    int m_HPAmount = 0; //현재 보유 체력
-    int MAX_HP = 10; //체력 최대값, 결제 시 20
+    private int m_HPAmount = 0; //현재 보유 체력
+    private int MAX_HP = 10; //체력 최대값, 결제 시 20
 
-    DateTime m_AppQuitTime = new DateTime(1970, 1, 1).ToLocalTime(); // 게임 나간 시간
-    int HPRechargeIntervalMin = 10;// 체력 충전 간격(단위:분) 10분에 1 충전, 결제 시 5분
-    int HPRechargeIntervalSec = 60; 
+    private DateTime m_AppQuitTime = new DateTime(1970, 1, 1).ToLocalTime(); // 게임 나간 시간
+    private int HPRechargeIntervalMin = 10;// 체력 충전 간격(단위:분) 10분에 1 충전, 결제 시 5분
+    private int HPRechargeIntervalSec = 60; 
 
-    Coroutine m_RechargeTimerCoroutine = null;
-    int m_RechargeRemainMin = 0; // 작동 중인 타이머 시간(분)
-    int m_RechargeRemainSec = 0; // 작동 중인 타이머 시간(초)
+    private Coroutine m_RechargeTimerCoroutine = null;
+    private int m_RechargeRemainMin = 0; // 작동 중인 타이머 시간(분)
+    private int m_RechargeRemainSec = 0; // 작동 중인 타이머 시간(초)
 
     #region 타이머 시간 계산에 사용
     private int savedMinTimer = 0; // 저장된 기존 타이머 시간
@@ -75,7 +75,6 @@ public class HPManager : MonoBehaviour
 
     public void LoadHPInfo() //체력 정보 불러옴
     {
-        //Debug.Log("LoadHPInfo");
         try
         {
             int pCount = PlayerPrefs.GetInt("PurchaseCount");
@@ -93,7 +92,6 @@ public class HPManager : MonoBehaviour
                 m_HPAmount = PlayerPrefs.GetInt("HPAmount");
                 savedMinTimer = PlayerPrefs.GetInt("SavedMinTimer");
                 savedSecTimer = PlayerPrefs.GetInt("SavedSecTimer");
-                //Debug.Log("남았던 타이머: " + savedMinTimer + "분 " + savedSecTimer);
                     
                 if (m_HPAmount < 0)
                 {
@@ -126,7 +124,6 @@ public class HPManager : MonoBehaviour
 
     public void SaveHPInfo() //체력 정보 저장
     {
-        //Debug.Log("SaveHPInfo");
         try
         {
             PlayerPrefs.SetInt("HPAmount", m_HPAmount); //현재 체력 양 저장
@@ -202,7 +199,6 @@ public class HPManager : MonoBehaviour
         }
         else if (calculatedMin < 0 && calculatedSec == 0) // - : 0
         {
-            //Debug.Log("HPAmount : " + m_HPAmount);
             remainMinTime = -calculatedMin - 1;
             remainSecTime = HPRechargeIntervalSec - 1;
         }
@@ -211,7 +207,6 @@ public class HPManager : MonoBehaviour
             m_HPAmount += 1;
             m_HPAmount += calculatedMin / HPRechargeIntervalMin;
             calculatedMin %= HPRechargeIntervalMin;
-            //Debug.Log("HPAmount : " + m_HPAmount);
 
             if (calculatedMin > 0)
                 remainMinTime = (HPRechargeIntervalMin - 1) - calculatedMin;
@@ -245,7 +240,6 @@ public class HPManager : MonoBehaviour
             }
             else
             {
-                //Debug.Log("HPAmount : " + m_HPAmount);
                 remainMinTime = -calculatedMin - 1;
                 remainSecTime = HPRechargeIntervalSec - calculatedSec;
             }
@@ -265,7 +259,6 @@ public class HPManager : MonoBehaviour
             m_RechargeTimerCoroutine = StartCoroutine(DoRechargeTimer(remainMinTime, remainSecTime)); // 게임 내에 보여질 타이머 코루틴 실행
         }
         HPAmount.text = string.Format("{0}", m_HPAmount.ToString());
-        //Debug.Log("HPAmount : " + m_HPAmount);
     }
    
     public void UseHP() //체력 소모
@@ -285,7 +278,6 @@ public class HPManager : MonoBehaviour
 
     private IEnumerator DoRechargeTimer(int remainMin,int remainSec) //타이머 가동
     {
-        //Debug.Log("DoRechargeTimer");
         m_RechargeRemainMin = remainMin;
         m_RechargeRemainSec = remainSec;
         //Debug.Log("HPRechargeTimer : " + m_RechargeRemainMin + "m " + m_RechargeRemainSec + "s"); //현재 타이머 상태

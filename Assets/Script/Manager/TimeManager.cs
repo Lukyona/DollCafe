@@ -8,11 +8,14 @@ public class TimeManager : MonoBehaviour
 { 
    public static TimeManager instance;
 
-    Coroutine TimeCoroutine;
+    private string url = "https://www.google.co.kr/";
+    private DateTime dateTime;
 
-    bool loading = false; //true면 타이머 및 체력 정보 로드 중
+    private Coroutine TimeCoroutine;
 
-    void Awake()
+    private bool loading = false; //true면 타이머 및 체력 정보 로드 중
+
+    private void Awake()
     {
         if(instance == null)
         {
@@ -22,9 +25,6 @@ public class TimeManager : MonoBehaviour
         SetLoadingState(true); // 로딩 시작
         StartTimer();
     }
-
-    string url = "https://www.google.co.kr/";
-    DateTime dateTime;
 
     public void StartTimer()
     {
@@ -41,8 +41,8 @@ public class TimeManager : MonoBehaviour
         return TimeCoroutine != null? true : false;
     }
 
-     public IEnumerator WebChk()
-     {
+    public IEnumerator WebChk()
+    {
         while(true)
         {
             UnityWebRequest request = new UnityWebRequest();
@@ -59,22 +59,19 @@ public class TimeManager : MonoBehaviour
                 {
                     string date = request.GetResponseHeader("date"); // date 정보를 가져옴
                     dateTime = DateTime.Parse(date);
-                 //   Debug.Log("시간은 " + dateTime);
                 }
             }
 
             if (IsLoading())//로드할 때
             {
-                //Debug.Log("타이머 정보 로드");
-                if (!AdsManager.instance.IsWatchingAds())
+                if (!AdsManager.instance.IsWatchingAds)
                 {
-                    //Debug.Log("체력 정보 로드");
                     HPManager.instance.LoadHPInfo(); //체력 정보 불러옴
                 }
                 LoadAppQuitTime(); //게임 종료 시간 불러옴
                 HPManager.instance.CalculateTime(); 
                 SetLoadingState(false);
-                AdsManager.instance.SetWatchingAds(false);
+                AdsManager.instance.IsWatchingAds = false;
             } 
             yield return new WaitForSeconds(2f);
         }
@@ -109,7 +106,7 @@ public class TimeManager : MonoBehaviour
         return result;
     }
 
-     public void LoadAppQuitTime() // 게임을 종료했던 시간 불러옴
+    public void LoadAppQuitTime() // 게임을 종료했던 시간 불러옴
     {
         //Debug.Log("LoadAppQuitTime");
         try

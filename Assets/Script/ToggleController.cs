@@ -2,35 +2,36 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System;
 
 [SerializeField] class ToggleController : MonoBehaviour //설정의 브금 효과음 on off토글
 {
-	[SerializeField] Color onColor;
-	[SerializeField] Color offColor;
+	[SerializeField] private Color onColor;
+	[SerializeField] private Color offColor;
 
-	[SerializeField] GameObject onText;
-	[SerializeField] GameObject offText;
+	[SerializeField] private GameObject onText;
+	[SerializeField] private GameObject offText;
 
-	[SerializeField] Image toggleBgImage;
-	[SerializeField] RectTransform toggle; // 토글 오브젝트
+	[SerializeField] private Image toggleBgImage;
+	[SerializeField] private RectTransform toggle; // 토글 오브젝트
 
-	[SerializeField] GameObject handle; // 하얀색 타원 도형, 토글할 때 좌우로 이동
+	[SerializeField] private GameObject handle; // 하얀색 타원 도형, 토글할 때 좌우로 이동
 	private RectTransform handleTransform;
 
 	private float handleSize;
 	private float onPosX;
 	private float offPosX;
 
-	float handleOffset = 4f; // 약간의 보정치
+	private float handleOffset = 4f; // 약간의 보정치
 
-	float speed = 1f;
-	static float time = 0f;
+	private float speed = 1f;
+	private static float time = 0f;
 
 	private bool switching = false; // true면 토글 작동
 
 	private int state = 0; // 0은 on, 1은 off
 
-	void Awake()
+	private void Awake()
 	{
 		handleTransform = handle.GetComponent<RectTransform>();
 		handleSize = handleTransform.sizeDelta.x;
@@ -45,7 +46,7 @@ using UnityEngine.UI;
 		LoadVolumeSetting();
     }
 
-    void Update()
+    private void Update()
 	{
 		if(switching)
 		{
@@ -53,7 +54,7 @@ using UnityEngine.UI;
 		}
 	}
 
-	[SerializeField] void Switching() // 토글 터치했을 때, 토글 작동 끝났을 때 실행
+	[SerializeField] private void Switching() // 토글 터치했을 때, 토글 작동 끝났을 때 실행
 	{
 		if(switching == true)
 		{
@@ -74,7 +75,7 @@ using UnityEngine.UI;
 		}
 	}
 
-    [SerializeField] void Toggle(int toggleStatus)
+    [SerializeField] private void Toggle(int toggleStatus)
 	{
 		if(toggleStatus == 0) // On -> Off
 		{
@@ -101,7 +102,7 @@ using UnityEngine.UI;
 
 			if (gameObject.name == "ToggleBgm")
 			{
-				BgmManager.instance.OnBGM();
+				BgmManager.instance.OnBgm();
 			}
 			else
 			{
@@ -111,27 +112,27 @@ using UnityEngine.UI;
 		Switching(); // 토글 작동 해제
 	}
 
-	Vector3 SmoothMove(float startPosX, float endPosX)
+	private Vector3 SmoothMove(float startPosX, float endPosX)
 	{
 		Vector3 position = new Vector3 (Mathf.Lerp(startPosX, endPosX, time += speed * Time.deltaTime), 0f, 0f);
 		return position;
 	}
 
-	Color SmoothColor(Color startColor, Color endColor)
+	private Color SmoothColor(Color startColor, Color endColor)
 	{
 		Color resultCol;
 		resultCol = Color.Lerp(startColor, endColor, time += speed * Time.deltaTime);
 		return resultCol;
 	}
 
-	void Transparency (GameObject alphaObj, float startAlpha, float endAlpha)
+	private void Transparency (GameObject alphaObj, float startAlpha, float endAlpha)
 	{
 		CanvasGroup alphaVal;
 		alphaVal = alphaObj.gameObject.GetComponent<CanvasGroup>();
 		alphaVal.alpha = Mathf.Lerp(startAlpha, endAlpha, time += speed * Time.deltaTime);
 	}
 
-	[SerializeField] void LoadVolumeSetting()
+	[SerializeField] private void LoadVolumeSetting()
     {
 		try
 		{
@@ -139,7 +140,7 @@ using UnityEngine.UI;
 			{				
 				if (gameObject.name == "ToggleBgm")
                 {
-					state = PlayerPrefs.GetInt("BgmOnOff");
+					state = Convert.ToInt32(BgmManager.instance.IsBgmOff());
 					if(state == 1) // 설정이 Off로 되어있다면
 					{
 						BgmManager.instance.OffBgm();
@@ -173,7 +174,7 @@ using UnityEngine.UI;
 		}
     }
 
-	[SerializeField] void SaveVolumeSetting()
+	[SerializeField] private void SaveVolumeSetting()
     {
 		try
 		{

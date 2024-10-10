@@ -5,21 +5,20 @@ using UnityEngine.UI;
 
 public class BlinkAnim : MonoBehaviour //터치투 스타트 메세지를 깜빡거리게
 {
-    [SerializeField] Image image;
+    [SerializeField] private Image image;
 
-    float time;
+    private float time;
 
-    void Start()
+    private void Start()
     {
-        BgmManager.instance.PlayMainBgm(); //시작화면 브금 재생
+        BgmManager.instance.PlayStartBgm(); //시작화면 브금 재생
     }
     
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
         if (Input.GetMouseButtonDown(0)) //터치되면
         {
-            BgmManager.instance.BGMFadeOut();
+            BgmManager.instance.BgmFadeOut();
             SceneChanger.instance.FadeToScene(2);//로딩씬으로 이동
         }
 

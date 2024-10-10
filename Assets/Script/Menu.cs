@@ -8,56 +8,56 @@ public class Menu : MonoBehaviour
 {
     public static Menu instance;
 
-    [SerializeField] Animator menuButtonAnimator;
-    [SerializeField] Animator menuBoardAnimator;
-    [SerializeField] Animator NoHPMessageAnimator;
+    [SerializeField] private Animator menuButtonAnimator;
+    [SerializeField] private Animator menuBoardAnimator;
+    [SerializeField] private Animator NoHPMessageAnimator;
 
     #region 게임 내 오브젝트 변수
-    [SerializeField] Button boardCloseButton;
+    [SerializeField] private Button boardCloseButton;
 
-    [SerializeField] GameObject[] LockedMenuItems; // 잠금 상태인 메뉴 배열, 실루엣 이미지
-    [SerializeField] GameObject[] MenuObject; //모든 메뉴, 8개
+    [SerializeField] private GameObject[] LockedMenuItems; // 잠금 상태인 메뉴 배열, 실루엣 이미지
+    [SerializeField] private GameObject[] MenuObject; //모든 메뉴, 8개
 
-    [SerializeField] GameObject[] TableMenu; //테이블 위에 보여질 작은 메뉴 이미지
+    [SerializeField] private GameObject[] TableMenu; //테이블 위에 보여질 작은 메뉴 이미지
 
-    [SerializeField] GameObject[] SpecialMenu; //친밀도 이벤트에서 서빙되는 스페셜 메뉴 이미지 배열
+    [SerializeField] private GameObject[] SpecialMenu; //친밀도 이벤트에서 서빙되는 스페셜 메뉴 이미지 배열
 
-    [SerializeField] Button[] LockedMenuButtons; // 잠긴 메뉴 해제 버튼 배열, 0 메뉴5버튼 
+    [SerializeField] private Button[] LockedMenuButtons; // 잠긴 메뉴 해제 버튼 배열, 0 메뉴5버튼 
 
-    [SerializeField] GameObject[] SmileReaction; //미소 리액션 배열
-    [SerializeField] GameObject[] HeartReaction; //하트 리액션 배열
+    [SerializeField] private GameObject[] SmileReaction; //미소 리액션 배열
+    [SerializeField] private GameObject[] HeartReaction; //하트 리액션 배열
 
-    [SerializeField] GameObject[] Reaction; //캐릭터의 리액션 이미지
+    [SerializeField] private GameObject[] Reaction; //캐릭터의 리액션 이미지
 
-    [SerializeField] Text reputationText; //평판 텍스트
+    [SerializeField] private Text reputationText; //평판 텍스트
 
-    [SerializeField] GameObject NoHPMessage; //게임 중간이탈, 종료 시 비활성화됨
+    [SerializeField] private GameObject NoHPMessage; //게임 중간이탈, 종료 시 비활성화됨
 
-    [SerializeField] Image NamelessDessert;//무명이 디저트 2번째 이미지
+    [SerializeField] private Image NamelessDessert;//무명이 디저트 2번째 이미지
     #endregion
 
-    Vector3[] MenuPosition = new Vector3[6]; //메뉴 위치 배열
-    Vector3[] ReactionPosition = new Vector3[6]; //리액션 위치 배열
+    private Vector3[] MenuPosition = new Vector3[6]; //메뉴 위치 배열
+    private Vector3[] ReactionPosition = new Vector3[6]; //리액션 위치 배열
 
-    List<GameObject> UnlockedMenuItems = new List<GameObject>(); // 현재 잠금 해제된 메뉴 리스트
+    private List<GameObject> UnlockedMenuItems = new List<GameObject>(); // 현재 잠금 해제된 메뉴 리스트
     
-    int reputation = 0; //평판 
+    private int reputation = 0; //평판 
 
-    int seatNum = 0; //자리 넘버
+    private int seatNum = 0; //자리 넘버
 
-    Queue<int> reactionFadeIn = new Queue<int>();//리액션 페이드인 시 사용
-    Queue<int> reactionFadeOut = new Queue<int>();//리액션 페이드아웃 시 사용
-    Queue<int> menuFadeIn = new Queue<int>();//메뉴 페이드인 시 사용
-    Queue<int> menuFadeOut = new Queue<int>();//메뉴 페이드아웃 시 사용
+    private Queue<int> reactionFadeIn = new Queue<int>();//리액션 페이드인 시 사용
+    private Queue<int> reactionFadeOut = new Queue<int>();//리액션 페이드아웃 시 사용
+    private Queue<int> menuFadeIn = new Queue<int>();//메뉴 페이드인 시 사용
+    private Queue<int> menuFadeOut = new Queue<int>();//메뉴 페이드아웃 시 사용
 
-    bool isDinoServed = false; //디노 히로가 모두 서빙을 받았을 시 페이드아웃 가능
-    bool isHeroServed = false;
-    bool isPrincessServed = false; //도로시 서빙, 찰스랑 같이 다닐 때부터 사용
-    bool isSoldierServed = false; //찰스 서빙
+    private bool isDinoServed = false; //디노 히로가 모두 서빙을 받았을 시 페이드아웃 가능
+    private bool isHeroServed = false;
+    private bool isPrincessServed = false; //도로시 서빙, 찰스랑 같이 다닐 때부터 사용
+    private bool isSoldierServed = false; //찰스 서빙
 
-    int characterNum;
+    private int characterNum;
 
-    bool canStartEvent = false; //메뉴 서빙 후 친밀도 이벤트가 나오는 캐릭터의 경우, 이벤트 캐릭터가 서빙을 받으면 이벤트 시작
+    private bool canStartEvent = false; //메뉴 서빙 후 친밀도 이벤트가 나오는 캐릭터의 경우, 이벤트 캐릭터가 서빙을 받으면 이벤트 시작
 
     private void Awake()
     {
@@ -67,7 +67,7 @@ public class Menu : MonoBehaviour
         }
     }
 
-    void Start()
+    private void Start()
     {
         UnlockedMenuItems.Add(MenuObject[0]); // 기본 메뉴 3개는 잠금X
         UnlockedMenuItems.Add(MenuObject[1]);
@@ -168,7 +168,6 @@ public class Menu : MonoBehaviour
                 CanTouchMenu();         
             }           
         }
-        //Debug.Log("함수 ClickMenuHint");
     }
 
     public void CanTouchMenu()
@@ -341,7 +340,6 @@ public class Menu : MonoBehaviour
     {
         TableMenu[seatNum].transform.position = MenuPosition[seatNum];
         Reaction[seatNum].transform.position = ReactionPosition[seatNum];
-        //Debug.Log("함수 SetMenuPosition");
     }
 
     public void SetTableMenu(int menuNum, int sNum) //테이블에 올려질 메뉴 이미지 설정
@@ -439,7 +437,6 @@ public class Menu : MonoBehaviour
 
         TableMenu[sNum].GetComponent<RectTransform>().sizeDelta = size;
         TableMenu[sNum].GetComponent<Image>().sprite = menuImage;
-        //Debug.Log("함수 SetTableMenu");
     }
 
     public void SetFriendEventMenu(int cNum)//스페셜 메뉴 준비
@@ -484,8 +481,8 @@ public class Menu : MonoBehaviour
     }
 
     
-    bool isMenuFadeIn = false;//페이드인 중인지 판별
-    bool isMenuFadeOut = false;
+    private bool isMenuFadeIn = false;//페이드인 중인지 판별
+    private bool isMenuFadeOut = false;
     public void MenuFadeIn() //메뉴 페이드인
     {
         if(isMenuFadeIn)
@@ -566,12 +563,11 @@ public class Menu : MonoBehaviour
         }
         isMenuFadeOut = false;
         menuFadeOut.Dequeue();
-        //Debug.Log("메뉴 페이드아웃" + n);
 
         TableMenu[n].SetActive(false);
 
         string charName = CharacterManager.instance.GetSittingCharacter(n).name;
-        int cNum = TouchableObject.instance.GetNumber(charName.IndexOf("_"), charName);
+        int cNum = SystemManager.instance.GetNumber(charName);
 
         if((CharacterManager.instance.GetCurrentEventState() != 9 && CharacterManager.instance.GetCurrentEventState() != 11 && CharacterManager.instance.GetCurrentEventState() != 13 && CharacterManager.instance.GetCurrentEventState() != 14 && CharacterManager.instance.GetCurrentEventState() != 16)
             || (cNum != 9 && CharacterManager.instance.GetCurrentEventState() == 9)
@@ -579,7 +575,6 @@ public class Menu : MonoBehaviour
             || (cNum != 12 && cNum != 13 && CharacterManager.instance.GetCurrentEventState() == 14)
             || (cNum != 15 && CharacterManager.instance.GetCurrentEventState() == 16))
         {//특정 캐릭터 친밀도 이벤트가 아닐 때, 혹은 특정 캐릭터 이벤트여도 해당 이벤트 캐릭터가 아닐 때
-            //Debug.Log("페이드아웃될 자리 " + n);
             CharacterManager.instance.FadeOut(cNum); //작은 캐릭터 페이드아웃   
         }
         else if(CharacterManager.instance.GetCurrentEventState() == 14 && cNum == 12 && Dialogue.instance.GetSpecialMenuState() == 2)
@@ -612,8 +607,8 @@ public class Menu : MonoBehaviour
         Invoke(nameof(ReactionFadeOut), 2f); //2초 후 페이드아웃
     }
 
-    bool isReactionFadeIn = false;
-    IEnumerator RFadeToFullAlpha(float time = 0f) // 알파값 0에서 1로 전환, 리액션 페이드인
+    private bool isReactionFadeIn = false;
+    private IEnumerator RFadeToFullAlpha(float time = 0f) // 알파값 0에서 1로 전환, 리액션 페이드인
     {
         isReactionFadeIn = true;
 
@@ -638,7 +633,7 @@ public class Menu : MonoBehaviour
         }
     }
 
-    bool isReactionFadeOut = false;
+    private bool isReactionFadeOut = false;
     public void ReactionFadeOut() //리액션 페이드아웃
     {
         if (isReactionFadeOut)
@@ -648,7 +643,6 @@ public class Menu : MonoBehaviour
         else
         {
             StartCoroutine(RFadeToZero());
-            //Debug.Log("함수 ReactionFadeOut");          
         }
     }
 
@@ -799,7 +793,7 @@ public class Menu : MonoBehaviour
         }
     }
 
-    void LoadMenu(int menuNum)//오픈 메뉴 리스트 크기에 따라 메뉴 로드
+    private void LoadMenu(int menuNum)//오픈 메뉴 리스트 크기에 따라 메뉴 로드
     {
         MenuObject[menuNum-1].SetActive(true);
         LockedMenuItems[menuNum-4].SetActive(false); //실루엣 이미지 없애고

@@ -7,20 +7,20 @@ public class Setting : MonoBehaviour
 {
     public static Setting instance;
 
-    [SerializeField] Animator settingWindowAnimator;
-    [SerializeField] Button settingButton;
-    [SerializeField] GameObject resetCheck;
-    [SerializeField] Button settingClose;
-    [SerializeField] Button resetButton;
-    [SerializeField] Button creditButton;
-    [SerializeField] Button yesResetButton;
-    [SerializeField] Button noResetButton;
-    [SerializeField] GameObject creditView;
-    [SerializeField] Scrollbar bar;
+    [SerializeField] private Animator settingWindowAnimator;
+    [SerializeField] private Button settingButton;
+    [SerializeField] private GameObject resetCheck;
+    [SerializeField] private Button settingClose;
+    [SerializeField] private Button resetButton;
+    [SerializeField] private Button creditButton;
+    [SerializeField] private Button yesResetButton;
+    [SerializeField] private Button noResetButton;
+    [SerializeField] private GameObject creditView;
+    [SerializeField] private Scrollbar bar;
 
-    bool isReset = false;
+    private bool isReset = false;
 
-    void Awake()
+    private void Awake()
     {
         if (instance == null)
         {
@@ -87,11 +87,9 @@ public class Setting : MonoBehaviour
         if(PlayerPrefs.GetInt("PurchaseCount") == 0)//결제한 것이 없으면 데이터 모두 삭제
         {
             PlayerPrefs.DeleteAll();
-            Debug.Log("결제 정보 없음");
         }
         else //결제를 한번이라도 했다면 결제 정보빼고 모두 삭제
         {
-            Debug.Log("결제 정보 있음");
             PlayerPrefs.DeleteKey("AppQuitTime");
             PlayerPrefs.DeleteKey("MainCount");
             PlayerPrefs.DeleteKey("NextAppear");

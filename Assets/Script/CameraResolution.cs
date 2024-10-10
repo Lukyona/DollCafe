@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CameraResolution : MonoBehaviour
 {
-    void Awake()
+    private void Awake()
     {
         Camera camera = GetComponent<Camera>();
         Rect rect = camera.rect;
@@ -23,5 +23,5 @@ public class CameraResolution : MonoBehaviour
 
         camera.rect = rect;
     }
-    void OnPreCull() => GL.Clear(true, true, Color.black);
+    private void OnPreCull() => GL.Clear(true, true, Color.black);
 }

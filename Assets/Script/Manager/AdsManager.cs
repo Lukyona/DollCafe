@@ -8,23 +8,27 @@ public class AdsManager : MonoBehaviour
 {
     public static AdsManager instance;
 
-    [SerializeField] private GameObject AdsMessageWindow;
+    [SerializeField] private GameObject adsConsentWindow;
+
+    private string adUnitId = "ca-app-pub-9549514417727735/8806879959"; //광고 아이디
 
     private RewardedAd rewardedAd;
-    bool watchingAds = false; //광고 보는 중 true, 다 보면 false
-    string adUnitId = "ca-app-pub-9549514417727735/8806879959"; //광고 아이디
+    public bool IsWatchingAds {get; set;} //광고 보는 중 true, 다 보면 false
+    private bool isLoaded = false; //광고 로드가 되었으면 true
 
-    bool isLoaded = false; //광고 로드가 되었으면 true
-
-    void Awake()
+    private void Awake()
     {
         if(instance == null)
         {
             instance = this;
         }
+        else
+        {
+            Destroy(gameObject); // 이미 인스턴스가 있으면 새로 생성된 건 파괴
+        }
     }
 
-    void Start()
+    private void Start()
     {
         MobileAds.Initialize(initStatus => { });
         LoadRewardedAd();
@@ -35,8 +39,8 @@ public class AdsManager : MonoBehaviour
         // Clean up the old ad before loading a new one.
         if (rewardedAd != null)
         {
-                rewardedAd.Destroy();
-                rewardedAd = null;
+            rewardedAd.Destroy();
+            rewardedAd = null;
         }
       //Debug.Log("Loading the rewarded ad.");
 
@@ -79,23 +83,21 @@ public class AdsManager : MonoBehaviour
 
     public void AgreeToWatchAds() // 광고 보는 것에 동의하는 버튼을 눌렀을 때
     {
-        SetWatchingAds(true);
+        IsWatchingAds = true;
         SystemManager.instance.CantTouchUI(); // 버튼 터치 불가
-        AdsMessageWindow.SetActive(false);
-        Invoke(nameof(WantAds), 0.3f);
+        adsConsentWindow.SetActive(false);
+        WantAds();
+
     }
 
-    void WantAds()
+    private void WantAds()
     {
-        //Debug.Log("광고 보여주기");
         if(rewardedAd.CanShowAd())
         {
-            isLoaded = false;
             ShowRewardedAd();
         }
         else
         {
-         //   Debug.Log("로드 안됨");
             LoadRewardedAd();
             Invoke(nameof(WantAds), 0.3f);
         }
@@ -108,30 +110,18 @@ public class AdsManager : MonoBehaviour
             if (rewardedAd.CanShowAd()) 
             {
                 isLoaded = true; // 광고 로드 완료
-                //Debug.Log(stopLoad);
                 SystemManager.instance.CanTouchUI(); // 다시 버튼 터치 가능
-               //Debug.Log("광고 로드 완료");
             }
         } 
     }
 
-    public void SetWatchingAds(bool value)
+    public void SetAdsConsentWindowActive(bool value)
     {
-        watchingAds = value;
-    }
-
-    public bool IsWatchingAds()
-    {
-        return watchingAds;
-    }
-
-    public void SetAdsMessageWindowActive(bool value)
-    {
-        AdsMessageWindow.SetActive(value);
+        adsConsentWindow.SetActive(value);
     }
 
 
-   private void RegisterEventHandlers(RewardedAd ad)
+    private void RegisterEventHandlers(RewardedAd ad)
     {
         // Raised when the ad is estimated to have earned money.
         ad.OnAdPaid += (AdValue adValue) =>
@@ -156,6 +146,7 @@ public class AdsManager : MonoBehaviour
         // Raised when the ad closed full screen content.
         ad.OnAdFullScreenContentClosed += () =>
         {
+            isLoaded = false;
             //Debug.Log("Rewarded ad full screen content closed.");
         };
         // Raised when the ad failed to open full screen content.

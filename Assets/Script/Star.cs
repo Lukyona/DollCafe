@@ -7,23 +7,22 @@ public class Star : MonoBehaviour
 {
     public static Star instance;
 
-    [SerializeField] Text StarNumText;//별 개수 표시 텍스트
+    [SerializeField] private Text StarNumText;//별 개수 표시 텍스트
 
-    int starNum = 0; // 현재 보유한 별 개수
+    private int starNum = 0; // 현재 보유한 별 개수
 
-    [SerializeField] GameObject[] Stars; //별 이미지 배열
+    [SerializeField] private GameObject[] Stars; //별 이미지 배열
 
-    List<int> StarList = new List<int>() { 1, 2, 3, 4, 5, 6, 7 }; //나타나게 될 별 리스트
+    private List<int> StarList = new List<int>() { 1, 2, 3, 4, 5, 6, 7 }; //나타나게 될 별 리스트
 
-    Queue<int> readyToFadeOut = new Queue<int>(); //별 페이드아웃 시 쓰임
-    Queue<int> waitingLine = new Queue<int>(); //페이드 아웃된 별을 리스트에 다시 추가하기 전까지 보관 
+    private Queue<int> readyToFadeOut = new Queue<int>(); //별 페이드아웃 시 쓰임
+    private Queue<int> waitingLine = new Queue<int>(); //페이드 아웃된 별을 리스트에 다시 추가하기 전까지 보관 
 
-    bool isFadingOut = false; //페이드아웃 중일 때 true
+    private bool isFadingOut = false; //페이드아웃 중일 때 true
 
-    Coroutine starCoroutine;
+    private Coroutine starCoroutine;
 
-
-    void Awake()
+    private void Awake()
     {
         if (instance == null)
         {
@@ -60,8 +59,6 @@ public class Star : MonoBehaviour
        {
             int idx = Random.Range(0, StarList.Count); //0~6까지
             StarList.Remove(StarList[idx]); //그 값을 삭제
-            //Debug.Log("스타 삭제된 번호 " + n);
-            //Debug.Log("스타 리스트 크기 " + StarList.Count);
             Stars[idx].SetActive(true); //해당 별 활성화
             Stars[idx].GetComponent<Button>().interactable = true; //한번만 클릭 가능
 
@@ -114,18 +111,15 @@ public class Star : MonoBehaviour
         }        
     }
 
-    void ReAppearStar()
+    private void ReAppearStar()
     {
         if (StarList.Count == 0)//리스트 크기가 0이면
         {
             Invoke(nameof(ActivateStarSystem), 25f);//25초 뒤에 별 생성
-            //Debug.Log("스타 시스템 25초 뒤 시작");
         }
 
         int star = waitingLine.Peek();
         StarList.Add(star);
-        //Debug.Log("스타 추가된 번호 " + r);
-        //Debug.Log("스타 리스트 크기 " + StarList.Count);
         waitingLine.Dequeue();          
     }
 

@@ -9,47 +9,47 @@ public class VisitorNote : MonoBehaviour
     public static VisitorNote instance;
 
     #region 게임 내 오브젝트 변수
-    [SerializeField] Animator buttonAnimator;
-    [SerializeField] Animator noteAnimator;
-    [SerializeField] GameObject[] characterInfos; //캐릭터 정보 배열
-    [SerializeField] GameObject[] pages; //페이지 버튼 배열
-    [SerializeField] GameObject nextPageButton; //다음 페이지 버튼
-    [SerializeField] GameObject previousPageButton; //이전 페이지 버튼
-    [SerializeField] GameObject pageText1; // "페이지" 텍스트
-    [SerializeField] GameObject pageText2; // "페이지" 텍스트 (회전한 버전)
-    [SerializeField] GameObject[] friendshipGauges; //친밀도 게이지 배열
-    [SerializeField] GameObject[] favFirstMenu;//좋아하는 첫번째 메뉴 배열, 0도리~~~11히로, 12디노, 13닥터펭, 14롤렝드
-    [SerializeField] GameObject[] favSecondMenu; //두번째 좋아하는 메뉴 배열, 0도리, 1 빵빵, 2개나리~~10닥터펭 11롤렝드,  붕붕이/히로디노만 없음
-    [SerializeField] GameObject[] hiddenText;//친밀도 이벤트 달성 시 노트에 새롭게 보일 문장, 0도리 1루루 2친구 3찰스 4무명이1 5무명이2 6롤렝드
-    [SerializeField] Text nameForNameless; //플레이어가 지어준 무명이 이름
-    [SerializeField] Button[] replayButtons;//다시보기 버튼, 0도리
-    [SerializeField] GameObject[] replayOptionWindows; //어떤 걸 다시 볼 지 고르는 창, 0도리
-    [SerializeField] GameObject specialMenuWindow;//스메셜 메뉴 다시보기 창
-    [SerializeField] Image menuImage; // 스페셜 메뉴 이미지
-    [SerializeField] Text menuName; // 메뉴 이름
-    [SerializeField] Text whichCharacter; //어느 캐릭터의 스페셜 메뉴인지
-    [SerializeField] GameObject replayMessageWindow;//첫만남, 이벤트 다시보기 메세지창
-    [SerializeField] Text replayMessageText; //누구의 첫만남/이벤트를 회상할까요? 라고 묻는 텍스트
+    [SerializeField] private Animator buttonAnimator;
+    [SerializeField] private Animator noteAnimator;
+    [SerializeField] private GameObject[] characterInfos; //캐릭터 정보 배열
+    [SerializeField] private GameObject[] pages; //페이지 버튼 배열
+    [SerializeField] private GameObject nextPageButton; //다음 페이지 버튼
+    [SerializeField] private GameObject previousPageButton; //이전 페이지 버튼
+    [SerializeField] private GameObject pageText1; // "페이지" 텍스트
+    [SerializeField] private GameObject pageText2; // "페이지" 텍스트 (회전한 버전)
+    [SerializeField] private GameObject[] friendshipGauges; //친밀도 게이지 배열
+    [SerializeField] private GameObject[] favFirstMenu;//좋아하는 첫번째 메뉴 배열, 0도리~~~11히로, 12디노, 13닥터펭, 14롤렝드
+    [SerializeField] private GameObject[] favSecondMenu; //두번째 좋아하는 메뉴 배열, 0도리, 1 빵빵, 2개나리~~10닥터펭 11롤렝드,  붕붕이/히로디노만 없음
+    [SerializeField] private GameObject[] hiddenText;//친밀도 이벤트 달성 시 노트에 새롭게 보일 문장, 0도리 1루루 2친구 3찰스 4무명이1 5무명이2 6롤렝드
+    [SerializeField] private Text nameForNameless; //플레이어가 지어준 무명이 이름
+    [SerializeField] private Button[] replayButtons;//다시보기 버튼, 0도리
+    [SerializeField] private GameObject[] replayOptionWindows; //어떤 걸 다시 볼 지 고르는 창, 0도리
+    [SerializeField] private GameObject specialMenuWindow;//스메셜 메뉴 다시보기 창
+    [SerializeField] private Image menuImage; // 스페셜 메뉴 이미지
+    [SerializeField] private Text menuName; // 메뉴 이름
+    [SerializeField] private Text whichCharacter; //어느 캐릭터의 스페셜 메뉴인지
+    [SerializeField] private GameObject replayMessageWindow;//첫만남, 이벤트 다시보기 메세지창
+    [SerializeField] private Text replayMessageText; //누구의 첫만남/이벤트를 회상할까요? 라고 묻는 텍스트
     #endregion
 
-    int pageNum = 1; //1페이지가 첫 페이지
-    static int pageGroup = 1; //1-4페이지까지가 1, 5-8까지가 2, 9 - 12가 3, 13 - 14가 4
+    private int pageNum = 1; //1페이지가 첫 페이지
+    private static int pageGroup = 1; //1-4페이지까지가 1, 5-8까지가 2, 9 - 12가 3, 13 - 14가 4
 
-    int openedPages = 1;//열린 페이지, 도리가 기본으로 있으므로 1, 마지막이 14
+    private int openedPages = 1;//열린 페이지, 도리가 기본으로 있으므로 1, 마지막이 14
 
-    int[] favFirstMenuOpen = new int[15]; //노트의 좋아하는 첫번째 메뉴 정보가 열렸는지 확인하기 위한 배열
-    int[] favSecondMenuOpen = new int[12]; //노트의 좋아하는 두번째 메뉴 정보가 열렸는지 확인하기 위한 배열
+    private int[] favFirstMenuOpen = new int[15]; //노트의 좋아하는 첫번째 메뉴 정보가 열렸는지 확인하기 위한 배열
+    private int[] favSecondMenuOpen = new int[12]; //노트의 좋아하는 두번째 메뉴 정보가 열렸는지 확인하기 위한 배열
 
-    int[] hiddenTextStates = new int[8]; //노트의 두번째 하고 싶은 말 정보가 열렸는지 확인
+    private int[] hiddenTextStates = new int[8]; //노트의 두번째 하고 싶은 말 정보가 열렸는지 확인
 
-    int[] friendshipInfo = new int[13] { 0, 0, 0, 0, 0, 0,0,0,0,0,0,0,0}; //친밀도 게이지 정보(서빙 횟수) 배열
+    private int[] friendshipInfo = new int[13] { 0, 0, 0, 0, 0, 0,0,0,0,0,0,0,0}; //친밀도 게이지 정보(서빙 횟수) 배열
     
-    int firstMeetID = 0; //첫만남 캐릭터별로 숫자 들어감
-    int friendEventID = 0; //이벤트 캐릭터별로 숫자 들어감
+    private int firstMeetID = 0; //첫만남 캐릭터별로 숫자 들어감
+    private int friendEventID = 0; //이벤트 캐릭터별로 숫자 들어감
 
-    bool isreplayOptionWindowOpen = false; //다시보기 버튼 터치되면 true
+    private bool isreplayOptionWindowOpen = false; //다시보기 버튼 터치되면 true
 
-    int replayState = 0; //다시보기 확정일 때 1, 다시보기 끝나면 2, 끝나고 1초 후 0으로 초기화
+    private int replayState = 0; //다시보기 확정일 때 1, 다시보기 끝나면 2, 끝나고 1초 후 0으로 초기화
 
     private void Awake()
     {
@@ -82,7 +82,7 @@ public class VisitorNote : MonoBehaviour
         }        
     }
 
-    void InitNote()
+    private void InitNote()
     {
         if (isreplayOptionWindowOpen)//다시보기 창이 활성화되어있으면
         {
@@ -755,7 +755,7 @@ public class VisitorNote : MonoBehaviour
         Invoke(nameof(CheckAndBeginDialogue), 0.2f);//0.2초 후 시나리오 시작, 오디오 페이드아웃 문제 때문
     }  
 
-    void CheckAndBeginDialogue()//누구 시나리오 다시보기인지 구분
+    private void CheckAndBeginDialogue()//누구 시나리오 다시보기인지 구분
     {
         if (firstMeetID != 0)//첫 만남 다시보기일 때
         {
@@ -981,7 +981,6 @@ public class VisitorNote : MonoBehaviour
 
     public void LoadVisitorNoteInfo() //게임 데이터 정보 불러옴
     {
-        //Debug.Log("LoadDataInfo");
         try
         {
             if (PlayerPrefs.HasKey("OpenedPages"))
