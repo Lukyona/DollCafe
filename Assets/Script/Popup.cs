@@ -13,7 +13,7 @@ public class Popup : MonoBehaviour // 새로운 손님 팝업
 
     private void Awake()
     {
-        if(instance == null)
+        if (instance == null)
         {
             instance = this;
         }
@@ -24,7 +24,7 @@ public class Popup : MonoBehaviour // 새로운 손님 팝업
         SystemManager.instance.SetUIOpen(true);
         SEManager.instance.PlayPopupSound(); //효과음
 
-        if (CharacterManager.instance.GetCurrentEventState() != 0 || VisitorNote.instance.GetFriendEventID() != 0) // 스페셜 메뉴 팝업인 경우
+        if (CharacterManager.instance.CurrentEventState != 0 || VisitorNote.instance.GetFriendEventID() != 0) // 스페셜 메뉴 팝업인 경우
         {
             newVisitorPopup.SetActive(false);
             specialMenuPopup.SetActive(true);
@@ -33,7 +33,7 @@ public class Popup : MonoBehaviour // 새로운 손님 팝업
         {
             specialMenuPopup.SetActive(false);
             newVisitorPopup.SetActive(true); //팝업 보이게
-        }       
+        }
 
         popupAnimator.SetTrigger("PopupOpen"); //팝업 오픈 애니메이션 작동
     }
@@ -45,7 +45,7 @@ public class Popup : MonoBehaviour // 새로운 손님 팝업
         popupAnimator.SetTrigger("PopupClose"); //닫히는 애니메이션 작동
         Invoke(nameof(PopupNotActive), 0.3f); //팝업 비활성화
 
-        if(SystemManager.instance.GetMainCount() == 2) //도리 방문, 첫 손님
+        if (SystemManager.instance.GetMainCount() == 2) //도리 방문, 첫 손님
         {
             //서빙 튜토리얼 실행
             CharacterManager.instance.FadeOutJeje();
@@ -57,7 +57,7 @@ public class Popup : MonoBehaviour // 새로운 손님 팝업
     {
         newVisitorPopup.SetActive(false);
 
-        if (CharacterManager.instance.GetCurrentEventState() != 0 || VisitorNote.instance.GetFriendEventID() != 0)//친밀도 이벤트 도중이거나 다시보기 도중이면
+        if (CharacterManager.instance.CurrentEventState != 0 || VisitorNote.instance.GetFriendEventID() != 0)//친밀도 이벤트 도중이거나 다시보기 도중이면
         {
             specialMenuPopup.SetActive(false);
             SystemManager.instance.SetCanTouch(true);
@@ -71,7 +71,7 @@ public class Popup : MonoBehaviour // 새로운 손님 팝업
         character.GetComponent<Image>().sprite = ch.GetComponent<Image>().sprite;
         if (SystemManager.instance.GetMainCount() == 13) //히로/디노의 경우 이미지 위치 조정
         {
-            character.GetComponent<RectTransform >().anchoredPosition = new Vector2(25, 80);
+            character.GetComponent<RectTransform>().anchoredPosition = new Vector2(25, 80);
         }
     }
 
@@ -80,11 +80,11 @@ public class Popup : MonoBehaviour // 새로운 손님 팝업
         //팝업창에 나타날 이미지 설정
         specialMenuPopup.transform.GetChild(0).GetComponentInChildren<Image>().sprite = menu.GetComponent<Image>().sprite;
         // 이미지 사이즈 조정
-        Vector2 size = new Vector2(menu.GetComponent<RectTransform>().rect.width, menu.GetComponent<RectTransform>().rect.height); 
+        Vector2 size = new Vector2(menu.GetComponent<RectTransform>().rect.width, menu.GetComponent<RectTransform>().rect.height);
         specialMenuPopup.transform.GetChild(0).GetComponentInChildren<Image>().GetComponent<RectTransform>().sizeDelta = size;
         specialMenuPopup.transform.GetChild(0).GetComponentInChildren<Image>().GetComponent<RectTransform>().anchoredPosition = new Vector2(0, anchorY); //이미지에 따라 앵커 Y 위치 조정
         // 나타날 텍스트 설정
-        specialMenuPopup.transform.GetChild(1).GetComponentInChildren<Text>().text = name; 
+        specialMenuPopup.transform.GetChild(1).GetComponentInChildren<Text>().text = name;
         specialMenuPopup.transform.GetChild(1).GetComponentInChildren<Text>().text += "를 위한 특별메뉴!";
     }
 }

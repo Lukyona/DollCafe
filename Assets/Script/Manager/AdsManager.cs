@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using GoogleMobileAds.Api;
 using System;
 
@@ -13,12 +11,12 @@ public class AdsManager : MonoBehaviour
     private string adUnitId = "ca-app-pub-9549514417727735/8806879959"; //광고 아이디
 
     private RewardedAd rewardedAd;
-    public bool IsWatchingAds {get; set;} //광고 보는 중 true, 다 보면 false
+    public bool IsWatchingAds { get; set; } //광고 보는 중 true, 다 보면 false
     private bool isLoaded = false; //광고 로드가 되었으면 true
 
     private void Awake()
     {
-        if(instance == null)
+        if (instance == null)
         {
             instance = this;
         }
@@ -42,9 +40,9 @@ public class AdsManager : MonoBehaviour
             rewardedAd.Destroy();
             rewardedAd = null;
         }
-      //Debug.Log("Loading the rewarded ad.");
+        //Debug.Log("Loading the rewarded ad.");
 
-      // create our request used to load the ad.
+        // create our request used to load the ad.
         var adRequest = new AdRequest();
 
         // send the request to load the ad.
@@ -64,7 +62,7 @@ public class AdsManager : MonoBehaviour
             });
     }
 
-    public void ShowRewardedAd() 
+    public void ShowRewardedAd()
     {
         //const string rewardMsg = "Rewarded ad rewarded the user. Type: {0}, amount: {1}.";
         if (rewardedAd != null && rewardedAd.CanShowAd())
@@ -87,12 +85,11 @@ public class AdsManager : MonoBehaviour
         SystemManager.instance.CantTouchUI(); // 버튼 터치 불가
         adsConsentWindow.SetActive(false);
         WantAds();
-
     }
 
     private void WantAds()
     {
-        if(rewardedAd.CanShowAd())
+        if (rewardedAd.CanShowAd())
         {
             ShowRewardedAd();
         }
@@ -105,14 +102,14 @@ public class AdsManager : MonoBehaviour
 
     private void Update()
     {
-        if(!isLoaded)
+        if (!isLoaded)
         {
-            if (rewardedAd.CanShowAd()) 
+            if (rewardedAd.CanShowAd())
             {
                 isLoaded = true; // 광고 로드 완료
                 SystemManager.instance.CanTouchUI(); // 다시 버튼 터치 가능
             }
-        } 
+        }
     }
 
     public void SetAdsConsentWindowActive(bool value)

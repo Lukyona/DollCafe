@@ -13,7 +13,6 @@
 // limitations under the License.
 
 using System;
-using Google.Play.Billing.Internal;
 using UnityEngine;
 
 namespace Google.Play.Billing.Internal

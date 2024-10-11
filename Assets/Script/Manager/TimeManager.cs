@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 
 public class TimeManager : MonoBehaviour
-{ 
-   public static TimeManager instance;
+{
+    public static TimeManager instance;
 
     private string url = "https://www.google.co.kr/";
     private DateTime dateTime;
@@ -17,7 +16,7 @@ public class TimeManager : MonoBehaviour
 
     private void Awake()
     {
-        if(instance == null)
+        if (instance == null)
         {
             instance = this;
         }
@@ -38,15 +37,15 @@ public class TimeManager : MonoBehaviour
 
     public bool IsTimerNotNull()
     {
-        return TimeCoroutine != null? true : false;
+        return TimeCoroutine != null ? true : false;
     }
 
     public IEnumerator WebChk()
     {
-        while(true)
+        while (true)
         {
             UnityWebRequest request = new UnityWebRequest();
-            using (request = UnityWebRequest.Get(url)) 
+            using (request = UnityWebRequest.Get(url))
             {
                 // yield는 코루틴 내에서 반드시 1번 이상 사용되어야 함
                 yield return request.SendWebRequest(); // 코드의 제어권을 유니티에게 잠시 양보했다가 돌려받아서 아래 코드를 계속 진행
@@ -69,14 +68,14 @@ public class TimeManager : MonoBehaviour
                     HPManager.instance.LoadHPInfo(); //체력 정보 불러옴
                 }
                 LoadAppQuitTime(); //게임 종료 시간 불러옴
-                HPManager.instance.CalculateTime(); 
+                HPManager.instance.CalculateTime();
                 SetLoadingState(false);
                 AdsManager.instance.IsWatchingAds = false;
-            } 
+            }
             yield return new WaitForSeconds(2f);
         }
     }
-        
+
     public void AfterWatchingAds()
     {
         SetLoadingState(true);
@@ -141,4 +140,3 @@ public class TimeManager : MonoBehaviour
         return loading;
     }
 }
-    

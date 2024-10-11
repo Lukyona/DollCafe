@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class CameraResolution : MonoBehaviour
 {
@@ -10,7 +8,7 @@ public class CameraResolution : MonoBehaviour
         Rect rect = camera.rect;
         float scaleheight = ((float)Screen.width / Screen.height) / ((float)16 / 9);
         float scalewidth = 1f / scaleheight;
-        if(scaleheight < 1)
+        if (scaleheight < 1)
         {
             rect.height = scaleheight;
             rect.y = (1f - scaleheight) / 2f;

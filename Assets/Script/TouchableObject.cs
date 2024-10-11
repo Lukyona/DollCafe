@@ -1,16 +1,11 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using UnityEngine;
-using UnityEngine.UI;
+﻿using UnityEngine;
 
 
 public class TouchableObject : MonoBehaviour //터치된 오브젝트 구분, 터치할 수 있는 오브젝트에 컴포넌트로 들어가있음
 {
     private int sNum; //자리 넘버
     private int cNum; //캐릭터 넘버
-   
+
     public void TouchSmallCharacter() //저장된 캐릭터 자리 구분, (자리에 앉아있는)작은 캐릭터 터치 시 실행
     {
         // 캐릭터 오브젝트 이름 예시 : small_1Bear
@@ -28,7 +23,7 @@ public class TouchableObject : MonoBehaviour //터치된 오브젝트 구분, �
     public void TouchMenuHintBubble() //메뉴힌트말풍선 터치 시 실행
     {
         // 메뉴힌트말풍선 오브젝트 이름 예시 : 2MenuHintRight
-        sNum = int.Parse(gameObject.name.Substring(0,1)) - 1; // 숫자만 추출해서 - 1
+        sNum = int.Parse(gameObject.name.Substring(0, 1)) - 1; // 숫자만 추출해서 - 1
 
         string charName = CharacterManager.instance.GetSittingCharacter(sNum).name;
         int idx = charName.IndexOf("_");
@@ -42,7 +37,7 @@ public class TouchableObject : MonoBehaviour //터치된 오브젝트 구분, �
     {
         // 메뉴 오브젝트 이름 예시 : Menu1_OrangeJuice
         int idx = gameObject.name.IndexOf("_");
-        int num = int.Parse(gameObject.name.Substring(idx-1,1)); // 숫자만 추출
+        int num = int.Parse(gameObject.name.Substring(idx - 1, 1)); // 숫자만 추출
 
         Menu.instance.MenuServingFunction(num);
     }
@@ -50,7 +45,7 @@ public class TouchableObject : MonoBehaviour //터치된 오브젝트 구분, �
     public void TouchStar()// 별 터치 시 실행, 터치한 별을 페이드아웃 큐에 추가
     {
         // 별 오브젝트 이름 예시 : 1Star
-        int star = int.Parse(gameObject.name.Substring(0,1)); // 숫자만 추출
+        int star = int.Parse(gameObject.name.Substring(0, 1)); // 숫자만 추출
         Star.instance.TouchStar(star);
     }
 
@@ -72,7 +67,7 @@ public class TouchableObject : MonoBehaviour //터치된 오브젝트 구분, �
         VisitorNote.instance.SetFriendEventID(idx);
 
         string name = "";
-        switch(idx)
+        switch (idx)
         {
             case 1:
                 name = "도리" + "와";

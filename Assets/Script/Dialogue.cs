@@ -21,7 +21,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
     private int specialMenuState = 0; //1이면 주인공 아기가 스페셜 메뉴를 가져오는 중, 친밀도 이벤트 시나리오 중 아기 페이드인에 사용
 
     private void Awake()
-    {     
+    {
         if (instance == null)
         {
             instance = this;
@@ -30,7 +30,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
 
     private void Update() //화면의 아무 곳이나 터치하면 다음 대사 나타남
     {
-        if (IsTalking() && SystemManager.instance.CanTouch() 
+        if (IsTalking() && SystemManager.instance.CanTouch()
             && !SystemManager.instance.IsNeedAction() && Input.GetMouseButtonDown(0))
         {
             OpenDialogue();
@@ -83,7 +83,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
         specialMenuState = value;
     }
     #endregion
-    
+
     public bool IsTalking()
     {
         return isTalking;
@@ -94,13 +94,13 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
         return isBabyText;
     }
 
-   public void UpdateCharacterDC(int cNum = -1)
+    public void UpdateCharacterDC(int cNum = -1)
     {
-        if(cNum != -1)
+        if (cNum != -1)
             characterNum = cNum;
 
         ++characterDC[characterNum];
-        if(characterNum != 0 && characterNum != 10 && characterNum != 11 && characterDC[characterNum] == 2) ///찰스, 무명이 제외하고는 친밀도 이벤트가 한 번뿐임
+        if (characterNum != 0 && characterNum != 10 && characterNum != 11 && characterDC[characterNum] == 2) ///찰스, 무명이 제외하고는 친밀도 이벤트가 한 번뿐임
         {
             characterDC[characterNum] = 3; // 캐릭터 에피소드 끝남
         }
@@ -158,12 +158,12 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
 
     public void OpenDialogue() //대화 시작
     {
-        if(count == -1) // 첫 대사
+        if (count == -1) // 첫 대사
         {
             isTalking = true;
             SystemManager.instance.SetCanTouch(false);
             SelectedFirstDialogue(); //첫 문장 나타남
-            SystemManager.instance.SetCanTouch(true,1.5f); // 1.5초 뒤 터치 가능
+            SystemManager.instance.SetCanTouch(true, 1.5f); // 1.5초 뒤 터치 가능
             ++count;
         }
         else
@@ -200,45 +200,45 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                     count = -1;
                     characterText.text = ""; //대사창 공백으로 만들고
                     babyText.text = "";
-                    if(VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//첫 만남이나 이벤트 다시보기가 아닐 경우
+                    if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//첫 만남이나 이벤트 다시보기가 아닐 경우
                     {
-                        if (characterDC[CharacterManager.instance.GetCharacterNum()] == 0 || characterDC[0] == 1)//캐릭터들의 첫 방문이거나 제제 튜토리얼 때는 BackToCafe() 실행
+                        if (characterDC[CharacterManager.instance.CurrentCharacterNum] == 0 || characterDC[0] == 1)//캐릭터들의 첫 방문이거나 제제 튜토리얼 때는 BackToCafe() 실행
                         {
                             SystemManager.instance.BackToCafe(); //카페로 복귀
                         }
                         else //그 외에 친밀도 이벤트 대화의 경우는 BackToCafe2() 실행
                         {
-                            SystemManager.instance.BackToCafe2(CharacterManager.instance.GetCharacterNum());
+                            SystemManager.instance.BackToCafe2(CharacterManager.instance.CurrentCharacterNum);
                         }
                     }
                     else//첫 만남 혹은 이벤트 다시보기일 때
                     {
                         SystemManager.instance.AfterRePlayStroy();
                     }
-                    
+
                     isTalking = false;
                 }
             }
         }
-    }  
-    
+    }
+
     private void DialogueEvent() //대화 이벤트
     {
-        int cNum = CharacterManager.instance.GetCharacterNum();
+        int cNum = CharacterManager.instance.CurrentCharacterNum;
         int babyNum = -1; // 친밀도 이벤트 시에 주인공 페이드인/아웃에 사용
         int babySeatNum = -1;
 
-        if(cNum != 0) // 캐릭터 번호에 따라 주인공 이미지가(왼쪽/오른쪽) 결정됨
+        if (cNum != 0) // 캐릭터 번호에 따라 주인공 이미지가(왼쪽/오른쪽) 결정됨
         {
-            if(cNum % 2 == 0) // 캐릭터가 짝수 (왼쪽에 앉아있음)
+            if (cNum % 2 == 0) // 캐릭터가 짝수 (왼쪽에 앉아있음)
             {
                 babyNum = 16;
-                babySeatNum = CharacterManager.instance.GetCharacterSeatNum(cNum)+1;
+                babySeatNum = CharacterManager.instance.GetCharacterSeatNum(cNum) + 1;
             }
-            else if(cNum % 2 == 1)
+            else if (cNum % 2 == 1)
             {
                 babyNum = 17;
-                babySeatNum = CharacterManager.instance.GetCharacterSeatNum(cNum)-1;
+                babySeatNum = CharacterManager.instance.GetCharacterSeatNum(cNum) - 1;
             }
         }
 
@@ -336,7 +336,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                         case 1:
                             CharacterManager.instance.SetCharacter(1); //도리 작은 캐릭터 설정
                             break;
-                        case 2: 
+                        case 2:
                             CharacterManager.instance.FadeIn(); //도리 페이드인
                             panels[0].SetActive(false);
                             panels[5].SetActive(true);
@@ -346,12 +346,12 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                             break;
                         case 3: //도리 터치 후, 메뉴 힌트 말풍선 등장
                             SystemManager.instance.SetNeedAction(false);
-                            SystemManager.instance.SetCanTouch(true,1f);
+                            SystemManager.instance.SetCanTouch(true, 1f);
                             break;
                         case 5: // 메뉴 힌트 말풍선 터치 활성화
                             SystemManager.instance.SetNeedAction(true);
                             SystemManager.instance.SetCanTouch(false);
-                            MenuHint.instance.Invoke("CanTouchMHB",1f);
+                            MenuHint.instance.Invoke("CanTouchMHB", 1f);
                             break;
                         case 7:
                             SystemManager.instance.SetNeedAction(false);
@@ -362,7 +362,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                 }
                 else if (characterDC[0] == 1)
                 {
-                    if(count == 11)
+                    if (count == 11)
                     {
                         CharacterManager.instance.GetSmallCharacter(0).GetComponent<Button>().interactable = false;//제제 클릭 불가
                     }
@@ -469,7 +469,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                         case 19:
                             CharacterManager.instance.CharacterFaceList[1].face[0].SetActive(false);//표정 기본으로
                             SetBabyText(false);
-                            break;                          
+                            break;
                         case 21:
                             CharacterManager.instance.CharacterFaceList[13].face[2].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(true);
@@ -493,16 +493,16 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                             {
                                 specialMenuState = 1; //메뉴 가지러 갔음
                                 CharacterManager.instance.FadeOut(babyNum, babySeatNum); //주인공(왼쪽) 페이드아웃
-                            }                                                  
+                            }
                             break;
                         case 28:
                             CharacterManager.instance.CharacterFaceList[1].face[1].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[1].face[0].SetActive(true);//표정 1
                             SetBabyText(false);
-                            if(VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
+                            if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                             {
                                 SystemManager.instance.SetCanTouch(false);
-                                SystemManager.instance.SetCanTouch(true,1f);
+                                SystemManager.instance.SetCanTouch(true, 1f);
                                 Menu.instance.SetFriendEventMenu(1);//스페셜 메뉴 준비
                             }
                             else //다시보기일 때, 특별 메뉴 팝업 설정
@@ -519,7 +519,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                             {
                                 CharacterManager.instance.SetCharacter(babyNum);
                                 Menu.instance.MenuFadeIn();//스페셜 메뉴 페이드인
-                            }                                
+                            }
                             Popup.instance.OpenPopup();//메뉴 팝업, 팝업 닫으면 다음 대사 넘기기 가능
                             break;
                         case 30:
@@ -528,7 +528,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                             if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                             {
                                 specialMenuState = 2; //메뉴 갖다줬음
-                            }     
+                            }
                             break;
                         case 31:
                             CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
@@ -612,14 +612,14 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                             if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                             {
                                 CharacterManager.instance.FadeIn();//붕붕 페이드인
-                            }                             
+                            }
                             break;
                         case 2:
                             SetBabyText(true);
                             if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                             {
                                 CharacterManager.instance.SetCharacter(babyNum);
-                            }      
+                            }
                             break;
                         case 3:
                             SetBabyText(false);
@@ -679,7 +679,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                             {
                                 specialMenuState = 1; //메뉴 가지러 갔음
                                 CharacterManager.instance.FadeOut(babyNum, babySeatNum); //주인공 페이드아웃  //아기 페이드아웃    
-                            }                                                                           
+                            }
                             break;
                         case 28:
                             SetBabyText(false);
@@ -688,7 +688,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                             if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                             {
                                 SystemManager.instance.SetCanTouch(false);
-                                SystemManager.instance.SetCanTouch(true,1f);
+                                SystemManager.instance.SetCanTouch(true, 1f);
                                 Menu.instance.SetFriendEventMenu(2);//스페셜 메뉴 준비
                             }
                             else //다시보기일 때, 특별 메뉴 팝업 설정
@@ -826,7 +826,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                             {
                                 specialMenuState = 1;
                                 CharacterManager.instance.FadeOut(babyNum, babySeatNum); //주인공 페이드아웃 
-                            }               
+                            }
                             break;
                         case 33:
                             SetBabyText(false);
@@ -835,7 +835,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                             if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                             {
                                 SystemManager.instance.SetCanTouch(false);
-                                SystemManager.instance.SetCanTouch(true,1f);
+                                SystemManager.instance.SetCanTouch(true, 1f);
                                 Menu.instance.SetFriendEventMenu(3);
                             }
                             else //다시보기일 때, 특별 메뉴 팝업 설정
@@ -856,7 +856,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                             break;
                         case 37:
                             CharacterManager.instance.CharacterFaceList[3].face[2].SetActive(true);
-                            SetBabyText(false);                            
+                            SetBabyText(false);
                             break;
                         case 39:
                             CharacterManager.instance.CharacterFaceList[3].face[2].SetActive(false);
@@ -894,7 +894,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                             CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(true);
                             break;
                         case 8:
-                            SetBabyText(false);                    
+                            SetBabyText(false);
                             break;
                         case 11:
                             CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(false);
@@ -916,7 +916,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                         case 10:
                             CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(true);
-                            SetBabyText(true);       
+                            SetBabyText(true);
                             break;
                         case 11:
                             CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(false);
@@ -932,7 +932,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                             if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                             {
                                 SystemManager.instance.SetCanTouch(false);
-                                SystemManager.instance.SetCanTouch(true,1f);
+                                SystemManager.instance.SetCanTouch(true, 1f);
                                 Menu.instance.SetFriendEventMenu(4);
                             }
                             else //다시보기일 때, 특별 메뉴 팝업 설정
@@ -942,7 +942,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                             break;
                         case 13:
                             SystemManager.instance.SetCanTouch(false);
-                            SetBabyText(true);                           
+                            SetBabyText(true);
                             if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                             {
                                 CharacterManager.instance.SetCharacter(babyNum);
@@ -952,7 +952,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                             Popup.instance.OpenPopup();//메뉴 팝업, 팝업 닫으면 다음 대사 넘기기 가능
                             break;
                         case 14:
-                            SetBabyText(false);                        
+                            SetBabyText(false);
                             break;
                     }
                 }
@@ -992,7 +992,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                         case 8:
                             CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(true);
-                            SetBabyText(true);      
+                            SetBabyText(true);
                             break;
                         case 9:
                             CharacterManager.instance.CharacterFaceList[13].face[6].SetActive(false);
@@ -1127,7 +1127,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                             if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                             {
                                 SystemManager.instance.SetCanTouch(false);
-                                SystemManager.instance.SetCanTouch(true,1f);
+                                SystemManager.instance.SetCanTouch(true, 1f);
                                 Menu.instance.SetFriendEventMenu(6);
                             }
                             else //다시보기일 때, 특별 메뉴 팝업 설정
@@ -1306,7 +1306,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                             if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                             {
                                 SystemManager.instance.SetCanTouch(false);
-                                SystemManager.instance.SetCanTouch(true,1f);
+                                SystemManager.instance.SetCanTouch(true, 1f);
                                 Menu.instance.SetFriendEventMenu(7);
                             }
                             else //다시보기일 때, 특별 메뉴 팝업 설정
@@ -1426,7 +1426,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                             if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                             {
                                 SystemManager.instance.SetCanTouch(false);
-                                SystemManager.instance.SetCanTouch(true,1f);
+                                SystemManager.instance.SetCanTouch(true, 1f);
                                 Menu.instance.SetFriendEventMenu(8);
                             }
                             else //다시보기일 때, 특별 메뉴 팝업 설정
@@ -1466,7 +1466,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                             break;
                     }
                 }
-                    break;
+                break;
             case 9: //친구
                 if (characterDC[9] == 0)
                 {
@@ -1534,7 +1534,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                             if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                             {
                                 SystemManager.instance.SetCanTouch(false);
-                                SystemManager.instance.SetCanTouch(true,1f);
+                                SystemManager.instance.SetCanTouch(true, 1f);
                                 Menu.instance.MenuFadeOut();//원래 있던 메뉴 페이드아웃
                             }
                             break;
@@ -1550,7 +1550,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                             if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                             {
                                 SystemManager.instance.SetCanTouch(false);
-                                SystemManager.instance.SetCanTouch(true,1f);
+                                SystemManager.instance.SetCanTouch(true, 1f);
                                 Menu.instance.SetFriendEventMenu(9);
                             }
                             else //다시보기일 때, 특별 메뉴 팝업 설정
@@ -1584,7 +1584,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                             break;
                     }
                 }
-                break;          
+                break;
             case 10: //찰스
                 if (characterDC[10] == 0)
                 {
@@ -1706,11 +1706,11 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                         case 16:
                             CharacterManager.instance.CharacterFaceList[13].face[4].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[0].SetActive(true);
-                            SetBabyText(true);                           
-                            break;                            
+                            SetBabyText(true);
+                            break;
                         case 18:
                             CharacterManager.instance.CharacterFaceList[8].face[0].SetActive(true);
-                            SetBabyText(false);                            
+                            SetBabyText(false);
                             CharacterManager.instance.SetSoldierEvent(true);
                             break;
                         case 19:
@@ -1721,12 +1721,12 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                             }
                             CharacterManager.instance.CharacterOut(10);
                             break;
-                        case 20:                            
+                        case 20:
                             SetBabyText(true);
                             if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                             {
                                 SystemManager.instance.SetCanTouch(false);
-                                SystemManager.instance.SetCanTouch(true,1.3f);
+                                SystemManager.instance.SetCanTouch(true, 1.3f);
                                 Menu.instance.SoldierEvent_ServeToPrincess(CharacterManager.instance.GetCharacterSeatNum(6));//도로시 자리정보를 매개변수로 넣기
                             }
                             break;
@@ -1753,7 +1753,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                             if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                             {
                                 SystemManager.instance.SetCanTouch(false);
-                                SystemManager.instance.SetCanTouch(true,1f);
+                                SystemManager.instance.SetCanTouch(true, 1f);
                                 CharacterManager.instance.FadeOut(10, CharacterManager.instance.GetCharacterSeatNum(10));//찰스 작은 캐릭터 페이드아웃
                             }
                             break;
@@ -1762,11 +1762,11 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                             CharacterManager.instance.CharacterFaceList[13].face[1].SetActive(false);
                             CharacterManager.instance.CharacterFaceList[13].face[2].SetActive(true);
                             SystemManager.instance.SetCanTouch(false);
-                            SystemManager.instance.SetCanTouch(true,1f);
+                            SystemManager.instance.SetCanTouch(true, 1f);
                             break;
                         case 26:
                             SystemManager.instance.SetCanTouch(false);
-                            SystemManager.instance.SetCanTouch(true,1.5f);
+                            SystemManager.instance.SetCanTouch(true, 1.5f);
                             CharacterManager.instance.CharacterFaceList[8].face[2].SetActive(true);
                             CharacterManager.instance.MovePrincess();//찰스등장을 위해 도로시가 옆으로 이동, 바로 찰스 등장
                             SetBabyText(false);
@@ -2075,7 +2075,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                             if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                             {
                                 SystemManager.instance.SetCanTouch(false);
-                                SystemManager.instance.SetCanTouch(true,1f);
+                                SystemManager.instance.SetCanTouch(true, 1f);
                                 Menu.instance.SetFriendEventMenu(11);
                             }
                             else //다시보기일 때, 특별 메뉴 팝업 설정
@@ -2105,7 +2105,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                             if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                             {
                                 SystemManager.instance.SetCanTouch(false);
-                                SystemManager.instance.SetCanTouch(true,1f);
+                                SystemManager.instance.SetCanTouch(true, 1f);
                                 Menu.instance.MenuFadeOut();//원래 있던 메뉴 페이드아웃
                             }
                             break;
@@ -2114,7 +2114,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                             {
                                 specialMenuState = 2;
                                 SystemManager.instance.SetCanTouch(false);
-                                SystemManager.instance.SetCanTouch(true,0.8f);
+                                SystemManager.instance.SetCanTouch(true, 0.8f);
                                 Menu.instance.SetFriendEventMenu(11);
                             }
                             else //다시보기일 때, 특별 메뉴 팝업 설정
@@ -2186,7 +2186,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                             SetBabyText(true);
                             break;
                         case 6:
-                            SetBabyText(false);                          
+                            SetBabyText(false);
                             break;
                         case 7:
                             SetBabyText(true);
@@ -2283,24 +2283,24 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                             if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                             {
                                 SystemManager.instance.SetCanTouch(false);
-                                SystemManager.instance.SetCanTouch(true,2.3f);
+                                SystemManager.instance.SetCanTouch(true, 2.3f);
                                 specialMenuState = 1;
-                                if(Menu.instance.GetSeatNum() % 2 == 0) // 짝수(마지막 서빙이 히로)면 디노 메뉴 먼저 페이드아웃
+                                if (Menu.instance.GetSeatNum() % 2 == 0) // 짝수(마지막 서빙이 히로)면 디노 메뉴 먼저 페이드아웃
                                 {
-                                    Menu.instance.MenuFadeOut(Menu.instance.GetSeatNum()+1);
+                                    Menu.instance.MenuFadeOut(Menu.instance.GetSeatNum() + 1);
                                 }
                                 else //홀수(마지막 서빙이 디노)면 히로 메뉴 먼저 페이드아웃
                                 {
-                                    Menu.instance.MenuFadeOut(Menu.instance.GetSeatNum()-1);
+                                    Menu.instance.MenuFadeOut(Menu.instance.GetSeatNum() - 1);
                                 }
-                                Menu.instance.MenuFadeOut(-1, false);   
+                                Menu.instance.MenuFadeOut(-1, false);
                             }
                             break;
                         case 24:
                             if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                             {
                                 SystemManager.instance.SetCanTouch(false);
-                                SystemManager.instance.SetCanTouch(true,0.6f);
+                                SystemManager.instance.SetCanTouch(true, 0.6f);
                                 Menu.instance.SetFriendEventMenu(12);
                                 Menu.instance.SetFriendEventMenu(13);
                             }
@@ -2368,12 +2368,12 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                             charName.text = "디노";
                             break;
                         case 39:
-                            charName.text = "히로";                         
+                            charName.text = "히로";
                             break;
                         case 42:
                             if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                             {
-                                Menu.instance.ReactionFadeIn(Menu.instance.GetSeatNum()-1,0);//히로 리액션 페이드인, 히로 다음 디노에게 마지막으로 서빙함
+                                Menu.instance.ReactionFadeIn(Menu.instance.GetSeatNum() - 1, 0);//히로 리액션 페이드인, 히로 다음 디노에게 마지막으로 서빙함
                                 specialMenuState = 2;
                             }
                             break;
@@ -2397,7 +2397,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                             SetBabyText(false);
                             break;
                         case 3:
-                            SetBabyText(true);                          
+                            SetBabyText(true);
                             break;
                         case 5:
                             SetBabyText(false);
@@ -2442,7 +2442,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                 else if (characterDC[13] == 1)
                 {
                     babyNum = 16; // 주인공이 오른쪽임
-                    babySeatNum = CharacterManager.instance.GetCharacterSeatNum(cNum+1)+1; 
+                    babySeatNum = CharacterManager.instance.GetCharacterSeatNum(cNum + 1) + 1;
                     switch (count)
                     {
                         case 0:
@@ -2520,7 +2520,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                             if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                             {
                                 SystemManager.instance.SetCanTouch(false);
-                                SystemManager.instance.SetCanTouch(true,1f);
+                                SystemManager.instance.SetCanTouch(true, 1f);
                                 Menu.instance.SetFriendEventMenu(14);
                             }
                             else //다시보기일 때, 특별 메뉴 팝업 설정
@@ -2591,7 +2591,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                             SetBabyText(true);
                             break;
                         case 11:
-                            SetBabyText(false);                           
+                            SetBabyText(false);
                             break;
                         case 13:
                             CharacterManager.instance.CharacterFaceList[13].face[7].SetActive(false);
@@ -2644,7 +2644,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                 else if (characterDC[14] == 1)
                 {
                     babyNum = 17; // 주인공이 왼쪽임
-                    babySeatNum = CharacterManager.instance.GetCharacterSeatNum(cNum+1)-1;
+                    babySeatNum = CharacterManager.instance.GetCharacterSeatNum(cNum + 1) - 1;
                     switch (count)
                     {
                         case 0:
@@ -2742,7 +2742,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                             if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                             {
                                 SystemManager.instance.SetCanTouch(false);
-                                SystemManager.instance.SetCanTouch(true,1f);
+                                SystemManager.instance.SetCanTouch(true, 1f);
                                 Menu.instance.MenuFadeOut();//원래 있던 메뉴 페이드아웃
                             }
                             break;
@@ -2759,7 +2759,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                             if (VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0)//다시보기가 아닐 때
                             {
                                 SystemManager.instance.SetCanTouch(false);
-                                SystemManager.instance.SetCanTouch(true,1f);
+                                SystemManager.instance.SetCanTouch(true, 1f);
                                 Menu.instance.SetFriendEventMenu(15);
                             }
                             else //다시보기일 때, 특별 메뉴 팝업 설정
@@ -2804,7 +2804,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                             SetBabyText(false);
                             break;
                         case 60:
-                            SetBabyText(true);                           
+                            SetBabyText(true);
                             break;
                         case 61:
                             SetBabyText(false);
@@ -2845,7 +2845,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                 RabbitFirstDialogue();
                 break;
             case 5:
-                DdorongFirstDialogue();
+                PaperCupFirstDialogue();
                 break;
             case 6:
                 PrincessFirstDialogue();
@@ -2898,7 +2898,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                 RabbitNextDialogue();
                 break;
             case 5:
-                DdorongNextDialogue();
+                PaperCupNextDialogue();
                 break;
             case 6:
                 PrincessNextDialogue();
@@ -3033,7 +3033,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
     private void BearStartDialogue() //도리 대사 첫 문장
     {
         switch (characterDC[1])
-        {          
+        {
             case 0: //카페 첫 방문
                 textWriterSingle = TextWriter.AddWriter_Static(characterText, "어라? 여기는 뭐하는 곳인가요?");
                 charName.text = "??";
@@ -3100,7 +3100,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                     "이게.. 뭐죠?",//30
                     "도리 너 카페와서 아무것도 안 먹었잖아~\n꽃 찾을 때 배고플까 봐!",
                     "..감사해요. " + babyName + "님은 정말 따뜻한 분이에요.", //32
-                    "헤헤, 그러면 마법 어떻게 쓰는 지만\n알려주면 안 돼?", 
+                    "헤헤, 그러면 마법 어떻게 쓰는 지만\n알려주면 안 돼?",
                     "후훗, " + babyName + "님은 이미 쓰고 계신 걸요.",
                     "..엥? 내가?",
                     "그럼 이만.. 사탕 잘 먹을게요.\n나중에 또 봬요.",
@@ -3112,7 +3112,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
 
     private void CarFirstDialogue() //붕붕 첫 문장
     {
-        switch(characterDC[2])
+        switch (characterDC[2])
         {
             case 0://카페 첫 방문
                 textWriterSingle = TextWriter.AddWriter_Static(characterText, "어? 여기에 이런 곳이 있었나? 드릉드릉");
@@ -3123,7 +3123,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                 textWriterSingle = TextWriter.AddWriter_Static(characterText, "드릉!!! 드르응!!!! 드릉드릉드르릉!!!!!!!");
                 charName.text = "붕붕";
                 break;
-        }      
+        }
     }
 
     private void CarNextDialogue() //붕붕 첫 문장 제외한 대사
@@ -3337,7 +3337,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
         }
     }
 
-    private void DdorongFirstDialogue() //또롱이 첫 문장
+    private void PaperCupFirstDialogue() //또롱이 첫 문장
     {
         switch (characterDC[5])
         {
@@ -3357,7 +3357,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
         }
     }
 
-    private void DdorongNextDialogue() //또롱이 첫 문장 제외한 대사
+    private void PaperCupNextDialogue() //또롱이 첫 문장 제외한 대사
     {
         switch (characterDC[5])
         {
@@ -4356,7 +4356,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                     "그래그래. 그럼 이만 일어나야겠구나.\n오늘도 좋은 시간 보내게 해줘서 고맙다.",
                     "나중에 또 보자구나.",
                 };
-                break;            
+                break;
         }
     }
     #endregion

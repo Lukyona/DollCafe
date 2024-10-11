@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 public class BlinkAnim : MonoBehaviour //터치투 스타트 메세지를 깜빡거리게
@@ -13,7 +11,7 @@ public class BlinkAnim : MonoBehaviour //터치투 스타트 메세지를 깜빡
     {
         BgmManager.instance.PlayStartBgm(); //시작화면 브금 재생
     }
-    
+
     private void Update()
     {
         if (Input.GetMouseButtonDown(0)) //터치되면
@@ -26,10 +24,10 @@ public class BlinkAnim : MonoBehaviour //터치투 스타트 메세지를 깜빡
         {
             image.color = new Color(1, 1, 1, 1 - time);
         }
-        else 
+        else
         {
             image.color = new Color(1, 1, 1, time); // 서서히 선명해지기
-            if(time > 1f)
+            if (time > 1f)
             {
                 time = 0; // 초기화
             }

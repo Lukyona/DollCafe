@@ -1,9 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
-public class Setting : MonoBehaviour 
+public class Setting : MonoBehaviour
 {
     public static Setting instance;
 
@@ -48,7 +46,7 @@ public class Setting : MonoBehaviour
     }
 
     public void CloseSetting() //설정창 닫기 버튼 눌렀을 때
-    {        
+    {
         SEManager.instance.PlayUICloseSound(); //효과음
         settingWindowAnimator.SetTrigger("SettingDown"); //설정창 내려감
         settingButton.GetComponent<Button>().interactable = true; //설정 버튼 터치 가능
@@ -56,7 +54,7 @@ public class Setting : MonoBehaviour
 
         if (!SystemManager.instance.IsNeedAction()) //특정한 터치를 해야하는 경우가 아닐 때
         {
-            SystemManager.instance.SetCanTouch(true,1f);
+            SystemManager.instance.SetCanTouch(true, 1f);
         }
 
         SystemManager.instance.SetUIOpen(false);
@@ -75,7 +73,7 @@ public class Setting : MonoBehaviour
     {
         SEManager.instance.PlayUITouchSound2();
         yesResetButton.interactable = false;
-        noResetButton.interactable = false;        
+        noResetButton.interactable = false;
         isReset = true;
 
         DeleteUserInfo();
@@ -84,7 +82,7 @@ public class Setting : MonoBehaviour
 
     public void DeleteUserInfo()
     {
-        if(PlayerPrefs.GetInt("PurchaseCount") == 0)//결제한 것이 없으면 데이터 모두 삭제
+        if (PlayerPrefs.GetInt("PurchaseCount") == 0)//결제한 것이 없으면 데이터 모두 삭제
         {
             PlayerPrefs.DeleteAll();
         }
@@ -92,11 +90,11 @@ public class Setting : MonoBehaviour
         {
             PlayerPrefs.DeleteKey("AppQuitTime");
             PlayerPrefs.DeleteKey("MainCount");
-            PlayerPrefs.DeleteKey("NextAppear");
+            PlayerPrefs.DeleteKey("NextAppearNum");
             PlayerPrefs.DeleteKey("Reputation");
             PlayerPrefs.DeleteKey("StarNum");
             PlayerPrefs.DeleteKey("EndingState");
-            PlayerPrefs.DeleteKey("HPAmount");
+            PlayerPrefs.DeleteKey("CurrentHP");
             PlayerPrefs.DeleteKey("RemainMinTimer");
             PlayerPrefs.DeleteKey("RemainSecTimer");
             PlayerPrefs.DeleteKey("CharacterDC");
@@ -143,7 +141,7 @@ public class Setting : MonoBehaviour
         SEManager.instance.PlayUITouchSound2();
         creditView.SetActive(false);
         resetButton.interactable = true;
-        creditButton.interactable = true;       
+        creditButton.interactable = true;
     }
 
     public void OpenPrivacyLink()

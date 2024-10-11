@@ -1,15 +1,12 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
+﻿using UnityEngine;
 
 public class SEManager : MonoBehaviour //효과음 매니저
 {
     public static SEManager instance;
 
     #region 효과음 소스들
-    [SerializeField] private AudioClip click; 
-    [SerializeField] private AudioClip close; 
+    [SerializeField] private AudioClip click;
+    [SerializeField] private AudioClip close;
     [SerializeField] private AudioClip popup;
     [SerializeField] private AudioClip nextPage; //손님 노트 넘기는 효과음
     [SerializeField] private AudioClip click2; //메뉴 힌트,자잘한 버튼들 터치 효과음
@@ -31,18 +28,18 @@ public class SEManager : MonoBehaviour //효과음 매니저
 
     public void PlayTouchSound()//터치 시 효과음 재생
     {
-       myAudio.PlayOneShot(touch);
+        myAudio.PlayOneShot(touch);
     }
 
     public void PlayBirdSound()
     {
         myAudio.PlayOneShot(bird);
-    }  
+    }
 
     public void PlayUITouchSound()
     {
         myAudio.PlayOneShot(click);
-    } 
+    }
 
     public void PlayUITouchSound2()
     {

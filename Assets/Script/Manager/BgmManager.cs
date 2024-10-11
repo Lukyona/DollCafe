@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -11,8 +10,8 @@ public class BgmManager : MonoBehaviour
     [SerializeField] private AudioClip startBgm;
     [SerializeField] private AudioClip cafeBgm;
 
-    [SerializeField] private AudioClip[] characterBgmList; 
-    [SerializeField] private float[] characterVolumeList; 
+    [SerializeField] private AudioClip[] characterBgmList;
+    [SerializeField] private float[] characterVolumeList;
     #endregion
 
     private AudioSource myAudio;
@@ -32,8 +31,7 @@ public class BgmManager : MonoBehaviour
 
     private void PlayBgm(AudioClip clip)
     {
-
-        if (IsBgmOff())//브금 off 상태면
+        if (IsBgmOff())
         {
             OffBgm();
             return;
@@ -44,24 +42,24 @@ public class BgmManager : MonoBehaviour
         myAudio.Play();
     }
 
-    public void PlayStartBgm() //시작화면 브금
+    public void PlayStartBgm()
     {
         PlayBgm(startBgm);
     }
 
-    public void PlayCafeBgm() //카페 브금
+    public void PlayCafeBgm()
     {
         PlayBgm(cafeBgm);
     }
 
     public void PlayCharacterBGM(int cNum)
-    {        
+    {
         if (cNum < 0 || cNum >= characterBgmList.Length) return; // 유효 범위 체크
 
         myAudio.clip = characterBgmList[cNum];
         myAudio.volume = characterVolumeList[cNum];
         myAudio.Play();
-        
+
         if (IsBgmOff())//브금 off 상태면
         {
             OffBgm();
@@ -90,7 +88,7 @@ public class BgmManager : MonoBehaviour
 
     public void BgmFadeOut()
     {
-        if (IsBgmOff())//브금 off 상태면
+        if (IsBgmOff())
         {
             return;
         }
@@ -101,10 +99,10 @@ public class BgmManager : MonoBehaviour
     {
         float currentTime = 0f;
         float targetVolume = 0f;
-        float start = audioSource.volume;        
+        float start = audioSource.volume;
         while (currentTime < duration) // 2.5초동안 페이드아웃
         {
-            if(SceneManager.GetActiveScene().name == "GameScene" && VisitorNote.instance.GetReplayState() == 1)//다시보기 시작되면 페이드아웃 바로 종료
+            if (SceneManager.GetActiveScene().name == "GameScene" && VisitorNote.instance.GetReplayState() == 1)//다시보기 시작되면 페이드아웃 바로 종료
             {
                 break;
             }
@@ -112,7 +110,7 @@ public class BgmManager : MonoBehaviour
             audioSource.volume = Mathf.Lerp(start, targetVolume, currentTime / duration); // 오디오소스의 볼륨을 0으로 서서히 낮추기
             yield return null;
         }
-        audioSource.Stop(); 
+        audioSource.Stop();
         yield break; // 코루틴 종료
     }
 }
