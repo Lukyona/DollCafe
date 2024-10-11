@@ -109,7 +109,7 @@ public class Setting : MonoBehaviour
             PlayerPrefs.DeleteKey("FriendEventID");
             PlayerPrefs.DeleteKey("BabyName");
             PlayerPrefs.DeleteKey("NameForNameless");
-            PlayerPrefs.DeleteKey("BgmOnOff");
+            PlayerPrefs.DeleteKey("BgmState");
             PlayerPrefs.DeleteKey("SEOnOff");
         }
     }

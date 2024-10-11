@@ -723,7 +723,7 @@ public class Menu : MonoBehaviour
         }
         else
         {
-            Debug.Log("앉아있는 캐릭터 Null! 자리는" + num);
+            //Debug.Log("앉아있는 캐릭터 Null! 자리는" + num);
         }
     }
 

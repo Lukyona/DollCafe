@@ -1084,9 +1084,9 @@ public class SystemManager : MonoBehaviour
 
         int pCount = PlayerPrefs.GetInt("PurchaseCount");
         if (pCount == 0)
-            HPManager.instance.HPMax20();
+            HPManager.instance.SetMaxHP20();
         else if (pCount == 1)
-            HPManager.instance.HPSpeedUp();
+            HPManager.instance.SpeedUpHPRecovery();
 
         PlayerPrefs.SetInt("PurchaseCount", ++pCount); //인앱 결제 정보 저장
         PlayerPrefs.Save(); //세이브

@@ -138,7 +138,7 @@ class ToggleController : MonoBehaviour //설정의 브금 효과음 on off토글
 	{
 		try
 		{
-			if (PlayerPrefs.HasKey("BgmOnOff") || PlayerPrefs.HasKey("SEOnOff"))
+			if (PlayerPrefs.HasKey("BgmState") || PlayerPrefs.HasKey("SEOnOff"))
 			{
 				if (gameObject.name == "ToggleBgm")
 				{
@@ -183,7 +183,7 @@ class ToggleController : MonoBehaviour //설정의 브금 효과음 on off토글
 		{
 			if (gameObject.name == "ToggleBgm")
 			{
-				PlayerPrefs.SetInt("BgmOnOff", state);
+				PlayerPrefs.SetInt("BgmState", state);
 			}
 			else
 			{

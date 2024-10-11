@@ -930,7 +930,7 @@ public class VisitorNote : MonoBehaviour
                     strArr = strArr + ",";
                 }
             }
-            PlayerPrefs.SetString("favFirstMenuOpen", strArr);
+            PlayerPrefs.SetString("FavFirstMenuOpen", strArr);
 
             string strArr1 = ""; // 문자열 생성
             for (int i = 0; i < favSecondMenuOpen.Length; i++) // 두번째 좋아하는 메뉴 
@@ -941,7 +941,7 @@ public class VisitorNote : MonoBehaviour
                     strArr1 = strArr1 + ",";
                 }
             }
-            PlayerPrefs.SetString("favSecondMenuOpen", strArr1); // PlyerPrefs에 문자열 형태로 저장
+            PlayerPrefs.SetString("FavSecondMenuOpen", strArr1); // PlyerPrefs에 문자열 형태로 저장
 
             string strArr2 = ""; // 문자열 생성
             for (int i = 0; i < hiddenTextStates.Length; i++) // 두번째 문장
@@ -1001,9 +1001,9 @@ public class VisitorNote : MonoBehaviour
                 }
             }
 
-            if (PlayerPrefs.HasKey("favFirstMenuOpen"))
+            if (PlayerPrefs.HasKey("FavFirstMenuOpen"))
             {
-                string[] dataArr = PlayerPrefs.GetString("favFirstMenuOpen").Split(','); // PlayerPrefs에서 불러온 값을 Split 함수를 통해 문자열의 ,로 구분하여 배열에 저장
+                string[] dataArr = PlayerPrefs.GetString("FavFirstMenuOpen").Split(','); // PlayerPrefs에서 불러온 값을 Split 함수를 통해 문자열의 ,로 구분하여 배열에 저장
 
                 for (int i = 0; i < dataArr.Length; i++)
                 {
@@ -1016,9 +1016,9 @@ public class VisitorNote : MonoBehaviour
                 }
             }
 
-            if (PlayerPrefs.HasKey("favSecondMenuOpen"))
+            if (PlayerPrefs.HasKey("FavSecondMenuOpen"))
             {
-                string[] dataArr1 = PlayerPrefs.GetString("favSecondMenuOpen").Split(','); // PlayerPrefs에서 불러온 값을 Split 함수를 통해 문자열의 ,로 구분하여 배열에 저장
+                string[] dataArr1 = PlayerPrefs.GetString("FavSecondMenuOpen").Split(','); // PlayerPrefs에서 불러온 값을 Split 함수를 통해 문자열의 ,로 구분하여 배열에 저장
 
                 for (int i = 0; i < dataArr1.Length; i++)
                 {

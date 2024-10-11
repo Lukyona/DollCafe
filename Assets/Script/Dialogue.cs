@@ -123,7 +123,7 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
                 }
             }
 
-            PlayerPrefs.SetString("characterDC", strArr); // PlyerPrefs에 문자열 형태로 저장
+            PlayerPrefs.SetString("CharacterDC", strArr); // PlyerPrefs에 문자열 형태로 저장
             PlayerPrefs.Save(); //세이브
         }
         catch (System.Exception e)
@@ -137,9 +137,9 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
         bool result = false;
         try
         {
-            if (PlayerPrefs.HasKey("characterDC"))
+            if (PlayerPrefs.HasKey("CharacterDC"))
             {
-                string[] dataArr = PlayerPrefs.GetString("characterDC").Split(','); // PlayerPrefs에서 불러온 값을 Split 함수를 통해 문자열의 ,로 구분하여 배열에 저장
+                string[] dataArr = PlayerPrefs.GetString("CharacterDC").Split(','); // PlayerPrefs에서 불러온 값을 Split 함수를 통해 문자열의 ,로 구분하여 배열에 저장
 
                 for (int i = 0; i < dataArr.Length; i++)
                 {

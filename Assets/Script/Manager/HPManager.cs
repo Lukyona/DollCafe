@@ -5,20 +5,22 @@ using UnityEngine.UI;
 
 public class HPManager : MonoBehaviour
 {
+    private const int DefaultMaxHP = 10;
+    private const int PurchasedMaxHP = 20;
+
     public static HPManager instance;
 
     #region InGameObject
-    // txt : Text, go : GameObject
-    [SerializeField] private Text txtRechargeMinTimer = null;  //재충전까지 남은 분
-    [SerializeField] private Text txtRechargeSecTimer = null; //재충전까지 남은 초
-    [SerializeField] private GameObject goMid; // 분과 초 사이의 콜론
-    [SerializeField] private GameObject goFullText; // 체력이 맥스일 때 나타나는 텍스트
+    [SerializeField] private Text rechargeMinText = null;  //재충전까지 남은 분
+    [SerializeField] private Text rechargeSecText = null; //재충전까지 남은 초
+    [SerializeField] private GameObject colon; // 분과 초 사이의 콜론
+    [SerializeField] private GameObject fullText; // 체력이 맥스일 때 나타나는 텍스트
 
-    [SerializeField] private Text txtCurrentHP = null;
+    [SerializeField] private Text currentHPText = null;
     #endregion
 
     private int currentHP = 0;
-    private int maxHP = 10; // 결제 시 20
+    private int maxHP = DefaultMaxHP; // 결제 시 20
 
     private DateTime appQuitTime = new DateTime(1970, 1, 1).ToLocalTime(); // 게임 나간 시간
     private int rechargeIntervalMin = 10;// 체력 충전 간격(단위:분) 10분에 1 충전, 결제 시 5분
@@ -44,11 +46,11 @@ public class HPManager : MonoBehaviour
                 currentHP += 2;
                 TimeManager.instance.AfterWatchingAds();
             }
-            else if (SystemManager.instance.IsExchanging())//별하트 전환일 때
+            else //별하트 전환일 때
             {
                 currentHP += 1;
             }
-            txtCurrentHP.text = string.Format("{0}", currentHP.ToString());
+            UpdateCurrentHPText();
         }
 
         SaveHPInfo();
@@ -78,7 +80,7 @@ public class HPManager : MonoBehaviour
             int pCount = PlayerPrefs.GetInt("PurchaseCount");
             if (pCount != 0)
             {
-                maxHP = 20;
+                maxHP = PurchasedMaxHP;
                 if (pCount == 2)
                     rechargeIntervalMin = 5;
 
@@ -96,18 +98,14 @@ public class HPManager : MonoBehaviour
                     currentHP = 0;
                 }
             }
-            else
-            {
-                //Debug.Log("체력 정보 없음");
-            }
 
-            txtCurrentHP.text = currentHP.ToString();
+            currentHPText.text = currentHP.ToString();
             if (currentHP < maxHP)
             {
-                goFullText.SetActive(false);
-                txtRechargeMinTimer.gameObject.SetActive(true);
-                txtRechargeSecTimer.gameObject.SetActive(true);
-                goMid.SetActive(true);
+                fullText.SetActive(false);
+                rechargeMinText.gameObject.SetActive(true);
+                rechargeSecText.gameObject.SetActive(true);
+                colon.SetActive(true);
             }
             else
             {
@@ -153,12 +151,11 @@ public class HPManager : MonoBehaviour
     public void SetFullHP()
     {
         currentHP = maxHP;
-        txtCurrentHP.text = string.Format("{0}", currentHP.ToString());
 
-        txtRechargeMinTimer.gameObject.SetActive(false);
-        txtRechargeSecTimer.gameObject.SetActive(false);
-        goMid.SetActive(false);
-        goFullText.SetActive(true);
+        rechargeMinText.gameObject.SetActive(false);
+        rechargeSecText.gameObject.SetActive(false);
+        colon.SetActive(false);
+        fullText.SetActive(true);
         if (rechargeTimerCoroutine != null)
         {
             StopCoroutine(rechargeTimerCoroutine);
@@ -177,11 +174,9 @@ public class HPManager : MonoBehaviour
 
         int elapsedMin = (int)(TimeManager.instance.GetDateTime() - appQuitTime).TotalMinutes; // 게임 종료 후 경과된 시간(분)
         int elapsedSec = (int)((TimeManager.instance.GetDateTime() - appQuitTime).TotalSeconds % 60); // 게임 종료 후 경과된 시간(초)
-        //print(elapsedMin + "분 " + elapsedSec + "초 지남");
 
         int calculatedMin = elapsedMin - savedMinTimer; // 분 계산
         int calculatedSec = elapsedSec - savedSecTimer;  // 초 계산
-                                                         // Debug.Log("CalculateRemainTime : " + calculatedMin + "m " + calculatedSec + "s");
 
         // calculatedMin : calculatedSec 로 구분
         if (calculatedMin == 0 && calculatedSec == 0) // 0 : 0 , 저장된 타이머와 나가 있던 시간이 동일할 경우
@@ -242,7 +237,6 @@ public class HPManager : MonoBehaviour
                 remainSecTime = rechargeIntervalSec - calculatedSec;
             }
         }
-        //Debug.Log("RemainTime : " + remainMinTime + "m " + remainSecTime + "s"); //타이머에 표시될 시간
 
         if (currentHP >= maxHP)
         {
@@ -256,21 +250,21 @@ public class HPManager : MonoBehaviour
             }
             rechargeTimerCoroutine = StartCoroutine(DoRechargeTimer(remainMinTime, remainSecTime)); // 게임 내에 보여질 타이머 코루틴 실행
         }
-        txtCurrentHP.text = string.Format("{0}", currentHP.ToString());
+        UpdateCurrentHPText();
     }
 
     public void UseHP()
     {
         currentHP--;
-        txtCurrentHP.text = string.Format("{0}", currentHP.ToString());
+        UpdateCurrentHPText();
 
         if (rechargeTimerCoroutine == null) // 코루틴이 동작하지 않고 있었다 = 이전까지 최대 체력이었다
         {
             rechargeTimerCoroutine = StartCoroutine(DoRechargeTimer(rechargeIntervalMin - 1, rechargeIntervalSec));
-            goFullText.SetActive(false); //체력 소모했으므로 절대 최대치가 아님, 따라서 풀 텍스트 안 보이게 하고 타이머 보이게
-            txtRechargeMinTimer.gameObject.SetActive(true);
-            txtRechargeSecTimer.gameObject.SetActive(true);
-            goMid.SetActive(true);
+            fullText.SetActive(false); //체력 소모했으므로 절대 최대치가 아님, 따라서 풀 텍스트 안 보이게 하고 타이머 보이게
+            rechargeMinText.gameObject.SetActive(true);
+            rechargeSecText.gameObject.SetActive(true);
+            colon.SetActive(true);
         }
     }
 
@@ -278,28 +272,27 @@ public class HPManager : MonoBehaviour
     {
         rechargeRemainMin = remainMin;
         rechargeRemainSec = remainSec;
-        //Debug.Log("HPRechargeTimer : " + rechargeRemainMin + "m " + rechargeRemainSec + "s"); 
 
-        txtRechargeMinTimer.text = string.Format("{0}", rechargeRemainMin);
-        txtRechargeSecTimer.text = string.Format("{0}", rechargeRemainSec);
+        UpdateRechargeMinText();
+        UpdateRechargeSecText();
 
-        while (rechargeRemainMin >= 0)
+        while (rechargeRemainMin >= 0 && currentHP < maxHP)
         {
             while (rechargeRemainSec > 0)
             {
                 rechargeRemainSec -= 1;
-                txtRechargeSecTimer.text = string.Format("{0}", rechargeRemainSec);
+                UpdateRechargeSecText();
                 yield return new WaitForSeconds(1f);
             }
 
             rechargeRemainMin -= 1;
-            txtRechargeMinTimer.text = string.Format("{0}", rechargeRemainMin);
+            UpdateRechargeMinText();
 
             rechargeRemainSec = rechargeIntervalSec; //초는 60으로 변경, 어차피 바로 59가 되기 때문에
         }
 
         currentHP++;
-        txtCurrentHP.text = string.Format("{0}", currentHP.ToString());
+        UpdateCurrentHPText();
 
         if (currentHP >= maxHP)
         {
@@ -311,33 +304,45 @@ public class HPManager : MonoBehaviour
         {
             rechargeTimerCoroutine = StartCoroutine(DoRechargeTimer(rechargeIntervalMin - 1, rechargeIntervalSec));
         }
+
     }
 
-    public void HPMax20()
+    private void UpdateCurrentHPText()
     {
-        maxHP = 20;
+        currentHPText.text = currentHP.ToString();
+    }
 
-        if (currentHP != 10)
+    private void UpdateRechargeMinText()
+    {
+        rechargeMinText.text = rechargeRemainMin.ToString();
+    }
+
+    private void UpdateRechargeSecText()
+    {
+        rechargeSecText.text = rechargeRemainSec.ToString();
+    }
+
+    public void SetMaxHP20()
+    {
+        maxHP = PurchasedMaxHP;
+
+        if (currentHP != DefaultMaxHP)
         {
             SetFullHP();
         }
         currentHP = maxHP;
-        txtCurrentHP.text = string.Format("{0}", currentHP.ToString());
-
-        //print("최대 체력 20으로 증가");
+        UpdateCurrentHPText();
     }
 
-    public void HPSpeedUp()
+    public void SpeedUpHPRecovery()
     {
         rechargeIntervalMin = 5; //5분에 1체력 회복
         if (rechargeRemainMin >= 5)//현재 남은 타이머가 5분 이상이면 5분으로 만들기
         {
             rechargeRemainMin = 4;
             rechargeRemainSec = 59;
-            txtRechargeMinTimer.text = string.Format("{0}", rechargeRemainMin);
-            txtRechargeSecTimer.text = string.Format("{0}", rechargeRemainSec);
+            UpdateRechargeMinText();
+            UpdateRechargeSecText();
         }
-        //print("체력 회복 속도 2배 증가");
     }
-
 }

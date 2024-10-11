@@ -68,7 +68,7 @@ public class BgmManager : MonoBehaviour
 
     public bool IsBgmOff()
     {
-        return PlayerPrefs.GetInt("BgmOnOff") == 1;
+        return PlayerPrefs.GetInt("BgmState") == 1;
     }
 
     public void StopBgm()
