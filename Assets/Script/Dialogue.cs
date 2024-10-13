@@ -30,8 +30,8 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
 
     private void Update() //화면의 아무 곳이나 터치하면 다음 대사 나타남
     {
-        if (IsTalking() && SystemManager.instance.CanTouch()
-            && !SystemManager.instance.IsNeedAction() && Input.GetMouseButtonDown(0))
+        if (IsTalking() && SystemManager.instance.CanTouch
+            && !SystemManager.instance.IsNeedAction && Input.GetMouseButtonDown(0))
         {
             OpenDialogue();
         }
@@ -124,7 +124,6 @@ public class Dialogue : MonoBehaviour //캐릭터들 대화
             }
 
             PlayerPrefs.SetString("CharacterDC", strArr); // PlyerPrefs에 문자열 형태로 저장
-            PlayerPrefs.Save(); //세이브
         }
         catch (System.Exception e)
         {

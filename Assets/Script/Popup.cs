@@ -21,7 +21,7 @@ public class Popup : MonoBehaviour // 새로운 손님 팝업
 
     public void OpenPopup() //팝업 열림
     {
-        SystemManager.instance.SetUIOpen(true);
+        SystemManager.instance.IsUIOpen = true;
         SEManager.instance.PlayPopupSound(); //효과음
 
         if (CharacterManager.instance.CurrentEventState != 0 || VisitorNote.instance.GetFriendEventID() != 0) // 스페셜 메뉴 팝업인 경우
@@ -40,12 +40,12 @@ public class Popup : MonoBehaviour // 새로운 손님 팝업
 
     public void ClosePopup() //팝업 닫기 버튼 눌렀을 때
     {
-        SystemManager.instance.SetUIOpen(false);
+        SystemManager.instance.IsUIOpen = false;
         SEManager.instance.PlayUICloseSound(); //효과음
         popupAnimator.SetTrigger("PopupClose"); //닫히는 애니메이션 작동
         Invoke(nameof(PopupNotActive), 0.3f); //팝업 비활성화
 
-        if (SystemManager.instance.GetMainCount() == 2) //도리 방문, 첫 손님
+        if (SystemManager.instance.MainCount == 2) //도리 방문, 첫 손님
         {
             //서빙 튜토리얼 실행
             CharacterManager.instance.FadeOutJeje();
@@ -69,7 +69,7 @@ public class Popup : MonoBehaviour // 새로운 손님 팝업
     {
         character.GetComponent<RectTransform>().sizeDelta = new Vector2(ch.GetComponent<RectTransform>().rect.width, ch.GetComponent<RectTransform>().rect.height); //사이즈 조정
         character.GetComponent<Image>().sprite = ch.GetComponent<Image>().sprite;
-        if (SystemManager.instance.GetMainCount() == 13) //히로/디노의 경우 이미지 위치 조정
+        if (SystemManager.instance.MainCount == 13) //히로/디노의 경우 이미지 위치 조정
         {
             character.GetComponent<RectTransform>().anchoredPosition = new Vector2(25, 80);
         }

@@ -34,9 +34,9 @@ public class Setting : MonoBehaviour
 
     public void ShowSetting() //설정 버튼 터치했을 때
     {
-        if (!SystemManager.instance.IsUIOpen())//UI가 올라오지 않았을 때
+        if (!SystemManager.instance.IsUIOpen)//UI가 올라오지 않았을 때
         {
-            SystemManager.instance.SetUIOpen(true);
+            SystemManager.instance.IsUIOpen = true;
             SEManager.instance.PlayUITouchSound(); //효과음           
 
             settingWindowAnimator.SetTrigger("SettingUp"); //설정창 올라옴
@@ -52,12 +52,12 @@ public class Setting : MonoBehaviour
         settingButton.GetComponent<Button>().interactable = true; //설정 버튼 터치 가능
 
 
-        if (!SystemManager.instance.IsNeedAction()) //특정한 터치를 해야하는 경우가 아닐 때
+        if (!SystemManager.instance.IsNeedAction) //특정한 터치를 해야하는 경우가 아닐 때
         {
             SystemManager.instance.SetCanTouch(true, 1f);
         }
 
-        SystemManager.instance.SetUIOpen(false);
+        SystemManager.instance.IsUIOpen = false;
     }
 
     public void CheckResetGame() //게임 초기화 버튼 눌렀을 때

@@ -61,7 +61,7 @@ public class TimeManager : MonoBehaviour
                 }
             }
 
-            if (IsLoading())//로드할 때
+            if (loading)//로드할 때
             {
                 if (!AdsManager.instance.IsWatchingAds)
                 {
@@ -129,10 +129,5 @@ public class TimeManager : MonoBehaviour
     public void SetLoadingState(bool value)
     {
         loading = value;
-    }
-
-    public bool IsLoading()
-    {
-        return loading;
     }
 }

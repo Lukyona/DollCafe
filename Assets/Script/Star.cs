@@ -37,7 +37,7 @@ public class Star : MonoBehaviour
 
     public void DeactivateStarSystem()
     {
-        if(starCoroutine == null) return;
+        if (starCoroutine == null) return;
 
         StopCoroutine(starCoroutine);
         starCoroutine = null;
@@ -50,13 +50,13 @@ public class Star : MonoBehaviour
 
     public bool IsStarSystemRunning()
     {
-        return starCoroutine == null? false : true;
+        return starCoroutine == null ? false : true;
     }
 
     public IEnumerator ShowStar() //플레이 타임 25~30초마다 1개씩 랜덤으로 별이 나타남
     {
-       while(StarList.Count != 0) // 리스트 크기가 0이 아니라면
-       {
+        while (StarList.Count != 0) // 리스트 크기가 0이 아니라면
+        {
             int idx = Random.Range(0, StarList.Count); //0~6까지
             StarList.Remove(StarList[idx]); //그 값을 삭제
             Stars[idx].SetActive(true); //해당 별 활성화
@@ -68,14 +68,14 @@ public class Star : MonoBehaviour
                 yield return null;
             }
 
-            float second = Random.Range(25,31);
+            float second = Random.Range(25, 31);
             yield return new WaitForSeconds(second);//25~30초마다 반복
-       }                        
+        }
     }
 
     public IEnumerator GetStar()
     {
-        if(isFadingOut) // 페이드 아웃 중이면
+        if (isFadingOut) // 페이드 아웃 중이면
         {
             Invoke(nameof(ActivateStarFadeOut), 0.5f);
         }
@@ -97,18 +97,17 @@ public class Star : MonoBehaviour
             StarNumText.text = string.Format("{0}", starNum.ToString());
 
             readyToFadeOut.Dequeue();
-            waitingLine.Enqueue(idx+1); // 대기 별 큐에 추가
+            waitingLine.Enqueue(idx + 1); // 대기 별 큐에 추가
 
             Invoke(nameof(ReAppearStar), 40f);//40초 뒤 다시 나타나기 가능
-            
-            PlayerPrefs.SetInt("StarNum", starNum); //별 개수 저장
-            PlayerPrefs.Save();
 
-            if(!SystemManager.instance.IsInvoking("CheckTipState") && starNum >= 3) 
+            PlayerPrefs.SetInt("StarNum", starNum); //별 개수 저장
+
+            if (!SystemManager.instance.IsInvoking("CheckTipState") && starNum >= 3)
             {
                 SystemManager.instance.CheckTipState();
             }
-        }        
+        }
     }
 
     private void ReAppearStar()
@@ -120,7 +119,7 @@ public class Star : MonoBehaviour
 
         int star = waitingLine.Peek();
         StarList.Add(star);
-        waitingLine.Dequeue();          
+        waitingLine.Dequeue();
     }
 
     public void TouchStar(int starValue)
@@ -134,7 +133,6 @@ public class Star : MonoBehaviour
         starNum -= value;
         StarNumText.text = string.Format("{0}", GetCurrentStarNum().ToString());
         PlayerPrefs.SetInt("StarNum", starNum); //별 개수 저장
-        PlayerPrefs.Save();
     }
 
     public void SetStarNum(int value)
@@ -143,9 +141,8 @@ public class Star : MonoBehaviour
         StarNumText.text = string.Format("{0}", GetCurrentStarNum().ToString());
 
         PlayerPrefs.SetInt("StarNum", starNum); //별 개수 저장
-        PlayerPrefs.Save();
     }
-    
+
     public int GetCurrentStarNum()
     {
         return starNum;

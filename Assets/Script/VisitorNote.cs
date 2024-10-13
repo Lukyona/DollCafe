@@ -58,9 +58,9 @@ public class VisitorNote : MonoBehaviour
 
     public void ShowVisitorNote() //손님 노트 버튼 눌렀을 때
     {
-        if (!SystemManager.instance.IsUIOpen())
+        if (!SystemManager.instance.IsUIOpen)
         {
-            SystemManager.instance.SetUIOpen(true);
+            SystemManager.instance.IsUIOpen = true;
             SEManager.instance.PlayUITouchSound(); //효과음
             buttonAnimator.SetTrigger("VNButtonOut"); //버튼 위로 올라감       
             noteAnimator.SetTrigger("NoteUp"); //노트 올라옴
@@ -69,7 +69,7 @@ public class VisitorNote : MonoBehaviour
 
     public void CloseVisitorNote() //노트 닫기 버튼 눌렀을 때
     {
-        SystemManager.instance.SetUIOpen(false);
+        SystemManager.instance.IsUIOpen = false;
         SEManager.instance.PlayUICloseSound(); //효과음
         noteAnimator.SetTrigger("NoteDown"); //노트 내려감
         buttonAnimator.SetTrigger("VNButtonIn"); //버튼 내려옴
@@ -667,14 +667,12 @@ public class VisitorNote : MonoBehaviour
                 hiddenTextStates[7] = 1;
                 break;
         }
-        SaveVisitorNoteInfo();
     }
 
     public void OpenNameForNameless(string name)//무명이 이름 정보 활성화
     {
         nameForNameless.text = name;
         nameForNameless.gameObject.SetActive(true);
-        SaveVisitorNoteInfo();
     }
 
     public void ShowReplayOptions()//다시보기 버튼을 눌렀을 때
@@ -968,7 +966,6 @@ public class VisitorNote : MonoBehaviour
             PlayerPrefs.SetInt("FirstMeetID", firstMeetID);
             PlayerPrefs.SetInt("FriendEventID", friendEventID);
 
-            PlayerPrefs.Save(); //세이브
         }
         catch (System.Exception e)
         {

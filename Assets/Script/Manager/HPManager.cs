@@ -41,7 +41,7 @@ public class HPManager : MonoBehaviour
     {
         if (currentHP < maxHP)
         {
-            if (!SystemManager.instance.IsExchanging())//별하트 전환 상태가 아닐 때, 즉 광고 본 뒤일 때
+            if (!SystemManager.instance.IsExchanging)//별하트 전환 상태가 아닐 때, 즉 광고 본 뒤일 때
             {
                 currentHP += 2;
                 TimeManager.instance.AfterWatchingAds();

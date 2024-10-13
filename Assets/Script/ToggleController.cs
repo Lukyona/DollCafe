@@ -189,7 +189,6 @@ class ToggleController : MonoBehaviour //설정의 브금 효과음 on off토글
 			{
 				PlayerPrefs.SetInt("SEOnOff", state);
 			}
-			PlayerPrefs.Save();
 		}
 		catch (System.Exception e)
 		{

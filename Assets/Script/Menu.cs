@@ -115,10 +115,10 @@ public class Menu : MonoBehaviour
 
     public void TouchMenuButton() //메뉴판 버튼 눌렀을 때
     {
-        if (!SystemManager.instance.IsUIOpen()) //다른 ui가 열려있지 않다면
+        if (!SystemManager.instance.IsUIOpen) //다른 ui가 열려있지 않다면
         {
             MenuHint.instance.CantTouchMHB();//다른 메뉴힌트버블 터치 불가
-            SystemManager.instance.SetUIOpen(true);
+            SystemManager.instance.IsUIOpen = true;
             SEManager.instance.PlayUITouchSound(); //효과음
             menuButtonAnimator.SetTrigger("MenuButtonOut"); //메뉴 버튼 위로 올라가고
             menuBoardAnimator.SetTrigger("MenuBoardUp"); //메뉴판이 아래에서 올라옴
@@ -131,7 +131,7 @@ public class Menu : MonoBehaviour
 
     public void TouchMenuCloseButton() //메뉴 닫기 버튼 눌렀을 때
     {
-        SystemManager.instance.SetUIOpen(false);
+        SystemManager.instance.IsUIOpen = false;
         SEManager.instance.PlayUICloseSound(); //효과음
         menuBoardAnimator.SetTrigger("MenuBoardDown"); //메뉴판 아래로 내려가고
         menuButtonAnimator.SetTrigger("MenuButtonIn"); //메뉴버튼 위에서 내려옴
@@ -140,18 +140,18 @@ public class Menu : MonoBehaviour
 
     public void TouchMenuHint(int cNum, int sNum) //캐릭터의 메뉴 힌트 말풍선 눌렀을 때
     {
-        if (!SystemManager.instance.IsUIOpen())
+        if (!SystemManager.instance.IsUIOpen)
         {
             characterNum = cNum;
             seatNum = sNum;
 
             MenuHint.instance.CantTouchMHB();//다른 메뉴힌트버블 터치 불가
-            SystemManager.instance.SetUIOpen(true);
+            SystemManager.instance.IsUIOpen = true;
             SEManager.instance.PlayUITouchSound2(); //효과음
             menuButtonAnimator.SetTrigger("MenuButtonOut"); //메뉴 버튼 위로 올라가고
             menuBoardAnimator.SetTrigger("MenuBoardUp"); //메뉴판 올라옴
 
-            if (SystemManager.instance.GetMainCount() == 2) //서빙 튜토리얼일 경우
+            if (SystemManager.instance.MainCount == 2) //서빙 튜토리얼일 경우
             {
                 // 레이어 순서 원래대로 변경
                 CharacterManager.instance.GetSmallCharacter(1).transform.parent.GetComponent<Canvas>().sortingOrder = 2;
@@ -222,7 +222,7 @@ public class Menu : MonoBehaviour
         else //체력이 1이상이면
         {
             CantTouchMenu();
-            SystemManager.instance.SetUIOpen(false);
+            SystemManager.instance.IsUIOpen = false;
             menuBoardAnimator.SetTrigger("MenuBoardDown"); //메뉴판 아래로 내려가고
             menuButtonAnimator.SetTrigger("MenuButtonIn"); //메뉴버튼 위에서 내려옴
             MenuHint.instance.CanTouchMHB();//다른 메뉴힌트버블 터치 가능
@@ -278,7 +278,7 @@ public class Menu : MonoBehaviour
                 }
                 Reaction[seatNum].SetActive(true);
 
-                if (SystemManager.instance.GetMainCount() == 2) //서빙 튜토리얼일 경우
+                if (SystemManager.instance.MainCount == 2) //서빙 튜토리얼일 경우
                 {
                     Dialogue.instance.Invoke("OpenDialogue", 0.5f);
                     SystemManager.instance.SetCanTouch(true, 1.5f);
@@ -762,7 +762,6 @@ public class Menu : MonoBehaviour
         try
         {
             PlayerPrefs.SetInt("UnlockedMenuItems", UnlockedMenuItems.Count); //현재 오픈된 메뉴 크기 저장, 3은 기본 메뉴 3개 오픈된 것
-            PlayerPrefs.Save(); //세이브
         }
         catch (System.Exception e)
         {

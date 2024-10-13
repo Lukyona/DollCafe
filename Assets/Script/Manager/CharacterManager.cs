@@ -176,8 +176,8 @@ public class CharacterManager : MonoBehaviour
         }
         #endregion
 
-        if (checkingTrigger && NextAppearNum <= (int)BigCharacter.Grandfather && !SystemManager.instance.IsUIOpen() && !Dialogue.instance.IsTalking() && CurrentEventState == 0
-            && VisitorNote.instance.GetReplayState() == 0 && SystemManager.instance.GetMainCount() > 3)
+        if (checkingTrigger && NextAppearNum <= (int)BigCharacter.Grandfather && !SystemManager.instance.IsUIOpen && !Dialogue.instance.IsTalking() && CurrentEventState == 0
+            && VisitorNote.instance.GetReplayState() == 0 && SystemManager.instance.MainCount > 3)
         {// UI가 올라와있지 않고 대화 중이 아닐 때
             if (IsTableEmpty(1) || IsTableEmpty(2) || IsTableEmpty(3)) //테이블이 하나라도 비었다면
             {
@@ -370,7 +370,7 @@ public class CharacterManager : MonoBehaviour
                                 CancelInvoke(nameof(RandomVisit));
                             }
                             CurrentEventState = cNum; //두 개 이상의 테이블이 비었고 도로시가 방문가능캐릭터일 때 실행, 도로시까지 필요하기 때문
-                            if (SystemManager.instance.IsUIOpen() || Dialogue.instance.IsTalking() || VisitorNote.instance.GetReplayState() != 0)//만약 UI가 올라와있다면
+                            if (SystemManager.instance.IsUIOpen || Dialogue.instance.IsTalking() || VisitorNote.instance.GetReplayState() != 0)//만약 UI가 올라와있다면
                             {
                                 StartCoroutine(FriendshipEvent(cNum, 1f));
                             }
@@ -402,7 +402,7 @@ public class CharacterManager : MonoBehaviour
                                 CancelInvoke(nameof(RandomVisit));
                             }
                             CurrentEventState = 11;
-                            if (SystemManager.instance.IsUIOpen() || Dialogue.instance.IsTalking() || VisitorNote.instance.GetReplayState() != 0)//만약 UI가 올라와있다면
+                            if (SystemManager.instance.IsUIOpen || Dialogue.instance.IsTalking() || VisitorNote.instance.GetReplayState() != 0)//만약 UI가 올라와있다면
                             {
                                 StartCoroutine(FriendshipEvent(cNum, 1f));
                             }
@@ -437,7 +437,7 @@ public class CharacterManager : MonoBehaviour
                                 CancelInvoke(nameof(RandomVisit));
                             }
                             CurrentEventState = 12;//친밀도 이벤트 진행 중
-                            if (SystemManager.instance.IsUIOpen() || Dialogue.instance.IsTalking() || VisitorNote.instance.GetReplayState() != 0)//만약 UI가 올라와있다면
+                            if (SystemManager.instance.IsUIOpen || Dialogue.instance.IsTalking() || VisitorNote.instance.GetReplayState() != 0)//만약 UI가 올라와있다면
                             {
                                 StartCoroutine(FriendshipEvent(cNum, 1f));
                             }
@@ -460,7 +460,7 @@ public class CharacterManager : MonoBehaviour
                             MenuHint.instance.CantTouchMHB();
                             SystemManager.instance.CantTouchUI();
                             CurrentEventState = 13;//친밀도 이벤트 진행 중
-                            if (SystemManager.instance.IsUIOpen() || Dialogue.instance.IsTalking() || VisitorNote.instance.GetReplayState() != 0)//만약 UI가 올라와있다면
+                            if (SystemManager.instance.IsUIOpen || Dialogue.instance.IsTalking() || VisitorNote.instance.GetReplayState() != 0)//만약 UI가 올라와있다면
                             {
                                 StartCoroutine(FriendshipEvent(cNum, 1f));
                             }
@@ -499,7 +499,7 @@ public class CharacterManager : MonoBehaviour
                 else
                     CurrentEventState = cNum;
 
-                if (SystemManager.instance.IsUIOpen() || Dialogue.instance.IsTalking() || VisitorNote.instance.GetReplayState() != 0)//만약 UI가 올라와있다면
+                if (SystemManager.instance.IsUIOpen || Dialogue.instance.IsTalking() || VisitorNote.instance.GetReplayState() != 0)//만약 UI가 올라와있다면
                 {
                     StartCoroutine(FriendshipEvent(cNum, 1f));
                 }
@@ -672,7 +672,7 @@ public class CharacterManager : MonoBehaviour
 
         SetSeatPosition(cNum);
 
-        if (SystemManager.instance.GetMainCount() == 2)//서빙 튜토리얼일 경우
+        if (SystemManager.instance.MainCount == 2)//서빙 튜토리얼일 경우
         {
             //회색 패널보다 레이어가 뒤에 위치해있어서 터치가 안되므로 일시적으로 순서를 패널보다 앞쪽으로 배치한다
             smallCharacters[1].transform.parent.GetComponent<Canvas>().sortingOrder = 7;
@@ -684,7 +684,7 @@ public class CharacterManager : MonoBehaviour
         int seatNum = 0;
         int[] validSeats = null;
 
-        if (SystemManager.instance.GetMainCount() == 2)//서빙 튜토리얼일 경우
+        if (SystemManager.instance.MainCount == 2)//서빙 튜토리얼일 경우
         {
             seatNum = 1; //2번째 자리, 첫번째 짝수자리, 첫번째 테이블 오른쪽 자리
         }
@@ -755,7 +755,7 @@ public class CharacterManager : MonoBehaviour
             n = cNum;
         }
 
-        if (SystemManager.instance.GetMainCount() > 2 && Dialogue.instance.GetCharacterDC(n) != 0 && CurrentEventState != 2)
+        if (SystemManager.instance.MainCount > 2 && Dialogue.instance.GetCharacterDC(n) != 0 && CurrentEventState != 2)
         {//붕붕이 친밀도 이벤트, 캐릭터 첫 등장 제외하고 메인카운트 3이상이면 바로 캐릭터 페이드인
             if (IsInvoking(nameof(FadeIn)))//다른 캐릭터 페이드인이 인보크 중이면
             {
@@ -849,7 +849,7 @@ public class CharacterManager : MonoBehaviour
         }
         cleanSeat.Dequeue();
 
-        if (SystemManager.instance.GetMainCount() > 7)
+        if (SystemManager.instance.MainCount > 7)
         {
             Invoke(nameof(EnableRevisit), 8f);
         }
