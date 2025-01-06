@@ -165,7 +165,8 @@ public class SystemManager : MonoBehaviour
 
     public void DebuggingCheat()
     {
-        //SaveInt("PurchaseCount", 0); //인앱 결제 정보 저장
+        SaveInt("PurchaseCount", 0); //인앱 결제 정보 저장
+
         //PlayerPrefs.Save(); //세이브
         //endingState =1;
         //SaveDataInfo();
@@ -175,8 +176,8 @@ public class SystemManager : MonoBehaviour
         //VisitorNote.instance.FriendshipInfo[10] = 15;
         //VisitorNote.instance.FriendshipInfo[8] = 10;
         //Star.instance.SetStarNum(23);
-        for (int i = 0; i < 9; ++i)
-            HPManager.instance.AddHP();
+        //for (int i = 0; i < 9; ++i)
+        //HPManager.instance.AddHP();
     }
 
     public void OnApplicationFocus(bool value)
@@ -233,7 +234,7 @@ public class SystemManager : MonoBehaviour
         try
         {
             SaveInt("MainCount", MainCount);
-            SaveInt("NextAppear", CharacterManager.instance.NextAppearNum);
+            SaveInt("NextAppearNum", CharacterManager.instance.NextAppearNum);
             SaveInt("Reputation", Menu.instance.GetReputation());
             SaveInt("EndingState", endingState);
             SaveInt("TipNum", tipNum);
@@ -249,7 +250,6 @@ public class SystemManager : MonoBehaviour
         try
         {
             MainCount = LoadInt("MainCount");
-
             if (!PlayerPrefs.HasKey("MainCount") || MainCount < 4) // 붕붕이 방문 완료 전
             {
                 CantTouchUI(); // 설정 제외한 버튼들 모두 터치 불가
@@ -260,7 +260,7 @@ public class SystemManager : MonoBehaviour
                 Menu.instance.SetReputation(0);
                 Star.instance.SetStarNum(0);
                 PlayerPrefs.Save();
-
+                CharacterManager.instance.CanCheckTrigger();
                 BeginDialogue(0);
             }
             else // 붕붕이 방문 이후, 기존 정보가 정상적으로 저장됨
@@ -277,6 +277,7 @@ public class SystemManager : MonoBehaviour
                 Menu.instance.LoadUnlockedMenuItemInfo();
                 Invoke(nameof(SetTipState), 2f);
                 CharacterManager.instance.SetCharacter(0); //제제 작은 캐릭터 페이드인 
+                CharacterManager.instance.CanCheckTrigger();
 
                 if (endingState != 3) //엔딩이벤트를 본 게 아니라면
                 {

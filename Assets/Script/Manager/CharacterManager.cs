@@ -70,7 +70,7 @@ public class CharacterManager : MonoBehaviour
     public int FaceNum { get; set; } = -1;//표정 비활성화에 쓰임
 
     public int NextAppearNum { get; set; } = 0;
-    private bool checkingTrigger = true; // 큰 캐릭터 등장 가능 상태
+    private bool checkingTrigger = false; // 큰 캐릭터 등장 가능 상태
     public int CurrentEventState { get; set; } = 0; //0은 친밀도 이벤트 중이 아님, 이벤트 발생하는 캐릭터 번호 들어감, 1도리 2붕붕 3빵빵 4개나리 6도로시 7루루 8샌디 9친구 10찰스1 11찰스2 ,12무명이1, 13무명이2, 14히로디노, 15닥터펭, 16롤렝드
 
     private List<string> availableCharacters = new List<string>(); //랜덤 방문 가능한 캐릭터들 리스트
@@ -735,9 +735,11 @@ public class CharacterManager : MonoBehaviour
                 {
                     validSeats = new int[] { 4, 5 };
                 }
+
+                seatNum = AllocateSeatBasedOnTables(cNum, validSeats);
             }
         }
-        seatNum = AllocateSeatBasedOnTables(cNum, validSeats);
+
         characterSeat[cNum - 1] = seatNum; //캐릭터 자리 정보 저장
 
         // 앉을 자리로 옮기기
