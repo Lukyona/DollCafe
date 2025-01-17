@@ -335,8 +335,8 @@ public class CharacterManager : MonoBehaviour
     {
         yield return new WaitForSeconds(time);
 
-        int idx1 = -1;
-        int idx2 = -1;
+        int idx1 = -1; // 캐릭터 번호(대화 진행도) 
+        int idx2 = -1; // 캐릭터 번호(친밀도), 친밀도 이벤트가 존재하지 않는 캐릭터도 존재
         if (cNum == (int)SmallCharacter.Penguin || cNum == (int)SmallCharacter.Grandfather)
         {
             idx1 = cNum - 1;
@@ -523,16 +523,12 @@ public class CharacterManager : MonoBehaviour
     #region 캐릭터 랜덤 방문 및 재방문 관련 함수
     public void RandomVisit()//캐릭터들의 카페 방문, 등장한 캐릭터 중에 랜덤으로 방문
     {
-        if ((VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0
-            && Dialogue.instance.IsTalking()) || PlayerPrefs.GetInt("EndingState") == 1)//캐릭터와 대화 중일 경우 혹은 엔딩이벤트의 경우 함수 종료
+        if (PlayerPrefs.GetInt("EndingState") == 1) // 엔딩 대기일 경우 함수 종료
         {
-            if (!IsInvoking(nameof(RandomVisit)))
-            {
-                Invoke(nameof(RandomVisit), 3f);
-            }
             return;
         }
-        if (availableCharacters.Count == 0) //현재 방문 가능한 캐릭터가 없음
+        if ((VisitorNote.instance.GetFirstMeetID() == 0 && VisitorNote.instance.GetFriendEventID() == 0
+            && Dialogue.instance.IsTalking()) || availableCharacters.Count == 0) //캐릭터와 대화 중일 경우, 현재 방문 가능한 캐릭터가 없음
         {
             if (!IsInvoking(nameof(RandomVisit)))
             {

@@ -165,7 +165,7 @@ public class SystemManager : MonoBehaviour
 
     public void DebuggingCheat()
     {
-        SaveInt("PurchaseCount", 0); //인앱 결제 정보 저장
+        //SaveInt("PurchaseCount", 0); //인앱 결제 정보 저장
 
         //PlayerPrefs.Save(); //세이브
         //endingState =1;
